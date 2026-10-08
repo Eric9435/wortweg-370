@@ -15,6 +15,7 @@ jobs:
           node --check sw.js
           node --check live-content.js
           node --check ios-polish.js
+          node --check seen-words.js
           node <<'NODE'
           const fs=require('fs'),vm=require('vm');
           const html=fs.readFileSync('index.html','utf8');
@@ -56,6 +57,8 @@ jobs:
         run: node test-game-ui.cjs
       - name: Verify iOS-inspired UI and account-aware progress
         run: node test-ios-polish.cjs
+      - name: Verify Seen Words table and CEFR progress
+        run: node test-seen-words.cjs
       - name: Verify compact Settings navigation and all existing controls
         run: node test-settings-navigation.cjs
       - name: Verify card-free UI and authentication entry
