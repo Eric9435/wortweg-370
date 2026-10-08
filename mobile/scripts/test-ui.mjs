@@ -25,9 +25,9 @@ assert.match(native,/switchProfile\(account\?\.uid\|\|'guest'\)/, 'Guest and Goo
 assert.match(gradle,/WORTWEG_CI_KEYSTORE/, 'CI preview signing must use an explicit keystore');
 assert.equal(pack.schema,1,'Live content schema must be supported');
 assert.ok(pack.lessons.length>0,'APK must ship usable starter lessons');
-assert.match(prepare,/live-content\\.js/,'Native bundle includes live updater');
+assert.ok(prepare.includes('live-content.js'),'Native bundle includes live updater');
 assert.match(prepare,/['"]content['"]/,'Native bundle includes offline word pack');
-assert.match(settings,/live-content\\.js/,'Website and APK load the same local updater');
+assert.ok(settings.includes('live-content.js'),'Website and APK load the same local updater');
 assert.match(live,/credentials:'omit'/,'Public vocabulary downloads never send user credentials');
 assert.match(live,/textContent/,'Remote content is rendered as text rather than executable HTML');
 const styles=[...html.matchAll(/<link\b[^>]+>/g)].map(m=>m[0]).filter(s=>/stylesheet/i.test(s));
