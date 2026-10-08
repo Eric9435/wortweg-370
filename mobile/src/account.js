@@ -97,7 +97,7 @@ export function initNativeAccount(){
  onAuthStateChanged(auth,async account=>{
   const current=++version;ready=false;clearTimeout(timer);unsubscribe?.();unsubscribe=null;cloudChoice=null;conflict.hidden=true;user=account;welcome.hidden=!!account||sessionStorage.getItem(guestPreference)==='1';renderAccount(account);window.WortWeg.switchProfile(account?.uid||'guest');window.WortWegNative.accountReady=true;
   const justSignedIn=Boolean(account&&requestedGoogleLogin);requestedGoogleLogin=false;
-  window.dispatchEvent(new CustomEvent('wortweg:account',{detail:{uid:account?.uid||null,name:account?.displayName||'',email:account?.email||'',photoURL:account?.photoURL||'',justSignedIn}}));
+  window.WortWegAccountSnapshot={uid:account?.uid||null,name:account?.displayName||'',email:account?.email||'',photoURL:account?.photoURL||'',justSignedIn};window.dispatchEvent(new CustomEvent('wortweg:account',{detail:window.WortWegAccountSnapshot}));
   if(!account){status('Saved on this phone');ready=true;return;}
   const uid=account.uid;status('Loading your cloud history…');let timeout;
   try{
