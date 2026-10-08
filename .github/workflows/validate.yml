@@ -2,6 +2,8 @@ name: Validate WortWeg
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 jobs:
   check:
@@ -12,6 +14,7 @@ jobs:
         run: |
           node --check sw.js
           node --check live-content.js
+          node --check ios-polish.js
           node <<'NODE'
           const fs=require('fs'),vm=require('vm');
           const html=fs.readFileSync('index.html','utf8');
@@ -51,6 +54,8 @@ jobs:
         run: node test-memory.cjs
       - name: Test game-style navigation and Google profile onboarding
         run: node test-game-ui.cjs
+      - name: Verify iOS-inspired UI and account-aware progress
+        run: node test-ios-polish.cjs
       - name: Verify compact Settings navigation and all existing controls
         run: node test-settings-navigation.cjs
       - name: Verify card-free UI and authentication entry
