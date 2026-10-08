@@ -31,6 +31,22 @@ jobs:
         run: node test-live-content.cjs
       - name: Check network-first website lesson updates
         run: node test-serviceworker-updates.cjs
+      - name: Verify Android update scripts and public version baseline
+        run: |
+          node --check mobile/src/update-check.js
+          node --check mobile/src/app-updates.js
+          node --check mobile/src/native.js
+          node <<'NODE'
+          const fs=require('node:fs'),assert=require('node:assert/strict');
+          const info=JSON.parse(fs.readFileSync('mobile/src/build-info.json','utf8'));
+          const published=JSON.parse(fs.readFileSync('updates/android.json','utf8'));
+          const gradle=fs.readFileSync('mobile/android/app/build.gradle','utf8');
+          assert.equal(Number(gradle.match(/versionCode\s+(\d+)/)[1]),info.versionCode);
+          assert.equal(gradle.match(/versionName\s+"([^"]+)"/)[1],info.versionName);
+          assert.equal(info.packageName,published.packageName);
+          assert.ok(published.versionCode<=info.versionCode,'Only real public APKs can appear in update manifest');
+          console.log('PASS: Android update syntax, version integrity and safe public release baseline');
+          NODE
       - name: Test saved answers and separate account progress
         run: node test-memory.cjs
       - name: Test game-style navigation and Google profile onboarding
