@@ -1,7 +1,17 @@
 (()=>{
 'use strict';
-const KEY='wortweg370-settings-v1', defaults={mode:'system',font:'normal',theme:'blue',notifications:false,reminder:false,time:'18:00',name:'',age:'',goal:'10 words a day',touchSound:false,backgroundMusic:false};
+const KEY='wortweg370-settings-v1', defaults={mode:'system',font:'normal',theme:'blue',notifications:false,reminder:false,time:'18:00',name:'',age:'',goal:'10 words a day',touchSound:true,backgroundMusic:true};
 let s={...defaults};try{s={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{};
+// One-time migration: existing users also receive the new sound-on defaults.
+ // After migration, their explicit On/Off settings persist across launches.
+const AUDIO_DEFAULTS_KEY='wortweg370-audio-defaults-v2';
+try{
+ if(localStorage.getItem(AUDIO_DEFAULTS_KEY)!=='1'){
+  s.touchSound=true;s.backgroundMusic=true;
+  localStorage.setItem(KEY,JSON.stringify(s));
+  localStorage.setItem(AUDIO_DEFAULTS_KEY,'1');
+ }
+}catch{}
 const main=document.querySelector('main'),page=document.createElement('section');page.id='settings';page.className='section';
 page.innerHTML=`<div class="settings-grid"><div class="card"><h3>Appearance</h3><label for="pref-mode">Display mode</label><select id="pref-mode"><option value="system">Follow device</option><option value="light">Light</option><option value="dark">Dark</option></select><label for="pref-font">Font size</label><select id="pref-font"><option value="small">Small</option><option value="normal">Normal</option><option value="large">Large</option><option value="extra">Extra large</option></select><label for="pref-theme">Colour theme</label><select id="pref-theme"><option value="blue">Ocean blue</option><option value="teal">Forest teal</option><option value="purple">Soft violet</option></select></div><div class="card"><h3>My profile</h3><form id="profile-form"><label for="pref-name">Name (optional)</label><input id="pref-name" maxlength="80" autocomplete="nickname"><label for="pref-age">Age (optional)</label><input id="pref-age" type="number" min="1" max="120"><label for="pref-goal">Learning goal</label><input id="pref-goal" maxlength="120"><p class="muted tiny">Your profile and preferences stay in this browser, separate from your Google account and quiz history.</p><button class="btn primary">Save profile</button></form></div><div class="card"><h3>Notifications & reminders</h3><label class="settings-toggle"><input id="pref-notifications" type="checkbox"> Enable browser notifications</label><label class="settings-toggle"><input id="pref-reminder" type="checkbox"> Daily study reminder</label><label for="pref-time">Reminder time (device local time)</label><input id="pref-time" type="time"><p id="notification-status" class="muted tiny"></p><p class="muted tiny">Browser reminders run while WortWeg is open. Import a calendar reminder to receive alerts when the app is closed.</p><div class="flex"><button class="btn" id="test-notification">Test notification</button><button class="btn" id="calendar-reminder">Download calendar reminder</button></div></div><div class="card"><h3>Feedback & customer support</h3><form id="support-form"><label for="support-kind">Request type</label><select id="support-kind"><option>Feedback</option><option>Customer support</option><option>Report a bug</option><option>Privacy request</option></select><label for="support-email">Your email (optional)</label><input id="support-email" type="email" autocomplete="email" maxlength="254"><label for="support-subject">Subject</label><input id="support-subject" required maxlength="140"><label for="support-message">Message</label><textarea id="support-message" required maxlength="5000" rows="5"></textarea><p class="muted tiny">Opens a draft in your email app. Review it and press Send there.</p><button class="btn primary">Open email draft</button></form><a href="mailto:ericscott.de@gmail.com">ericscott.de@gmail.com</a></div><div class="card settings-wide"><h3>About WortWeg 370</h3><p>Developed by <strong>innovateX</strong></p><details><summary>Privacy</summary><p>Appearance, optional profile details, and reminder preferences are stored in this browser. Guest learning progress stays on this device. If you sign in with Google, Firebase Authentication handles sign-in and quiz progress is stored in Cloud Firestore under your account. Google and Firebase process account and service data; GitHub Pages hosts this site. Your settings profile is not uploaded by this feature.</p><p>Notification permission is optional and managed by your browser. Support messages are only sent when you send the email draft. To request help with account data or deletion, contact ericscott.de@gmail.com. Clearing browser site data removes local settings and may remove local learning progress.</p></details><details><summary>Terms of use</summary><p>WortWeg is a vocabulary practice tool. Content may contain mistakes and does not guarantee exam results. Keep a copy of important learning records; browser storage and cloud services may be unavailable. Use support respectfully and avoid sending sensitive information. Contact innovateX at ericscott.de@gmail.com for questions.</p></details></div></div><p id="settings-status" role="status" aria-live="polite"></p>`;
 main.append(page);
@@ -40,9 +50,9 @@ accountHub.innerHTML='<h3>Account</h3><div id="ww-account-slot"><span class="mut
 page.insertBefore(accountHub,settingsGrid);
 const soundGroup=document.createElement('div');
 soundGroup.className='card ww-sound-settings';
-soundGroup.innerHTML='<h3>Sound & music</h3><label class="settings-toggle"><input id="pref-touchSound" type="checkbox"> Touch sound effects</label><label class="settings-toggle"><input id="pref-backgroundMusic" type="checkbox"> Background music</label><p class="muted tiny">Original ambient tones generated on your device. Music is optional and pauses when the app is not visible.</p>';
+soundGroup.innerHTML='<h3>Sound & music</h3><label class="settings-toggle"><input id="pref-touchSound" type="checkbox"> Touch sound effects</label><label class="settings-toggle"><input id="pref-backgroundMusic" type="checkbox"> Background music</label><p class="muted tiny">Sound and original ambient music start enabled. Turn either one off here. In browsers, music may wait for your first tap.</p>';
 settingsGrid.insertBefore(soundGroup,settingsGrid.firstChild);
-for(const k of ['touchSound','backgroundMusic']){const input=$('pref-'+k);input.checked=Boolean(s[k]);input.addEventListener('change',()=>{s[k]=input.checked;save();if(k==='backgroundMusic')updateMusic(true)})}
+for(const k of ['touchSound','backgroundMusic']){const input=$('pref-'+k);input.checked=Boolean(s[k]);input.addEventListener('change',()=>{s[k]=input.checked;save();if(k==='backgroundMusic')updateMusic()})}
 const header=document.querySelector('header');
 const moveAccount=()=>{const panel=header?.querySelector('#ww-account');if(!panel)return;const slot=$('ww-account-slot');slot.querySelector('span.muted')?.remove();slot.append(panel)};
 if(header){new MutationObserver(moveAccount).observe(header,{childList:true});moveAccount()}
@@ -100,25 +110,74 @@ window.addEventListener('wortweg:account',event=>{
 $('profile-form').addEventListener('submit',()=>{
  try{localStorage.setItem(profileKey(activeProfile),JSON.stringify({name:s.name,age:s.age,goal:s.goal}))}catch{}
 });
-/* Generated, license-free synthesized audio; no external music assets or trackers. */
-let audioContext=null,musicTimer=null,musicStarted=false;
-function audio(){if(!audioContext){const Audio=window.AudioContext||window.webkitAudioContext;if(!Audio)return null;audioContext=new Audio()}if(audioContext.state==='suspended')audioContext.resume().catch(()=>{});return audioContext}
-function note(ctx,hz,delay,duration,volume,type='sine'){
+/* License-free, generated UI sounds and ambient game music. Shared AudioContext. */
+let audioContext=null,musicTimer=null;
+const activeMusic=new Set();
+function audio(){
+ if(!audioContext){
+  const Audio=window.AudioContext||window.webkitAudioContext;
+  if(!Audio)return null;
+  try{audioContext=new Audio()}catch{return null}
+ }
+ return audioContext;
+}
+function note(ctx,hz,delay,duration,volume,type='sine',isMusic=false){
  const oscillator=ctx.createOscillator(),gain=ctx.createGain(),start=ctx.currentTime+delay;
  oscillator.type=type;oscillator.frequency.value=hz;
- gain.gain.setValueAtTime(0,start);gain.gain.linearRampToValueAtTime(volume,start+.045);
+ gain.gain.setValueAtTime(0,start);
+ gain.gain.linearRampToValueAtTime(volume,start+.045);
  gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
- oscillator.connect(gain);gain.connect(ctx.destination);oscillator.start(start);oscillator.stop(start+duration+.03);
+ oscillator.connect(gain);gain.connect(ctx.destination);
+ if(isMusic){
+  activeMusic.add(oscillator);
+  oscillator.onended=()=>activeMusic.delete(oscillator);
+ }
+ oscillator.start(start);oscillator.stop(start+duration+.03);
 }
-function touch(){const ctx=audio();if(!ctx)return;note(ctx,650,0,.065,.018);note(ctx,900,.045,.09,.009)}
-document.addEventListener('pointerdown',event=>{if(s.touchSound&&event.target.closest('button,[role=button],a,summary,select,input[type=checkbox]'))touch()},true);
-function chord(){if(!s.backgroundMusic||document.hidden)return;const ctx=audio();if(!ctx)return;const roots=[196,174.61,220,164.81],root=roots[Math.floor((Date.now()/6600)%roots.length)];[1,1.25,1.5,2].forEach((mult,i)=>note(ctx,root*mult,i*.2,3.5,.004,'sine'))}
-function stopMusic(){if(musicTimer){clearInterval(musicTimer);musicTimer=null}}
-function updateMusic(gesture=false){stopMusic();if(!s.backgroundMusic||document.hidden)return;if(gesture)musicStarted=true;if(!musicStarted)return;chord();musicTimer=setInterval(chord,6600)}
-document.addEventListener('visibilitychange',()=>{if(document.hidden)stopMusic();else updateMusic(false)});
+function unlockAudio(){
+ const ctx=audio();if(!ctx)return Promise.resolve(null);
+ if(ctx.state==='suspended'){
+  try{return Promise.resolve(ctx.resume()).then(()=>ctx).catch(()=>ctx)}catch{return Promise.resolve(ctx)}
+ }
+ return Promise.resolve(ctx);
+}
+function touch(){
+ if(!s.touchSound)return;
+ const ctx=audio();if(!ctx)return;
+ if(ctx.state==='suspended')unlockAudio().catch(()=>{});
+ note(ctx,650,0,.065,.018);
+ note(ctx,900,.045,.09,.009);
+}
+function chord(){
+ const ctx=audio();
+ if(!s.backgroundMusic||document.hidden||!ctx||ctx.state!=='running')return;
+ const roots=[196,174.61,220,164.81],root=roots[Math.floor((Date.now()/6600)%roots.length)];
+ [1,1.25,1.5,2].forEach((mult,i)=>note(ctx,root*mult,i*.2,3.5,.004,'sine',true));
+}
+function stopMusic(){
+ if(musicTimer){clearInterval(musicTimer);musicTimer=null}
+ for(const oscillator of activeMusic){try{oscillator.stop()}catch{}}
+ activeMusic.clear();
+}
+function startMusic(){
+ if(!s.backgroundMusic||document.hidden||audio()?.state!=='running'||musicTimer)return;
+ chord();
+ musicTimer=setInterval(chord,6600);
+}
+function updateMusic(){
+ stopMusic();
+ if(!s.backgroundMusic||document.hidden)return;
+ unlockAudio().then(startMusic);
+}
+document.addEventListener('pointerdown',event=>{
+ // On websites, browser autoplay policy may require this first interaction.
+ if(s.backgroundMusic&&!musicTimer)unlockAudio().then(startMusic);
+ if(s.touchSound&&event.target.closest('button,[role=button],a,summary,select,input[type=checkbox]'))touch();
+},true);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopMusic();else updateMusic()});
 window.addEventListener('pagehide',stopMusic);
-// Browsers require a user gesture before audio playback. Never autoplay on launch.
-document.addEventListener('pointerdown',()=>{if(s.backgroundMusic&&!musicStarted)updateMusic(true)},{once:true});
+// Try immediately at launch; Android WebView is configured to allow playback without tapping.
+updateMusic();
 
 media.addEventListener('change',apply);apply();permissionStatus();tick();
 })();
