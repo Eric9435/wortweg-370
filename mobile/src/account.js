@@ -16,9 +16,9 @@ export function initNativeAccount(){
  const retry=document.createElement('button');retry.type='button';retry.id='ww-google-retry';retry.className='ww-account-btn';retry.textContent='Try Google sign-in again';retry.hidden=true;panel.append(retry);
  let alternate=false;
  const $=id=>document.getElementById(id),login=$('ww-login'),photo=$('ww-account-photo'),initials=$('ww-account-initials');
- const info=document.createElement('p');info.className='mobile-note muted';info.textContent='Study and pronunciation work offline. Sign in with the same Google account to sync learning history with the website. Google sign-in and cloud sync need internet. Guest progress stays separate and is available when you sign out.';document.querySelector('main').prepend(info);
+ const info=document.createElement('p');info.className='mobile-note muted';info.hidden=true;document.querySelector('main').prepend(info);
  const welcome=document.createElement('div');welcome.id='ww-welcome';welcome.className='ww-welcome';welcome.hidden=true;
- welcome.innerHTML='<div class="ww-welcome-content"><img src="./icon.svg" alt="" class="ww-welcome-logo"><h1>WortWeg <span>370</span></h1><div class="ww-welcome-actions"><button type="button" id="ww-welcome-google" class="ww-welcome-google">Login with Google</button><button type="button" id="ww-welcome-guest" class="ww-welcome-guest">Continue as Guest</button></div></div>';
+ welcome.innerHTML='<div class="ww-welcome-content"><img src="./icon.svg" alt="" class="ww-welcome-logo"><h1>WortWeg <span>370</span></h1><div class="ww-welcome-actions"><button type="button" id="ww-welcome-google" class="ww-welcome-google"><svg class="ww-login-icon" aria-hidden="true" viewBox="0 0 24 24"><path fill="#4285F4" d="M21.35 12.24c0-.71-.06-1.39-.18-2.05H12v3.87h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.15c1.84-1.7 2.9-4.2 2.9-7.21Z"/><path fill="#34A853" d="M12 21.76c2.62 0 4.82-.87 6.43-2.31l-3.15-2.45c-.87.59-1.99.94-3.28.94a5.9 5.9 0 0 1-5.55-4.09H3.19v2.52A9.75 9.75 0 0 0 12 21.76Z"/><path fill="#FBBC05" d="M6.45 13.85a5.86 5.86 0 0 1 0-3.7V7.63H3.19a9.76 9.76 0 0 0 0 8.74l3.26-2.52Z"/><path fill="#EA4335" d="M12 6.06c1.43 0 2.72.49 3.73 1.47l2.8-2.8A9.28 9.28 0 0 0 12 2.24a9.75 9.75 0 0 0-8.81 5.39l3.26 2.52A5.89 5.89 0 0 1 12 6.06Z"/></svg><span>Login with Google</span></button><button type="button" id="ww-welcome-guest" class="ww-welcome-guest"><svg class="ww-login-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg><span>Continue as Guest</span></button></div><p id="ww-welcome-status" role="status" aria-live="polite" hidden></p></div>';
  document.body.append(welcome);
  const guestPreference='wortweg370-guest-entered';
  welcome.querySelector('#ww-welcome-google').addEventListener('click',()=>login.click());
@@ -27,7 +27,7 @@ export function initNativeAccount(){
  conflict.innerHTML='<h3>Choose your learning history</h3><p>This phone has unsynced answers and your account has different cloud history. Both copies are kept until you choose which one to continue with.</p><div class="flex"><button type="button" class="btn" id="ww-use-cloud">Use cloud history</button><button type="button" class="btn" id="ww-use-phone">Use this phone’s history</button></div>';
  info.after(conflict);
  let user=null,ready=false,applying=false,version=0,avatarVersion=0,timer=null,unsubscribe=null,revision=0,writing=null,cloudChoice=null;
- const status=t=>{$('ww-cloud-status').textContent=t};
+ const status=t=>{ $('ww-cloud-status').textContent=t;const notice=$('ww-welcome-status');if(notice){const visible=/failed|did not finish|SHA-1|try again|Opening Google/i.test(t);notice.textContent=visible?t:'';notice.hidden=!visible;} };
  const dirtyKey=uid=>'wortweg370-cloud-pending:'+uid;
  const dirty=uid=>localStorage.getItem(dirtyKey(uid))==='1';
  const mark=uid=>localStorage.setItem(dirtyKey(uid),'1');
@@ -74,7 +74,7 @@ export function initNativeAccount(){
  $('ww-use-cloud').onclick=()=>{if(!user||!cloudChoice)return;const uid=user.uid;localStorage.setItem('wortweg370-cloud-backup:'+uid,JSON.stringify(window.WortWeg.getProgress()));apply(cloudChoice);remember(uid,cloudChoice);clear(uid);cloudChoice=null;conflict.hidden=true;status('Cloud history loaded');};
  $('ww-use-phone').onclick=()=>{if(!user||!cloudChoice)return;localStorage.setItem('wortweg370-cloud-backup:'+user.uid,JSON.stringify(cloudChoice));remember(user.uid,cloudChoice);cloudChoice=null;conflict.hidden=true;mark(user.uid);queueSave();};
  login.onclick=async()=>{
-  login.disabled=true;retry.disabled=true;retry.hidden=true;let stage='Google';
+  login.disabled=true;welcome.querySelector('#ww-welcome-google').disabled=true;retry.disabled=true;retry.hidden=true;let stage='Google';
   try{
    if(user){await signOut(auth);await FirebaseAuthentication.signOut().catch(()=>{});return;}
    status('Opening Google account chooser…');
@@ -89,7 +89,7 @@ export function initNativeAccount(){
    else if(/\b10\b|DEVELOPER_ERROR/i.test(message))status('Google sign-in setup needs this APK’s SHA-1 fingerprint in Firebase.');
    else status(stage+' sign-in failed'+(code?' ('+code+')':'')+'. Check your connection and try again.');
    retry.hidden=Boolean(user)||stage!=='Google';
-  }finally{login.disabled=false;retry.disabled=false;alternate=false;}
+  }finally{login.disabled=false;welcome.querySelector('#ww-welcome-google').disabled=false;retry.disabled=false;alternate=false;}
  };
  retry.onclick=()=>{alternate=true;return login.onclick();};
  onAuthStateChanged(auth,async account=>{
