@@ -1,9 +1,9 @@
 {
   "schema": 1,
   "packageName": "com.innovatex.wortweg370.preview",
-  "versionCode": 6,
-  "versionName": "0.3.2-preview",
-  "releasePage": "https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-72",
-  "downloadUrl": "https://github.com/Eric9435/wortweg-370/releases/download/mobile-preview-72/WortWeg-370-Android-preview.apk",
-  "notes": "iPhone-inspired WortWeg interface with improved Home, MCQ, Word Bank, Topics, learning progress, wrong-answer review, and offline New Lessons layout."
+  "versionCode": 7,
+  "versionName": "0.3.3-preview",
+  "releasePage": "https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-75",
+  "downloadUrl": "https://github.com/Eric9435/wortweg-370/releases/download/mobile-preview-75/WortWeg-370-Android-preview.apk",
+  "notes": "My Seen Words: complete answer history with red missed words, German pronunciation, searchable table, remaining vocabulary, and A1-C2 progress bars. Existing offline and Google learning history preserved."
 }
