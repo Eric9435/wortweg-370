@@ -51,6 +51,8 @@ jobs:
         run: node test-memory.cjs
       - name: Test game-style navigation and Google profile onboarding
         run: node test-game-ui.cjs
+      - name: Verify compact Settings navigation and all existing controls
+        run: node test-settings-navigation.cjs
       - name: Verify card-free UI and authentication entry
         run: node mobile/scripts/test-ui.mjs
 
