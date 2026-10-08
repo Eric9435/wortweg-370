@@ -47,6 +47,9 @@ public class OfflineAppTest {
             scenario.onActivity(activity -> assertFalse(
                 "The Android WebView should permit music without a tap",
                 activity.getBridge().getWebView().getSettings().getMediaPlaybackRequiresUserGesture()));
+            // App-bundled lessons must work on a first launch without the website.
+            waitFor(scenario, "window.WortWegLive && window.WortWegLive.getPack() && window.WortWegLive.getPack().lessons.length >= 4");
+            assertEquals("true",evaluate(scenario, "WortWegLive.getPack().schema===1"));
             // Emulators can report navigator.onLine=true without usable internet.
             // Reject every external request explicitly; local Capacitor assets remain served.
             scenario.onActivity(activity -> {
