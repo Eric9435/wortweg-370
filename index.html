@@ -23,6 +23,34 @@ select,input{background:white;color:#1d3551;border-color:#cbd5e1}
 #toast{background:#163963;color:white;border-color:#163963}
 @media(min-width:960px){main{margin-left:230px;max-width:calc(100% - 230px)}.bottom{top:0;bottom:0;width:230px;right:auto;border-top:0;border-right:1px solid #e2e8f0}.bottom nav{display:flex;flex-direction:column;gap:6px;padding:90px 12px 18px}.bottom button{display:flex;align-items:center;gap:12px;text-align:left;font-size:14px;border-radius:10px;padding:14px 15px}.bottom b{font-size:20px;margin:0}.bottom button.active{background:#eaf2fb}}
 @media(max-width:580px){main{padding:12px 12px 100px}.hero{padding:23px}.card{padding:19px}.stats{gap:8px}.stat{padding:14px 10px}.stat strong{font-size:23px}.ww-account{width:100%;justify-content:space-between}.bottom nav{grid-template-columns:repeat(6,1fr)}.bottom button{font-size:10px}}
+</style><style id="ww-enterprise-pages">
+/* Dedicated workspace views */
+#topTabs{display:none!important}
+body{background:#f3f6fa}
+main{min-height:100dvh}
+.section{display:none!important}
+.section.active{display:block!important;animation:wwPage .2s ease-out}
+@keyframes wwPage{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+#ww-workspace-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 22px;padding:6px 0 15px;border-bottom:1px solid #e1e8f1}
+#ww-workspace-head .ww-heading{min-width:0}
+#ww-workspace-head .ww-eyebrow{font-size:11px;font-weight:750;letter-spacing:.13em;color:#64748b;text-transform:uppercase}
+#ww-workspace-head h2{margin:3px 0 0;color:#172d49;font-size:clamp(23px,3vw,31px);letter-spacing:-.04em}
+#ww-workspace-head .ww-description{margin:6px 0 0;font-size:13px;color:#64748b}
+#ww-workspace-head button{flex:none;border:1px solid #dce4ef;background:#fff;border-radius:10px;padding:10px 14px;color:#2a4563;font-weight:650}
+#ww-workspace-head button:hover{background:#edf4ff}
+#dashboard .hero{background:#fff;border:1px solid #e0e8f2;border-radius:18px;padding:26px;box-shadow:0 10px 30px #1c41620a}
+#dashboard .hero h2{color:#172d49;font-size:25px}
+#dashboard .hero p{color:#66778d}
+#dashboard .hero .eyebrow{color:#64748b}
+#dashboard .stats{margin:22px 0 0}
+#dashboard .stat{background:#f8fbff}
+#study .card:first-child{border-left:4px solid #2563eb}
+#quizCard{min-height:330px}
+#quizStage{padding-top:8px}
+.bottom button{transition:background .15s,color .15s}
+.bottom button:focus-visible,.btn:focus-visible{outline:3px solid #76a7ff;outline-offset:2px}
+@media(min-width:960px){.bottom{box-shadow:6px 0 30px #1631540b}.bottom nav{padding-top:115px}.bottom:before{content:'WORTWEG 370';position:absolute;top:39px;left:26px;font-size:14px;font-weight:850;letter-spacing:.08em;color:#183a5f}}
+@media(max-width:580px){#ww-workspace-head{margin:0 0 14px}#ww-workspace-head h2{font-size:23px}#ww-workspace-head .ww-description{font-size:12px}#ww-workspace-head button{padding:8px 10px;font-size:12px}#dashboard .hero{padding:18px}#dashboard .hero h2{font-size:22px}#dashboard .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}#dashboard .stat{padding:12px 8px}}
 </style></head><body>
 <main><header><div class="brand"><div class="logo">W</div><div><div class="eyebrow">Learn German for life</div><h1>WortWeg <span style="color:var(--teal)">370</span></h1></div></div><span class="pill" id="saveStatus">● On-device progress</span></header>
 <section id="dashboard" class="section active"><div class="hero"><div class="eyebrow">German • English • မြန်မာ</div><h2>Your learning overview</h2><p>Build your vocabulary, track your results, and review what needs attention.</p><div class="flex"><button class="btn primary" data-nav="study">▶ Start learning</button><button class="btn secondary" data-nav="review">↻ Review mistakes</button></div>
@@ -88,5 +116,21 @@ window.WortWeg={
  navigate:nav
 };
 refreshStats();nav('dashboard');if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
+})();
+</script><script id="ww-enterprise-router">
+(function(){
+const pages={dashboard:['Dashboard','Your learning workspace'],study:['Practice','Interactive vocabulary quiz'],topics:['Topics','Browse the learning roadmap'],bank:['Vocabulary','Search the German word bank'],review:['Review','Revisit your missed words'],stats:['History & progress','Your personal learning activity']};
+const head=document.createElement('div');head.id='ww-workspace-head';
+head.innerHTML='<div class="ww-heading"><div class="ww-eyebrow">Learning workspace</div><h2 id="ww-view-title">Dashboard</h2><p class="ww-description" id="ww-view-desc">Your learning workspace</p></div><button id="ww-back" type="button">← Back</button>';
+document.querySelector('main header')?.insertAdjacentElement('afterend',head);
+const title=document.getElementById('ww-view-title'),desc=document.getElementById('ww-view-desc'),back=document.getElementById('ww-back');
+let stack=['dashboard'];
+function reflect(name){if(!pages[name])return;title.textContent=pages[name][0];desc.textContent=pages[name][1];back.hidden=name==='dashboard';document.title=pages[name][0]+' · WortWeg 370';document.body.dataset.view=name;}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-nav]');if(!el||!pages[el.dataset.nav])return;const name=el.dataset.nav;if(stack[stack.length-1]!==name)stack.push(name);reflect(name)},true);
+back.addEventListener('click',()=>{if(stack.length>1)stack.pop();const target=stack[stack.length-1]||'dashboard';window.WortWeg?.navigate(target);reflect(target)});
+window.addEventListener('hashchange',()=>{const name=location.hash.slice(1);if(pages[name]){window.WortWeg?.navigate(name);reflect(name)}});
+const initial=pages[location.hash.slice(1)]?location.hash.slice(1):'dashboard';reflect(initial);
+if(initial!=='dashboard')setTimeout(()=>window.WortWeg?.navigate(initial),0);
+window.addEventListener('wortweg:changed',()=>{if(document.body.dataset.view==='dashboard'){/* dashboard counters update in app */}});
 })();
 </script><script type="module" src="./cloud.js"></script></body></html>
