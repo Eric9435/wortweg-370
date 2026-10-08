@@ -60,3 +60,14 @@ header{background:transparent;border:0;border-bottom:1px solid var(--line);borde
 .bottom{box-shadow:none}
 .bottom nav button.active{background:transparent;font-weight:700}
 @media(max-width:650px){main{padding-inline:18px}.card{padding:18px 0}.ww-shortcut{padding:16px 4px}}
+
+
+/* Final flat-workspace overrides for pre-existing enterprise selectors. */
+header,.card,.stat,.ww-shortcut,.item,.topic{box-shadow:none!important}
+header,.card,.stat,.ww-shortcut{background:transparent!important}
+header,.card,.stat,.ww-shortcut{border-radius:0!important}
+.ww-shortcuts{gap:0!important}
+.ww-shortcut{border:0!important;border-bottom:1px solid var(--line)!important}
+.ww-heading{border-bottom:0!important}
+.bottom{box-shadow:none!important}
+@media(max-width:650px){.ww-shortcuts{grid-template-columns:1fr!important}}
