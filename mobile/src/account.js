@@ -17,7 +17,13 @@ export function initNativeAccount(){
  let alternate=false;
  const $=id=>document.getElementById(id),login=$('ww-login'),photo=$('ww-account-photo'),initials=$('ww-account-initials');
  const info=document.createElement('p');info.className='mobile-note muted';info.textContent='Study and pronunciation work offline. Sign in with the same Google account to sync learning history with the website. Google sign-in and cloud sync need internet. Guest progress stays separate and is available when you sign out.';document.querySelector('main').prepend(info);
- const conflict=document.createElement('div');conflict.className='card';conflict.hidden=true;
+ const welcome=document.createElement('div');welcome.id='ww-welcome';welcome.className='ww-welcome';welcome.hidden=true;
+ welcome.innerHTML='<div class="ww-welcome-content"><img src="./icon.svg" alt="" class="ww-welcome-logo"><h1>WortWeg <span>370</span></h1><div class="ww-welcome-actions"><button type="button" id="ww-welcome-google" class="ww-welcome-google">Login with Google</button><button type="button" id="ww-welcome-guest" class="ww-welcome-guest">Continue as Guest</button></div></div>';
+ document.body.append(welcome);
+ const guestPreference='wortweg370-guest-entered';
+ welcome.querySelector('#ww-welcome-google').addEventListener('click',()=>login.click());
+ welcome.querySelector('#ww-welcome-guest').addEventListener('click',()=>{sessionStorage.setItem(guestPreference,'1');welcome.hidden=true;});
+ const conflict=document.createElement('div');conflict.className='card';conflict.id='ww-history-conflict';conflict.hidden=true;
  conflict.innerHTML='<h3>Choose your learning history</h3><p>This phone has unsynced answers and your account has different cloud history. Both copies are kept until you choose which one to continue with.</p><div class="flex"><button type="button" class="btn" id="ww-use-cloud">Use cloud history</button><button type="button" class="btn" id="ww-use-phone">Use this phone’s history</button></div>';
  info.after(conflict);
  let user=null,ready=false,applying=false,version=0,avatarVersion=0,timer=null,unsubscribe=null,revision=0,writing=null,cloudChoice=null;
@@ -87,7 +93,7 @@ export function initNativeAccount(){
  };
  retry.onclick=()=>{alternate=true;return login.onclick();};
  onAuthStateChanged(auth,async account=>{
-  const current=++version;ready=false;clearTimeout(timer);unsubscribe?.();unsubscribe=null;cloudChoice=null;conflict.hidden=true;user=account;renderAccount(account);window.WortWeg.switchProfile(account?.uid||'guest');window.WortWegNative.accountReady=true;
+  const current=++version;ready=false;clearTimeout(timer);unsubscribe?.();unsubscribe=null;cloudChoice=null;conflict.hidden=true;user=account;welcome.hidden=!!account||sessionStorage.getItem(guestPreference)==='1';renderAccount(account);window.WortWeg.switchProfile(account?.uid||'guest');window.WortWegNative.accountReady=true;
   if(!account){status('Saved on this phone');ready=true;return;}
   const uid=account.uid;status('Loading your cloud history…');let timeout;
   try{
