@@ -41,6 +41,12 @@ public class OfflineAppTest {
         // Workflow disables Wi-Fi and mobile data before this test starts.
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
             waitFor(scenario, "window.WortWeg && window.WortWegNative.accountReady && document.getElementById('mobile-time')");
+            // The requested sound-on defaults must be present before the first tap.
+            assertEquals("true",evaluate(scenario,
+                "document.getElementById('pref-touchSound').checked && document.getElementById('pref-backgroundMusic').checked"));
+            scenario.onActivity(activity -> assertFalse(
+                "The Android WebView should permit music without a tap",
+                activity.getBridge().getWebView().getSettings().getMediaPlaybackRequiresUserGesture()));
             // Emulators can report navigator.onLine=true without usable internet.
             // Reject every external request explicitly; local Capacitor assets remain served.
             scenario.onActivity(activity -> {
