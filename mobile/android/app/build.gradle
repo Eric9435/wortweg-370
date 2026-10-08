@@ -16,7 +16,22 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // GitHub Actions must sign with the cached, Firebase-registered preview key.
+    // Developer builds keep Android Gradle's existing local signing behavior.
+    signingConfigs {
+        ciPreview {
+            storeFile file(System.getenv('WORTWEG_CI_KEYSTORE') ?: "${System.getenv('HOME')}/.android/debug.keystore")
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+    }
     buildTypes {
+        debug {
+            if (System.getenv('GITHUB_ACTIONS') == 'true') {
+                signingConfig signingConfigs.ciPreview
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
