@@ -82,4 +82,15 @@ secondW.UpdateTest.initNativeAppUpdates({...info,Browser:browser,fetcher:async()
 await new Promise(r=>setTimeout(r,0));
 assert.equal(invoked,0,'User opt-out respected on subsequent launch');
 second.window.close();
+// Never put an update prompt on top of Google/Guest entry or post-login onboarding.
+const {dom:gated,w:gatedW}=make();
+const welcome=gatedW.document.createElement('div');welcome.id='ww-welcome';welcome.hidden=false;gatedW.document.body.append(welcome);
+const intro=gatedW.document.createElement('div');intro.id='ww-intro-overlay';intro.hidden=true;gatedW.document.body.append(intro);
+let gatedCalls=0;
+const gatedUI=gatedW.UpdateTest.initNativeAppUpdates({...info,Browser:browser,fetcher:async()=>{gatedCalls++;return {ok:true,headers:{get:()=>null},text:async()=>JSON.stringify(base)}}});
+await gatedUI.check(true);
+assert.equal(gatedW.document.getElementById('ww-update-overlay').hidden,true,'Updates cannot obscure first-run Google/Guest screen');
+welcome.hidden=true;await new Promise(r=>setTimeout(r,0));
+assert.equal(gatedW.document.getElementById('ww-update-overlay').hidden,false,'Deferred popup appears after login finishes');
+gated.window.close();
 console.log('PASS: version monotonicity, domain allowlist, untrusted manifest rejection, update notification, opt-out, manual update and no silent install.');
