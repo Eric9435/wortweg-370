@@ -7,6 +7,12 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import com.getcapacitor.BridgeWebViewClient;
+import android.webkit.WebView;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import java.io.ByteArrayInputStream;
+import java.util.Collections;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
@@ -31,8 +37,22 @@ public class OfflineAppTest {
     @Test public void bundledLearningAndSpeechWorkWithoutNetwork() throws Exception {
         // Workflow disables Wi-Fi and mobile data before this test starts.
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
+            // Emulators can report navigator.onLine=true without usable internet.
+            // Reject every external request explicitly; local Capacitor assets remain served.
+            scenario.onActivity(activity -> {
+                activity.getBridge().getWebView().setWebViewClient(new BridgeWebViewClient(activity.getBridge()) {
+                    @Override public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                        if (!"localhost".equals(request.getUrl().getHost())) {
+                            return new WebResourceResponse("text/plain", "UTF-8", 503, "Offline test", Collections.emptyMap(), new ByteArrayInputStream(new byte[0]));
+                        }
+                        return super.shouldInterceptRequest(view, request);
+                    }
+                });
+                activity.getBridge().getWebView().reload();
+            });
             waitFor(scenario, "window.WortWeg && document.getElementById('mobile-time')");
-            assertEquals("false", evaluate(scenario, "navigator.onLine"));
+            evaluate(scenario,"window.__offlineProbe=false;fetch('https://example.com/offline-test').then(r=>window.__offlineProbe=!r.ok).catch(()=>window.__offlineProbe=true)");
+            waitFor(scenario,"window.__offlineProbe");
             assertEquals("true",evaluate(scenario,"location.hostname === 'localhost'"));
             evaluate(scenario,"WortWeg.navigate('study');document.getElementById('startQuiz').click();document.querySelector('#answerButtons .choice').click();document.getElementById('submitAnswer').click()");
             assertEquals("1",evaluate(scenario,"WortWeg.getProgress().answered"));
