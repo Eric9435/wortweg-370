@@ -35,7 +35,7 @@ public class OfflineAppTest {
             if ("true".equals(evaluate(scenario, "Boolean("+condition+")"))) return;
             Thread.sleep(250);
         }
-        fail("Offline app condition timed out: " + condition + " · " + evaluate(scenario,"JSON.stringify({audio:window.WortWegAudio?.getStatus(),context:typeof AudioContext,engine:typeof meSpeak})"));
+        fail("Offline app condition timed out: " + condition + " · " + evaluate(scenario,"JSON.stringify({audio:window.WortWegAudio?.getStatus(),trace:window.WortWegNative?.audioTrace,context:typeof AudioContext,engine:typeof meSpeak})"));
     }
     @Test public void bundledLearningAndSpeechWorkWithoutNetwork() throws Exception {
         // Workflow disables Wi-Fi and mobile data before this test starts.
@@ -77,6 +77,7 @@ public class OfflineAppTest {
                 MotionEvent up=MotionEvent.obtain(now,now+100,MotionEvent.ACTION_UP,x,y,0);
                 view.dispatchTouchEvent(down);view.dispatchTouchEvent(up);down.recycle();up.recycle();
             });
+            evaluate(scenario,"WortWegAudio.test()");
             waitFor(scenario,"window.meSpeak && meSpeak.isVoiceLoaded('de')");
             assertEquals("true",evaluate(scenario,"(()=>{const wav=meSpeak.speak('Guten Tag',{voice:'de',rawdata:'array'});return wav.length>10000 && wav[0]===82 && wav[1]===73 && wav.slice(44).some(x=>x!==0)})()"));
             assertEquals("\"ready\"",evaluate(scenario,"WortWegAudio.getStatus().state"));
