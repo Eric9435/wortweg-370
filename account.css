@@ -13,3 +13,25 @@
 .ww-welcome-google{background:var(--panel);border:1px solid var(--line);color:var(--txt)}
 .ww-welcome-guest{background:var(--panel2);border:1px solid transparent;color:var(--txt)}
 .ww-welcome-actions button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+
+/* Full-bleed entry screen. There is deliberately no enclosing card. */
+.ww-welcome{
+ background:var(--bg)!important;
+ box-shadow:none!important;border:0!important;border-radius:0!important;
+ padding:clamp(24px,6vw,44px)!important;
+}
+.ww-welcome-content{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ border-radius:0!important;padding:0!important;
+ width:min(100%,390px);
+}
+.ww-welcome-logo{width:96px;height:96px;margin-bottom:20px}
+.ww-welcome h1{margin:0 0 38px;line-height:1.15}
+.ww-welcome-actions{gap:12px}
+.ww-welcome-actions button{width:100%;min-height:54px;transition:background-color .18s,border-color .18s,transform .18s}
+.ww-welcome-actions button:active{transform:scale(.99)}
+.ww-welcome-google{background:transparent!important;color:var(--txt)!important;border:1px solid var(--line)!important}
+.ww-welcome-guest{background:var(--panel2)!important;color:var(--txt)!important;border:1px solid transparent!important}
+html[data-mode=dark] .ww-welcome{background:var(--bg)!important}
+html[data-mode=dark] .ww-welcome-google{background:transparent!important}
