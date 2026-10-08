@@ -193,3 +193,10 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
 // The same local lesson-sync client is bundled into Android and served by the website.
 // Only JSON content is fetched remotely; JavaScript always comes from the installed app.
 (()=>{const script=document.createElement('script');script.src='./live-content.js';script.defer=true;document.head.append(script)})();
+
+
+// Additive presentation layer: both web and bundled Android retain the same features.
+(()=>{
+ const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='./ios-polish.css';document.head.append(stylesheet);
+ const script=document.createElement('script');script.src='./ios-polish.js';script.defer=true;document.head.append(script);
+})();
