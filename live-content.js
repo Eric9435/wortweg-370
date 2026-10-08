@@ -44,6 +44,7 @@ function adopt(candidate,from){
  pack=candidate;
  try{localStorage.setItem(PACK_KEY,JSON.stringify(candidate))}catch{status('Lessons loaded; storage is full. Future offline access is not guaranteed.')}
  if(!session)renderList();
+ window.dispatchEvent(new Event('wortweg:live-pack'));
  status('Version '+pack.version+' · '+(from==='online'?'Updated and saved for offline':'Available offline'));
  return true;
 }
@@ -103,8 +104,9 @@ function readProgress(){
 }
 function record(id,correct){
  const progress=readProgress(),last=progress[id]||{answered:0,correct:0};
- progress[id]={answered:(Number(last.answered)||0)+1,correct:(Number(last.correct)||0)+(correct?1:0)};
+ progress[id]={...last,answered:(Number(last.answered)||0)+1,correct:(Number(last.correct)||0)+(correct?1:0),wrong:(Number(last.wrong)||0)+(correct?0:1),lastCorrect:Boolean(correct),lastAnsweredAt:Date.now()};
  try{localStorage.setItem(PROGRESS_PREFIX+activeUser,JSON.stringify(progress))}catch{}
+ window.dispatchEvent(new Event('wortweg:live-progress-changed'));
 }
 function el(tag,text,className){
  const node=document.createElement(tag);
@@ -190,5 +192,6 @@ if(pack){renderList();status('Version '+pack.version+' · saved for offline');}
 else bundled().then(()=>sync(true));
 if(pack)sync();
 // Intentionally a text/JSON-only content channel; code and native updates require a new APK.
-window.WortWegLive={getPack:()=>pack,refresh:()=>sync(true),open:selectPage,validate:valid};
+window.WortWegLive={getPack:()=>pack,getProgress:readProgress,refresh:()=>sync(true),open:selectPage,validate:valid};
+window.dispatchEvent(new Event('wortweg:live-pack'));
 })();
