@@ -2,7 +2,7 @@ name: Build offline mobile apps
 on:
   push:
     branches: [main]
-    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'content/**', 'test-live-content.cjs', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -44,6 +44,11 @@ jobs:
       - run: npm ci
       - run: npm run test:account
       - run: node scripts/test-ui.mjs
+      - name: Verify online lesson sync and offline quiz content
+        working-directory: .
+        run: |
+          npm install --no-save --no-package-lock jsdom@26
+          node test-live-content.cjs
       - run: npm run sync
       - run: npm run icons
       - name: Build Android with the registered cached preview certificate
