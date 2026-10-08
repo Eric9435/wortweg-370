@@ -21,9 +21,16 @@ function progress(dom){return JSON.parse(dom.window.localStorage.getItem(KEY))}
 function session(dom){return JSON.parse(dom.window.localStorage.getItem(QUIZ))}
 function click(dom,id){dom.window.document.getElementById(id).click()}
 const first=launch();
+assert.equal(first.window.document.querySelector('.section.active').id,'home','Home is its own screen');
+first.window.document.querySelector('#home [data-nav="study"]').click();
+assert.equal(first.window.document.querySelector('.section.active').id,'study','Practice opens as a separate screen');
+first.window.document.querySelector('#study [data-nav="home"]').click();
+assert.equal(first.window.document.querySelector('.section.active').id,'home','Back returns to Home');
+
 assert.equal(progress(first).answered,10,'Initial saved progress must load');
 click(first,'startQuiz');
 assert.equal(session(first).i,0,'First question position must save');
+assert.equal(first.window.document.querySelector('.section.active').id,'quiz','Quiz uses a dedicated screen');
 first.window.document.querySelector('#answerButtons .choice').click();
 click(first,'submitAnswer');
 assert.equal(progress(first).answered,11,'Answer must save immediately');
@@ -34,6 +41,7 @@ first.window.close();
 const second=launch(stored);
 assert.equal(progress(second).answered,11,'Answered count must survive restart');
 assert.equal(second.window.document.getElementById('quizCounter').textContent,'2 / 10','Unfinished quiz resumes at next question');
+assert.equal(second.window.document.querySelector('.section.active').id,'quiz','Restored quiz returns to quiz screen');
 click(second,'submitAnswer');
 assert.equal(progress(second).answered,11,'Unselected answer cannot be submitted');
 second.window.document.querySelector('#answerButtons .choice').click();
