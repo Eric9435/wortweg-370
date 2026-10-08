@@ -24,3 +24,7 @@ jobs:
           }
           console.log('PASS: JavaScript syntax, manifest, and persistence hooks');
           NODE
+      - name: Install test-only DOM simulator
+        run: npm install --no-save --no-package-lock jsdom@26
+      - name: Test on-device quiz memory and recovery
+        run: node test-memory.cjs
