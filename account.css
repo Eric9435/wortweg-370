@@ -1,1 +1,15 @@
 .ww-account-profile{display:flex;align-items:center;gap:10px;min-width:0}.ww-account-avatar{display:inline-grid;place-items:center;width:38px;height:38px;flex:0 0 38px;overflow:hidden;border-radius:50%;border:1px solid var(--line);background:var(--panel2);color:var(--txt)}.ww-account-avatar[hidden]{display:none}.ww-account-photo{display:block;width:100%;height:100%;object-fit:cover}.ww-account-photo[hidden]{display:none}.ww-account-initials{font-size:14px;font-weight:700}.ww-account-initials[hidden]{display:none}#ww-identity{overflow-wrap:anywhere}
+
+/* Native entry experience: no white surrounding card, no verbose intro. */
+.ww-welcome[hidden]{display:none!important}
+.ww-welcome{position:fixed;inset:0;z-index:9999;background:var(--bg,#f4f7fb);
+ display:grid;place-items:center;padding:24px;min-height:100dvh}
+.ww-welcome-content{width:min(100%,380px);text-align:center;display:flex;flex-direction:column;align-items:center}
+.ww-welcome-logo{height:104px;width:104px;object-fit:contain;margin-bottom:12px}
+.ww-welcome h1{font-size:clamp(30px,7vw,40px);letter-spacing:-.055em;color:var(--txt);margin:0 0 44px}
+.ww-welcome h1 span{color:var(--teal)}
+.ww-welcome-actions{display:grid;gap:12px;width:100%}
+.ww-welcome-actions button{min-height:54px;border-radius:12px;font:inherit;font-weight:700;cursor:pointer}
+.ww-welcome-google{background:var(--panel);border:1px solid var(--line);color:var(--txt)}
+.ww-welcome-guest{background:var(--panel2);border:1px solid transparent;color:var(--txt)}
+.ww-welcome-actions button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
