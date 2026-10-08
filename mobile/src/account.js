@@ -26,7 +26,7 @@ export function initNativeAccount(){
  const conflict=document.createElement('div');conflict.className='card';conflict.id='ww-history-conflict';conflict.hidden=true;
  conflict.innerHTML='<h3>Choose your learning history</h3><p>This phone has unsynced answers and your account has different cloud history. Both copies are kept until you choose which one to continue with.</p><div class="flex"><button type="button" class="btn" id="ww-use-cloud">Use cloud history</button><button type="button" class="btn" id="ww-use-phone">Use this phone’s history</button></div>';
  info.after(conflict);
- let user=null,ready=false,applying=false,version=0,avatarVersion=0,timer=null,unsubscribe=null,revision=0,writing=null,cloudChoice=null;
+ let user=null,ready=false,applying=false,version=0,avatarVersion=0,timer=null,unsubscribe=null,revision=0,writing=null,cloudChoice=null,requestedGoogleLogin=false;
  const status=t=>{ $('ww-cloud-status').textContent=t;const notice=$('ww-welcome-status');if(notice){const visible=/failed|did not finish|SHA-1|try again|Opening Google/i.test(t);notice.textContent=visible?t:'';notice.hidden=!visible;} };
  const dirtyKey=uid=>'wortweg370-cloud-pending:'+uid;
  const dirty=uid=>localStorage.getItem(dirtyKey(uid))==='1';
@@ -77,12 +77,14 @@ export function initNativeAccount(){
   login.disabled=true;welcome.querySelector('#ww-welcome-google').disabled=true;retry.disabled=true;retry.hidden=true;let stage='Google';
   try{
    if(user){await signOut(auth);await FirebaseAuthentication.signOut().catch(()=>{});return;}
+   requestedGoogleLogin=true;
    status('Opening Google account chooser…');
    const result=await FirebaseAuthentication.signInWithGoogle({skipNativeAuth:true,useCredentialManager:!alternate});
    if(!result.credential?.idToken)throw Error('Google did not return an identity token.');
    stage='Firebase';
    await signInWithCredential(auth,GoogleAuthProvider.credential(result.credential.idToken,result.credential.accessToken));
   }catch(error){
+   requestedGoogleLogin=false;
    const message=String(error.message||error.code||error);
    const code=String(error.code||'').replace(/[^a-zA-Z0-9_./-]/g,'').slice(0,80);
    if(stage==='Google'&&/12501|cancel/i.test(message))status('Google sign-in did not finish. If you selected an account, try sign-in again.');
@@ -94,6 +96,8 @@ export function initNativeAccount(){
  retry.onclick=()=>{alternate=true;return login.onclick();};
  onAuthStateChanged(auth,async account=>{
   const current=++version;ready=false;clearTimeout(timer);unsubscribe?.();unsubscribe=null;cloudChoice=null;conflict.hidden=true;user=account;welcome.hidden=!!account||sessionStorage.getItem(guestPreference)==='1';renderAccount(account);window.WortWeg.switchProfile(account?.uid||'guest');window.WortWegNative.accountReady=true;
+  const justSignedIn=Boolean(account&&requestedGoogleLogin);requestedGoogleLogin=false;
+  window.dispatchEvent(new CustomEvent('wortweg:account',{detail:{uid:account?.uid||null,name:account?.displayName||'',email:account?.email||'',photoURL:account?.photoURL||'',justSignedIn}}));
   if(!account){status('Saved on this phone');ready=true;return;}
   const uid=account.uid;status('Loading your cloud history…');let timeout;
   try{
