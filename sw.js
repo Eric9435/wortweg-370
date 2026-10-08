@@ -11,6 +11,19 @@ self.addEventListener('activate',event=>{
 });
 self.addEventListener('fetch',event=>{
   if(event.request.method!=='GET')return;
+  // New lesson packs must be network-first: a precached JSON file cannot
+  // shadow newer versions after the website publishes fresh vocabulary.
+  const livePackUrl=new URL('./content/v1/pack.json',self.registration.scope).href;
+  if(event.request.url===livePackUrl){
+    event.respondWith(fetch(event.request).then(response=>{
+      if(response.ok){
+        const copy=response.clone();
+        caches.open(CACHE).then(cache=>cache.put(event.request,copy)).catch(()=>{});
+      }
+      return response;
+    }).catch(()=>caches.match(event.request)));
+    return;
+  }
   if(event.request.mode==='navigate'){
     event.respondWith(fetch(event.request).then(response=>{
       if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put('./index.html',copy));}
