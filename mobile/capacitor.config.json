@@ -3,5 +3,8 @@
   "appName": "WortWeg 370 Preview",
   "webDir": "www",
   "server": {"androidScheme": "https"},
-  "plugins": {"LocalNotifications": {"iconColor": "#073e72"}}
+  "plugins": {
+    "LocalNotifications": {"iconColor": "#073e72"},
+    "FirebaseAuthentication": {"skipNativeAuth": true, "providers": ["google.com"]}
+  }
 }

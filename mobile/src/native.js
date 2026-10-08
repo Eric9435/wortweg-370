@@ -1,10 +1,14 @@
 import {Browser} from '@capacitor/browser';
 import {LocalNotifications} from '@capacitor/local-notifications';
+import {Capacitor} from '@capacitor/core';
+import {initNativeAccount} from './account.js';
 
 const WEBSITE='https://eric9435.github.io/wortweg-370/';
 const KEY='wortweg370-settings-v1';
 const settings=()=>window.WortWegSettings.get();
 function save(value){window.WortWegSettings.save();}
+if(Capacitor.getPlatform()==='android')initNativeAccount();
+else {
 const panel=document.createElement('div');panel.className='ww-account';
 const identity=document.createElement('span');identity.textContent='Offline mobile preview · saved on this phone';
 const online=document.createElement('button');online.type='button';online.className='ww-account-btn';online.textContent='Open web account';
@@ -13,6 +17,8 @@ panel.append(identity,online);document.querySelector('header').append(panel);
 const info=document.createElement('p');info.className='mobile-note muted';
 info.textContent='Vocabulary, quizzes and German pronunciation are included for offline use. This preview keeps progress on this phone. Google accounts and cloud history are available in the web version; opening it does not transfer mobile progress.';
 document.querySelector('main').prepend(info);
+window.WortWegNative.accountReady=true;
+}
 
 // Use the native notification API instead of browser notification permissions.
 const toggle=document.getElementById('pref-notifications');

@@ -1,28 +1,13 @@
 # WortWeg 370 mobile
 
-Native Android and iOS shells using Capacitor 8.5.3. No remote `server.url`: all learning assets and the 3 MB German speech pack ship inside the application. The website in the repository root remains independently deployed on GitHub Pages.
+Capacitor Android/iOS shell with bundled vocabulary and German speech. The existing web app remains available. Run `npm ci`, `npm run test:account`, `npm run sync`, and `npm run icons` before native builds.
 
-## Rebuild
+Android uses the native Google chooser and authenticates its credential with bundled Firebase JS. The same Google UID and Firestore document (`users/{uid}/state/progress`) are used by the website. Profile photos fall back to initials. Learning works offline; signed-in changes remain on the phone until sync succeeds. Guest history remains separate. Conflicting unsynced phone/cloud histories prompt a choice and back up the other copy locally.
 
-Use Node 22+, Java 21 and Android SDK 36 for Android; macOS with Xcode for iOS.
+Register the exact APK SHA-1 in Firebase project wortweg-370 for package com.innovatex.wortweg370.preview. Download `signing-fingerprints.txt` from the matching release. Native Google login needs real-device verification after registration. Firebase client configuration is public; never commit service-account credentials or private signing keys.
 
-```sh
-cd mobile
-npm ci
-npm run sync
-npm run icons
-bash android/gradlew -p android assembleDebug
-npx cap open ios
-```
+CI builds and tests Android offline first launch, persistence and German speech. Account tests use mocked Google/Firebase providers to verify chooser credentials, sync, offline retention, conflict handling, profile separation and stale-response guards. Those tests do not replace a real Google login test.
 
-`scripts/prepare.mjs` creates a native bundle from root sources without changing those sources. It excludes the web service worker and Firebase popup login; native WebViews must not run Google's browser popup OAuth flow. Speech reads the packaged files rather than depending on browser Cache Storage, including on iOS. Appearance and profile settings retain their device storage; reminders use Capacitor Local Notifications.
+The preview signing certificate is cached while the CI cache exists. Production needs a durable private signing key. Older previews may use a different certificate and refuse an in-place update; preserve important local history before uninstalling.
 
-The mobile workflow compiles both platforms, tests Android in an emulator with Wi-Fi/data disabled, and publishes the debug APK only after both jobs pass. The iPhone build is unsigned and cannot be installed directly. Debug signing is for previews only; use a durable private release signing key before production Android distribution.
-
-## Finish store distribution
-
-1. Register production Android/iOS app identities in Firebase project `wortweg-370`; obtain Android `google-services.json` and iOS `GoogleService-Info.plist`. Register the Android signing SHA fingerprints and iOS OAuth URL scheme. Implement native Google authentication with a native provider and use its ID token with Firebase; do not substitute an embedded web popup. The shared web profile-photo/cloud logic can then be reused after Firebase JS auth is initialized with the native credential.
-2. Choose a durable production Android signing identity, configure it through CI secrets, and create a release AAB for Play Console or signed APK for direct distribution. Do not commit private keys.
-3. Configure Apple Developer team, signing certificates and provisioning; archive with Xcode and upload to App Store Connect for TestFlight. Configure the final account/sign-in options, privacy disclosures and support metadata for store review.
-
-Offline progress in the preview is separate from existing website progress. No migration or cloud synchronization is claimed. Notification delivery follows phone permission and OS scheduling rules. Clear/uninstall removes local data. No physical-device testing has been performed by this workflow.
+iOS remains guest-only until its Firebase configuration is supplied. The unsigned build needs Apple signing/TestFlight for installation.

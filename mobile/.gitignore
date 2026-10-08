@@ -10,4 +10,3 @@ ios/**/xcuserdata/
 *.jks
 *.keystore
 GoogleService-Info.plist
-google-services.json

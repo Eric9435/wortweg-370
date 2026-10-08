@@ -27,8 +27,22 @@ jobs:
       - uses: android-actions/setup-android@v3
         with:
           packages: 'platform-tools platforms;android-36 build-tools;36.0.0'
+      - name: Reuse preview signing certificate
+        uses: actions/cache@v4
+        with:
+          path: ~/.android/debug.keystore
+          key: wortweg370-preview-signing-v1
+      - name: Prepare preview certificate
+        run: |
+          mkdir -p "$HOME/.android"
+          if [ ! -f "$HOME/.android/debug.keystore" ]; then
+            keytool -genkeypair -keystore "$HOME/.android/debug.keystore" -storepass android -keypass android -alias androiddebugkey -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000
+          fi
+          keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey > signing-fingerprints.txt
+          cat signing-fingerprints.txt
       - uses: gradle/actions/setup-gradle@v4
       - run: npm ci
+      - run: npm run test:account
       - run: npm run sync
       - run: npm run icons
       - run: bash android/gradlew -p android :app:assembleDebug :app:assembleDebugAndroidTest
@@ -53,7 +67,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: WortWeg-370-Android-preview
-          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+          path: |
+            mobile/android/app/build/outputs/apk/debug/app-debug.apk
+            mobile/signing-fingerprints.txt
       - name: Test reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -74,6 +90,7 @@ jobs:
           cache: npm
           cache-dependency-path: mobile/package-lock.json
       - run: npm ci
+      - run: npm run test:account
       - run: npm run sync
       - run: npm run icons
       - name: Compile iPhone app without signing
@@ -100,6 +117,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: mobile-preview-${{ github.run_number }}
         run: |
-          mv dist/app-debug.apk dist/WortWeg-370-Android-preview.apk
+          mv dist/android/app/build/outputs/apk/debug/app-debug.apk dist/WortWeg-370-Android-preview.apk
           sha256sum dist/WortWeg-370-Android-preview.apk > dist/SHA256SUMS.txt
-          gh release create "$RELEASE_TAG" dist/WortWeg-370-Android-preview.apk dist/SHA256SUMS.txt --target "$GITHUB_SHA" --title "WortWeg 370 offline mobile preview" --prerelease --notes-file mobile/RELEASE-NOTES.md
+          gh release create "$RELEASE_TAG" dist/WortWeg-370-Android-preview.apk dist/SHA256SUMS.txt dist/signing-fingerprints.txt --target "$GITHUB_SHA" --title "WortWeg 370 offline mobile preview" --prerelease --notes-file mobile/RELEASE-NOTES.md

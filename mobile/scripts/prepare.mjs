@@ -38,7 +38,6 @@ settings=replace(settings,'About 3 MB. Saved on this device for offline pronunci
 settings=settings.replaceAll('German speech downloaded','German speech included');
 settings=replace(settings,'function tick(){','function tick(){if(window.WortWegNative)return;');
 settings=replace(settings,'media.addEventListener(\'change\',apply);',"window.WortWegSettings={get:()=>s,save};\nmedia.addEventListener('change',apply);");
-settings=settings.replace('If you sign in with Google, Firebase Authentication handles sign-in and quiz progress is stored in Cloud Firestore under your account. Google and Firebase process account and service data; GitHub Pages hosts this site.','This offline mobile preview does not sign in to Google or upload progress. The separate web version uses Firebase Authentication and Cloud Firestore when you sign in; GitHub Pages hosts that website.');
 await writeFile(new URL('settings.js',out),settings);
 await build({entryPoints:['src/native.js'],bundle:true,outfile:'www/native.js',format:'iife',target:'es2022'});
 console.log('Native offline bundle prepared; website sources unchanged.');

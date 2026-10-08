@@ -1,11 +1,9 @@
-WortWeg 370 Android offline preview, developed by innovateX.
+Android preview with native Google sign-in, Google profile pictures and learning-history sync with the existing website. Guest learning and included German speech work offline. Sign-in and cloud sync require internet.
 
-Download `WortWeg-370-Android-preview.apk` on Android, open it, and allow installation from your browser when Android asks. This is a debug-signed test build, not a Google Play production release. Android 7.0 or newer is required. Later test builds may use a different test signing key; keep a progress backup before uninstalling a previous preview.
+Before Google login can succeed, register this APK certificate’s SHA-1 in Firebase project wortweg-370, Android app com.innovatex.wortweg370.preview. The attached signing-fingerprints.txt contains the exact fingerprint. Real Google login remains to be tested after Firebase registration.
 
-Vocabulary, quizzes, review, appearance settings and the German speech pack are bundled. Study works offline from the first launch. Progress stays on this phone. Native notifications provide optional daily reminders.
+Different unsynced phone and cloud histories prompt a choice and preserve the other copy locally. Guest history stays separate from the signed-in account.
 
-The existing website stays available at https://eric9435.github.io/wortweg-370/ with Google sign-in, profile pictures and cloud sync. Native Google authentication is not enabled in this preview. `Open web account` opens the separate website; it does not transfer mobile progress.
+Preview signing is cached in CI; this is not production signing. The prior preview may use a different certificate. If Android refuses an update, preserve any important local history before uninstalling the old preview.
 
-The iOS project is in `mobile/ios`. An unsigned iPhone build is available as a workflow artifact for development, not as an installer. An Apple Developer account, signing identity and provisioning are required for TestFlight/App Store distribution.
-
-Source is included in this release's source archives. German speech uses meSpeak/eSpeak under GPLv3; the bundled license and notices are in `vendor/mespeak`.
+iOS compiles as an unsigned build. Installation needs Apple signing/TestFlight, and native Google login needs the iOS Firebase configuration. The existing website remains available.

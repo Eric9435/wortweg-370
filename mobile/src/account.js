@@ -1,0 +1,108 @@
+import {FirebaseAuthentication} from '@capacitor-firebase/authentication';
+import {initializeApp} from 'firebase/app';
+import {initializeAuth,browserLocalPersistence,onAuthStateChanged,GoogleAuthProvider,signInWithCredential,signOut} from 'firebase/auth';
+import {initializeFirestore,persistentLocalCache,persistentSingleTabManager,doc,getDocFromServer,setDoc,serverTimestamp,onSnapshot} from 'firebase/firestore';
+import config from './firebase-config.json';
+
+// Native Google account chooser returns a credential; Firebase JS authenticates
+// the same UID used by the website and persists it on this phone.
+export function initNativeAccount(){
+ const app=initializeApp(config);
+ const auth=initializeAuth(app,{persistence:browserLocalPersistence});
+ const db=initializeFirestore(app,{localCache:persistentLocalCache({tabManager:persistentSingleTabManager()})});
+ const panel=document.createElement('div');panel.id='ww-account';panel.className='ww-account';
+ panel.innerHTML='<div class="ww-account-profile"><span id="ww-account-avatar" class="ww-account-avatar" hidden><img id="ww-account-photo" class="ww-account-photo" width="38" height="38" referrerpolicy="no-referrer" decoding="async" alt="" hidden><span id="ww-account-initials" class="ww-account-initials" hidden></span></span><span id="ww-identity">On-device learning</span></div><span id="ww-cloud-status" aria-live="polite"></span><button type="button" id="ww-login" class="ww-account-btn">Sign in with Google</button>';
+ document.querySelector('header').append(panel);
+ const $=id=>document.getElementById(id),login=$('ww-login'),photo=$('ww-account-photo'),initials=$('ww-account-initials');
+ const info=document.createElement('p');info.className='mobile-note muted';info.textContent='Study and pronunciation work offline. Sign in with the same Google account to sync learning history with the website. Google sign-in and cloud sync need internet. Guest progress stays separate and is available when you sign out.';document.querySelector('main').prepend(info);
+ const conflict=document.createElement('div');conflict.className='card';conflict.hidden=true;
+ conflict.innerHTML='<h3>Choose your learning history</h3><p>This phone has unsynced answers and your account has different cloud history. Both copies are kept until you choose which one to continue with.</p><div class="flex"><button type="button" class="btn" id="ww-use-cloud">Use cloud history</button><button type="button" class="btn" id="ww-use-phone">Use this phone’s history</button></div>';
+ info.after(conflict);
+ let user=null,ready=false,applying=false,version=0,avatarVersion=0,timer=null,unsubscribe=null,revision=0,writing=null,cloudChoice=null;
+ const status=t=>{$('ww-cloud-status').textContent=t};
+ const dirtyKey=uid=>'wortweg370-cloud-pending:'+uid;
+ const dirty=uid=>localStorage.getItem(dirtyKey(uid))==='1';
+ const mark=uid=>localStorage.setItem(dirtyKey(uid),'1');
+ const clear=uid=>localStorage.removeItem(dirtyKey(uid));
+ const ref=uid=>doc(db,'users',uid,'state','progress');
+ const stable=v=>v&&typeof v==='object'?Array.isArray(v)?v.map(stable):Object.fromEntries(Object.keys(v).sort().map(k=>[k,stable(v[k])])):v;
+ const same=(a,b)=>JSON.stringify(stable(a))===JSON.stringify(stable(b));
+ const baseKey=uid=>'wortweg370-cloud-base:'+uid;
+ const remember=(uid,p)=>localStorage.setItem(baseKey(uid),JSON.stringify(stable(p)));
+ const valid=p=>p&&Number.isFinite(p.answered)&&Number.isFinite(p.correct)&&p.items&&p.seen&&Array.isArray(p.history);
+ function renderAccount(account){
+  const current=++avatarVersion,name=account?(account.displayName||account.email||'Google account'):'On-device learning';
+  $('ww-identity').textContent=name;$('ww-account-avatar').hidden=!account;photo.hidden=true;initials.hidden=true;photo.onload=photo.onerror=null;photo.removeAttribute('src');
+  login.textContent=account?'Sign out':'Sign in with Google';
+  if(!account)return;
+  initials.textContent=(account.displayName||account.email?.split('@')[0]||'Google').trim().split(/\s+/).slice(0,2).map(p=>Array.from(p)[0]||'').join('').toUpperCase();initials.hidden=false;
+  try{const address=new URL(account.photoURL);if(address.protocol!=='https:')return;photo.alt='Google profile picture for '+name;photo.onload=()=>{if(current!==avatarVersion)return;photo.hidden=false;initials.hidden=true};photo.onerror=()=>{if(current!==avatarVersion)return;photo.hidden=true;initials.hidden=false;photo.removeAttribute('src')};photo.src=address.href;}catch{}
+ }
+ function apply(p){applying=true;try{window.WortWeg.setProgress(p);}finally{applying=false;}}
+ function choose(p){cloudChoice=p;conflict.hidden=false;status('Choose phone or cloud history before syncing.');}
+ function queueSave(){clearTimeout(timer);timer=setTimeout(flush,900);}
+ async function flush(){
+  if(!user||!ready||cloudChoice||!dirty(user.uid))return;
+  if(writing===version){queueSave();return;}
+  const uid=user.uid,current=version;writing=current;
+  status('Saved on phone · syncing…');
+  let timeout;
+  try{
+   const snapshot=await Promise.race([getDocFromServer(ref(uid)),new Promise((_,reject)=>{timeout=setTimeout(()=>reject(Error('offline')),8000);})]);
+   if(current!==version||user?.uid!==uid)return;
+   const remote=snapshot.data()?.progress,progress=window.WortWeg.getProgress(),savedRevision=revision;
+   if(valid(remote)){
+    const base=localStorage.getItem(baseKey(uid));
+    if(!same(remote,progress)&&(!base||base!==JSON.stringify(stable(remote)))){choose(remote);return;}
+    if(same(remote,progress)){clear(uid);remember(uid,remote);status('Cloud synced');return;}
+   }
+   await setDoc(ref(uid),{progress,updatedAt:serverTimestamp()},{merge:true});
+   if(current!==version||user?.uid!==uid)return;
+   remember(uid,progress);
+   if(savedRevision===revision){clear(uid);status('Cloud synced');}else queueSave();
+  }catch{if(current===version)status('Saved on phone · sync will retry when online');}
+  finally{clearTimeout(timeout);if(writing===current)writing=null;}
+ }
+ $('ww-use-cloud').onclick=()=>{if(!user||!cloudChoice)return;const uid=user.uid;localStorage.setItem('wortweg370-cloud-backup:'+uid,JSON.stringify(window.WortWeg.getProgress()));apply(cloudChoice);remember(uid,cloudChoice);clear(uid);cloudChoice=null;conflict.hidden=true;status('Cloud history loaded');};
+ $('ww-use-phone').onclick=()=>{if(!user||!cloudChoice)return;localStorage.setItem('wortweg370-cloud-backup:'+user.uid,JSON.stringify(cloudChoice));remember(user.uid,cloudChoice);cloudChoice=null;conflict.hidden=true;mark(user.uid);queueSave();};
+ login.onclick=async()=>{
+  login.disabled=true;
+  try{
+   if(user){await signOut(auth);await FirebaseAuthentication.signOut().catch(()=>{});return;}
+   status('Opening Google account chooser…');
+   const result=await FirebaseAuthentication.signInWithGoogle({skipNativeAuth:true});
+   if(!result.credential?.idToken)throw Error('Google did not return an identity token.');
+   await signInWithCredential(auth,GoogleAuthProvider.credential(result.credential.idToken,result.credential.accessToken));
+  }catch(error){
+   const message=String(error.message||error.code||error);
+   status(/12501|cancel/i.test(message)?'Sign-in cancelled. You can keep studying offline.':/\b10\b|DEVELOPER_ERROR/i.test(message)?'Google sign-in setup needs this APK’s SHA-1 fingerprint in Firebase.':'Google sign-in failed. Check your connection and try again.');
+  }finally{login.disabled=false;}
+ };
+ onAuthStateChanged(auth,async account=>{
+  const current=++version;ready=false;clearTimeout(timer);unsubscribe?.();unsubscribe=null;cloudChoice=null;conflict.hidden=true;user=account;renderAccount(account);window.WortWeg.switchProfile(account?.uid||'guest');window.WortWegNative.accountReady=true;
+  if(!account){status('Saved on this phone');ready=true;return;}
+  const uid=account.uid;status('Loading your cloud history…');let timeout;
+  try{
+   const snapshot=await Promise.race([getDocFromServer(ref(uid)),new Promise((_,reject)=>{timeout=setTimeout(()=>reject(Error('offline')),8000);})]);
+   if(current!==version)return;
+   const remote=snapshot.data()?.progress;
+   if(valid(remote)){
+    if(dirty(uid)&&!same(remote,window.WortWeg.getProgress()))choose(remote);
+    else{apply(remote);remember(uid,remote);clear(uid);status('Cloud history loaded');}
+   }else status('Account ready · saved on this phone');
+  }catch{if(current===version)status('Offline · saved on this phone');}
+  finally{clearTimeout(timeout);}
+  if(current!==version)return;ready=true;
+  unsubscribe=onSnapshot(ref(uid),{includeMetadataChanges:true},snapshot=>{
+   if(current!==version||snapshot.metadata.hasPendingWrites||snapshot.metadata.fromCache)return;
+   const remote=snapshot.data()?.progress;if(!valid(remote)||same(remote,window.WortWeg.getProgress()))return;
+   if(dirty(uid))choose(remote);else{apply(remote);remember(uid,remote);status('Cloud synced');}
+  },()=>{if(current===version)status('Saved on phone · cloud unavailable');});
+  if(dirty(uid)&&!cloudChoice)queueSave();
+ });
+ window.addEventListener('wortweg:changed',()=>{
+  if(applying||!user)return;revision++;mark(user.uid);status('Saved on phone');if(ready&&!cloudChoice)queueSave();
+ });
+ window.addEventListener('online',()=>{if(user&&ready&&!cloudChoice)queueSave();});
+ setInterval(()=>{if(user&&ready&&dirty(user.uid)&&!cloudChoice)queueSave();},30000);
+}

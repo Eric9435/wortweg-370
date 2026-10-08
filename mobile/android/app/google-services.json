@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "991404492771",
+    "project_id": "wortweg-370",
+    "storage_bucket": "wortweg-370.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991404492771:android:913ae6dba3d8ff47cd42d6",
+        "android_client_info": {
+          "package_name": "com.innovatex.wortweg370.preview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991404492771-84n5kkee8m5l0qvu4cnc3ljoerm8vjjv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGlkjCVznadhjyaaQoT5U9vHzOslzZDrU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991404492771-84n5kkee8m5l0qvu4cnc3ljoerm8vjjv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

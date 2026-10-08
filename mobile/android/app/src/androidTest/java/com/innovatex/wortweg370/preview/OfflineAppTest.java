@@ -40,7 +40,7 @@ public class OfflineAppTest {
     @Test public void bundledLearningAndSpeechWorkWithoutNetwork() throws Exception {
         // Workflow disables Wi-Fi and mobile data before this test starts.
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class)) {
-            waitFor(scenario, "window.WortWeg && document.getElementById('mobile-time')");
+            waitFor(scenario, "window.WortWeg && window.WortWegNative.accountReady && document.getElementById('mobile-time')");
             // Emulators can report navigator.onLine=true without usable internet.
             // Reject every external request explicitly; local Capacitor assets remain served.
             scenario.onActivity(activity -> {
@@ -54,14 +54,14 @@ public class OfflineAppTest {
                 });
             });
             evaluate(scenario,"window.__reloading=true;location.reload()");
-            waitFor(scenario, "!window.__reloading && window.WortWeg && document.getElementById('mobile-time')");
+            waitFor(scenario, "!window.__reloading && window.WortWeg && window.WortWegNative.accountReady && document.getElementById('mobile-time')");
             evaluate(scenario,"window.__offlineProbe=false;fetch('https://example.com/offline-test').then(r=>window.__offlineProbe=!r.ok).catch(()=>window.__offlineProbe=true)");
             waitFor(scenario,"window.__offlineProbe");
             assertEquals("true",evaluate(scenario,"location.hostname === 'localhost'"));
             evaluate(scenario,"WortWeg.navigate('study');document.getElementById('startQuiz').click();document.querySelector('#answerButtons .choice').click();document.getElementById('submitAnswer').click()");
             assertEquals("1",evaluate(scenario,"WortWeg.getProgress().answered"));
             evaluate(scenario,"window.__reloading=true;location.reload()");
-            waitFor(scenario,"!window.__reloading && window.WortWeg && document.getElementById('mobile-time')");
+            waitFor(scenario,"!window.__reloading && window.WortWeg && window.WortWegNative.accountReady && document.getElementById('mobile-time')");
             assertEquals("1",evaluate(scenario,"WortWeg.getProgress().answered"));
             // Force app-owned speech, regardless of emulator system voices.
             waitFor(scenario,"WortWegAudio.getStatus().state==='ready'");
