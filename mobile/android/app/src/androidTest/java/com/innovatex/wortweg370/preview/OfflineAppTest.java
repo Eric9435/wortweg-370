@@ -32,7 +32,7 @@ public class OfflineAppTest {
             if ("true".equals(evaluate(scenario, "Boolean("+condition+")"))) return;
             Thread.sleep(250);
         }
-        fail("Offline app condition timed out: " + condition);
+        fail("Offline app condition timed out: " + condition + " · " + evaluate(scenario,"JSON.stringify({audio:window.WortWegAudio?.getStatus(),context:typeof AudioContext,engine:typeof meSpeak})"));
     }
     @Test public void bundledLearningAndSpeechWorkWithoutNetwork() throws Exception {
         // Workflow disables Wi-Fi and mobile data before this test starts.

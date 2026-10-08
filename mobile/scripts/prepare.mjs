@@ -24,6 +24,8 @@ audio=replace(audio,"if (!('caches' in window)) return false;","if (window.WortW
 audio=replace(audio,'if (downloadPromise) {',"if (window.WortWegNative?.bundledSpeech) {setState({state:'ready',message:'German speech included · ready offline.',progress:100});return true;}\n    if (downloadPromise) {");
 audio=replace(audio,'const cache = await caches.open(CACHE);\n      const blobs = [];','const cache = window.WortWegNative?.bundledSpeech ? null : await caches.open(CACHE);\n      const blobs = [];');
 audio=replace(audio,'const blob = await cachedAsset(cache, asset);\n        if (!blob)',"const blob = cache ? await cachedAsset(cache, asset) : await fetch(url(asset.path)).then(r=>{if(!r.ok)throw Error('Bundled speech asset unavailable');return r.blob()});\n        if (!blob)");
+audio=replace(audio,'const scriptUrl = URL.createObjectURL(blobs[0]);',"const scriptUrl = window.WortWegNative?.bundledSpeech ? url(ASSETS[0].path) : URL.createObjectURL(blobs[0]);");
+audio=replace(audio,'const configUrl = URL.createObjectURL(blobs[1]), voiceUrl = URL.createObjectURL(blobs[2]);',"const configUrl = window.WortWegNative?.bundledSpeech ? url(ASSETS[1].path) : URL.createObjectURL(blobs[1]), voiceUrl = window.WortWegNative?.bundledSpeech ? url(ASSETS[2].path) : URL.createObjectURL(blobs[2]);");
 await writeFile(new URL('audio.js',out),audio);
 let settings=await readFile(new URL('settings.js',root),'utf8');
 settings=settings.replaceAll('in this browser','on this device').replaceAll('browser storage','device storage');
