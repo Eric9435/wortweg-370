@@ -35,5 +35,21 @@ Promise.resolve().then(()=>{
  assert.equal(JSON.parse(w.localStorage.getItem('wortweg370-settings-v1')).backgroundMusic,false,'Music remains opt-in');
  w.dispatchEvent(new w.CustomEvent('wortweg:account',{detail:{uid:null,name:'',email:'',justSignedIn:false}}));
  assert.equal($('pref-name').value,'','Guest does not inherit Google name');
+
+ // Confirm the same menu is injected into the actual 3 MB production HTML, not just a small fixture.
+ const original=fs.readFileSync('index.html','utf8');
+ const live=new JSDOM(original,{url:'https://eric9435.github.io/wortweg-370/',runScripts:'dangerously',beforeParse(w){
+  w.scrollTo=()=>{};w.structuredClone=structuredClone;
+  w.matchMedia=()=>({matches:false,addEventListener:()=>{}});
+ }});
+ live.window.eval(source);
+ const liveHome=live.window.document.getElementById('dashboard');
+ assert.ok(liveHome?.querySelector('.ww-main-menu'),'The real app has the game-style start menu');
+ assert.equal(liveHome.querySelectorAll('.ww-menu-options button').length,5);
+ liveHome.querySelector('[data-nav=study]').click();
+ assert.equal(live.window.document.querySelector('.section.active')?.id,'study','Production quiz route opens from game menu');
+ live.window.document.querySelector('#study .ww-menu-back').click();
+ assert.equal(live.window.document.querySelector('.section.active')?.id,'dashboard','Production back button returns home');
+ live.window.close();
  dom.window.close();console.log('PASS: game menu, iOS-style views, Settings-only account, Google welcome/profile and sound preferences.');
 }).catch(e=>{dom.window.close();console.error(e);process.exitCode=1});
