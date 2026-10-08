@@ -1,0 +1,152 @@
+/* WortWeg 370 Seen Words · responsive, keyboard friendly and theme-aware. */
+body.ww-game-interface .ww-seen-home {
+ --ww-seen-border:color-mix(in srgb,var(--line) 80%,transparent);
+ margin:0 0 23px;
+ display:grid;
+ gap:13px;
+}
+body.ww-game-interface .ww-seen-home-summary,
+body.ww-game-interface .ww-seen-page-overview {
+ border:1px solid var(--ww-seen-border,var(--line));
+ background:var(--panel);
+ border-radius:20px;
+ padding:20px 19px 17px;
+}
+body.ww-game-interface .ww-seen-overview-top {display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+body.ww-game-interface .ww-seen-overview-copy {display:grid;gap:5px;min-width:0}
+body.ww-game-interface .ww-seen-overline {font-size:10px;letter-spacing:.14em;font-weight:800;color:var(--teal)}
+body.ww-game-interface .ww-seen-overview-title {
+ font-size:clamp(20px,5vw,29px);font-weight:800;letter-spacing:-.04em;line-height:1.13;
+ color:var(--txt);font-variant-numeric:tabular-nums
+}
+body.ww-game-interface .ww-seen-overview-sub {color:var(--muted);font-size:12px;line-height:1.6}
+body.ww-game-interface .ww-seen-overview-percent {
+ font-size:23px;color:var(--accent);font-variant-numeric:tabular-nums;
+ letter-spacing:-.05em;white-space:nowrap
+}
+body.ww-game-interface .ww-seen-meter {
+ background:var(--line);height:9px;width:100%;border-radius:999px;overflow:hidden;margin-top:13px
+}
+body.ww-game-interface .ww-seen-meter-fill {
+ background:var(--accent);height:100%;border-radius:inherit;min-width:0;
+ transition:width .38s ease
+}
+body.ww-game-interface .ww-seen-small-note {color:var(--muted);font-size:11px;line-height:1.45;margin-top:10px}
+body.ww-game-interface .ww-seen-a1-preview {
+ padding:13px 15px 16px;
+ border-radius:16px;
+ border:1px solid color-mix(in srgb,var(--line) 80%,transparent);
+ background:var(--panel);
+}
+body.ww-game-interface .ww-seen-a1-preview .ww-seen-meter {height:7px;margin-top:10px}
+body.ww-game-interface .ww-seen-level-head {
+ display:flex;justify-content:space-between;gap:10px;align-items:center;
+ font-size:13px;line-height:1.5
+}
+body.ww-game-interface .ww-seen-level-head strong {font-size:14px;color:var(--txt)}
+body.ww-game-interface .ww-seen-level-head span {font-variant-numeric:tabular-nums;color:var(--muted);text-align:right}
+body.ww-game-interface .ww-seen-home-cta {
+ color:var(--accent);font-weight:720;font-size:14px;
+ background:transparent;border:0;text-align:left;
+ padding:8px 5px;min-height:44px;border-radius:10px
+}
+body.ww-game-interface .ww-seen-home-cta:active {opacity:.7}
+body.ww-game-interface .ww-menu-options .ww-seen-menu-option {border-radius:0}
+body.ww-game-interface .ww-seen-page {max-width:800px;margin:auto;padding-bottom:50px}
+body.ww-game-interface .ww-seen-heading {padding:10px 0 18px}
+body.ww-game-interface .ww-seen-heading h2 {
+ font-size:clamp(28px,6.7vw,37px);
+ font-weight:810;letter-spacing:-.055em;margin:9px 0 9px;color:var(--txt)
+}
+body.ww-game-interface .ww-seen-heading p,
+body.ww-game-interface .ww-seen-history-header p {line-height:1.55;color:var(--muted);font-size:13px;margin:0}
+body.ww-game-interface .ww-seen-levels {margin:24px 0;display:grid;gap:13px}
+body.ww-game-interface .ww-seen-levels-title {font-size:18px;letter-spacing:-.035em;margin:0 0 4px}
+body.ww-game-interface .ww-seen-level-item {padding:11px 0;border-bottom:1px solid var(--line)}
+body.ww-game-interface .ww-seen-level-item .ww-seen-meter {margin-top:9px;height:7px}
+body.ww-game-interface .ww-seen-history-header {margin:26px 0 16px}
+body.ww-game-interface .ww-seen-history-header h3 {
+ font-size:19px;font-weight:780;letter-spacing:-.035em;margin:0 0 5px
+}
+body.ww-game-interface .ww-seen-filters {
+ display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr);gap:9px;margin:14px 0;
+}
+body.ww-game-interface .ww-seen-filters label {
+ display:flex;flex-direction:column;gap:6px;
+ font-size:11px;color:var(--muted);font-weight:680
+}
+body.ww-game-interface .ww-seen-filters input,
+body.ww-game-interface .ww-seen-filters select {
+ padding:10px 12px;width:100%;min-width:0;max-width:100%;border-radius:12px;
+ background:var(--panel);color:var(--txt);border:1px solid var(--line);
+ font-size:13px;min-height:45px
+}
+body.ww-game-interface #ww-seen-results {margin:11px 0;color:var(--muted);font-size:12px}
+body.ww-game-interface .ww-seen-table-wrap {
+ width:100%;overflow:auto;-webkit-overflow-scrolling:touch;
+ border:1px solid var(--line);background:var(--panel);border-radius:16px;
+}
+body.ww-game-interface .ww-seen-table {border-collapse:separate;border-spacing:0;width:100%;min-width:670px;font-size:13px}
+body.ww-game-interface .ww-seen-table th {
+ position:sticky;top:0;background:var(--panel2);
+ font-weight:750;text-align:left;color:var(--muted);font-size:11px;
+ white-space:nowrap;padding:13px 14px;border-bottom:1px solid var(--line)
+}
+body.ww-game-interface .ww-seen-table td {
+ padding:13px 14px;vertical-align:middle;line-height:1.45;
+ border-bottom:1px solid var(--line);
+ color:var(--txt);
+}
+body.ww-game-interface .ww-seen-table tr:last-child td {border-bottom:0}
+body.ww-game-interface .ww-seen-table tbody tr:hover {background:var(--panel2)}
+body.ww-game-interface .ww-seen-word strong {display:block;min-width:120px;font-weight:720;color:var(--txt)}
+body.ww-game-interface .ww-seen-pron {display:block;margin-top:4px;color:var(--muted);font-size:11px}
+body.ww-game-interface td.ww-seen-level {white-space:nowrap;color:var(--muted)}
+body.ww-game-interface .ww-seen-result {min-width:118px}
+body.ww-game-interface .ww-seen-result small {
+ display:block;white-space:normal;margin-top:4px;font-size:10px;line-height:1.3;color:var(--muted)
+}
+body.ww-game-interface .ww-seen-status {
+ display:inline-flex;border-radius:999px;padding:5px 9px;font-size:11px;
+ font-weight:760;white-space:nowrap
+}
+body.ww-game-interface .ww-seen-missed .ww-seen-status {
+ color:#b52f47;
+ background:color-mix(in srgb,#d34259 13%,var(--panel))
+}
+body.ww-game-interface .ww-seen-correct .ww-seen-status {
+ color:#147a60;
+ background:color-mix(in srgb,#27a583 12%,var(--panel))
+}
+body.ww-game-interface .ww-seen-play {
+ border:0;min-width:44px;min-height:44px;
+ display:inline-flex;justify-content:center;align-items:center;
+ border-radius:13px;background:var(--panel2);color:var(--accent);
+ font-size:20px;cursor:pointer
+}
+body.ww-game-interface .ww-seen-play:active {transform:scale(.94)}
+body.ww-game-interface .ww-seen-audio {text-align:right}
+body.ww-game-interface .ww-seen-empty {
+ font-size:14px;padding:24px 12px;text-align:center;color:var(--muted);
+ border:1px dashed var(--line);border-radius:15px;margin:14px 0
+}
+body.ww-game-interface .ww-seen-empty[hidden],
+body.ww-game-interface .ww-seen-more[hidden] {display:none!important}
+body.ww-game-interface .ww-seen-more {margin:17px auto 0;display:block;min-width:210px}
+body.ww-game-interface .ww-seen-footnote {font-size:11px;line-height:1.65;color:var(--muted);margin-top:16px}
+html[data-mode=dark] body.ww-game-interface .ww-seen-missed .ww-seen-status {color:#ff9eaa}
+html[data-mode=dark] body.ww-game-interface .ww-seen-correct .ww-seen-status {color:#79d8b5}
+@media(max-width:610px){
+ body.ww-game-interface .ww-seen-home {gap:10px;margin-bottom:16px}
+ body.ww-game-interface .ww-seen-home-summary,body.ww-game-interface .ww-seen-page-overview {padding:15px}
+ body.ww-game-interface .ww-seen-overview-percent {font-size:21px}
+ body.ww-game-interface .ww-seen-overview-title {font-size:21px}
+ body.ww-game-interface .ww-seen-filters {grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.ww-game-interface .ww-seen-filters label:first-child {grid-column:1/-1}
+ body.ww-game-interface .ww-seen-level-head {align-items:flex-start;flex-wrap:wrap}
+ body.ww-game-interface .ww-seen-table {min-width:640px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.ww-game-interface .ww-seen-meter-fill,
+ body.ww-game-interface .ww-seen-play {transition:none!important}
+}
