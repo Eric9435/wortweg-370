@@ -44,6 +44,8 @@ jobs:
       - run: npm ci
       - run: npm run test:account
       - run: node scripts/test-ui.mjs
+      - name: Check Android version and safe APK update prompts
+        run: node scripts/test-updates.mjs
       - name: Verify online lesson sync and offline quiz content
         working-directory: .
         run: |
