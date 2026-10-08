@@ -53,4 +53,18 @@ third.window.WortWeg.switchProfile('test-user-b');assert.equal(progress(third).a
 third.window.WortWeg.setProgress({answered:'invalid'});
 assert.equal(progress(third).answered,3,'Invalid imported progress cannot replace saved answers');
 third.window.close();
+// Regression: synced or restored history is untrusted display data.
+const safety=launch();
+const markup='<img src=x onerror="window.__unsafe_history=1">';
+safety.window.WortWeg.setProgress({
+ answered:1,correct:0,items:{
+  'b:1':{de:'Test',en:'Test',mm:'',wrong:1,streak:markup,due:markup}
+ },seen:{},history:[{date:'2026-10-08',label:'Test',correct:markup,total:1}]
+});
+assert.equal(safety.window.document.querySelector('#reviewList img'),null,'Review does not interpret stored HTML');
+assert.equal(safety.window.document.querySelector('#summary img'),null,'Session history does not interpret stored HTML');
+assert.ok(safety.window.document.querySelector('#reviewList').textContent.includes('<img'),'Review keeps text visible');
+assert.ok(safety.window.document.querySelector('#summary').textContent.includes('<img'),'History keeps text visible');
+safety.window.close();
+console.log('PASS: stored progress text is escaped in review and history views');
 console.log('PASS: answers auto-save, progress survives restart, account progress stays separate, and no duplicate counting');
