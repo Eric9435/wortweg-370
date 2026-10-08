@@ -51,7 +51,7 @@ export function initNativeAppUpdates({Browser,versionCode,versionName,packageNam
  async function openOfficialRelease(){
   if(!available)return;
   // This destination is checked against a fixed trusted release-host path before use.
-  try{await Browser.open({url:available.downloadUrl})}
+  try{await Browser.open({url:available.releasePage})}
   catch{status.textContent='Could not open the release. Please try again while online.'}
   closeModal(false);
  }
