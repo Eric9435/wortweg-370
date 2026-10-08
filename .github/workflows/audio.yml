@@ -1,0 +1,23 @@
+name: German speech checks
+on:
+  push:
+    branches: [main]
+    paths: ['audio.js', 'audio.css', 'settings.js', 'sw.js', 'index.html', 'vendor/mespeak/**', 'test-audio.cjs', '.github/workflows/audio.yml']
+  pull_request:
+  workflow_dispatch:
+jobs:
+  audio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock jsdom@26
+      - name: Check speech and service worker syntax
+        run: |
+          node --check audio.js
+          node --check settings.js
+          node --check sw.js
+      - name: Test downloads and offline German speech
+        run: node test-audio.cjs

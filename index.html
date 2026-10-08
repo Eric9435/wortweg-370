@@ -88,7 +88,7 @@ main{min-height:100dvh}
   #dashboard .stat strong{font-size:20px}
   #dashboard .stat span{font-size:10px}
 }
-</style><link rel="stylesheet" href="./settings.css"></head><body>
+</style><link rel="stylesheet" href="./settings.css"><link rel="stylesheet" href="./audio.css"></head><body>
 <main><header><div class="brand"><div class="logo" style="background:transparent;overflow:hidden"><img src="icon.svg?v=11" width="44" height="44" alt="" style="display:block;width:100%;height:100%;object-fit:contain"></div><div><div class="eyebrow">Learn German for life</div><h1>WortWeg <span style="color:var(--teal)">370</span></h1></div></div><span class="pill" id="saveStatus">● On-device progress</span></header>
 <section id="dashboard" class="section active"><div class="hero"><div class="eyebrow">German • English • မြန်မာ</div><h2>Your learning overview</h2><p>Build your vocabulary, track your results, and review what needs attention.</p><div class="flex"><button class="btn primary" data-nav="study">▶ Start learning</button><button class="btn secondary" data-nav="review">↻ Review mistakes</button></div>
 <div class="stats"><div class="stat"><strong id="statStudied">0</strong><span>Answered</span></div><div class="stat"><strong id="statDue">0</strong><span>Due for review</span></div><div class="stat"><strong id="statAccuracy">—</strong><span>Accuracy</span></div></div></div>
@@ -118,7 +118,7 @@ function lookupItem(k){if(k.startsWith('c:'))return CURATED.find(w=>key(w)===k);
 function dueItems(all=false){return Object.entries(progress.items).filter(([k,s])=>s.wrong>0&&(all||!s.due||s.due<=today())).map(([k,s])=>lookupItem(k)||{id:k,de:s.de,en:s.en||'Review word',mm:s.mm||'',level:'A1'}).filter(Boolean)}
 function addDays(n){const d=new Date();d.setDate(d.getDate()+n);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function record(w,good){const k=key(w),s=progress.items[k]||{de:w.de,en:w.en,mm:w.mm,wrong:0,streak:0,due:null,last:null};if(good){if(s.wrong>0){s.streak=(s.streak||0)+1;s.due=addDays([1,3,7,14,30][Math.min(s.streak-1,4)])}}else{s.wrong++;s.streak=0;s.due=today()}s.last=today();progress.items[k]=s;progress.seen[k]=true;progress.answered++;if(good)progress.correct++;save()}
-function speak(text){if(!('speechSynthesis' in window)){toast('Audio not supported here. Try Safari or Chrome.');return}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='de-DE';u.rate=.78;u.pitch=1;const voices=speechSynthesis.getVoices(),v=voices.find(x=>x.lang.toLowerCase()==='de-de')||voices.find(x=>x.lang.toLowerCase().startsWith('de'));if(v)u.voice=v;u.onerror=()=>toast('German voice unavailable on this device.');speechSynthesis.speak(u)}catch(e){toast('Audio playback unavailable.')}}
+function speak(text){if(window.WortWegAudio)window.WortWegAudio.speak(text);else toast('Pronunciation is loading. Please try again.');}
 function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
 function pick(pool,count){const unseen=pool.filter(w=>!progress.seen[key(w)]),seen=pool.filter(w=>progress.seen[key(w)]);return shuffle(unseen).concat(shuffle(seen)).slice(0,count)}
 function nav(name){document.querySelectorAll('.section').forEach(e=>e.classList.toggle('active',e.id===name));document.querySelectorAll('[data-nav]').forEach(e=>e.classList.toggle('active',e.dataset.nav===name));if(name==='topics')showTopics();if(name==='bank')showBank();if(name==='review')showReview();if(name==='stats')showSummary();document.body.dataset.page=name;history.replaceState(null,'','#'+name);window.scrollTo({top:0,behavior:'smooth'})}
@@ -170,4 +170,4 @@ const initial=pages[location.hash.slice(1)]?location.hash.slice(1):'dashboard';r
 if(initial!=='dashboard')setTimeout(()=>window.WortWeg?.navigate(initial),0);
 window.addEventListener('wortweg:changed',()=>{if(document.body.dataset.view==='dashboard'){/* dashboard counters update in app */}});
 })();
-</script><script src="./settings.js"></script><script type="module" src="./cloud.js"></script></body></html>
+</script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js"></script></body></html>

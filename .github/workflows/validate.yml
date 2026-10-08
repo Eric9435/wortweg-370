@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Check JavaScript, manifest, and persistence hooks
+      - name: Check JavaScript, manifest, and account persistence hooks
         run: |
           node --check sw.js
           node <<'NODE'
@@ -19,12 +19,13 @@ jobs:
           new vm.Script(script[1],{filename:'wortweg-app.js'});
           const manifest=JSON.parse(fs.readFileSync('manifest.webmanifest','utf8'));
           if(!manifest.name)throw Error('Manifest missing name');
-          for(const marker of ['wortweg370-progress-v1','wortweg370-active-quiz-v1','function restoreQuiz()','saveQuiz();','Progress saved on this device']){
+          for(const marker of ['wortweg370-progress-v3','localStorage.setItem(storageKey()','switchProfile:id=>','function record(w,good)']){
             if(!html.includes(marker))throw Error('Missing persistence feature: '+marker);
           }
           console.log('PASS: JavaScript syntax, manifest, and persistence hooks');
           NODE
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
-      - name: Test on-device quiz memory and recovery
+      - name: Test saved answers and separate account progress
         run: node test-memory.cjs
+

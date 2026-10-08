@@ -1,1 +1,32 @@
-const CACHE='wortweg370-v12';const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg?v=11','./cloud.js','./settings.js','./settings.css'];self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting()))});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('wortweg370-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});self.addEventListener('fetch',e=>{if(e.request.method!=='GET')return;if(e.request.mode==='navigate'){e.respondWith(fetch(e.request).then(r=>{if(r.ok){const copy=r.clone();caches.open(CACHE).then(c=>c.put('./index.html',copy))}return r}).catch(()=>caches.match('./index.html')));return}e.respondWith(caches.match(e.request).then(c=>c||fetch(e.request)))})
+const CACHE='wortweg370-v13';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg?v=11','./cloud.js','./settings.js','./settings.css','./audio.js','./audio.css'];
+self.addEventListener('install',event=>{
+  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
+});
+self.addEventListener('activate',event=>{
+  // App updates must keep the separately downloaded speech pack.
+  event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>
+    key.startsWith('wortweg370-')&&!key.startsWith('wortweg370-voice-')&&key!==CACHE
+  ).map(key=>caches.delete(key)))).then(()=>self.clients.claim()));
+});
+self.addEventListener('fetch',event=>{
+  if(event.request.method!=='GET')return;
+  if(event.request.mode==='navigate'){
+    event.respondWith(fetch(event.request).then(response=>{
+      if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put('./index.html',copy));}
+      return response;
+    }).catch(()=>caches.match('./index.html')));
+    return;
+  }
+  event.respondWith(caches.match(event.request).then(cached=>cached||fetch(event.request)));
+});
+self.addEventListener('notificationclick',event=>{
+  if(event.notification.tag!=='wortweg-audio')return;
+  event.notification.close();
+  const target=new URL('./index.html#settings',self.registration.scope).href;
+  event.waitUntil(self.clients.matchAll({type:'window',includeUncontrolled:true}).then(async clients=>{
+    const client=clients.find(item=>item.url.startsWith(self.registration.scope));
+    if(client){await client.navigate(target);return client.focus();}
+    return self.clients.openWindow(target);
+  }));
+});
