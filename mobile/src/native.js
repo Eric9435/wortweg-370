@@ -2,12 +2,17 @@ import {Browser} from '@capacitor/browser';
 import {LocalNotifications} from '@capacitor/local-notifications';
 import {Capacitor} from '@capacitor/core';
 import {initNativeAccount} from './account.js';
+import {initNativeAppUpdates} from './app-updates.js';
+import buildInfo from './build-info.json';
 
 const WEBSITE='https://eric9435.github.io/wortweg-370/';
 const KEY='wortweg370-settings-v1';
 const settings=()=>window.WortWegSettings.get();
 function save(value){window.WortWegSettings.save();}
-if(Capacitor.getPlatform()==='android')initNativeAccount();
+if(Capacitor.getPlatform()==='android'){
+ initNativeAccount();
+ initNativeAppUpdates({Browser,...buildInfo});
+}
 else {
 const panel=document.createElement('div');panel.className='ww-account';
 const identity=document.createElement('span');identity.textContent='Offline mobile preview · saved on this phone';
