@@ -183,6 +183,13 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
 })();
 
 
+// New Settings navigation only rearranges existing preference controls; it does
+// not change storage keys, authentication, progress, reminders or offline speech.
+(()=>{
+ const css=document.createElement('link');css.rel='stylesheet';css.href='./settings-navigation.css';document.head.append(css);
+ const script=document.createElement('script');script.src='./settings-navigation.js';script.defer=true;document.head.append(script);
+})();
+
 // The same local lesson-sync client is bundled into Android and served by the website.
 // Only JSON content is fetched remotely; JavaScript always comes from the installed app.
 (()=>{const script=document.createElement('script');script.src='./live-content.js';script.defer=true;document.head.append(script)})();
