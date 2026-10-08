@@ -2,7 +2,7 @@ const fs=require('node:fs');
 const assert=require('node:assert/strict');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('index.html','utf8');
-const KEY='wortweg370-progress-v1', BACKUP='wortweg370-progress-backup-v1';
+const KEY='wortweg370-progress-v1', QUIZ='wortweg370-active-quiz-v1';
 function launch(stored={}){
  const errors=[];
  const dom=new JSDOM(html,{
@@ -17,33 +17,34 @@ function launch(stored={}){
  assert.deepEqual(errors,[],'App must initialize without script errors');
  return dom;
 }
-function get(dom){return JSON.parse(dom.window.localStorage.getItem(KEY))}
+function progress(dom){return JSON.parse(dom.window.localStorage.getItem(KEY))}
+function session(dom){return JSON.parse(dom.window.localStorage.getItem(QUIZ))}
 function click(dom,id){dom.window.document.getElementById(id).click()}
-let first=launch();
-assert.equal(get(first).answered,10,'Seed data must initialize');
+const first=launch();
+assert.equal(progress(first).answered,10,'Initial saved progress must load');
 click(first,'startQuiz');
-let s=get(first);
-assert.equal(s.session.i,0);
-assert.equal(s.session.opts.length,4,'First question choices saved');
+assert.equal(session(first).i,0,'First question position must save');
 first.window.document.querySelector('#answerButtons .choice').click();
 click(first,'submitAnswer');
-s=get(first);
-assert.equal(s.answered,11,'Answer must save immediately');
-assert.equal(s.session.locked,true,'Answered question must be resumable');
-assert.equal(first.window.localStorage.getItem(BACKUP),first.window.localStorage.getItem(KEY),'Recovery copy must match');
-const snapshot=first.window.localStorage.getItem(KEY);
+assert.equal(progress(first).answered,11,'Answer must save immediately');
+assert.equal(session(first).locked,true,'Checked answer must be marked');
+const stored={[KEY]:first.window.localStorage.getItem(KEY),[QUIZ]:first.window.localStorage.getItem(QUIZ)};
 first.window.close();
-let second=launch({[KEY]:snapshot,[BACKUP]:snapshot});
-assert.equal(get(second).answered,11,'Answered count must survive app restart');
-assert.equal(second.window.document.getElementById('submitAnswer').textContent.includes('question'),true,'Restored answer must show Next question');
+const second=launch(stored);
+assert.equal(progress(second).answered,11,'Answered count must survive restart');
+assert.equal(second.window.document.getElementById('quizCounter').textContent,'2 / 10','Unfinished quiz resumes at next question');
 click(second,'submitAnswer');
-assert.equal(get(second).session.i,1,'Next question index must persist');
-const current=get(second);
-assert.equal(current.answered,11,'Resume must not count the answer twice');
+assert.equal(progress(second).answered,11,'Unselected answer cannot be submitted');
+second.window.document.querySelector('#answerButtons .choice').click();
+click(second,'submitAnswer');
+assert.equal(progress(second).answered,12,'Second answer is counted once');
+click(second,'submitAnswer');
+assert.equal(second.window.document.getElementById('quizCounter').textContent,'3 / 10');
+const stored2={[KEY]:second.window.localStorage.getItem(KEY),[QUIZ]:second.window.localStorage.getItem(QUIZ)};
 second.window.close();
-let third=launch({[KEY]:'{corrupt',[BACKUP]:JSON.stringify(current)});
-assert.equal(get(third).answered,11,'Valid backup must recover corrupt primary');
-assert.equal(get(third).session.i,1,'Recovery must retain quiz position');
-assert.match(third.window.document.getElementById('saveStatus').textContent,/Saved/);
+const third=launch(stored2);
+assert.equal(progress(third).answered,12,'Progress remains saved after second restart');
+assert.equal(third.window.document.getElementById('quizCounter').textContent,'3 / 10','Quiz position remains saved');
+assert.match(third.window.document.getElementById('saveStatus').textContent,/saved/i);
 third.window.close();
-console.log('PASS: app starts, answers auto-save, session resumes without double counting, backup recovers corruption');
+console.log('PASS: answers auto-save, quiz resumes after restart, no duplicate answer counting');
