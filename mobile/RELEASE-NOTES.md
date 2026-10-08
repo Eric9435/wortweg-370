@@ -1,3 +1,7 @@
+Correction for preview 11: direct verification of the released APK with Android apksig found signer SHA-1 0E:94:F9:3D:86:4B:B7:81:0A:2C:9B:97:4D:31:FC:19:13:0B:6B:F3. The earlier CA:DF fingerprint came from the prepared keystore and did not describe the final APK. Register the actual APK fingerprint in Firebase for com.innovatex.wortweg370.preview. The existing APK can be tested after registration without reinstalling.
+
+Future releases are blocked unless apksigner verifies the final APK and its signer matches a registered Android OAuth entry in google-services.json. Published signing-fingerprints.txt will be generated from the final APK instead of the prepared keystore.
+
 Updated Android OAuth configuration after Firebase SHA-1 registration. Includes a native Google retry option when the account chooser returns cancellation after account selection. Cancellation messages no longer imply that the user necessarily cancelled. Android Credential Manager dependencies use the stable versions recommended by Firebase.
 
 The build verifies that the actual APK signing certificate matches the registered Android OAuth entry. The matching preview certificate allows updates from preview 10 without uninstalling. Google sign-in still needs a real-device test; emulator offline checks and mocked account tests cannot verify the live Google account flow.

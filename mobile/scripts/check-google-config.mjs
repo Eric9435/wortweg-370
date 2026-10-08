@@ -9,7 +9,7 @@ const android=client.oauth_client.filter(c=>c.client_type===1&&c.android_info?.p
 assert(android.length,'Registered Android OAuth client is required');
 if(process.argv[2]){
  const report=readFileSync(process.argv[2],'utf8');
- const sha=report.match(/SHA1:\s*([A-Fa-f0-9:]+)/)?.[1].replaceAll(':','').toLowerCase();
- assert(sha&&android.some(c=>c.android_info.certificate_hash.toLowerCase()===sha),'APK signing certificate does not match Firebase OAuth; stop before releasing');
+ const sha=report.match(/certificate SHA-1 digest:\s*([A-Fa-f0-9:]+)/i)?.[1].replaceAll(':','').toLowerCase();
+ assert(sha&&android.some(c=>c.android_info.certificate_hash.toLowerCase()===sha),'Verified APK signer does not match Firebase OAuth; stop before releasing');
 }
 console.log('Firebase package and Android/web OAuth configuration verified'+(process.argv[2]?' against actual signing certificate.':'.'));

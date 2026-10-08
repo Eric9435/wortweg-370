@@ -38,9 +38,8 @@ jobs:
           if [ ! -f "$HOME/.android/debug.keystore" ]; then
             keytool -genkeypair -keystore "$HOME/.android/debug.keystore" -storepass android -keypass android -alias androiddebugkey -dname "CN=Android Debug,O=Android,C=US" -keyalg RSA -keysize 2048 -validity 10000
           fi
-          keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey > signing-fingerprints.txt
-          cat signing-fingerprints.txt
-          node scripts/check-google-config.mjs signing-fingerprints.txt
+          keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey > prepared-keystore-fingerprints.txt
+          cat prepared-keystore-fingerprints.txt
       - uses: gradle/actions/setup-gradle@v4
       - run: npm ci
       - run: npm run test:account
@@ -64,6 +63,11 @@ jobs:
             adb shell svc wifi disable
             adb shell svc data disable
             bash mobile/android/gradlew -p mobile/android :app:connectedDebugAndroidTest
+      - name: Verify actual APK signer against registered Firebase OAuth
+        run: |
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --print-certs android/app/build/outputs/apk/debug/app-debug.apk > signing-fingerprints.txt
+          cat signing-fingerprints.txt
+          node scripts/check-google-config.mjs signing-fingerprints.txt
       - name: Upload Android preview
         uses: actions/upload-artifact@v4
         with:
