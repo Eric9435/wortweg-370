@@ -175,8 +175,12 @@ page.querySelector('#ww-live-back').addEventListener('click',mainMenu);
 item.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();selectPage()});
 $('ww-live-check').addEventListener('click',()=>sync(true));
 window.addEventListener('wortweg:account',event=>{
- activeUser=event.detail?.uid||'guest';
- if(!session)renderList();
+ const uid=event.detail?.uid||'guest';
+ if(uid!==activeUser){
+  activeUser=uid;session=null;
+  $('ww-live-quiz').hidden=true;$('ww-live-list').hidden=false;
+ }
+ renderList();
 });
 window.addEventListener('online',()=>sync(true));
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
