@@ -134,12 +134,12 @@ function launch(options = {}) {
   const handlers = {}, deleted = [];
   vm.runInNewContext(fs.readFileSync('sw.js', 'utf8'), {
     self: {addEventListener: (name, fn) => { handlers[name] = fn; }, clients: {claim: async () => {}}},
-    caches: {keys: async () => ['wortweg370-v12', 'wortweg370-v13', 'wortweg370-voice-v1', 'other-app'],
+    caches: {keys: async () => ['wortweg370-v12', 'wortweg370-v13', 'wortweg370-v14', 'wortweg370-voice-v1', 'other-app'],
       delete: async key => { deleted.push(key); }}
   });
   let activation;
   handlers.activate({waitUntil: promise => { activation = promise; }});
   await activation;
-  assert.deepEqual(deleted, ['wortweg370-v12'], 'App updates keep downloaded speech and unrelated caches');
+  assert.deepEqual(deleted, ['wortweg370-v12', 'wortweg370-v13'], 'App updates keep downloaded speech and unrelated caches');
   console.log('PASS: automatic download, real German WAV synthesis, offline restart, retry, native fallback, notifications, and update persistence');
 })().catch(error => { console.error(error); process.exit(1); });

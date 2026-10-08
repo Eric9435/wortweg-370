@@ -88,7 +88,7 @@ main{min-height:100dvh}
   #dashboard .stat strong{font-size:20px}
   #dashboard .stat span{font-size:10px}
 }
-</style><link rel="stylesheet" href="./settings.css"><link rel="stylesheet" href="./audio.css"></head><body>
+</style><link rel="stylesheet" href="./settings.css"><link rel="stylesheet" href="./audio.css"><link rel="stylesheet" href="./account.css?v=14"></head><body>
 <main><header><div class="brand"><div class="logo" style="background:transparent;overflow:hidden"><img src="icon.svg?v=11" width="44" height="44" alt="" style="display:block;width:100%;height:100%;object-fit:contain"></div><div><div class="eyebrow">Learn German for life</div><h1>WortWeg <span style="color:var(--teal)">370</span></h1></div></div><span class="pill" id="saveStatus">● On-device progress</span></header>
 <section id="dashboard" class="section active"><div class="hero"><div class="eyebrow">German • English • မြန်မာ</div><h2>Your learning overview</h2><p>Build your vocabulary, track your results, and review what needs attention.</p><div class="flex"><button class="btn primary" data-nav="study">▶ Start learning</button><button class="btn secondary" data-nav="review">↻ Review mistakes</button></div>
 <div class="stats"><div class="stat"><strong id="statStudied">0</strong><span>Answered</span></div><div class="stat"><strong id="statDue">0</strong><span>Due for review</span></div><div class="stat"><strong id="statAccuracy">—</strong><span>Accuracy</span></div></div></div>
@@ -170,4 +170,4 @@ const initial=pages[location.hash.slice(1)]?location.hash.slice(1):'dashboard';r
 if(initial!=='dashboard')setTimeout(()=>window.WortWeg?.navigate(initial),0);
 window.addEventListener('wortweg:changed',()=>{if(document.body.dataset.view==='dashboard'){/* dashboard counters update in app */}});
 })();
-</script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js"></script></body></html>
+</script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js?v=14"></script></body></html>
