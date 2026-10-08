@@ -28,6 +28,8 @@ jobs:
         run: npm install --no-save --no-package-lock jsdom@26
       - name: Test saved answers and separate account progress
         run: node test-memory.cjs
+      - name: Test game-style navigation and Google profile onboarding
+        run: node test-game-ui.cjs
       - name: Verify card-free UI and authentication entry
         run: node mobile/scripts/test-ui.mjs
 
