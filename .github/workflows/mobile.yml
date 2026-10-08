@@ -116,7 +116,8 @@ jobs:
           name: WortWeg-370-iOS-unsigned-needs-Apple-signing
           path: mobile/WortWeg-370-iOS-unsigned.zip
   release-preview:
-    needs: [android, ios]
+    # Publish a verified Android APK independently of the unsigned iOS build.
+    needs: [android]
     runs-on: ubuntu-latest
     permissions:
       contents: write
