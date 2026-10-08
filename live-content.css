@@ -1,0 +1,34 @@
+/* WortWeg text-only live lessons. One continuous surface, consistent with game UI. */
+#ww-live{max-width:800px;margin:0 auto}
+.ww-live-heading{padding:15px 0 20px}
+.ww-live-heading h2{font-size:clamp(28px,7vw,42px);letter-spacing:-.055em;color:var(--txt);margin:12px 0}
+.ww-live-heading p{color:var(--muted);line-height:1.55;max-width:560px;margin:0}
+.ww-live-status{font-size:12px;color:var(--teal);min-height:27px;padding:4px 0 14px;overflow-wrap:anywhere}
+.ww-live-summary{font-size:13px;color:var(--muted);margin:15px 0 8px}
+.ww-live-lesson{display:grid;grid-template-columns:48px minmax(0,1fr) 22px;gap:14px;align-items:center;width:100%;min-height:83px;background:transparent;color:var(--txt);border:0;border-bottom:1px solid var(--ww-divider,var(--line));padding:13px 5px;text-align:left;cursor:pointer;font:inherit}
+.ww-live-lesson:hover,.ww-live-lesson:active{background:var(--panel2)}
+.ww-live-lesson:focus-visible,.ww-live-answer:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ww-live-lesson-icon{width:46px;height:46px;display:grid;place-items:center;color:var(--accent);background:var(--panel2);font-size:24px;border-radius:13px}
+.ww-live-lesson strong{display:block;font-size:16px;font-weight:700;letter-spacing:-.018em}
+.ww-live-lesson small{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.ww-live-completion{color:var(--teal)!important}
+.ww-live-chevron{font-size:25px;color:var(--muted)}
+#ww-live-quiz{padding:10px 0 24px}
+#ww-live-quiz[hidden],#ww-live-list[hidden],#ww-live-quiz button[hidden]{display:none!important}
+.ww-live-question-count{font-size:13px;color:var(--muted)}
+.ww-live-word{font-size:clamp(27px,7vw,43px);letter-spacing:-.04em;line-height:1.2;color:var(--txt);margin:24px 0 12px}
+.ww-live-speak{border:0;background:transparent;color:var(--accent);font-size:14px;min-height:44px;padding:6px 2px;cursor:pointer}
+.ww-live-answers{display:grid;gap:10px;margin:20px 0 15px}
+.ww-live-answer{border:1px solid var(--line);border-radius:13px;color:var(--txt);background:transparent;font:inherit;font-size:15px;min-height:54px;padding:14px;text-align:left;cursor:pointer}
+.ww-live-answer:active:not([disabled]){transform:scale(.99)}
+.ww-live-answer.correct{border-color:#2d9b72;background:color-mix(in srgb,#2d9b72 10%,var(--bg))}
+.ww-live-answer.wrong{border-color:#c95a67;background:color-mix(in srgb,#c95a67 11%,var(--bg))}
+.ww-live-answer[disabled]{cursor:default}
+.ww-live-feedback{color:var(--txt);line-height:1.55;min-height:40px}
+.ww-live-feedback[hidden]{display:none}
+.ww-live-next{min-height:48px;padding:10px 21px}
+.ww-live-settings{border-top:1px solid var(--ww-divider,var(--line))!important}
+.ww-live-menu-option{font:inherit}
+.ww-live-menu-option strong{display:block}
+.ww-live-menu-option small{display:block}
+@media(prefers-reduced-motion:reduce){.ww-live-answer{transition:none!important}}
