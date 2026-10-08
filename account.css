@@ -26,3 +26,12 @@
 .ww-welcome-google{background:var(--panel)!important;border:1px solid var(--line)!important}
 .ww-welcome-guest{background:var(--panel2)!important;border:1px solid transparent!important}
 @media(max-width:480px){.ww-welcome-content{max-width:340px}.ww-welcome h1{margin-bottom:40px}}
+
+/* Consistent controls on the frameless first-launch screen. */
+.ww-welcome-actions button{display:flex;align-items:center;justify-content:center;gap:15px;padding:12px 22px;text-align:center}
+.ww-login-icon{height:23px;width:23px;flex:0 0 23px}
+.ww-welcome-actions button[disabled]{opacity:.64;cursor:wait}
+#ww-welcome-status{font-size:13px;line-height:1.5;max-width:350px;margin:18px auto 0;color:var(--muted);overflow-wrap:anywhere}
+#ww-welcome-status[hidden]{display:none!important}
+.ww-welcome-google{box-shadow:none!important}
+.ww-welcome-guest{box-shadow:none!important}
