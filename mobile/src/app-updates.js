@@ -35,9 +35,17 @@ export function initNativeAppUpdates({Browser,versionCode,versionName,packageNam
  modal.innerHTML='<div class="ww-update-modal" role="dialog" aria-modal="true" aria-labelledby="ww-update-title" aria-describedby="ww-update-summary"><span class="ww-update-glyph" aria-hidden="true">↑</span><h2 id="ww-update-title">Update available</h2><p id="ww-update-summary"></p><p id="ww-update-notes"></p><div class="ww-update-buttons"><button type="button" id="ww-update-now" class="btn primary">View update</button><button type="button" id="ww-update-later" class="btn secondary">Later</button></div><p class="ww-update-detail">Opens the official GitHub APK release. Android will ask before installing.</p></div>';
  document.body.append(modal);
  const summary=$('ww-update-summary'),notes=$('ww-update-notes');
- let available=null,checking=null,lastCheck=0,previousFocus=null;
- function showModal(){
+ let available=null,checking=null,lastCheck=0,previousFocus=null,pendingPresentation=false,presentedVersion=0;
+ function showModal(automatic=false){
   if(!available)return;
+  // Do not interrupt the initial Google / Guest choice or the post-login welcome.
+  if(['ww-welcome','ww-intro-overlay'].some(id=>{const node=$(id);return node&&!node.hidden})){
+   if(automatic)pendingPresentation=true;
+   return;
+  }
+  if(automatic&&presentedVersion===available.versionCode)return;
+  if(automatic)presentedVersion=available.versionCode;
+  pendingPresentation=false;
   if(!modal.hidden)return;
   previousFocus=document.activeElement;modal.hidden=false;
   $('ww-update-now').focus();
@@ -68,7 +76,7 @@ export function initNativeAppUpdates({Browser,versionCode,versionName,packageNam
   notes.textContent=update.notes;
   banner.textContent='↑  Version '+update.versionName+' available · View update';
   banner.hidden=false;downloadButton.hidden=false;
-  if(notify && !(prefs.snoozeVersion===update.versionCode&&Date.now()<prefs.snoozeUntil))showModal();
+  if(notify && !(prefs.snoozeVersion===update.versionCode&&Date.now()<prefs.snoozeUntil))showModal(true);
  }
  async function check(manual=false){
   if(checking)return checking;
@@ -105,7 +113,17 @@ export function initNativeAppUpdates({Browser,versionCode,versionName,packageNam
  });
  checkButton.addEventListener('click',()=>check(true));
  downloadButton.addEventListener('click',openOfficialRelease);
- banner.addEventListener('click',showModal);
+ banner.addEventListener('click',()=>showModal(false));
+ // Show a deferred update prompt after the user finishes signing in.
+ if(typeof MutationObserver!=='undefined'){
+  const observer=new MutationObserver(()=>{
+   if(pendingPresentation&&available &&
+      !(prefs.snoozeVersion===available.versionCode&&Date.now()<prefs.snoozeUntil))showModal(true);
+  });
+  for(const id of ['ww-welcome','ww-intro-overlay']){
+   const node=$(id);if(node)observer.observe(node,{attributes:true,attributeFilter:['hidden']});
+  }
+ }
  $('ww-update-now').addEventListener('click',openOfficialRelease);
  $('ww-update-later').addEventListener('click',()=>closeModal(true));
  modal.addEventListener('click',e=>{if(e.target===modal)closeModal(true)});
