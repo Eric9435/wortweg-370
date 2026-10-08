@@ -1,0 +1,103 @@
+name: Build offline mobile apps
+on:
+  push:
+    branches: [main]
+    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
+      - run: npm run sync
+      - run: npm run icons
+      - run: bash android/gradlew -p android assembleDebug assembleDebugAndroidTest
+      - name: Enable emulator acceleration
+        working-directory: .
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Test first launch, persistence and German speech offline
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: |
+            adb shell svc wifi disable
+            adb shell svc data disable
+            bash mobile/android/gradlew -p mobile/android connectedDebugAndroidTest
+      - name: Upload Android preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: WortWeg-370-Android-preview
+          path: mobile/android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-offline-test-reports
+          path: mobile/android/app/build/reports/androidTests/
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 35
+    defaults:
+      run:
+        working-directory: mobile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
+      - run: npm run sync
+      - run: npm run icons
+      - name: Compile iPhone app without signing
+        run: xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release -destination 'generic/platform=iOS' -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+      - name: Package unsigned build
+        run: ditto -c -k --sequesterRsrc --keepParent build/Build/Products/Release-iphoneos/App.app WortWeg-370-iOS-unsigned.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WortWeg-370-iOS-unsigned-needs-Apple-signing
+          path: mobile/WortWeg-370-iOS-unsigned.zip
+  release-preview:
+    needs: [android, ios]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: WortWeg-370-Android-preview
+          path: dist
+      - name: Publish tested APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: mobile-preview-${{ github.run_number }}
+        run: |
+          mv dist/app-debug.apk dist/WortWeg-370-Android-preview.apk
+          sha256sum dist/WortWeg-370-Android-preview.apk > dist/SHA256SUMS.txt
+          gh release create "$RELEASE_TAG" dist/WortWeg-370-Android-preview.apk dist/SHA256SUMS.txt --target "$GITHUB_SHA" --title "WortWeg 370 offline mobile preview" --prerelease --notes-file mobile/RELEASE-NOTES.md

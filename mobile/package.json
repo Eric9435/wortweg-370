@@ -1,0 +1,23 @@
+{
+  "name": "wortweg370-mobile",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/prepare.mjs",
+    "sync": "npm run build && cap sync",
+    "icons": "node scripts/icon.mjs && capacitor-assets generate --android --ios --assetPath assets"
+  },
+  "dependencies": {
+    "@capacitor/core": "8.5.3",
+    "@capacitor/android": "8.5.3",
+    "@capacitor/ios": "8.5.3",
+    "@capacitor/browser": "8.0.0",
+    "@capacitor/local-notifications": "8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3",
+    "@capacitor/assets": "3.0.5",
+    "esbuild": "0.25.12",
+    "sharp": "0.34.5"
+  }
+}
