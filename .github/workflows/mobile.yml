@@ -2,7 +2,7 @@ name: Build offline mobile apps
 on:
   push:
     branches: [main]
-    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'content/**', 'test-live-content.cjs', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'test-live-content.cjs', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
   workflow_dispatch:
 permissions:
   contents: read
