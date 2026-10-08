@@ -5,6 +5,8 @@ on:
     paths: ['audio.js', 'audio.css', 'settings.js', 'sw.js', 'index.html', 'vendor/mespeak/**', 'test-audio.cjs', '.github/workflows/audio.yml']
   pull_request:
   workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   audio:
     runs-on: ubuntu-latest
