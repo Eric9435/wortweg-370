@@ -19,7 +19,7 @@ export function initNativeAppUpdates({Browser,versionCode,versionName,packageNam
  const style=document.createElement('link');style.rel='stylesheet';style.href='./app-updates.css';document.head.append(style);
  const prefs=getPrefs();
  const settings=$('settings')?.querySelector('.settings-grid');
- const home=$('dashboard .ww-main-menu');
+ const home=document.querySelector('#dashboard .ww-main-menu');
  if(!settings||!home)return null;
  const section=document.createElement('div');section.className='card ww-updater-settings';
  section.innerHTML='<h3>App updates</h3><p id="ww-installed-version" class="muted tiny"></p><label class="settings-toggle"><input id="ww-update-auto" type="checkbox"> Check automatically for updates</label><p id="ww-update-status" role="status" aria-live="polite" class="muted tiny">Checks for new Android versions when online.</p><div class="ww-update-actions"><button class="btn secondary" type="button" id="ww-update-check">Check now</button><button class="btn primary" type="button" id="ww-update-settings-download" hidden>View update</button></div><p class="muted tiny">Installation is always your choice. Your learning history stays in this app during compatible updates.</p>';
