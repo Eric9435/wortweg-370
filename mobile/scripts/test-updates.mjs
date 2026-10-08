@@ -1,0 +1,85 @@
+import {build} from 'esbuild';
+import {JSDOM} from 'jsdom';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+const root=new URL('../../',import.meta.url);
+const read=path=>readFileSync(new URL(path,root),'utf8');
+const info=JSON.parse(read('mobile/src/build-info.json'));
+const gradle=read('mobile/android/app/build.gradle');
+const manifest=JSON.parse(read('updates/android.json'));
+assert.equal(Number(gradle.match(/versionCode\s+(\d+)/)?.[1]),info.versionCode,'Android versionCode matches bundled metadata');
+assert.equal(gradle.match(/versionName\s+"([^"]+)"/)?.[1],info.versionName,'Android versionName matches bundled metadata');
+assert.equal(manifest.packageName,info.packageName,'Website metadata targets the same package');
+assert.ok(manifest.versionCode<=info.versionCode,'Website must never advertise an APK which is not publicly released');
+assert.match(read('mobile/src/native.js'),/initNativeAppUpdates/);
+assert.match(read('mobile/scripts/prepare.mjs'),/app-updates\.css/);
+const [validatorBundle,uiBundle]=await Promise.all(['src/update-check.js','src/app-updates.js'].map(async entryPoints=>{
+ const result=await build({entryPoints:[entryPoints],bundle:true,write:false,format:'iife',globalName:'UpdateTest',platform:'browser'});
+ return result.outputFiles[0].text;
+}));
+const html='<!doctype html><html><head></head><body><main><section id="dashboard"><div class="ww-main-menu"></div></section><section id="settings"><div class="settings-grid"></div></section></main></body></html>';
+function make(){
+ const dom=new JSDOM(html,{url:'https://localhost/',runScripts:'outside-only',pretendToBeVisual:true});
+ const w=dom.window;w.eval(uiBundle);return {dom,w};
+}
+const {dom:unit,w:unitW}=make();
+unitW.eval(validatorBundle);
+const validate=unitW.UpdateTest.validateManifest;
+const base={...manifest,versionCode:5,versionName:'0.4.0-preview',
+ releasePage:'https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-55',
+ downloadUrl:'https://github.com/Eric9435/wortweg-370/releases/download/mobile-preview-55/WortWeg-370-Android-preview.apk',
+ notes:'New UI and improved study screens.'};
+assert.equal(validate(base,4).available,true);
+assert.equal(validate(base,5).available,false);
+assert.equal(validate({...base,packageName:'com.evil.app'},4),null);
+assert.equal(validate({...base,downloadUrl:'https://evil.example.com/updates.apk'},4),null);
+assert.equal(validate({...base,downloadUrl:'https://github.com/other/repo/releases/download/mobile-preview-55/WortWeg-370-Android-preview.apk'},4),null);
+assert.equal(validate({...base,releasePage:'https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-23'},4),null);
+assert.equal(validate({...base,notes:'A'.repeat(401)},4),null);
+unit.close();
+const {dom,w}=make();
+const calls=[],urls=[];
+let current=manifest;
+const fetcher=async(url,options)=>{
+ calls.push({url,options});
+ return {ok:true,headers:{get:()=>null},text:async()=>JSON.stringify(current)};
+};
+const browser={open:async opts=>{urls.push(opts.url)}};
+const ui=w.UpdateTest.initNativeAppUpdates({...info,Browser:browser,fetcher});
+assert.ok(ui,'Android update control renders');
+await ui.check(true);
+assert.equal(ui.getAvailable(),null,'No premature update notice for older published APK');
+assert.equal(w.document.querySelector('#ww-update-overlay').hidden,true);
+assert.equal(w.document.querySelector('#ww-update-auto').checked,true,'Automatic checks start enabled');
+current=base;
+await ui.check(true);
+assert.equal(ui.getAvailable()?.versionCode,5);
+assert.equal(w.document.querySelector('.ww-update-banner').hidden,false,'A small main-menu update banner appears');
+assert.equal(w.document.querySelector('#ww-update-overlay').hidden,true,'Manual checks do not interrupt the user');
+w.document.querySelector('.ww-update-banner').click();
+assert.equal(w.document.querySelector('#ww-update-overlay').hidden,false,'Tap shows the confirmation dialog');
+w.document.querySelector('#ww-update-later').click();
+assert.equal(w.document.querySelector('#ww-update-overlay').hidden,true,'Later closes the modal without opening a URL');
+assert.equal(urls.length,0,'No automatic installation or download');
+assert.equal(w.document.querySelector('#ww-update-settings-download').hidden,false);
+w.document.querySelector('#ww-update-settings-download').click();
+await new Promise(r=>setTimeout(r,0));
+assert.deepEqual(urls,[base.releasePage],'User-initiated action only opens official release details');
+w.document.querySelector('#ww-update-auto').click();
+assert.equal(JSON.parse(w.localStorage.getItem('wortweg370-updates-v1')).automatic,false,'Auto-check preference persists');
+const before=calls.length;await ui.check(false);
+assert.equal(calls.length,before,'Automatic off stops background update requests');
+await ui.check(true);
+assert.equal(calls.length,before+1,'Manual check still works while auto checks are disabled');
+assert.equal(w.localStorage.getItem('wortweg370-progress-v3:guest'),null,'Checker does not modify learning progress');
+assert.ok(calls.every(c=>c.options.credentials==='omit'),'App update checks never send login credentials');
+dom.window.close();
+const {dom:second,w:secondW}=make();
+assert.equal(secondW.document.querySelector('html').tagName,'HTML');
+secondW.localStorage.setItem('wortweg370-updates-v1',JSON.stringify({automatic:false}));
+let invoked=0;
+secondW.UpdateTest.initNativeAppUpdates({...info,Browser:browser,fetcher:async()=>{invoked++;throw Error('unexpected')}});
+await new Promise(r=>setTimeout(r,0));
+assert.equal(invoked,0,'User opt-out respected on subsequent launch');
+second.close();
+console.log('PASS: version monotonicity, domain allowlist, untrusted manifest rejection, update notification, opt-out, manual update and no silent install.');
