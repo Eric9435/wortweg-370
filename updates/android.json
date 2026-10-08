@@ -1,9 +1,9 @@
 {
   "schema": 1,
   "packageName": "com.innovatex.wortweg370.preview",
-  "versionCode": 4,
-  "versionName": "0.3.0-preview",
-  "releasePage": "https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-56",
-  "downloadUrl": "https://github.com/Eric9435/wortweg-370/releases/download/mobile-preview-56/WortWeg-370-Android-preview.apk",
-  "notes": "Updated game-style UI, offline vocabulary sync, music and touch effects, and optional Android update alerts."
+  "versionCode": 5,
+  "versionName": "0.3.1-preview",
+  "releasePage": "https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-69",
+  "downloadUrl": "https://github.com/Eric9435/wortweg-370/releases/download/mobile-preview-69/WortWeg-370-Android-preview.apk",
+  "notes": "Professional compact Settings hub, dedicated profile and preferences screens, refined sound toggles, offline lessons and safe app update notifications."
 }
