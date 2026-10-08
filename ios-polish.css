@@ -31,6 +31,8 @@ body.ww-game-interface header .ww-settings-icon {
 body.ww-game-interface header .ww-settings-icon:active { transform: scale(.92); }
 body.ww-game-interface main { padding-bottom: calc(50px + env(safe-area-inset-bottom)) !important; }
 /* The route already exposes its own Main menu control; don't show a second Back. */
+body.ww-game-interface #ww-workspace-head,
+body.ww-game-interface #ww-back,
 body.ww-game-interface main > #ww-back,
 body.ww-game-interface main > .ww-back,
 body.ww-game-interface main > .btn.ww-back,
