@@ -200,3 +200,10 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
  const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='./ios-polish.css';document.head.append(stylesheet);
  const script=document.createElement('script');script.src='./ios-polish.js';script.defer=true;document.head.append(script);
 })();
+
+
+// Unified seen-word history and progress: shared by website and offline APK.
+(()=>{
+ const css=document.createElement('link');css.rel='stylesheet';css.href='./seen-words.css';document.head.append(css);
+ const js=document.createElement('script');js.src='./seen-words.js';js.defer=true;document.head.append(js);
+})();
