@@ -93,6 +93,7 @@ function selectPage(){
 }
 function mainMenu(){
  session=null;$('ww-live-quiz').hidden=true;$('ww-live-list').hidden=false;
+ renderList();
  if(window.WortWeg?.navigate)window.WortWeg.navigate('dashboard');
  else for(const p of document.querySelectorAll('.section'))p.classList.toggle('active',p.id==='dashboard');
  window.scrollTo?.(0,0);
