@@ -1,7 +1,7 @@
 name: Build offline mobile apps
 on:
   push:
-    branches: [main]
+    branches: [main, design/ios-inspired-ui-refinement-20261008]
     paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'test-live-content.cjs', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
   workflow_dispatch:
 # Keep only the newest in-flight preview build for this branch.
@@ -124,7 +124,7 @@ jobs:
           path: mobile/WortWeg-370-iOS-unsigned.zip
   release-preview:
     # Publish only by manual dispatch or by an explicitly approved commit with [publish apk].
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[publish apk]')
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[publish apk]'))
     needs: [android]
     runs-on: ubuntu-latest
     permissions:
