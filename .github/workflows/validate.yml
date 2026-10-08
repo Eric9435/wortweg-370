@@ -1,0 +1,26 @@
+name: Validate WortWeg
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript, manifest, and persistence hooks
+        run: |
+          node --check sw.js
+          node <<'NODE'
+          const fs=require('fs'),vm=require('vm');
+          const html=fs.readFileSync('index.html','utf8');
+          const script=html.match(/<script>\s*([\s\S]*?)<\/script>/);
+          if(!script)throw Error('App script missing');
+          new vm.Script(script[1],{filename:'wortweg-app.js'});
+          const manifest=JSON.parse(fs.readFileSync('manifest.webmanifest','utf8'));
+          if(!manifest.name)throw Error('Manifest missing name');
+          for(const marker of ['wortweg370-progress-v1','wortweg370-progress-backup-v1','progress.session','showQuestion(true)','Last manual backup']){
+            if(!html.includes(marker))throw Error('Missing persistence feature: '+marker);
+          }
+          console.log('PASS: JavaScript syntax, manifest, and persistence hooks');
+          NODE
