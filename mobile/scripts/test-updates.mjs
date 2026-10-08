@@ -36,7 +36,7 @@ assert.equal(validate({...base,downloadUrl:'https://evil.example.com/updates.apk
 assert.equal(validate({...base,downloadUrl:'https://github.com/other/repo/releases/download/mobile-preview-55/WortWeg-370-Android-preview.apk'},4),null);
 assert.equal(validate({...base,releasePage:'https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-23'},4),null);
 assert.equal(validate({...base,notes:'A'.repeat(401)},4),null);
-unit.close();
+unit.window.close();
 const {dom,w}=make();
 const calls=[],urls=[];
 let current=manifest;
@@ -81,5 +81,5 @@ let invoked=0;
 secondW.UpdateTest.initNativeAppUpdates({...info,Browser:browser,fetcher:async()=>{invoked++;throw Error('unexpected')}});
 await new Promise(r=>setTimeout(r,0));
 assert.equal(invoked,0,'User opt-out respected on subsequent launch');
-second.close();
+second.window.close();
 console.log('PASS: version monotonicity, domain allowlist, untrusted manifest rejection, update notification, opt-out, manual update and no silent install.');
