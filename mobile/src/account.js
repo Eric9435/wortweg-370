@@ -13,6 +13,8 @@ export function initNativeAccount(){
  const panel=document.createElement('div');panel.id='ww-account';panel.className='ww-account';
  panel.innerHTML='<div class="ww-account-profile"><span id="ww-account-avatar" class="ww-account-avatar" hidden><img id="ww-account-photo" class="ww-account-photo" width="38" height="38" referrerpolicy="no-referrer" decoding="async" alt="" hidden><span id="ww-account-initials" class="ww-account-initials" hidden></span></span><span id="ww-identity">On-device learning</span></div><span id="ww-cloud-status" aria-live="polite"></span><button type="button" id="ww-login" class="ww-account-btn">Sign in with Google</button>';
  document.querySelector('header').append(panel);
+ const retry=document.createElement('button');retry.type='button';retry.id='ww-google-retry';retry.className='ww-account-btn';retry.textContent='Try Google sign-in again';retry.hidden=true;panel.append(retry);
+ let alternate=false;
  const $=id=>document.getElementById(id),login=$('ww-login'),photo=$('ww-account-photo'),initials=$('ww-account-initials');
  const info=document.createElement('p');info.className='mobile-note muted';info.textContent='Study and pronunciation work offline. Sign in with the same Google account to sync learning history with the website. Google sign-in and cloud sync need internet. Guest progress stays separate and is available when you sign out.';document.querySelector('main').prepend(info);
  const conflict=document.createElement('div');conflict.className='card';conflict.hidden=true;
@@ -33,7 +35,7 @@ export function initNativeAccount(){
  function renderAccount(account){
   const current=++avatarVersion,name=account?(account.displayName||account.email||'Google account'):'On-device learning';
   $('ww-identity').textContent=name;$('ww-account-avatar').hidden=!account;photo.hidden=true;initials.hidden=true;photo.onload=photo.onerror=null;photo.removeAttribute('src');
-  login.textContent=account?'Sign out':'Sign in with Google';
+  login.textContent=account?'Sign out':'Sign in with Google';retry.hidden=true;
   if(!account)return;
   initials.textContent=(account.displayName||account.email?.split('@')[0]||'Google').trim().split(/\s+/).slice(0,2).map(p=>Array.from(p)[0]||'').join('').toUpperCase();initials.hidden=false;
   try{const address=new URL(account.photoURL);if(address.protocol!=='https:')return;photo.alt='Google profile picture for '+name;photo.onload=()=>{if(current!==avatarVersion)return;photo.hidden=false;initials.hidden=true};photo.onerror=()=>{if(current!==avatarVersion)return;photo.hidden=true;initials.hidden=false;photo.removeAttribute('src')};photo.src=address.href;}catch{}
@@ -66,18 +68,24 @@ export function initNativeAccount(){
  $('ww-use-cloud').onclick=()=>{if(!user||!cloudChoice)return;const uid=user.uid;localStorage.setItem('wortweg370-cloud-backup:'+uid,JSON.stringify(window.WortWeg.getProgress()));apply(cloudChoice);remember(uid,cloudChoice);clear(uid);cloudChoice=null;conflict.hidden=true;status('Cloud history loaded');};
  $('ww-use-phone').onclick=()=>{if(!user||!cloudChoice)return;localStorage.setItem('wortweg370-cloud-backup:'+user.uid,JSON.stringify(cloudChoice));remember(user.uid,cloudChoice);cloudChoice=null;conflict.hidden=true;mark(user.uid);queueSave();};
  login.onclick=async()=>{
-  login.disabled=true;
+  login.disabled=true;retry.disabled=true;retry.hidden=true;let stage='Google';
   try{
    if(user){await signOut(auth);await FirebaseAuthentication.signOut().catch(()=>{});return;}
    status('Opening Google account chooser…');
-   const result=await FirebaseAuthentication.signInWithGoogle({skipNativeAuth:true});
+   const result=await FirebaseAuthentication.signInWithGoogle({skipNativeAuth:true,useCredentialManager:!alternate});
    if(!result.credential?.idToken)throw Error('Google did not return an identity token.');
+   stage='Firebase';
    await signInWithCredential(auth,GoogleAuthProvider.credential(result.credential.idToken,result.credential.accessToken));
   }catch(error){
    const message=String(error.message||error.code||error);
-   status(/12501|cancel/i.test(message)?'Sign-in cancelled. You can keep studying offline.':/\b10\b|DEVELOPER_ERROR/i.test(message)?'Google sign-in setup needs this APK’s SHA-1 fingerprint in Firebase.':'Google sign-in failed. Check your connection and try again.');
-  }finally{login.disabled=false;}
+   const code=String(error.code||'').replace(/[^a-zA-Z0-9_./-]/g,'').slice(0,80);
+   if(stage==='Google'&&/12501|cancel/i.test(message))status('Google sign-in did not finish. If you selected an account, try sign-in again.');
+   else if(/\b10\b|DEVELOPER_ERROR/i.test(message))status('Google sign-in setup needs this APK’s SHA-1 fingerprint in Firebase.');
+   else status(stage+' sign-in failed'+(code?' ('+code+')':'')+'. Check your connection and try again.');
+   retry.hidden=Boolean(user)||stage!=='Google';
+  }finally{login.disabled=false;retry.disabled=false;alternate=false;}
  };
+ retry.onclick=()=>{alternate=true;return login.onclick();};
  onAuthStateChanged(auth,async account=>{
   const current=++version;ready=false;clearTimeout(timer);unsubscribe?.();unsubscribe=null;cloudChoice=null;conflict.hidden=true;user=account;renderAccount(account);window.WortWeg.switchProfile(account?.uid||'guest');window.WortWegNative.accountReady=true;
   if(!account){status('Saved on this phone');ready=true;return;}

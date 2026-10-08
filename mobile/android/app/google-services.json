@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "991404492771-id04dp6eh67dmf73il3s6tp6it5e9spm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.innovatex.wortweg370.preview",
+            "certificate_hash": "cadf4c3031789ee7c0d6ac37d2e543765bbbe1d5"
+          }
+        },
+        {
           "client_id": "991404492771-84n5kkee8m5l0qvu4cnc3ljoerm8vjjv.apps.googleusercontent.com",
           "client_type": 3
         }

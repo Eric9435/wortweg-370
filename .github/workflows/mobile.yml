@@ -40,6 +40,7 @@ jobs:
           fi
           keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey > signing-fingerprints.txt
           cat signing-fingerprints.txt
+          node scripts/check-google-config.mjs signing-fingerprints.txt
       - uses: gradle/actions/setup-gradle@v4
       - run: npm ci
       - run: npm run test:account
