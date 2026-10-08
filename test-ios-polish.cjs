@@ -4,7 +4,7 @@ const {JSDOM}=require('jsdom');
 
 const html='<!doctype html><html><head></head><body class="ww-game-interface"><main>'
  +'<section id="dashboard" class="section active"><div class="ww-main-menu"></div></section>'
- +'<section id="stats" class="section"><button class="ww-menu-back">Main menu</button><h2>Your learning progress</h2><h3>Recent sessions</h3></section>'
+ +'<section id="stats" class="section"><button class="ww-menu-back">Main menu</button><h2>Your learning progress</h2><div id="summary"><div class="smalltitle">Recent sessions</div></div></section>'
  +'<section id="review" class="section"><h2>Wrong Answer Review</h2><button id="reviewNow">Review due</button><button id="reviewAll">Practice all mistakes</button><p>No mistakes yet. Start a quiz to build your review list.</p></section>'
  +'</main></body></html>';
 const dom=new JSDOM(html,{url:'https://example.org/',runScripts:'outside-only'});
