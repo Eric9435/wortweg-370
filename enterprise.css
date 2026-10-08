@@ -43,3 +43,20 @@ body.ww-quiz-mode .ww-back{display:inline-flex}
 #saveStatus{display:none}
 @media(min-width:950px){main{margin-left:240px;margin-right:auto;max-width:calc(100% - 240px);padding:24px 36px 60px}.bottom{top:0;bottom:0;right:auto;width:228px;border-top:0;border-right:1px solid var(--line);box-shadow:none}.bottom:before{content:'WORTWEG 370';display:block;font-weight:850;color:#203b83;letter-spacing:.07em;font-size:15px;padding:33px 23px 24px}.bottom nav{display:flex;flex-direction:column;align-items:stretch;gap:7px;padding:0 12px}.bottom nav button{display:flex;gap:12px;align-items:center;text-align:left;justify-content:flex-start;padding:15px;border-radius:11px;font-size:14px}.bottom nav button b{font-size:20px}header{min-height:80px}}
 @media(max-width:650px){main{padding:12px 12px 110px}header{padding:13px;gap:8px;flex-wrap:wrap}.brand h1{font-size:20px}.stats{gap:7px}.stat{padding:12px 8px}.stat strong{font-size:21px}.stat span{font-size:10px}.card{padding:17px}.ww-shortcuts{grid-template-columns:1fr}.ww-shortcut{padding:17px}.ww-heading h2{font-size:22px}#ww-account{font-size:12px;flex:1;justify-content:flex-end}.bottom nav button{font-size:10px;padding:8px 2px}}
+
+/* Consistent flat appearance for the enterprise layout too. */
+header{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none;padding:14px 0}
+.card,.stat,.ww-shortcut{background:transparent;border:0;border-radius:0;box-shadow:none}
+.card{padding:22px 0;margin:0}
+.card+.card{border-top:1px solid var(--line)}
+.stats{gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stat+.stat{border-left:1px solid var(--line)}
+.ww-shortcuts{gap:0}
+.ww-shortcut{border-bottom:1px solid var(--line);padding:18px 8px;border-radius:0}
+.ww-shortcut:hover{background:var(--panel2)}
+.ww-heading{padding-bottom:14px;border-bottom:1px solid var(--line)}
+.item,.topic{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0}
+.choice{background:transparent;border:1px solid var(--line);border-radius:12px}
+.bottom{box-shadow:none}
+.bottom nav button.active{background:transparent;font-weight:700}
+@media(max-width:650px){main{padding-inline:18px}.card{padding:18px 0}.ww-shortcut{padding:16px 4px}}
