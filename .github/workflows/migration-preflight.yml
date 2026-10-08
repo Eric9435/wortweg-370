@@ -1,0 +1,35 @@
+name: Preview public distribution (never deploy)
+on:
+  pull_request:
+    paths:
+      - 'migration/**'
+      - '.github/workflows/migration-preflight.yml'
+      - 'index.html'
+      - 'sw.js'
+      - 'manifest.webmanifest'
+      - '*.js'
+      - '*.css'
+      - 'vendor/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build public website staging bundle
+        run: node migration/export-public-website.mjs
+      - name: Check site links and reject development files
+        run: node migration/check-public-website.mjs
+      - name: Upload staging bundle for inspection only
+        uses: actions/upload-artifact@v4
+        with:
+          name: wortweg-370-public-website-staging
+          path: .migration-preview/website/
+          include-hidden-files: true
+          retention-days: 3
