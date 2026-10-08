@@ -16,6 +16,7 @@ function getPrefs(){
 function savePrefs(value){try{localStorage.setItem(PREF_KEY,JSON.stringify(value))}catch{}}
 export function initNativeAppUpdates({Browser,versionCode,versionName,packageName,fetcher=fetch}){
  if(!Number.isSafeInteger(versionCode)||versionCode<1)return null;
+ const style=document.createElement('link');style.rel='stylesheet';style.href='./app-updates.css';document.head.append(style);
  const prefs=getPrefs();
  const settings=$('settings')?.querySelector('.settings-grid');
  const home=$('dashboard .ww-main-menu');
