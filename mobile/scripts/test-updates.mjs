@@ -25,12 +25,13 @@ function make(){
 const {dom:unit,w:unitW}=make();
 unitW.eval(validatorBundle);
 const validate=unitW.UpdateTest.validateManifest;
-const base={...manifest,versionCode:5,versionName:'0.4.0-preview',
+const futureVersion=info.versionCode+1;
+const base={...manifest,versionCode:futureVersion,versionName:'0.4.0-preview',
  releasePage:'https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-55',
  downloadUrl:'https://github.com/Eric9435/wortweg-370/releases/download/mobile-preview-55/WortWeg-370-Android-preview.apk',
  notes:'New UI and improved study screens.'};
-assert.equal(validate(base,4).available,true);
-assert.equal(validate(base,5).available,false);
+assert.equal(validate(base,info.versionCode).available,true);
+assert.equal(validate(base,futureVersion).available,false);
 assert.equal(validate({...base,packageName:'com.evil.app'},4),null);
 assert.equal(validate({...base,downloadUrl:'https://evil.example.com/updates.apk'},4),null);
 assert.equal(validate({...base,downloadUrl:'https://github.com/other/repo/releases/download/mobile-preview-55/WortWeg-370-Android-preview.apk'},4),null);
@@ -53,7 +54,7 @@ assert.equal(w.document.querySelector('#ww-update-overlay').hidden,true);
 assert.equal(w.document.querySelector('#ww-update-auto').checked,true,'Automatic checks start enabled');
 current=base;
 await ui.check(true);
-assert.equal(ui.getAvailable()?.versionCode,5);
+assert.equal(ui.getAvailable()?.versionCode,futureVersion);
 assert.equal(w.document.querySelector('.ww-update-banner').hidden,false,'A small main-menu update banner appears');
 assert.equal(w.document.querySelector('#ww-update-overlay').hidden,true,'Manual checks do not interrupt the user');
 w.document.querySelector('.ww-update-banner').click();
