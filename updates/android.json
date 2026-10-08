@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "packageName": "com.innovatex.wortweg370.preview",
+  "versionCode": 3,
+  "versionName": "0.2.1-preview",
+  "releasePage": "https://github.com/Eric9435/wortweg-370/releases/tag/mobile-preview-29",
+  "downloadUrl": "https://github.com/Eric9435/wortweg-370/releases/download/mobile-preview-29/WortWeg-370-Android-preview.apk",
+  "notes": "Android preview update with offline German lessons, study and profile improvements."
+}
