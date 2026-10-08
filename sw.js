@@ -1,5 +1,5 @@
-const CACHE='wortweg370-v14';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg?v=11','./cloud.js?v=14','./account.css?v=14','./settings.js','./settings.css','./audio.js','./audio.css'];
+const CACHE='wortweg370-v15';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg?v=11','./cloud.js?v=14','./account.css?v=14','./settings.js','./settings.css','./audio.js','./audio.css','./enterprise.css','./enterprise.js'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
