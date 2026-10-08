@@ -13,3 +13,16 @@
 .ww-welcome-google{background:var(--panel);border:1px solid var(--line);color:var(--txt)}
 .ww-welcome-guest{background:var(--panel2);border:1px solid transparent;color:var(--txt)}
 .ww-welcome-actions button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+
+/* Native welcome is an actual full-screen view, not a floating card. */
+.ww-welcome{background:var(--bg)!important;padding:24px max(24px,env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));overflow-y:auto}
+.ww-welcome-content{width:min(100%,400px);background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important}
+.ww-welcome-logo{width:108px;height:108px;margin-bottom:18px}
+.ww-welcome h1{margin:0 0 48px;font-weight:800}
+.ww-welcome-actions{gap:14px}
+.ww-welcome-actions button{min-height:56px;border-radius:14px;transition:transform .12s ease,background .12s ease}
+.ww-welcome-actions button:active{transform:scale(.985)}
+.ww-welcome-google{background:var(--panel)!important;border:1px solid var(--line)!important}
+.ww-welcome-guest{background:var(--panel2)!important;border:1px solid transparent!important}
+@media(max-width:480px){.ww-welcome-content{max-width:340px}.ww-welcome h1{margin-bottom:40px}}
