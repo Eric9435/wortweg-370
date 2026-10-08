@@ -2,7 +2,7 @@ const fs=require('node:fs');
 const assert=require('node:assert/strict');
 const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('index.html','utf8');
-const KEY='wortweg370-progress-v1', QUIZ='wortweg370-active-quiz-v1';
+const KEY='wortweg370-progress-v1', QUIZ='wortweg370-active-quiz-v1', BACKUP=KEY+'-backup';
 function launch(stored={}){
  const errors=[];
  const dom=new JSDOM(html,{
@@ -28,7 +28,8 @@ first.window.document.querySelector('#answerButtons .choice').click();
 click(first,'submitAnswer');
 assert.equal(progress(first).answered,11,'Answer must save immediately');
 assert.equal(session(first).locked,true,'Checked answer must be marked');
-const stored={[KEY]:first.window.localStorage.getItem(KEY),[QUIZ]:first.window.localStorage.getItem(QUIZ)};
+assert.equal(first.window.localStorage.getItem(KEY),first.window.localStorage.getItem(BACKUP),'Backup must mirror saved progress');
+const stored={[KEY]:first.window.localStorage.getItem(KEY),[BACKUP]:first.window.localStorage.getItem(BACKUP),[QUIZ]:first.window.localStorage.getItem(QUIZ)};
 first.window.close();
 const second=launch(stored);
 assert.equal(progress(second).answered,11,'Answered count must survive restart');
@@ -47,4 +48,8 @@ assert.equal(progress(third).answered,12,'Progress remains saved after second re
 assert.equal(third.window.document.getElementById('quizCounter').textContent,'3 / 10','Quiz position remains saved');
 assert.match(third.window.document.getElementById('saveStatus').textContent,/saved/i);
 third.window.close();
-console.log('PASS: answers auto-save, quiz resumes after restart, no duplicate answer counting');
+const recovered=launch({[KEY]:'{invalid json',[BACKUP]:stored[BACKUP]});
+assert.equal(progress(recovered).answered,11,'Backup recovers a corrupted primary save');
+assert.equal(recovered.window.localStorage.getItem(KEY),recovered.window.localStorage.getItem(BACKUP),'Recovery repairs primary save');
+recovered.window.close();
+console.log('PASS: answers auto-save, quiz resumes after restart, no duplicate counting, backup recovers corruption');
