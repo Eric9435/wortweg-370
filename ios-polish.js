@@ -38,7 +38,7 @@
   $('ww-ios-overview-detail').textContent=answered
     ?correct+' correct answers out of '+answered+' questions. Keep practising to improve your accuracy.'
     :'Complete your first 10-question quiz to start tracking accuracy.';
-  const heading=[...stats.querySelectorAll('h2,h3')].find(el=>/recent sessions/i.test(el.textContent||''));
+  const heading=[...stats.querySelectorAll('h2,h3,.smalltitle')].find(el=>/recent sessions/i.test(el.textContent||''));
   if(!heading)return;
   let empty=$('ww-ios-empty-sessions');
   const hasSessions=Array.isArray(state.history)&&state.history.length>0;
