@@ -43,9 +43,13 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
       - run: npm ci
       - run: npm run test:account
+      - run: node scripts/test-ui.mjs
       - run: npm run sync
       - run: npm run icons
-      - run: bash android/gradlew -p android :app:assembleDebug :app:assembleDebugAndroidTest
+      - name: Build Android with the registered cached preview certificate
+        run: |
+          export WORTWEG_CI_KEYSTORE="$HOME/.android/debug.keystore"
+          bash android/gradlew -p android :app:assembleDebug :app:assembleDebugAndroidTest
       - name: Enable emulator acceleration
         working-directory: .
         run: |
