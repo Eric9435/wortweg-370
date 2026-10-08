@@ -11,6 +11,7 @@ jobs:
       - name: Check JavaScript, manifest, and account persistence hooks
         run: |
           node --check sw.js
+          node --check live-content.js
           node <<'NODE'
           const fs=require('fs'),vm=require('vm');
           const html=fs.readFileSync('index.html','utf8');
@@ -26,6 +27,8 @@ jobs:
           NODE
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
+      - name: Verify dynamic lessons, offline cache, and secure account separation
+        run: node test-live-content.cjs
       - name: Test saved answers and separate account progress
         run: node test-memory.cjs
       - name: Test game-style navigation and Google profile onboarding
