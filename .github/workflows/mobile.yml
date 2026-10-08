@@ -1,8 +1,11 @@
 name: Build offline mobile apps
 on:
   push:
-    branches: [main, design/ios-inspired-ui-refinement-20261008]
+    branches: [main]
     paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'test-live-content.cjs', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
+  pull_request:
+    branches: [main]
+    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'test-live-content.cjs', '*.css', '*.js', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
   workflow_dispatch:
 # Keep only the newest in-flight preview build for this branch.
 # Cancelling an outdated CI run never affects an installed APK or its data.
