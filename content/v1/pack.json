@@ -1,0 +1,325 @@
+{
+  "schema": 1,
+  "version": 1,
+  "updatedAt": "2026-10-08",
+  "title": "WortWeg Live Lessons",
+  "description": "New German–English–Myanmar lessons delivered online and saved for offline learning.",
+  "lessons": [
+    {
+      "id": "greetings",
+      "title": "Greetings & polite expressions",
+      "level": "A1",
+      "words": [
+        {
+          "id": "greetings-001",
+          "de": "Hallo",
+          "en": "Hello",
+          "my": "မင်္ဂလာပါ"
+        },
+        {
+          "id": "greetings-002",
+          "de": "Guten Morgen",
+          "en": "Good morning",
+          "my": "မင်္ဂလာနံနက်ခင်းပါ"
+        },
+        {
+          "id": "greetings-003",
+          "de": "Guten Tag",
+          "en": "Good day",
+          "my": "မင်္ဂလာပါ"
+        },
+        {
+          "id": "greetings-004",
+          "de": "Guten Abend",
+          "en": "Good evening",
+          "my": "မင်္ဂလာညနေခင်းပါ"
+        },
+        {
+          "id": "greetings-005",
+          "de": "Gute Nacht",
+          "en": "Good night",
+          "my": "ကောင်းသောညပါ"
+        },
+        {
+          "id": "greetings-006",
+          "de": "Tschüss",
+          "en": "Bye",
+          "my": "နှုတ်ဆက်ပါတယ်"
+        },
+        {
+          "id": "greetings-007",
+          "de": "Auf Wiedersehen",
+          "en": "Goodbye (formal)",
+          "my": "နောက်မှပြန်တွေ့ကြမယ်"
+        },
+        {
+          "id": "greetings-008",
+          "de": "Danke",
+          "en": "Thank you",
+          "my": "ကျေးဇူးတင်ပါတယ်"
+        },
+        {
+          "id": "greetings-009",
+          "de": "Bitte",
+          "en": "Please / You're welcome",
+          "my": "ကျေးဇူးပြု၍ / ရပါတယ်"
+        },
+        {
+          "id": "greetings-010",
+          "de": "Entschuldigung",
+          "en": "Excuse me / Sorry",
+          "my": "တောင်းပန်ပါတယ်"
+        },
+        {
+          "id": "greetings-011",
+          "de": "Ja",
+          "en": "Yes",
+          "my": "ဟုတ်ကဲ့"
+        },
+        {
+          "id": "greetings-012",
+          "de": "Nein",
+          "en": "No",
+          "my": "မဟုတ်ပါဘူး"
+        }
+      ]
+    },
+    {
+      "id": "identity",
+      "title": "People & personal details",
+      "level": "A1",
+      "words": [
+        {
+          "id": "identity-001",
+          "de": "der Name",
+          "en": "Name",
+          "my": "နာမည်"
+        },
+        {
+          "id": "identity-002",
+          "de": "der Vorname",
+          "en": "First name",
+          "my": "ပထမနာမည်"
+        },
+        {
+          "id": "identity-003",
+          "de": "der Nachname",
+          "en": "Last name",
+          "my": "မျိုးရိုးနာမည်"
+        },
+        {
+          "id": "identity-004",
+          "de": "das Alter",
+          "en": "Age",
+          "my": "အသက်အရွယ်"
+        },
+        {
+          "id": "identity-005",
+          "de": "die Adresse",
+          "en": "Address",
+          "my": "လိပ်စာ"
+        },
+        {
+          "id": "identity-006",
+          "de": "die Stadt",
+          "en": "City",
+          "my": "မြို့"
+        },
+        {
+          "id": "identity-007",
+          "de": "das Land",
+          "en": "Country",
+          "my": "နိုင်ငံ"
+        },
+        {
+          "id": "identity-008",
+          "de": "die Sprache",
+          "en": "Language",
+          "my": "ဘာသာစကား"
+        },
+        {
+          "id": "identity-009",
+          "de": "der Student",
+          "en": "Male student",
+          "my": "ကျောင်းသား"
+        },
+        {
+          "id": "identity-010",
+          "de": "die Studentin",
+          "en": "Female student",
+          "my": "ကျောင်းသူ"
+        },
+        {
+          "id": "identity-011",
+          "de": "der Lehrer",
+          "en": "Male teacher",
+          "my": "ဆရာ"
+        },
+        {
+          "id": "identity-012",
+          "de": "die Lehrerin",
+          "en": "Female teacher",
+          "my": "ဆရာမ"
+        }
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & everyday shopping",
+      "level": "A1",
+      "words": [
+        {
+          "id": "food-001",
+          "de": "das Wasser",
+          "en": "Water",
+          "my": "ရေ"
+        },
+        {
+          "id": "food-002",
+          "de": "das Brot",
+          "en": "Bread",
+          "my": "ပေါင်မုန့်"
+        },
+        {
+          "id": "food-003",
+          "de": "die Milch",
+          "en": "Milk",
+          "my": "နို့"
+        },
+        {
+          "id": "food-004",
+          "de": "der Reis",
+          "en": "Rice",
+          "my": "ဆန် / ထမင်း"
+        },
+        {
+          "id": "food-005",
+          "de": "der Apfel",
+          "en": "Apple",
+          "my": "ပန်းသီး"
+        },
+        {
+          "id": "food-006",
+          "de": "der Kaffee",
+          "en": "Coffee",
+          "my": "ကော်ဖီ"
+        },
+        {
+          "id": "food-007",
+          "de": "der Tee",
+          "en": "Tea",
+          "my": "လက်ဖက်ရည်"
+        },
+        {
+          "id": "food-008",
+          "de": "das Frühstück",
+          "en": "Breakfast",
+          "my": "မနက်စာ"
+        },
+        {
+          "id": "food-009",
+          "de": "das Mittagessen",
+          "en": "Lunch",
+          "my": "နေ့လယ်စာ"
+        },
+        {
+          "id": "food-010",
+          "de": "das Abendessen",
+          "en": "Dinner",
+          "my": "ညစာ"
+        },
+        {
+          "id": "food-011",
+          "de": "die Küche",
+          "en": "Kitchen",
+          "my": "မီးဖိုချောင်"
+        },
+        {
+          "id": "food-012",
+          "de": "der Supermarkt",
+          "en": "Supermarket",
+          "my": "စူပါမားကတ်"
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "title": "Travel & directions",
+      "level": "A1",
+      "words": [
+        {
+          "id": "travel-001",
+          "de": "der Bahnhof",
+          "en": "Railway station",
+          "my": "ရထားဘူတာ"
+        },
+        {
+          "id": "travel-002",
+          "de": "die Haltestelle",
+          "en": "Stop (bus/tram)",
+          "my": "မှတ်တိုင်"
+        },
+        {
+          "id": "travel-003",
+          "de": "der Bus",
+          "en": "Bus",
+          "my": "ဘတ်စ်ကား"
+        },
+        {
+          "id": "travel-004",
+          "de": "die Bahn",
+          "en": "Rail transit",
+          "my": "ရထားလိုင်း"
+        },
+        {
+          "id": "travel-005",
+          "de": "die Fahrkarte",
+          "en": "Ticket",
+          "my": "ယာဉ်လက်မှတ်"
+        },
+        {
+          "id": "travel-006",
+          "de": "der Zug",
+          "en": "Train",
+          "my": "ရထား"
+        },
+        {
+          "id": "travel-007",
+          "de": "der Flughafen",
+          "en": "Airport",
+          "my": "လေဆိပ်"
+        },
+        {
+          "id": "travel-008",
+          "de": "die Straße",
+          "en": "Street",
+          "my": "လမ်း"
+        },
+        {
+          "id": "travel-009",
+          "de": "die Richtung",
+          "en": "Direction",
+          "my": "ဦးတည်ရာ"
+        },
+        {
+          "id": "travel-010",
+          "de": "links",
+          "en": "Left",
+          "my": "ဘယ်ဘက်"
+        },
+        {
+          "id": "travel-011",
+          "de": "rechts",
+          "en": "Right",
+          "my": "ညာဘက်"
+        },
+        {
+          "id": "travel-012",
+          "de": "geradeaus",
+          "en": "Straight ahead",
+          "my": "တည့်တည့်"
+        }
+      ]
+    }
+  ]
+}
