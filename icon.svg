@@ -1,1 +1,24 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6de1cb"/><stop offset="1" stop-color="#8498ff"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="#111d35"/><rect x="58" y="58" width="396" height="396" rx="100" fill="url(#g)"/><text x="256" y="337" text-anchor="middle" font-size="260" font-family="Arial,sans-serif" font-weight="900" fill="#172943">W</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+<title id="title">WortWeg 370 — German learning book</title>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071b3d"/><stop offset=".55" stop-color="#07528c"/><stop offset="1" stop-color="#14b9ad"/></linearGradient>
+ <linearGradient id="letter" x1="0" y1="0" x2=".1" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#c7e6ff"/></linearGradient>
+ <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#afcdea"/></linearGradient>
+ <linearGradient id="tealPage" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7df7df"/><stop offset=".6" stop-color="#12c6c0"/><stop offset="1" stop-color="#0799ac"/></linearGradient>
+ <linearGradient id="spine" x1="0" x2="1" y1="0" y2="0"><stop stop-color="#116bbc"/><stop offset=".5" stop-color="#03427d"/><stop offset="1" stop-color="#19b5bd"/></linearGradient>
+</defs>
+<rect width="512" height="512" rx="106" fill="url(#bg)"/>
+<circle cx="423" cy="401" r="165" fill="#3bead3" opacity=".09"/>
+<path d="M85 193 Q151 139 263 118" fill="none" stroke="#051122" stroke-width="21" stroke-linecap="round"/>
+<path d="M88 215 Q160 158 268 143" fill="none" stroke="#ed2635" stroke-width="20" stroke-linecap="round"/>
+<path d="M94 237 Q172 182 263 168" fill="none" stroke="#ffc943" stroke-width="19" stroke-linecap="round"/>
+<path d="M115 158 H166 L202 270 L229 185 H270 L304 270 L342 158 H393 L327 340 H280 L250 251 L218 340 H173 Z" fill="#053b72" opacity=".45" transform="translate(0 7)"/>
+<path d="M115 158 H166 L202 270 L229 185 H270 L304 270 L342 158 H393 L327 340 H280 L250 251 L218 340 H173 Z" fill="url(#letter)"/>
+<path d="M73 360 Q154 321 244 373 L256 391 Q326 322 440 353 L437 423 Q332 393 257 448 Q174 397 75 420 Z" fill="#003c74" opacity=".65"/>
+<path d="M78 354 Q153 322 253 388 L254 423 Q177 375 76 406 Z" fill="url(#paper)"/>
+<path d="M79 363 Q164 329 253 394" fill="none" stroke="#ffffff" stroke-width="11" stroke-linecap="round" opacity=".9"/>
+<path d="M256 388 Q320 324 437 349 L433 408 Q330 379 256 424 Z" fill="url(#paper)"/>
+<path d="M254 391 Q326 309 433 328 Q413 366 367 365 Q303 365 254 421 Z" fill="url(#tealPage)"/>
+<path d="M75 416 Q173 385 255 439 Q337 383 437 418" fill="none" stroke="url(#spine)" stroke-width="15" stroke-linecap="round"/>
+<path d="M255 389 L255 439" fill="none" stroke="#e9faff" stroke-width="6" stroke-linecap="round"/>
+</svg>
