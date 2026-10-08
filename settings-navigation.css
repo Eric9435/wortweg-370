@@ -1,0 +1,130 @@
+/* Settings hub · compact, iOS-inspired navigation without stacked cards. */
+#settings.ww-settings-modern{max-width:800px;min-height:calc(100dvh - 120px);padding-bottom:42px}
+#settings.ww-settings-modern > .ww-menu-back,
+#settings.ww-settings-modern > .ww-back,
+#settings.ww-settings-modern > .settings-grid{display:none!important}
+#settings.ww-settings-modern #ww-settings-topbar{padding:6px 0 13px;margin:0 0 14px}
+#settings.ww-settings-modern #ww-settings-heading{
+ margin:8px 0 0;font-size:clamp(26px,6vw,34px);line-height:1.22;
+ font-weight:790;color:var(--txt);letter-spacing:-.055em
+}
+#settings.ww-settings-modern .ww-settings-back{
+ display:inline-flex;align-items:center;justify-content:flex-start;
+ color:var(--accent);background:transparent;border:0;border-radius:8px;
+ min-height:40px;padding:6px 8px 6px 0;text-align:left;
+ font:inherit;font-size:14px;cursor:pointer
+}
+#settings.ww-settings-modern [hidden]{display:none!important}
+#settings.ww-settings-modern #ww-settings-hub{max-width:760px}
+#settings.ww-settings-modern .ww-settings-profile-row{
+ display:grid;grid-template-columns:58px minmax(0,1fr) 20px;align-items:center;gap:14px;
+ background:transparent!important;color:var(--txt);border:0;border-bottom:1px solid var(--ww-divider,var(--line));
+ border-radius:0!important;box-shadow:none!important;width:100%;text-align:left;
+ padding:14px 4px 23px;min-height:88px;font:inherit;cursor:pointer
+}
+#settings.ww-settings-modern .ww-settings-avatar{
+ display:flex;align-items:center;justify-content:center;width:56px;height:56px;
+ flex:0 0 56px;border-radius:18px;background:var(--panel2);
+ color:var(--accent);font-size:19px;font-weight:750;overflow:hidden
+}
+#settings.ww-settings-modern .ww-settings-avatar img{display:block;width:100%;height:100%;object-fit:cover}
+#settings.ww-settings-modern .ww-settings-profile-text{min-width:0}
+#settings.ww-settings-modern .ww-settings-profile-text strong{
+ display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ font-weight:760;font-size:17px;letter-spacing:-.035em
+}
+#settings.ww-settings-modern .ww-settings-profile-text small{
+ display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+ color:var(--muted);font-size:12px;margin-top:5px
+}
+#settings.ww-settings-modern .ww-settings-group{margin:23px 0 0}
+#settings.ww-settings-modern .ww-settings-group-title{
+ color:var(--muted)!important;font-size:11px!important;letter-spacing:.14em;
+ font-weight:750;margin:0 0 7px;padding:0 2px;line-height:1.45
+}
+#settings.ww-settings-modern .ww-settings-row{
+ background:transparent!important;color:var(--txt)!important;box-shadow:none!important;
+ border:0!important;border-radius:0!important;border-bottom:1px solid var(--ww-divider,var(--line))!important;
+ width:100%;padding:13px 4px;min-height:67px;text-align:left;font:inherit;
+ display:grid;grid-template-columns:36px minmax(0,1fr) 18px;align-items:center;gap:14px;
+ transition:background .16s ease,transform .16s ease;cursor:pointer
+}
+#settings.ww-settings-modern .ww-settings-row-icon{
+ display:grid;place-items:center;width:36px;height:36px;border-radius:11px;
+ background:var(--panel2);color:var(--accent)
+}
+#settings.ww-settings-modern .ww-settings-row-label{min-width:0}
+#settings.ww-settings-modern .ww-settings-row-label strong{display:block;font-weight:690;font-size:15px;line-height:1.3}
+#settings.ww-settings-modern .ww-settings-row-label small{display:block;color:var(--muted);font-size:12px;line-height:1.4;margin-top:3px}
+#settings.ww-settings-modern .ww-settings-chevron{color:var(--muted);font-size:23px;font-weight:300;line-height:1;text-align:right}
+#settings.ww-settings-modern .ww-settings-profile-row:active,
+#settings.ww-settings-modern .ww-settings-row:active{transform:scale(.995);background:var(--panel2)!important}
+#settings.ww-settings-modern .ww-settings-row:hover,
+#settings.ww-settings-modern .ww-settings-profile-row:hover{background:var(--panel2)!important}
+#settings.ww-settings-modern .ww-settings-row:focus-visible,
+#settings.ww-settings-modern .ww-settings-profile-row:focus-visible,
+#settings.ww-settings-modern .ww-settings-back:focus-visible{
+ outline:2px solid var(--accent);outline-offset:2px;border-radius:9px
+}
+#settings.ww-settings-modern #ww-settings-detail{animation:wwSettingsIn .28s cubic-bezier(.22,1,.36,1) both}
+@keyframes wwSettingsIn{from{opacity:.2;transform:translateX(12px)}to{opacity:1;transform:none}}
+#settings.ww-settings-modern .ww-settings-pane{min-height:210px}
+#settings.ww-settings-modern .ww-settings-pane .card{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ padding:17px 0 23px!important;margin:0!important;border-radius:0!important
+}
+#settings.ww-settings-modern .ww-settings-pane .card+.card{border-top:1px solid var(--ww-divider,var(--line))!important}
+#settings.ww-settings-modern .ww-settings-pane .card h3{color:var(--txt)!important;font-size:19px!important;line-height:1.3;letter-spacing:-.035em;margin:0 0 14px}
+#settings.ww-settings-modern .ww-settings-pane input:not([type=checkbox]),
+#settings.ww-settings-modern .ww-settings-pane select,
+#settings.ww-settings-modern .ww-settings-pane textarea{
+ min-height:47px;width:100%;max-width:100%;background:var(--panel2)!important;
+ color:var(--txt);border:1px solid var(--line)!important;border-radius:12px!important;
+ box-shadow:none!important
+}
+#settings.ww-settings-modern .ww-settings-pane textarea{min-height:125px}
+#settings.ww-settings-modern .ww-settings-pane .settings-toggle{
+ display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:62px;
+ padding:8px 0!important;margin:0!important;border-bottom:1px solid var(--ww-divider,var(--line));
+ line-height:1.4;font-size:14px;color:var(--txt);cursor:pointer
+}
+#settings.ww-settings-modern .ww-settings-pane .settings-toggle input[type=checkbox]{
+ -webkit-appearance:none!important;appearance:none!important;
+ flex:0 0 46px!important;order:2;width:46px!important;height:28px!important;
+ min-width:46px!important;min-height:28px!important;margin:0!important;padding:0!important;
+ border:1px solid var(--line)!important;border-radius:50px!important;background:var(--line)!important;
+ position:relative;transition:background .18s ease,border-color .18s ease;cursor:pointer
+}
+#settings.ww-settings-modern .ww-settings-pane .settings-toggle input[type=checkbox]::after{
+ content:'';display:block;position:absolute;top:2px;left:2px;width:22px;height:22px;
+ border-radius:50%;background:#fff;box-shadow:0 1px 3px #0002;
+ transition:transform .18s ease
+}
+#settings.ww-settings-modern .ww-settings-pane .settings-toggle input[type=checkbox]:checked{
+ background:var(--accent)!important;border-color:var(--accent)!important
+}
+#settings.ww-settings-modern .ww-settings-pane .settings-toggle input[type=checkbox]:checked::after{transform:translateX(18px)}
+#settings.ww-settings-modern .ww-settings-pane .settings-toggle input[type=checkbox]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+#settings.ww-settings-modern .ww-settings-pane .settings-toggle input[type=checkbox]:disabled{opacity:.5;cursor:not-allowed}
+#settings.ww-settings-modern .ww-settings-pane .audio-settings #audio-pack-progress:not([hidden]){width:100%}
+#settings.ww-settings-modern .ww-settings-pane .audio-settings #audio-pack-download:disabled{display:none!important}
+#settings.ww-settings-modern .ww-settings-pane .audio-settings .audio-detail:last-child{display:none!important}
+#settings.ww-settings-modern .ww-settings-pane .audio-settings .audio-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+#settings.ww-settings-modern .ww-settings-pane #ww-settings-account{padding:15px 0 20px!important}
+#settings.ww-settings-modern .ww-settings-pane #ww-account-slot #ww-account{gap:10px}
+#settings.ww-settings-modern .ww-settings-pane #ww-account-email{font-size:12px}
+#settings.ww-settings-modern .ww-settings-pane[data-settings-view=profile] #profile-form{margin-top:6px}
+#settings.ww-settings-modern .ww-settings-pane[data-settings-view=about] .settings-wide > h3,
+#settings.ww-settings-modern .ww-settings-pane[data-settings-view=about] .settings-wide > p{display:none!important}
+#settings.ww-settings-modern .ww-settings-pane[data-settings-view=privacy] details{
+ border-bottom:1px solid var(--ww-divider,var(--line));padding:17px 0
+}
+#settings.ww-settings-modern .ww-settings-pane[data-settings-view=privacy] summary{cursor:pointer;min-height:32px;font-weight:650}
+#settings.ww-settings-modern .ww-settings-helper{color:var(--muted);font-size:14px;line-height:1.6;margin:12px 0 17px}
+#settings.ww-settings-modern #settings-status{margin:12px 0;font-size:12px;color:var(--muted)}
+@media(max-width:600px){
+ #settings.ww-settings-modern .ww-settings-group{margin-top:22px}
+ #settings.ww-settings-modern .ww-settings-row{min-height:65px;gap:13px}
+ #settings.ww-settings-modern #ww-settings-topbar{padding-top:2px}
+}
+@media(prefers-reduced-motion:reduce){#settings.ww-settings-modern #ww-settings-detail{animation:none!important}}
