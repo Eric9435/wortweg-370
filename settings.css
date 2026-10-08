@@ -83,3 +83,40 @@ header .eyebrow,.mobile-note{display:none!important}
  .bottom{padding-bottom:env(safe-area-inset-bottom)}
  .bottom nav button{min-width:0}
 }
+
+
+/* WortWeg unified workspace · v2 — single continuous canvas. */
+:root{--ww-page-max:1120px;--ww-row-gap:20px}
+html{scroll-behavior:smooth}
+body{background:var(--bg)!important}
+main{width:100%;max-width:var(--ww-page-max);margin-inline:auto}
+header{background:none!important;box-shadow:none!important;border-radius:0!important}
+#dashboard,#study,#topics,#bank,#review,#progress,#settings{background:transparent!important}
+.section.active{background:transparent!important}
+.section>.card:first-child{padding-top:8px!important}
+.card,.stat,.ww-shortcut,.settings-grid>.card{background:transparent!important;border-radius:0!important;box-shadow:none!important}
+.card{border-bottom:1px solid var(--ww-divider)!important}
+.card:last-child{border-bottom:0!important}
+.card+.card{border-top:0!important}
+.stat{min-width:0}
+.ww-shortcuts{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.ww-shortcut{border:0!important;border-bottom:1px solid var(--ww-divider)!important}
+.ww-shortcut:active,.item:active,.topic:active{background:var(--panel2)!important}
+#settings .card{border-radius:0!important;background:transparent!important;box-shadow:none!important}
+#settings label{font-weight:500}
+#settings input,#settings textarea,#settings select{background:transparent!important;min-height:44px}
+#settings input:focus,#settings textarea:focus,#settings select:focus{border-color:var(--accent)}
+.bottom{background:var(--bg)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.bottom nav button{min-height:48px}
+.ww-heading{border-bottom:1px solid var(--ww-divider)!important}
+#ww-history-conflict[hidden],[role=dialog][hidden]{display:none!important}
+@media(max-width:650px){
+ main{padding-inline:20px!important}
+ header{margin-bottom:4px!important}
+ .ww-shortcuts{grid-template-columns:1fr!important}
+ .stats{margin-block:10px 18px!important}
+ .card{padding:18px 0!important}
+ .bottom nav button{min-height:50px}
+ .ww-heading h2{font-size:clamp(22px,5.2vw,30px)}
+}
+@media(prefers-reduced-motion:reduce){.section,.section.active{animation:none!important}html{scroll-behavior:auto}}
