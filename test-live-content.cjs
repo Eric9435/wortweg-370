@@ -66,8 +66,10 @@ async function wait(){await new Promise(r=>setTimeout(r,25))}
  const invalid=JSON.parse(JSON.stringify(newer));invalid.version=4;invalid.lessons[0].words[0].en='';
  setOnline(invalid);await api.refresh();
  assert.equal(api.getPack().version,3,'Malformed remote content is rejected safely');
+ w.document.querySelector('.ww-live-lesson').click();
+ assert.equal(w.document.getElementById('ww-live-quiz').hidden,false);
  w.dispatchEvent(new w.CustomEvent('wortweg:account',{detail:{uid:'account-A'}}));
- assert.equal(w.document.querySelector('.ww-live-quiz').hidden,true,'Switching accounts ends an active quiz');
+ assert.equal(w.document.getElementById('ww-live-quiz').hidden,true,'Switching accounts ends an active quiz');
  assert.equal(JSON.parse(w.localStorage.getItem(key))[correct.id].answered,1,'Guest record stays isolated');
  menu.click();w.document.querySelector('.ww-live-lesson').click();
  w.document.querySelector('.ww-live-answer').click();
