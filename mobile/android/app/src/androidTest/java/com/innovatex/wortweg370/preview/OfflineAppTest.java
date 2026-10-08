@@ -13,6 +13,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import java.io.ByteArrayInputStream;
 import java.util.Collections;
+import android.view.MotionEvent;
+import android.os.SystemClock;
+import org.json.JSONObject;
 import static org.junit.Assert.*;
 
 @RunWith(AndroidJUnit4.class)
@@ -61,7 +64,19 @@ public class OfflineAppTest {
             waitFor(scenario,"!window.__reloading && window.WortWeg && document.getElementById('mobile-time')");
             assertEquals("1",evaluate(scenario,"WortWeg.getProgress().answered"));
             // Force app-owned speech, regardless of emulator system voices.
-            evaluate(scenario,"window.speechSynthesis.getVoices=()=>[];WortWegAudio.test()");
+            waitFor(scenario,"WortWegAudio.getStatus().state==='ready'");
+            evaluate(scenario,"window.speechSynthesis.getVoices=()=>[];WortWeg.navigate('settings');document.getElementById('audio-pack-test').scrollIntoView({block:'center'})");
+            Thread.sleep(300);
+            JSONObject point = new JSONObject(evaluate(scenario,"(()=>{const r=document.getElementById('audio-pack-test').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2,width:innerWidth}})()"));
+            scenario.onActivity(activity -> {
+                WebView view=activity.getBridge().getWebView();
+                float scale=(float)(view.getWidth()/point.optDouble("width"));
+                float x=(float)point.optDouble("x")*scale,y=(float)point.optDouble("y")*scale;
+                long now=SystemClock.uptimeMillis();
+                MotionEvent down=MotionEvent.obtain(now,now,MotionEvent.ACTION_DOWN,x,y,0);
+                MotionEvent up=MotionEvent.obtain(now,now+100,MotionEvent.ACTION_UP,x,y,0);
+                view.dispatchTouchEvent(down);view.dispatchTouchEvent(up);down.recycle();up.recycle();
+            });
             waitFor(scenario,"window.meSpeak && meSpeak.isVoiceLoaded('de')");
             assertEquals("true",evaluate(scenario,"(()=>{const wav=meSpeak.speak('Guten Tag',{voice:'de',rawdata:'array'});return wav.length>10000 && wav[0]===82 && wav[1]===73 && wav.slice(44).some(x=>x!==0)})()"));
             assertEquals("\"ready\"",evaluate(scenario,"WortWegAudio.getStatus().state"));
