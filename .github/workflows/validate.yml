@@ -29,6 +29,8 @@ jobs:
         run: npm install --no-save --no-package-lock jsdom@26
       - name: Verify dynamic lessons, offline cache, and secure account separation
         run: node test-live-content.cjs
+      - name: Check network-first website lesson updates
+        run: node test-serviceworker-updates.cjs
       - name: Test saved answers and separate account progress
         run: node test-memory.cjs
       - name: Test game-style navigation and Google profile onboarding
