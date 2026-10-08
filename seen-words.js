@@ -38,7 +38,7 @@
   for(const lesson of pack.lessons){
    for(const w of lesson.words||[]){
     if(ids.has(w.id))continue;ids.add(w.id);
-    result.push({key:'l:'+w.id,word:w,group:levels.includes(lesson.level)?lesson.level:'New lessons',source:'New lessons',live:progress[w.id]||null});
+    result.push({key:'l:'+w.id,word:w,group:'New lessons',level:levels.includes(lesson.level)?lesson.level:'—',source:'New lessons',live:progress[w.id]||null});
    }
   }
   return result;
@@ -212,7 +212,7 @@
    if(word.pron)text(wordCell,'small',word.pron,'ww-seen-pron');
    text(row,'td',word.en||'—');
    text(row,'td',word.my||word.mm||'—');
-   text(row,'td',entry.source==='Topic 1'?'Topic 1':entry.source==='New lessons'?'New · '+entry.group:(entry.group||'—'),'ww-seen-level');
+   text(row,'td',entry.source==='Topic 1'?'Topic 1':entry.source==='New lessons'?'New · '+entry.level:(entry.group||'—'),'ww-seen-level');
    const statusCell=text(row,'td','','ww-seen-result');
    const badge=text(statusCell,'strong',hasMistakes?'Missed '+pretty(status.wrong)+'×':status.correctLast===null?'Seen':'Correct','ww-seen-status');
    if(hasMistakes)text(statusCell,'small',status.correctLast===true?'Answered correctly later':status.correctLast===false?'Review this word':'Mistake in history');
