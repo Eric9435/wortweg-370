@@ -30,3 +30,6 @@ body.ww-game-interface #dashboard .ww-home-modern .ww-menu-options{margin-top:14
 @media(max-width:480px){body.ww-game-interface #dashboard .ww-home-focus-primary{padding:17px;min-height:92px;gap:11px;border-radius:20px}body.ww-game-interface #dashboard .ww-home-focus-primary-icon{width:40px;height:40px}body.ww-game-interface #dashboard .ww-home-focus-primary-copy strong{font-size:17px}body.ww-game-interface #dashboard .ww-home-focus-head{align-items:flex-start}body.ww-game-interface #dashboard .ww-home-focus-tile{padding:13px;min-height:112px;border-radius:17px}}
 @keyframes wwHomeEnter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){body.ww-game-interface #dashboard .ww-home-focus,body.ww-game-interface #dashboard .ww-home-focus button{animation:none;transition:none}}
+
+/* Single Home mode: no legacy switch or alternative presentation exposed. */
+body.ww-game-interface #dashboard .ww-home-view-toggle{display:none!important}
