@@ -828,5 +828,12 @@
   const t=byId.get(Number(id));return Boolean(t&&entriesFor(t).all.length);
  },getLocalQuizHistory:()=>expressionRecords(),getReading:id=>{
   const t=byId.get(Number(id));return t&&window.WortWegReading?window.WortWegReading.build(t,entriesFor(t).all,identityPassage,exampleBank):null;
- },getReadingProgress:()=>window.WortWegReading?.count(topics)||0};
+ },getReadingProgress:()=>window.WortWegReading?.count(topics)||0,
+ inspectSentence:(sentence,words)=>{
+  const span=document.createElement('span');
+  highlightPassageWords(span,String(sentence||''),Array.isArray(words)?words:[]);
+  return {text:span.textContent,bold:span.querySelectorAll('strong.ww-passage-vocab').length,
+   topic:span.querySelectorAll('strong.ww-passage-vocab:not(.ww-passage-context-vocab)').length,
+   context:span.querySelectorAll('strong.ww-passage-context-vocab').length};
+ }};
 })();
