@@ -77,4 +77,4 @@
  refresh();
 })();
 /* Grammar Academy bootstraps separately so existing vocabulary flows remain unchanged. */
-(()=>{const sources=['grammar-expanded.js','grammar-more-a1-a2.js','grammar-more-b1.js','grammar-more-b2.js','grammar-more-c1.js','grammar.js'];const next=()=>{if(!sources.length)return;const script=document.createElement('script');script.src='./'+sources.shift();script.onload=next;script.onerror=()=>{console.warn('Grammar module asset unavailable:',script.src);next();};document.head.append(script);};next();})();
+(()=>{const sources=['grammar-deep.js','grammar-expanded.js','grammar-more-a1-a2.js','grammar-more-b1.js','grammar-more-b2.js','grammar-more-c1.js','grammar.js'];const next=()=>{if(!sources.length)return;const script=document.createElement('script');script.src='./'+sources.shift();script.onload=next;script.onerror=()=>{console.warn('Grammar module asset unavailable:',script.src);next();};document.head.append(script);};next();})();
