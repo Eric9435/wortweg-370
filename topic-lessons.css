@@ -88,3 +88,15 @@ body.ww-game-interface .ww-topic-word-copy .ww-topic-german .ww-topic-article{fo
 body.ww-game-interface .ww-topic-word-copy .ww-topic-german.ww-topic-article-der .ww-topic-article{color:#2563eb!important}
 body.ww-game-interface .ww-topic-word-copy .ww-topic-german.ww-topic-article-die .ww-topic-article{color:#db2777!important}
 body.ww-game-interface .ww-topic-word-copy .ww-topic-german.ww-topic-article-das .ww-topic-article{color:#15803d!important}
+
+/* Expandable sentence and dialogue within each existing vocabulary card. */
+body.ww-game-interface .ww-topic-word{flex-wrap:wrap}
+body.ww-game-interface .ww-topic-memory{width:100%;flex-basis:100%;border-top:1px solid var(--line);padding-top:9px}
+body.ww-game-interface .ww-topic-memory-toggle{width:100%;text-align:left;border:0;background:transparent;color:var(--accent);font:inherit;font-size:13px;font-weight:750;cursor:pointer;padding:8px 2px}
+body.ww-game-interface .ww-topic-memory-panel{margin-top:7px;border-radius:12px;background:var(--panel2);padding:13px 15px;line-height:1.5}
+body.ww-game-interface .ww-topic-memory-panel[hidden]{display:none!important}
+body.ww-game-interface .ww-topic-memory-panel p{margin:4px 0;color:var(--txt);overflow-wrap:anywhere}
+body.ww-game-interface .ww-topic-memory-panel .ww-topic-memory-en{font-size:12px;color:var(--muted)}
+body.ww-game-interface .ww-topic-memory-label{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--muted);margin:12px 0 6px}
+body.ww-game-interface .ww-topic-memory-label:first-child{margin-top:0}
+body.ww-game-interface .ww-topic-memory-speak{margin-top:10px;padding:9px 13px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--txt);cursor:pointer}
