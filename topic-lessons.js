@@ -341,7 +341,9 @@
   '<h2 id="ww-topic-heading"></h2><p id="ww-topic-english"></p></div>'+
   '<div class="ww-topic-summary" id="ww-topic-summary"></div>'+
   '<div class="ww-topic-actions"><button class="btn primary" type="button" id="ww-topic-practice">Practice topic words</button>'+
-  '<button class="btn secondary" type="button" id="ww-topic-show">Show vocabulary</button></div>'+
+  '<button class="btn secondary" type="button" id="ww-topic-show">Show vocabulary</button>'+ 
+  '<button class="btn secondary" type="button" id="ww-topic-read" aria-expanded="false">📖 Read passage · sentence audio</button></div>'+ 
+  '<div class="ww-passage" id="ww-topic-passage" hidden><div id="ww-topic-passage-content"></div></div>'+
   '<div id="ww-topic-quiz" hidden></div>'+
   '<div id="ww-topic-study"><p class="ww-topic-note" id="ww-topic-note"></p>'+
   '<div class="ww-topic-filter"><label>Search German, English or Myanmar'+
@@ -442,6 +444,56 @@
    toggle.textContent=panel.hidden?'Example & conversation  ▾':'Hide example & conversation  ▴';
   });
  }
+
+// Sentence-by-sentence reading stays inside the current topic page.
+// The authored identity passage uses no actual address, birth date or contact numbers.
+ const identityPassage="Hallo! Mein Name ist Eric.\nMein Vorname ist Eric und mein Nachname steht in meinem Reisepass.\nMein Familienname und mein Geburtsname sind gleich.\nIch habe keinen Zweitnamen.\nMein Rufname ist Eric.\nMeine Initialen sind E. S.\nDie Schreibweise meines Namens ist wichtig, besonders bei offiziellen Formularen.\nEine Namensänderung habe ich nicht gemacht.\nIch bin ein junger Erwachsener.\nMein Alter ist fünfundzwanzig Jahre.\nMein Geburtsdatum möchte ich hier nicht nennen.\nMein Geburtsmonat und mein Geburtsjahr stehen in meinen persönlichen Dokumenten.\nMein Geburtsort liegt in Myanmar und meine Geburtsstadt ist Yangon.\nMeine Geburtsurkunde enthält diese Informationen.\nMein Heimatland ist Myanmar.\nAuch mein Herkunftsland ist Myanmar.\nDas Land, in dem ich jetzt lebe, ist Deutschland.\nMeine Staatsangehörigkeit ist myanmarisch.\nMeine Muttersprache ist Birmanisch.\nAußerdem spreche ich Englisch und lerne Deutsch.\nMein Wohnort ist Hamburg.\nMein Wohnsitz ist jetzt in Deutschland.\nMeine genaue Adresse ist privat.\nMeine Anschrift möchte ich nicht öffentlich zeigen.\nMeine Postleitzahl und meine Hausnummer stehen in meinen persönlichen Unterlagen.\nMein Beruf ist Ingenieur.\nIch habe Elektrotechnik studiert und studiere jetzt im Master an der Technischen Universität Hamburg.\nIch interessiere mich für Automatisierung, Steuerungstechnik und digitale Technologien.\nAußerdem spiele ich Klavier und unterrichte Musik.\nMein Familienstand ist privat.\nIn einem Formular gibt es verschiedene Möglichkeiten, zum Beispiel ledig oder verheiratet.\nMein Geschlecht ist männlich.\nMeine Kontaktdaten sind ebenfalls privat.\nMeine Telefonnummer und meine E-Mail-Adresse gebe ich nur an vertrauenswürdige Personen weiter.\nMeine Ausweisnummer veröffentliche ich nicht.\nWenn ich ein Formular ausfülle, lese ich zuerst die Anrede, zum Beispiel Herr oder Frau.\nDanach mache ich die erforderlichen Angaben.\nAm Ende kontrolliere ich alles und schreibe meine Unterschrift.\nDas bin ich!\nIch lebe in Hamburg, lerne jeden Tag Deutsch und möchte mich persönlich und beruflich weiterentwickeln.";
+ function passageSentences(){
+  if(!selected)return [];
+  const words=selected.all;
+  const lines=selected.topic.id===1?identityPassage.split('\n'):[
+   'Heute geht es um das Thema „'+selected.topic.de+'“.'
+  ];
+  // Add a contextual example for every topic vocabulary entry, including any
+  // terms not occurring verbatim in the authored Topic 1 introduction.
+  const normalizeToken=word=>String(word||'').replace(/^(der|die|das)\s+/i,'').trim();
+  for(const word of words){
+   const bare=normalizeToken(word.de);
+   const already=lines.some(line=>line.toLocaleLowerCase('de').includes(bare.toLocaleLowerCase('de')));
+   if(already)continue;
+   const entry=exampleBank[String(word.de||'').toLocaleLowerCase('de')];
+   const example=entry?.[0]||('Ich lerne den Ausdruck „'+word.de+'“ zum Thema „'+selected.topic.de+'“.');
+   lines.push(example);
+  }
+  return lines.filter(Boolean);
+ }
+ function renderPassage(){
+  const host=el('ww-topic-passage-content');host.replaceChildren();
+  if(!selected)return;
+  const lines=passageSentences(),words=selected.all;
+  const heading=tag(host,'p',selected.topic.id===1?'Über mich – Das bin ich!':'Lesetext – '+selected.topic.de,'ww-passage-heading');
+  const controls=tag(host,'div','','ww-passage-controls');
+  const read=tag(controls,'button','🔊 Play full passage','btn secondary');
+  read.type='button';read.addEventListener('click',()=>speak(lines.join(' ')));
+  const note=tag(host,'p',lines.length+' sentences · '+words.length+' / '+words.length+' vocabulary entries included · Tap 🔊 to hear any sentence.','ww-passage-info');
+  for(let i=0;i<lines.length;i++){
+   const row=tag(host,'div','','ww-passage-row');
+   tag(row,'span',String(i+1).padStart(2,'0'),'ww-passage-number');
+   tag(row,'p',lines[i],'ww-passage-sentence');
+   const listen=tag(row,'button','🔊','ww-passage-audio');
+   listen.type='button';
+   listen.setAttribute('aria-label','Play German sentence '+(i+1));
+   listen.addEventListener('click',()=>speak(lines[i]));
+  }
+ }
+ function togglePassage(force){
+  const panel=el('ww-topic-passage'),button=el('ww-topic-read');
+  const open=typeof force==='boolean'?force:panel.hidden;
+  panel.hidden=!open;button.setAttribute('aria-expanded',String(open));
+  button.textContent=open?'Hide reading passage':'📖 Read passage · sentence audio';
+  if(open)renderPassage();
+ }
+
  function displayWords(){
   if(!selected)return;
   const q=normalize(el('ww-topic-search').value),level=el('ww-topic-level').value;
@@ -508,7 +560,7 @@
    'German–English–Myanmar meanings and audio. Topic matches are suggestions from the existing CEFR Word Bank; topic phrases and starter words are labelled separately.':
    'Quiz ready! Practise the translated topic title and starter expressions. These are saved separately on this device and do not count toward CEFR Word Bank totals.';
   el('ww-topic-search').value='';el('ww-topic-level').value='ALL';
-  showWords();
+  togglePassage(false);showWords();
   window.WortWeg.navigate('ww-topic-detail');
  }
  function shuffle(items){
@@ -625,6 +677,7 @@
   lesson=null;window.WortWeg.navigate('topics');
  });
  el('ww-topic-show').addEventListener('click',showWords);
+ el('ww-topic-read').addEventListener('click',()=>togglePassage());
  el('ww-topic-practice').addEventListener('click',startQuiz);
  el('ww-topic-search').addEventListener('input',()=>{shown=40;displayWords()});
  el('ww-topic-level').addEventListener('change',()=>{shown=40;displayWords()});
