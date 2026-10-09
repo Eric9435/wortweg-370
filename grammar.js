@@ -133,4 +133,5 @@ window.addEventListener('hashchange',()=>{if(location.hash==='#grammar'&&root.hi
 window.addEventListener('wortweg:account',()=>{if(!root.hidden){readUser();render();}});
 if(location.hash==='#grammar')open();
 window.WortWegGrammar={open,topics,lessons:entries,getSummary:()=>{readUser();return {mastered:entries.filter(e=>stateOf(e.id).mastered).length,total:entries.length};}};
+window.dispatchEvent(new Event('wortweg:grammar-ready'));
 })();
