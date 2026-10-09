@@ -50,7 +50,9 @@ assert.ok($('ww-seen-home').textContent.includes('50.0%'),'A1 occupies half of t
 assert.ok($('ww-seen-home').textContent.includes('2 explored · 0 left'),'Legend distinguishes level totals from explored entries');
 assert.ok($('ww-seen-home').textContent.includes('Word Bank total'),'The outer ring explicitly excludes the other sources');
 assert.ok($('ww-seen-home').textContent.includes('3 left to explore'));
-assert.ok($('ww-seen-home').textContent.includes('0 remaining · 100%'));
+assert.ok($('ww-seen-home').textContent.includes('7 words'),'Milestone clamps to current total in small fixture');
+assert.equal($('ww-seen-home').querySelector('.ww-home-milestone-track').getAttribute('aria-valuenow'),'57','Milestone uses real seen count');
+assert.ok($('ww-seen-home').textContent.includes('2 / 2 explored · 0 left'));
 assert.ok($('seen'),'There is a dedicated all-words page');
 assert.ok(w.document.querySelector('[data-nav="seen"]'),'Main menu has a Seen Words navigation link');
 w.WortWegSeenWords.open();
