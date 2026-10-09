@@ -25,7 +25,7 @@ const css=document.createElement('style');css.textContent=`
 .ww-cl-filters label{font-size:12px;font-weight:700;color:var(--muted);display:grid;gap:6px}
 .ww-cl-filters input,.ww-cl-filters select,.ww-cl-status-select,.ww-cl-note{width:100%;min-width:0;background:var(--panel);color:var(--txt);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit}
 #ww-cl-count{font-size:13px;color:var(--muted);margin:12px 0}
-#ww-cl-list{display:grid;gap:9px}.ww-cl-row{border:1px solid var(--line);background:var(--panel);border-radius:15px;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) 160px;gap:12px;align-items:start}
+#ww-cl-list{display:table-row-group}
 .ww-cl-row h3{font-size:15px;margin:3px 0;color:var(--txt)}.ww-cl-row small{color:var(--muted)}
 .ww-cl-note{grid-column:1/-1;resize:vertical;font-size:13px;min-height:43px}
 .ww-cl-status-select{font-size:13px}.ww-cl-meta{font-size:11px;font-weight:750;color:var(--accent)}
@@ -54,7 +54,7 @@ const css=document.createElement('style');css.textContent=`
 
 /* Table layout repair: desktop columns fit without sideways scrolling. */
 #ww-curriculum .ww-cl-table-wrap{width:100%;max-width:100%;max-height:none;overflow-x:auto;overflow-y:visible}
-#ww-curriculum .ww-cl-table{width:100%;min-width:0;table-layout:fixed}
+#ww-curriculum .ww-cl-table{width:100%;min-width:0;table-layout:fixed} #ww-curriculum .ww-cl-table tbody{display:table-row-group!important} #ww-curriculum .ww-cl-table tbody tr{display:table-row!important} #ww-curriculum .ww-cl-table tbody td{display:table-cell!important}
 #ww-curriculum .ww-cl-table th,#ww-curriculum .ww-cl-table td{box-sizing:border-box;padding:10px 8px;overflow-wrap:anywhere}
 #ww-curriculum .ww-cl-table th:nth-child(1){width:4%}
 #ww-curriculum .ww-cl-table th:nth-child(2){width:29%}
