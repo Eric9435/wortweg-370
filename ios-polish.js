@@ -81,3 +81,6 @@
 
 /* Vocabulary Writing loads independently without changing legacy quiz results. */
 (()=>{const s=document.createElement('script');s.src='./vocab-writing.js';document.head.append(s);})();
+
+/* iOS Home refresh: presentation-only, reversible, preserves original Home. */
+(()=>{const style=document.createElement('link');style.rel='stylesheet';style.href='./home-refresh.css';document.head.append(style);const script=document.createElement('script');script.src='./home-refresh.js';document.head.append(script);})();
