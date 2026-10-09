@@ -236,3 +236,37 @@ body.ww-intro-open{overflow:hidden}
 @media(prefers-reduced-motion:reduce){
  body.ww-game-interface .section.active,.ww-menu-options button,.ww-intro-panel{animation:none!important;transition:none!important}
 }
+
+
+/* Volume mixer · compact Settings > Sound & music controls. */
+body.ww-game-interface .ww-audio-volumes {
+ display:grid;gap:16px;margin:16px 0 19px;
+}
+body.ww-game-interface .ww-volume-control {
+ display:grid;gap:8px;padding:13px 15px 12px;
+ background:var(--panel2);border:1px solid var(--line);border-radius:16px;
+}
+body.ww-game-interface .ww-volume-head {
+ display:flex;justify-content:space-between;align-items:center;gap:16px;
+}
+body.ww-game-interface .ww-volume-head label {
+ font-size:14px;font-weight:730;color:var(--txt);margin:0;
+}
+body.ww-game-interface .ww-volume-head output {
+ font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;
+ color:var(--accent);text-align:right;min-width:43px;
+}
+body.ww-game-interface .ww-volume-control input[type=range] {
+ display:block;width:100%;height:34px;margin:0;
+ padding:0;cursor:pointer;accent-color:var(--accent);
+ background:transparent;touch-action:pan-y;
+}
+body.ww-game-interface .ww-volume-control input[type=range]:focus-visible {
+ outline:2px solid var(--accent);outline-offset:3px;border-radius:10px;
+}
+body.ww-game-interface .ww-volume-description {
+ color:var(--muted);font-size:11px;line-height:1.55;
+}
+@media (max-width:600px){
+ body.ww-game-interface .ww-volume-control {padding:12px 13px}
+}
