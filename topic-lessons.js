@@ -320,6 +320,18 @@
   '<div id="ww-topic-list" class="ww-topic-list"></div>'+
   '<button type="button" class="btn secondary" id="ww-topic-more" hidden>Show more words</button></div>';
  root.append(page);
+ // Scoped styling: existing topic list, quiz, navigation, and saved progress remain unchanged.
+ const articleStyle=document.createElement('style');
+ articleStyle.textContent=`
+  .ww-topic-detail .ww-topic-german .ww-topic-article{font-weight:800}
+  .ww-topic-detail .ww-topic-article-der .ww-topic-article{color:#2563eb}
+  .ww-topic-detail .ww-topic-article-die .ww-topic-article{color:#db2777}
+  .ww-topic-detail .ww-topic-article-das .ww-topic-article{color:#15803d}
+  .ww-topic-detail .ww-topic-article-der .ww-topic-noun,
+  .ww-topic-detail .ww-topic-article-die .ww-topic-noun,
+  .ww-topic-detail .ww-topic-article-das .ww-topic-noun{color:inherit}
+ `;
+ page.append(articleStyle);
  const el=id=>page.querySelector('#'+id);
  let selected=null,shown=40,lesson=null;
  function tag(parent,type,value,className){
@@ -337,7 +349,14 @@
   for(const w of matches.slice(0,shown)){
    const card=tag(box,'div','','ww-topic-word');
    const desc=tag(card,'div','','ww-topic-word-copy');
-   const name=tag(desc,'strong',w.de);
+   // Colour only the definite article; keep the complete German word accessible.
+   const name=tag(desc,'strong','','ww-topic-german');
+   const articleMatch=String(w.de||'').match(/^(der|die|das)\\s+(.+)$/i);
+   if(articleMatch){
+    name.classList.add('ww-topic-article-'+articleMatch[1].toLowerCase());
+    tag(name,'span',articleMatch[1]+' ','ww-topic-article');
+    tag(name,'span',articleMatch[2],'ww-topic-noun');
+   }else{name.textContent=w.de;}
    tag(desc,'span',w.en||'Translation not yet available');
    if(w.mm)tag(desc,'small',w.mm);
    if(w.pron)tag(desc,'small',w.pron,'ww-topic-pron');
