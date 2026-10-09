@@ -1,7 +1,11 @@
 (()=>{
 'use strict';
-const KEY='wortweg370-settings-v1', defaults={mode:'system',font:'normal',theme:'blue',notifications:false,reminder:false,time:'18:00',name:'',age:'',goal:'10 words a day',touchSound:true,backgroundMusic:true};
+const KEY='wortweg370-settings-v1', defaults={mode:'system',font:'normal',theme:'blue',notifications:false,reminder:false,time:'18:00',name:'',age:'',goal:'10 words a day',touchSound:true,backgroundMusic:true,voiceVolume:50,musicVolume:50,fxVolume:50};
 let s={...defaults};try{s={...defaults,...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{};
+// Volume preferences are optional additions to the existing settings key;
+// do not overwrite preferences of returning users.
+const clampVolume=value=>Number.isFinite(Number(value))?Math.max(0,Math.min(100,Math.round(Number(value)))):50;
+for(const key of ['voiceVolume','musicVolume','fxVolume'])s[key]=clampVolume(s[key]);
 // One-time migration: existing users also receive the new sound-on defaults.
  // After migration, their explicit On/Off settings persist across launches.
 const AUDIO_DEFAULTS_KEY='wortweg370-audio-defaults-v2';
@@ -50,9 +54,17 @@ accountHub.innerHTML='<h3>Account</h3><div id="ww-account-slot"><span class="mut
 page.insertBefore(accountHub,settingsGrid);
 const soundGroup=document.createElement('div');
 soundGroup.className='card ww-sound-settings';
-soundGroup.innerHTML='<h3>Sound & music</h3><label class="settings-toggle"><input id="pref-touchSound" type="checkbox"> Touch sound effects</label><label class="settings-toggle"><input id="pref-backgroundMusic" type="checkbox"> Background music</label><p class="muted tiny">Sound and original ambient music start enabled. Turn either one off here. In browsers, music may wait for your first tap.</p>';
+soundGroup.innerHTML='<h3>Sound & music</h3><p class="muted tiny">Starting volume: 50% (balanced). Your adjustments are saved on this device.</p><div class="ww-audio-volumes"><div class="ww-volume-control"><div class="ww-volume-head"><label for="pref-voiceVolume">German voice</label><output for="pref-voiceVolume" id="pref-voiceVolume-value">50%</output></div><input id="pref-voiceVolume" type="range" min="0" max="100" step="5" value="50" aria-label="German voice volume"><span class="ww-volume-description">Word pronunciations and test speech · applies to the next spoken word</span></div><div class="ww-volume-control"><div class="ww-volume-head"><label for="pref-musicVolume">Background music</label><output for="pref-musicVolume" id="pref-musicVolume-value">50%</output></div><input id="pref-musicVolume" type="range" min="0" max="100" step="5" value="50" aria-label="Background music volume"><span class="ww-volume-description">Calm ambient music while studying</span></div><div class="ww-volume-control"><div class="ww-volume-head"><label for="pref-fxVolume">Touch FX</label><output for="pref-fxVolume" id="pref-fxVolume-value">50%</output></div><input id="pref-fxVolume" type="range" min="0" max="100" step="5" value="50" aria-label="Touch effects volume"><span class="ww-volume-description">Tap and interface feedback sounds</span></div></div><label class="settings-toggle"><input id="pref-touchSound" type="checkbox"> Touch sound effects</label><label class="settings-toggle"><input id="pref-backgroundMusic" type="checkbox"> Background music</label><p class="muted tiny">You can mute a sound with its switch or turn its volume to 0%. Browser autoplay rules may wait for your first tap before music starts.</p>';
 settingsGrid.insertBefore(soundGroup,settingsGrid.firstChild);
 for(const k of ['touchSound','backgroundMusic']){const input=$('pref-'+k);input.checked=Boolean(s[k]);input.addEventListener('change',()=>{s[k]=input.checked;save();if(k==='backgroundMusic')updateMusic()})}
+for(const k of ['voiceVolume','musicVolume','fxVolume']){
+ const input=$('pref-'+k),output=$('pref-'+k+'-value');
+ input.value=String(s[k]);output.value=s[k]+'%';output.textContent=s[k]+'%';
+ input.addEventListener('input',()=>{
+  s[k]=clampVolume(input.value);output.value=s[k]+'%';output.textContent=s[k]+'%';
+  save();if(k==='musicVolume')applyMusicVolume();
+ });
+}
 const header=document.querySelector('header');
 const moveAccount=()=>{const panel=header?.querySelector('#ww-account');if(!panel)return;const slot=$('ww-account-slot');slot.querySelector('span.muted')?.remove();slot.append(panel)};
 if(header){new MutationObserver(moveAccount).observe(header,{childList:true});moveAccount()}
@@ -111,13 +123,18 @@ $('profile-form').addEventListener('submit',()=>{
  try{localStorage.setItem(profileKey(activeProfile),JSON.stringify({name:s.name,age:s.age,goal:s.goal}))}catch{}
 });
 /* License-free, generated UI sounds and ambient game music. Shared AudioContext. */
-let audioContext=null,musicTimer=null;
+let audioContext=null,musicTimer=null,musicBus=null;
 const activeMusic=new Set();
 function audio(){
  if(!audioContext){
   const Audio=window.AudioContext||window.webkitAudioContext;
   if(!Audio)return null;
-  try{audioContext=new Audio()}catch{return null}
+  try{
+   audioContext=new Audio();
+   musicBus=audioContext.createGain();
+   musicBus.connect(audioContext.destination);
+   musicBus.gain.setValueAtTime(s.musicVolume/50,audioContext.currentTime);
+  }catch{audioContext=null;musicBus=null;return null}
  }
  return audioContext;
 }
@@ -127,7 +144,7 @@ function note(ctx,hz,delay,duration,volume,type='sine',isMusic=false){
  gain.gain.setValueAtTime(0,start);
  gain.gain.linearRampToValueAtTime(volume,start+.045);
  gain.gain.exponentialRampToValueAtTime(.0001,start+duration);
- oscillator.connect(gain);gain.connect(ctx.destination);
+ oscillator.connect(gain);gain.connect(isMusic&&musicBus?musicBus:ctx.destination);
  if(isMusic){
   activeMusic.add(oscillator);
   oscillator.onended=()=>activeMusic.delete(oscillator);
@@ -142,15 +159,15 @@ function unlockAudio(){
  return Promise.resolve(ctx);
 }
 function touch(){
- if(!s.touchSound)return;
+ if(!s.touchSound||s.fxVolume<=0)return;
  const ctx=audio();if(!ctx)return;
  if(ctx.state==='suspended')unlockAudio().catch(()=>{});
- note(ctx,650,0,.065,.018);
- note(ctx,900,.045,.09,.009);
+ note(ctx,650,0,.065,.018*s.fxVolume/50);
+ note(ctx,900,.045,.09,.009*s.fxVolume/50);
 }
 function chord(){
  const ctx=audio();
- if(!s.backgroundMusic||document.hidden||!ctx||ctx.state!=='running')return;
+ if(!s.backgroundMusic||s.musicVolume<=0||document.hidden||!ctx||ctx.state!=='running')return;
  const roots=[196,174.61,220,164.81],root=roots[Math.floor((Date.now()/6600)%roots.length)];
  [1,1.25,1.5,2].forEach((mult,i)=>note(ctx,root*mult,i*.2,3.5,.004,'sine',true));
 }
@@ -160,13 +177,23 @@ function stopMusic(){
  activeMusic.clear();
 }
 function startMusic(){
- if(!s.backgroundMusic||document.hidden||audio()?.state!=='running'||musicTimer)return;
+ if(!s.backgroundMusic||s.musicVolume<=0||document.hidden||audio()?.state!=='running'||musicTimer)return;
  chord();
  musicTimer=setInterval(chord,6600);
 }
+function applyMusicVolume(){
+ if(musicBus&&audioContext){
+  try{musicBus.gain.setValueAtTime(s.musicVolume/50,audioContext.currentTime)}catch{}
+ }
+ // Resuming from a silent slider starts music immediately; a zero slider
+ // stops oscillators and the timer without turning the user's switch off.
+ if(!s.musicVolume)stopMusic();
+ else if(s.backgroundMusic&&!document.hidden&&!musicTimer)unlockAudio().then(startMusic);
+}
 function updateMusic(){
  stopMusic();
- if(!s.backgroundMusic||document.hidden)return;
+ applyMusicVolume();
+ if(!s.backgroundMusic||!s.musicVolume||document.hidden)return;
  unlockAudio().then(startMusic);
 }
 document.addEventListener('pointerdown',event=>{
