@@ -78,6 +78,16 @@ const input=el('input','wg-search');input.type='search';input.placeholder='Searc
 function lesson(){const e=active,st=stateOf(e.id);body.append(btn('← All '+selectedLevel+' lessons',()=>{active=null;render();},'wg-link'));add(body,el('p','wg-eyebrow',e.level+' · Grammar lesson'),el('h1','',e.title));
 const rule=add(el('article','wg-panel'),el('h2','', 'Understand'),el('p','',e.rule),el('code','',e.pattern));body.append(rule);
 const example=add(el('article','wg-panel'),el('h2','', 'Example'),el('strong','wg-example',e.example),btn('▶ Listen',()=>speak(e.example),'wg-listen'),el('p','',e.english),el('p','',e.myanmar));body.append(example);
+const deep=window.WortWegDeepGrammar&&window.WortWegDeepGrammar[e.level+'|'+e.title];
+if(deep){
+ const chapter=el('article','wg-panel wg-deep');
+ add(chapter,el('h2','',deep.section),el('h3','', 'Step-by-step rules'));
+ const bullet=el('ol','wg-deep-points');deep.points.forEach(p=>bullet.append(el('li','',p)));chapter.append(bullet);
+ const table=el('div','wg-deep-table');const tab=el('table');deep.table.forEach((row,i)=>{const tr=document.createElement('tr');row.forEach(value=>{const cell=document.createElement(i===0?'th':'td');cell.textContent=value;tr.append(cell);});tab.append(tr);});table.append(tab);chapter.append(table);
+ add(chapter,el('h3','', 'Worked examples'));deep.examples.forEach(row=>{const item=el('div','wg-deep-example');add(item,el('strong','',row[0]),btn('▶',()=>speak(row[0]),'wg-listen'),el('p','',row[1]),el('p','',row[2]));chapter.append(item);});
+ add(chapter,el('h3','', 'Common mistake / important distinction'),el('p','',deep.warning),el('h3','', 'Challenge exercise'),el('p','',deep.task));
+ body.append(chapter);
+}
 const quiz=add(el('article','wg-panel'),el('h2','', 'Practice'),el('p','wg-question',e.question));
 e.options.forEach((opt,i)=>quiz.append(btn(opt,()=>{if(checked)return;chosen=i;render();},'wg-choice '+(i===chosen?'wg-selected ':'')+(checked&&i===e.answer?'wg-correct':checked&&i===chosen?'wg-wrong':''))));
 if(checked){add(quiz,el('p','wg-feedback',chosen===e.answer?'✓ Correct!':'✕ Incorrect. Correct answer: '+e.options[e.answer]),el('p','',e.rule),btn('Try again',()=>{chosen=-1;checked=false;render();}));}
