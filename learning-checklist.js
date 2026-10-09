@@ -81,9 +81,26 @@ launchStyle.textContent=`
 #ww-home-focus .ww-cl-home-copy small{font-size:12px;color:var(--muted)}
 #ww-home-focus .ww-cl-home-arrow{font-size:26px;color:var(--accent)}
 `;document.head.append(launchStyle);
-const zone=dashboard.querySelector('#ww-home-focus');
-const primary=zone?.querySelector('.ww-home-focus-primary');
-if(primary)primary.before(launch);
-else if(zone)zone.prepend(launch);
-else dashboard.prepend(launch);
+// Place Checklist as a normal row in the existing Home menu, beside Grammar Academy.
+launch.id='ww-cl-menu-launch';
+launch.className='ww-menu-option ww-grammar-menu-card ww-cl-menu-row';
+launch.removeAttribute('style');
+launch.innerHTML='<span class="ww-menu-icon" aria-hidden="true">☑</span><span class="ww-grammar-label"><strong>German Learning Checklist</strong><small>Topics, grammar, progress & notes</small></span><span class="ww-menu-arrow" aria-hidden="true">›</span>';
+const rowStyle=document.createElement('style');
+rowStyle.textContent=`
+#dashboard .ww-menu-options .ww-cl-menu-row{display:flex;width:100%;align-items:center;gap:12px;text-align:left;cursor:pointer;color:var(--txt)}
+#dashboard .ww-menu-options .ww-cl-menu-row .ww-grammar-label{flex:1;min-width:0;display:grid;gap:4px}
+#dashboard .ww-menu-options .ww-cl-menu-row .ww-grammar-label small{color:var(--muted)}
+`;document.head.append(rowStyle);
+function installMenuRow(){
+ const menu=dashboard.querySelector('.ww-menu-options');
+ if(!menu)return;
+ const grammar=menu.querySelector('#wg-grammar-launch');
+ if(grammar){if(launch.parentElement!==menu||launch.previousElementSibling!==grammar)grammar.after(launch);}
+ else if(launch.parentElement!==menu)menu.prepend(launch);
+}
+installMenuRow();
+// Grammar Academy mounts asynchronously; re-position when available.
+const menuObserver=new MutationObserver(()=>installMenuRow());
+menuObserver.observe(dashboard,{childList:true,subtree:true});
 })();
