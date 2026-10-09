@@ -277,6 +277,38 @@
  function expressionKey(topicId,w){
   return String(topicId)+':'+normalize(w.de);
  }
+ function known(w){
+  if(w.source==='heading'||w.source==='starter'){
+   const entry=selected&&expressionRecords()[expressionKey(selected.topic.id,w)];
+   return Boolean(entry&&(typeof entry.known==='boolean'?entry.known:entry.lastCorrect));
+  }
+  const p=window.WortWeg.getProgress(),item=p?.items?.[key(w)];
+  if(!item)return false;
+  // A later incorrect legacy quiz always revokes mastery, regardless of an older checkbox.
+  if(Number(item.wrong)>0)return Number(item.streak)>0;
+  return item.known!==false;
+ }
+ function markKnown(w,value){
+  if(w.source==='heading'||w.source==='starter'){
+   const records=expressionRecords(),k=expressionKey(selected.topic.id,w);
+   records[k]={...(records[k]||{}),de:w.de,en:w.en,known:value,lastCorrect:value,
+    answered:records[k]?.answered||0,correct:records[k]?.correct||0,wrong:records[k]?.wrong||0};
+   try{localStorage.setItem(expressionStorage(),JSON.stringify(records));}catch{}
+  }else{
+   const p=window.WortWeg.getProgress(),k=key(w);
+   const old=p.items[k]||{de:w.de,en:w.en,mm:w.mm||'',wrong:0,streak:0,due:null,last:null};
+   // Never delete prior attempts; preserve the reviewed-word evidence.
+   const item={...old,de:w.de,en:w.en,mm:w.mm||'',known:value,last:today()};
+   if(value){
+    if(Number(item.wrong)>0&&Number(item.streak)===0)item.streak=1;
+   }else{
+    item.wrong=Math.max(1,Number(item.wrong)||0);item.streak=0;item.due=today();
+   }
+   p.items[k]=item;p.seen[k]=true;
+   window.WortWeg.setProgress(p);
+  }
+  refreshSummary();displayWords();
+ }
  function seen(w){
   if(w.source==='heading'||w.source==='starter'){
    return Boolean(selected&&expressionRecords()[expressionKey(selected.topic.id,w)]?.answered);
@@ -291,7 +323,7 @@
   all[k]={answered:(Number(prev.answered)||0)+1,
    correct:(Number(prev.correct)||0)+(correct?1:0),
    wrong:(Number(prev.wrong)||0)+(correct?0:1),
-   lastCorrect:Boolean(correct),de:w.de,en:w.en};
+   lastCorrect:Boolean(correct),known:Boolean(correct),de:w.de,en:w.en};
   try{localStorage.setItem(expressionStorage(),JSON.stringify(all));}
   catch{/* Browsers with storage disabled still allow a session quiz. */}
  }
@@ -436,6 +468,11 @@
     w.source==='starter'?'Starter word':(w.level||'Bank'),'ww-topic-tag');
    const status=seen(w);
    if(status)tag(meta,'small','✓ Seen','ww-topic-seen');
+   const check=tag(meta,'label','','ww-topic-know-label');
+   const input=document.createElement('input');input.type='checkbox';input.checked=known(w);
+   input.setAttribute('aria-label','I know '+w.de);
+   input.addEventListener('change',()=>markKnown(w,input.checked));
+   check.append(input,document.createTextNode(' I know it'));
    const play=tag(meta,'button','🔊','ww-topic-listen');
    play.type='button';play.setAttribute('aria-label','Hear '+w.de+' pronounced in German');
    play.addEventListener('click',()=>speak(w.de));
@@ -449,7 +486,9 @@
   if(!selected)return;
   const bankCount=selected.curated.length,bankDone=selected.curated.filter(seen).length;
   const extraCount=selected.extras.length,extraDone=selected.extras.filter(seen).length;
+  const learned=selected.all.filter(known).length;
   el('ww-topic-summary').textContent=
+   'Learned '+learned+' / '+selected.all.length+' · Quiz or checklist · '+
    'Quiz ready · '+selected.all.length+' practice entries · '+
    (bankCount?bankDone+' / '+bankCount+' Word Bank entries answered':'No matched Word Bank entries yet')+
    (extraCount?' · '+extraDone+' / '+extraCount+' topic expressions practised':'');
@@ -483,6 +522,7 @@
   const p=window.WortWeg.getProgress(),k=key(w);
   const old=p.items[k]||{de:w.de,en:w.en,mm:w.mm,wrong:0,streak:0,due:null,last:null};
   const item={...old,de:w.de,en:w.en,mm:w.mm||'',last:today()};
+  item.known=Boolean(correct);
   if(correct){
    if(item.wrong>0){
     item.streak=(Number(item.streak)||0)+1;
