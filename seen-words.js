@@ -264,6 +264,33 @@
   hero.append(makeLegend(stat));
   return hero;
  }
+ function nextMilestone(seen,total){
+  if(!total)return {goal:0,remaining:0,percent:100};
+  if(seen>=total)return {goal:total,remaining:0,percent:100};
+  const goals=[10,25,50,100,250,500,1000,2000,5000,10000,15000,20000];
+  const goal=Math.min(total,goals.find(n=>n>seen)||Math.ceil((seen+1)/5000)*5000);
+  return {goal,remaining:Math.max(0,goal-seen),percent:Math.round(100*seen/goal)};
+ }
+ function makeMilestone(stat){
+  const {goal,remaining,percent}=nextMilestone(stat.seen,stat.total);
+  const card=text(document.createElement('div'),'div','','ww-home-milestone');
+  const line=text(card,'div','','ww-home-milestone-header');
+  const heading=text(line,'div','','ww-home-milestone-heading');
+  text(heading,'span','NEXT MILESTONE','ww-home-milestone-eyebrow');
+  text(heading,'strong',remaining?pretty(goal)+' words': 'Vocabulary explored!','ww-home-milestone-title');
+  text(line,'span',remaining?pretty(remaining)+' to go':'Completed','ww-home-milestone-badge');
+  const track=text(card,'div','','ww-home-milestone-track');
+  track.setAttribute('role','progressbar');
+  track.setAttribute('aria-label','Next vocabulary exploration milestone');
+  track.setAttribute('aria-valuemin','0');
+  track.setAttribute('aria-valuemax','100');
+  track.setAttribute('aria-valuenow',String(percent));
+  const fill=text(track,'div','','ww-home-milestone-fill');
+  fill.style.width=percent+'%';
+  text(card,'p',remaining?'Already explored '+pretty(stat.seen)+' · keep going!':
+   'You have seen every study entry in the current catalogue.','ww-home-milestone-note');
+  return card;
+ }
  function renderHome(stat){
   home.replaceChildren();
   home.append(renderHero(stat));
@@ -271,9 +298,11 @@
   const preview=document.createElement('div');preview.className='ww-seen-a1-preview';
   const line=text(preview,'div','','ww-seen-level-head');
   text(line,'strong','A1 Word Bank');
-  text(line,'span',pretty(Math.max(a1.total-a1.seen,0))+' remaining · '+percent(a1.seen,a1.total)+'%');
+  text(line,'span',pretty(a1.seen)+' / '+pretty(a1.total)+' explored · '+pretty(Math.max(a1.total-a1.seen,0))+' left');
   preview.append(progressBar(a1.seen,a1.total,'A1 Word Bank seen'));
-  home.append(preview);
+  text(preview,'small',percent(a1.seen,a1.total)+'% of A1 Word Bank explored','ww-home-a1-caption');
+  const achievements=text(home,'div','','ww-home-achievements');
+  achievements.append(preview,makeMilestone(stat));
   const cta=document.createElement('button');cta.type='button';cta.className='ww-seen-home-cta';
   cta.textContent='Explore my seen words  →';
   cta.addEventListener('click',()=>window.WortWeg.navigate('seen'));
