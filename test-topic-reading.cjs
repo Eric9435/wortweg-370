@@ -70,8 +70,25 @@ assert.equal(JSON.stringify(w.WortWeg.getProgress()),storedBefore,
  'Reading completion cannot mutate vocabulary and quiz progress');
 reading.setCompleted(1,false);
 assert.equal(reading.completed(1),false);
-const uidKey=reading.storageKey();
-assert.ok(uidKey.endsWith(':guest'),'Guest progress isolated');
+const guestKey=reading.storageKey();
+const initialCurriculum=w.localStorage.getItem('wortweg370-curriculum-v1:guest');
+w.WortWegAccountSnapshot={uid:'reading-test-alice'};
+assert.equal(reading.completed(1),false,'Signed-in user does not inherit guest progress');
+reading.setCompleted(1,true);
+assert.equal(reading.completed(1),true);
+assert.ok(reading.storageKey().endsWith(':reading-test-alice'));
+w.WortWegAccountSnapshot={uid:'reading-test-bob'};
+assert.equal(reading.completed(1),false,'Different account starts with independent reading history');
+reading.setCompleted(1,true);
+w.WortWegAccountSnapshot={uid:'reading-test-alice'};
+assert.equal(reading.completed(1),true,'Switching back restores only the correct account');
+w.WortWegAccountSnapshot=null;
+assert.equal(reading.completed(1),false,'Guest history remains separate from signed-in accounts');
+assert.equal(reading.storageKey(),guestKey);
+assert.equal(w.localStorage.getItem('wortweg370-curriculum-v1:guest'),initialCurriculum,
+ 'Reading never overwrites curriculum checklist data');
+assert.equal(JSON.stringify(w.WortWeg.getProgress()),storedBefore,
+ 'Reading never overwrites original quiz mastery');
 assert.match(fs.readFileSync('mobile/scripts/prepare.mjs','utf8'),/topic-reading-engine\.js/,
  'Android bundles reading data');
 for(const name of seedNames){
