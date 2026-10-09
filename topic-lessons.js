@@ -285,8 +285,8 @@
   const p=window.WortWeg.getProgress(),item=p?.items?.[key(w)];
   if(!item)return false;
   // A later incorrect legacy quiz always revokes mastery, regardless of an older checkbox.
-  if(Number(item.wrong)>0&&Number(item.streak)===0)return false;
-  return typeof item.known==='boolean'?item.known:(Number(item.wrong)===0||Number(item.streak)>0);
+  if(Number(item.wrong)>0)return Number(item.streak)>0;
+  return item.known!==false;
  }
  function markKnown(w,value){
   if(w.source==='heading'||w.source==='starter'){
