@@ -150,3 +150,92 @@ html[data-mode=dark] body.ww-game-interface .ww-seen-correct .ww-seen-status {co
  body.ww-game-interface .ww-seen-meter-fill,
  body.ww-game-interface .ww-seen-play {transition:none!important}
 }
+
+/* Double-donut home hero: actual CEFR Word Bank distribution, overall exposure. */
+body.ww-game-interface .ww-donut-hero {
+ display:grid;grid-template-columns:minmax(0,.96fr) minmax(244px,280px) minmax(0,1.06fr);
+ align-items:center;gap:16px;padding:25px 22px 22px;
+ border:1px solid var(--line);border-radius:23px;background:var(--panel);
+ box-shadow:0 10px 32px rgb(22 65 108 / 5%);
+ min-width:0;
+}
+body.ww-game-interface .ww-donut-copy {min-width:0}
+body.ww-game-interface .ww-donut-headline {
+ display:block;font-size:clamp(22px,2.8vw,33px);font-weight:850;
+ line-height:1.13;letter-spacing:-.045em;color:var(--txt);margin:14px 0 8px;
+ font-variant-numeric:tabular-nums;
+}
+body.ww-game-interface .ww-donut-subtitle {margin:0;color:var(--muted);font-size:14px;line-height:1.4}
+body.ww-game-interface .ww-donut-metrics {
+ display:flex;align-items:center;flex-wrap:wrap;column-gap:10px;row-gap:1px;
+ margin:23px 0;padding:19px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)
+}
+body.ww-game-interface .ww-donut-metric-number {
+ font-variant-numeric:tabular-nums;color:var(--accent);font-size:28px;letter-spacing:-.04em;line-height:1.1
+}
+body.ww-game-interface .ww-donut-metrics span {font-size:13px;color:var(--muted)}
+body.ww-game-interface .ww-donut-statline {margin:0;font-size:12px;line-height:1.5;color:var(--muted)}
+body.ww-game-interface .ww-donut-shell {
+ width:100%;max-width:280px;aspect-ratio:1;position:relative;margin:auto;min-width:0;
+}
+body.ww-game-interface .ww-donut-svg {width:100%;height:100%;display:block;overflow:visible}
+body.ww-game-interface .ww-donut-track {stroke:var(--line);opacity:.8}
+body.ww-game-interface .ww-donut-completed {stroke:var(--accent,#205a92);transition:stroke-dashoffset .4s ease}
+body.ww-game-interface .ww-donut-center {
+ position:absolute;inset:32%;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;text-align:center;pointer-events:none;white-space:nowrap;
+}
+body.ww-game-interface .ww-donut-center strong {
+ font-size:clamp(19px,2.8vw,28px);color:var(--txt);font-weight:850;
+ font-variant-numeric:tabular-nums;letter-spacing:-.045em;
+}
+body.ww-game-interface .ww-donut-center span {font-size:12px;color:var(--muted)}
+body.ww-game-interface .ww-donut-center small {font-size:10px;color:var(--muted);margin-top:5px;font-variant-numeric:tabular-nums}
+body.ww-game-interface .ww-donut-legend {min-width:0}
+body.ww-game-interface .ww-donut-legend h3 {
+ font-size:10px;font-weight:850;letter-spacing:.13em;color:var(--teal);
+ margin:0 0 11px;
+}
+body.ww-game-interface .ww-donut-legend-row {
+ display:grid;grid-template-columns:minmax(58px,.53fr) minmax(0,1.1fr);
+ align-items:center;gap:5px 10px;padding:7px 0;
+ border-bottom:1px solid color-mix(in srgb,var(--line) 45%,transparent)
+}
+body.ww-game-interface .ww-donut-legend-name {display:flex;align-items:center;gap:9px;min-width:0}
+body.ww-game-interface .ww-donut-legend-name strong {font-weight:750;font-size:12px;color:var(--txt)}
+body.ww-game-interface .ww-donut-legend-dot {flex:0 0 13px;width:13px;height:13px;border-radius:50%}
+body.ww-game-interface .ww-donut-legend-values {
+ display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0;
+ font-variant-numeric:tabular-nums;
+}
+body.ww-game-interface .ww-donut-legend-values span {font-size:11px;color:var(--muted);white-space:nowrap}
+body.ww-game-interface .ww-donut-legend-values strong {font-size:11px;color:var(--muted);font-weight:750;white-space:nowrap}
+body.ww-game-interface .ww-donut-legend-detail {
+ grid-column:2;font-size:10px;line-height:1.2;color:var(--muted);
+}
+body.ww-game-interface .ww-donut-legend-total {
+ display:flex;justify-content:space-between;gap:6px;padding:11px 0 0;
+ font-size:11px;color:var(--txt);font-variant-numeric:tabular-nums
+}
+body.ww-game-interface .ww-donut-explainer {margin:10px 0 0;font-size:10px;line-height:1.45;color:var(--muted)}
+body.ww-game-interface .ww-seen-home > .ww-seen-a1-preview {margin-top:0}
+@media(max-width:900px){
+ body.ww-game-interface .ww-donut-hero {grid-template-columns:minmax(0,1fr) minmax(230px,280px);gap:8px 22px}
+ body.ww-game-interface .ww-donut-legend {grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 20px}
+ body.ww-game-interface .ww-donut-legend h3,body.ww-game-interface .ww-donut-legend-total,
+ body.ww-game-interface .ww-donut-explainer {grid-column:1/-1}
+}
+@media(max-width:610px){
+ body.ww-game-interface .ww-donut-hero {grid-template-columns:minmax(0,1fr);gap:17px;padding:21px 16px 16px}
+ body.ww-game-interface .ww-donut-headline {font-size:29px;margin:9px 0 4px}
+ body.ww-game-interface .ww-donut-metrics {margin:13px 0;padding:12px 0}
+ body.ww-game-interface .ww-donut-metric-number {font-size:23px}
+ body.ww-game-interface .ww-donut-shell {max-width:285px}
+ body.ww-game-interface .ww-donut-legend {grid-column:auto;display:block}
+ body.ww-game-interface .ww-donut-legend-row {grid-template-columns:minmax(82px,1fr) minmax(0,1.5fr)}
+ body.ww-game-interface .ww-donut-legend-values span {font-size:12px}
+ body.ww-game-interface .ww-donut-legend-values strong {font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.ww-game-interface .ww-donut-completed {transition:none}
+}
