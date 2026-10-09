@@ -22,9 +22,30 @@ function open(){readUser();root.hidden=false;document.body.classList.add('wg-ope
 function close(){root.hidden=true;document.body.classList.remove('wg-open');active=null;if(location.hash==='#grammar')history.replaceState(null,'',location.pathname+location.search);}
 function speak(t){if(!('speechSynthesis' in window))return;const u=new SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=.86;speechSynthesis.cancel();speechSynthesis.speak(u);}
 function stateOf(id){return progress[id]||{tries:0,correct:0,mastered:false};}
+function ringDashboard(){
+ const wrap=el('section','wg-ring-card');wrap.setAttribute('aria-label','Grammar A1 to C1 mastery');
+ add(wrap,el('h2','', 'Grammar mastery'),el('p','wg-ring-subtitle','Mastered lessons out of 40 planned topics per level. Unauthored topics remain incomplete.'));
+ const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+ svg.setAttribute('viewBox','0 0 320 250');svg.setAttribute('role','img');
+ svg.setAttribute('aria-label','Five concentric progress rings for A1 A2 B1 B2 C1');
+ const colors=['#178a73','#378bdb','#ad77d8','#dba44b','#ed7777'];
+ const counts=LEVELS.map(level=>entries.filter(e=>e.level===level&&stateOf(e.id).mastered).length);
+ function svgEl(tag,attrs,value){const node=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,String(v)));if(value!==undefined)node.textContent=value;svg.append(node);return node;}
+ counts.forEach((count,i)=>{const radius=104-i*19,circ=2*Math.PI*radius,pct=count/40;svgEl('circle',{cx:160,cy:120,r:radius,fill:'none',stroke:'currentColor','stroke-opacity':'.10','stroke-width':12});svgEl('circle',{cx:160,cy:120,r:radius,fill:'none',stroke:colors[i],'stroke-width':12,'stroke-linecap':'round','stroke-dasharray':(circ*pct)+' '+circ,transform:'rotate(-90 160 120)'});});
+ const mastered=counts.reduce((a,b)=>a+b,0),percent=Math.round(mastered/200*100);
+ svgEl('text',{x:160,y:117,'text-anchor':'middle','font-size':27,'font-weight':700,fill:'currentColor'},percent+'%');
+ svgEl('text',{x:160,y:139,'text-anchor':'middle','font-size':11,fill:'currentColor',opacity:'.68'},'overall');
+ wrap.append(svg);
+ const legend=el('div','wg-ring-legend');
+ LEVELS.forEach((level,i)=>{const item=el('div','wg-ring-legend-item');const dot=el('span','wg-ring-dot');dot.style.backgroundColor=colors[i];add(item,dot,el('strong','',level),el('span','',counts[i]+'/40'));legend.append(item);});
+ wrap.append(legend);
+ add(wrap,el('p','wg-ring-footnote',mastered+' mastered of 200 planned topics · progress saved locally on this device.'));
+ return wrap;
+}
 function render(){body.replaceChildren();if(active){lesson();return;}const h=add(el('div','wg-intro'),el('h1','', 'German Grammar A1–C1'),el('p','', 'Complete learning roadmap · German + English + Myanmar · practice and review'));body.append(h);
 const mastered=entries.filter(e=>stateOf(e.id).mastered).length;
 add(body,el('div','wg-summary',mastered+' / '+entries.length+' interactive lessons mastered · '+Object.values(topics).reduce((a,b)=>a+b.length,0)+' grammar topics in the roadmap'));
+body.append(ringDashboard());
 const nav=el('nav','wg-levels');LEVELS.forEach(l=>nav.append(btn(l,()=>{selectedLevel=l;render();},l===selectedLevel?'wg-active':'')));body.append(nav);
 const available=entries.filter(x=>x.level===selectedLevel),done=available.filter(x=>stateOf(x.id).mastered).length;
 const status=el('div','wg-level-info');add(status,el('strong','',selectedLevel+' Grammar'),el('span','',done+' of '+available.length+' interactive lessons mastered'));body.append(status);
