@@ -448,21 +448,51 @@
 // Sentence-by-sentence reading stays inside the current topic page.
 // The authored identity passage uses no actual address, birth date or contact numbers.
  const identityPassage="Hallo! Mein Name ist Eric.\nMein Vorname ist Eric und mein Nachname steht in meinem Reisepass.\nMein Familienname und mein Geburtsname sind gleich.\nIch habe keinen Zweitnamen.\nMein Rufname ist Eric.\nMeine Initialen sind E. S.\nDie Schreibweise meines Namens ist wichtig, besonders bei offiziellen Formularen.\nEine Namensänderung habe ich nicht gemacht.\nIch bin ein junger Erwachsener.\nMein Alter ist fünfundzwanzig Jahre.\nMein Geburtsdatum möchte ich hier nicht nennen.\nMein Geburtsmonat und mein Geburtsjahr stehen in meinen persönlichen Dokumenten.\nMein Geburtsort liegt in Myanmar und meine Geburtsstadt ist Yangon.\nMeine Geburtsurkunde enthält diese Informationen.\nMein Heimatland ist Myanmar.\nAuch mein Herkunftsland ist Myanmar.\nDas Land, in dem ich jetzt lebe, ist Deutschland.\nMeine Staatsangehörigkeit ist myanmarisch.\nMeine Muttersprache ist Birmanisch.\nAußerdem spreche ich Englisch und lerne Deutsch.\nMein Wohnort ist Hamburg.\nMein Wohnsitz ist jetzt in Deutschland.\nMeine genaue Adresse ist privat.\nMeine Anschrift möchte ich nicht öffentlich zeigen.\nMeine Postleitzahl und meine Hausnummer stehen in meinen persönlichen Unterlagen.\nMein Beruf ist Ingenieur.\nIch habe Elektrotechnik studiert und studiere jetzt im Master an der Technischen Universität Hamburg.\nIch interessiere mich für Automatisierung, Steuerungstechnik und digitale Technologien.\nAußerdem spiele ich Klavier und unterrichte Musik.\nMein Familienstand ist privat.\nIn einem Formular gibt es verschiedene Möglichkeiten, zum Beispiel ledig oder verheiratet.\nMein Geschlecht ist männlich.\nMeine Kontaktdaten sind ebenfalls privat.\nMeine Telefonnummer und meine E-Mail-Adresse gebe ich nur an vertrauenswürdige Personen weiter.\nMeine Ausweisnummer veröffentliche ich nicht.\nWenn ich ein Formular ausfülle, lese ich zuerst die Anrede, zum Beispiel Herr oder Frau.\nDanach mache ich die erforderlichen Angaben.\nAm Ende kontrolliere ich alles und schreibe meine Unterschrift.\nDas bin ich!\nIch lebe in Hamburg, lerne jeden Tag Deutsch und möchte mich persönlich und beruflich weiterentwickeln.";
+ // Topic-specific contextual reading scenes, organized by the actual 370-topic syllabus.
+ // These are full guided readings, not a list of English dictionary definitions.
+ const sceneSets=[
+  [2,20,['In meinem Deutschkurs stellen wir uns heute vor.','Zuerst sprechen wir über uns und unsere Familien.','Ich höre aufmerksam zu und stelle einfache Fragen.','Meine Mitschüler antworten freundlich und langsam.','Danach erzählen wir etwas über unser Leben.','Wir finden Gemeinsamkeiten und lernen uns besser kennen.','Am Ende schreibe ich fünf neue Sätze in mein Heft.']],
+  [21,40,['Am Morgen achte ich auf meinen Körper und meine Gesundheit.','Ich stehe auf, trinke Wasser und beginne meinen Tag.','Manchmal fühle ich mich müde und brauche eine Pause.','Ich möchte meine Gewohnheiten verbessern und mich gesund fühlen.','Bei Beschwerden frage ich nach Hilfe und erkläre die Situation.','Am Abend denke ich darüber nach, was heute gut war.','Ich lerne dabei auch neue deutsche Wörter.']],
+  [41,62,['Heute plane ich meinen Tag und bereite meine Sachen vor.','Ich schaue auf die Uhr und überlege, was ich machen muss.','Danach treffe ich eine Entscheidung und beginne mit meiner Aufgabe.','Im Alltag gibt es viele kleine Unterschiede und wichtige Details.','Ich frage nach, wenn ich etwas nicht verstehe.','Später erzähle ich einem Freund von meinem Tag.','Am Ende habe ich wieder etwas Neues gelernt.']],
+  [63,91,['Ich bin zu Hause und möchte meinen Wohnbereich gut organisieren.','Am Morgen öffne ich das Fenster und schaue mich um.','Ich prüfe, ob alles sauber und in Ordnung ist.','Manchmal muss ich etwas kaufen, reparieren oder aufräumen.','Mein Mitbewohner hilft mir und wir teilen die Aufgaben.','Am Nachmittag machen wir eine kleine Pause.','So wird unser Alltag zu Hause einfacher.']],
+  [92,140,['Heute gehe ich einkaufen und plane mein Essen.','Zuerst schreibe ich eine Liste und denke an mein Budget.','Im Geschäft vergleiche ich Produkte und frage nach dem Preis.','Eine freundliche Person erklärt mir die verschiedenen Möglichkeiten.','Ich wähle etwas Passendes und bezahle an der Kasse.','Zu Hause bereite ich alles vor und genieße meine Mahlzeit.','Danach prüfe ich, ob ich genug Geld für die Woche habe.']],
+  [141,157,['Heute ist ein neuer Lerntag und ich gehe zum Unterricht.','Die Lehrperson erklärt uns das Thema mit Beispielen.','Ich höre zu, lese die Aufgaben und mache Notizen.','Wenn ich etwas nicht verstehe, stelle ich eine Frage.','Mit meinen Mitschülern übe ich die neuen Ausdrücke.','Nach dem Unterricht wiederhole ich die wichtigsten Wörter.','Schritt für Schritt mache ich gute Fortschritte.']],
+  [158,190,['Heute beschäftige ich mich mit Arbeit und beruflichen Aufgaben.','Am Morgen bespreche ich meinen Plan mit einem Kollegen.','Wir sammeln Informationen und überlegen uns eine Lösung.','Anschließend bearbeiten wir eine Aufgabe gemeinsam.','Bei Schwierigkeiten fragen wir nach und kontrollieren die Ergebnisse.','Am Nachmittag schreiben wir eine kurze Nachricht über unseren Fortschritt.','So lernen wir, klar und professionell zu kommunizieren.']],
+  [191,202,['Heute muss ich eine wichtige Angelegenheit erledigen.','Zuerst lese ich die Informationen und bereite meine Dokumente vor.','Ich achte auf die Regeln und frage bei Unsicherheit nach.','Die Mitarbeiterin erklärt mir Schritt für Schritt, was ich tun soll.','Ich kontrolliere meine Angaben und vermeide Fehler.','Zum Schluss bedanke ich mich für die Unterstützung.','Jetzt weiß ich besser, wie dieser Vorgang funktioniert.']],
+  [203,259,['Heute bin ich unterwegs und entdecke meine Umgebung.','Zuerst überlege ich, wo ich hinfahren oder hingehen möchte.','Ich schaue auf den Weg und prüfe die wichtigsten Informationen.','Unterwegs sehe ich viele interessante Dinge.','Ich frage eine Person nach dem richtigen Weg.','Später mache ich eine Pause und genieße die Umgebung.','Am Abend erzähle ich von meinem kleinen Ausflug.']],
+  [260,301,['Heute habe ich Freizeit und möchte etwas Schönes unternehmen.','Ich spreche mit einem Freund über unsere Pläne.','Wir überlegen, was uns Freude macht und was wir ausprobieren möchten.','Gemeinsam verbringen wir Zeit und sammeln neue Erfahrungen.','Wenn etwas nicht klappt, finden wir eine andere Möglichkeit.','Am Abend sprechen wir über unsere Erlebnisse.','So bleiben viele gute Erinnerungen an diesen Tag.']],
+  [302,319,['Heute denke ich über Menschen und das Zusammenleben nach.','Jeder Mensch hat eigene Erfahrungen und Gewohnheiten.','Wir sprechen miteinander und hören verschiedene Meinungen.','Ich versuche, andere Menschen besser zu verstehen.','Bei Problemen ist es wichtig, ruhig und respektvoll zu bleiben.','Gemeinsam können wir Lösungen finden und voneinander lernen.','Am Ende nehme ich eine neue Idee mit.']],
+  [320,350,['Heute lese ich etwas über Wissenschaft, Technik und unsere Welt.','Zuerst stelle ich eine Frage und sammle Informationen.','Ich untersuche ein Beispiel und vergleiche die Ergebnisse.','Manche Begriffe sind schwierig, deshalb lerne ich sie Schritt für Schritt.','Ich bespreche meine Beobachtungen mit anderen.','Danach prüfe ich, welche Lösung sinnvoll ist.','Zum Schluss fasse ich zusammen, was ich verstanden habe.']],
+  [351,370,['Heute geht es um eine wichtige Situation im Alltag.','Ich informiere mich über die Möglichkeiten und meine Rechte.','Zuerst prüfe ich alle Details und entscheide, was zu tun ist.','Wenn ich Hilfe brauche, spreche ich mit einer zuständigen Person.','Gemeinsam klären wir die Fragen und finden einen nächsten Schritt.','Ich bewahre wichtige Unterlagen sicher auf.','Danach fühle ich mich auf ähnliche Situationen besser vorbereitet.']]
+ ];
  function passageSentences(){
   if(!selected)return [];
-  const lines=selected.topic.id===1?identityPassage.split('\n'):[
-   'Heute geht es um das Thema „'+selected.topic.de+'“.',
-   'Ich möchte über „'+selected.topic.de+'“ sprechen.',
-   'Dieses Thema ist für meinen Alltag wichtig.'
-  ];
+  if(selected.topic.id===1)return identityPassage.split('\\n');
+  const {id,de}=selected.topic;
+  const scene=sceneSets.find(x=>id>=x[0]&&id<=x[1]);
+  const lines=['Mein heutiges Thema ist „'+de+'“.',...(scene?scene[2]:[])];
+  const used=new Set();
+  const stripArticle=w=>String(w||'').replace(/^(der|die|das)\\s+/i,'').trim();
+  const includesWord=(line,term)=>line.toLocaleLowerCase('de').includes(term.toLocaleLowerCase('de'));
   for(const word of selected.all){
-   const term=String(word.de||'').replace(/^(der|die|das)\s+/i,'').trim();
-   if(lines.some(line=>line.toLocaleLowerCase('de').includes(term.toLocaleLowerCase('de'))))continue;
-   const example=exampleBank[String(word.de||'').toLocaleLowerCase('de')]?.[0];
+   const term=stripArticle(word.de);
+   if(!term||used.has(term.toLocaleLowerCase('de')))continue;
+   used.add(term.toLocaleLowerCase('de'));
+   if(lines.some(line=>includesWord(line,term)))continue;
+   const entry=exampleBank[String(word.de||'').toLocaleLowerCase('de')];
+   if(entry?.[0]){lines.push(entry[0]);continue;}
    const label=String(word.de||'');
-   const meaning=String(word.en||'');
-   lines.push(example||('Der Ausdruck „'+label+'“ bedeutet auf Englisch „'+meaning+'“.'));
+   // The vocabulary is used as a quoted word in an authentic German classroom
+   // sentence. This remains grammatical even for verb and adjective lemmas.
+   const frame=[
+    'Im Unterricht begegnet mir auch das Wort „'+label+'“. Ich schreibe es auf und übe einen eigenen Satz.',
+    'Als Nächstes lernen wir den Ausdruck „'+label+'“. Ich spreche ihn laut und wiederhole ihn.',
+    'Wir lesen das Wort „'+label+'“ im Zusammenhang mit unserem Thema. Danach notiere ich ein Beispiel.',
+    'Meine Lehrperson erklärt uns „'+label+'“. Ich höre gut zu und stelle eine Frage.'
+   ][(lines.length+id)%4];
+   lines.push(...frame.split(/(?<=\\.)\\s+(?=[A-ZÄÖÜ])/));
   }
+  lines.push('Jetzt kann ich über „'+de+'“ sprechen und kenne die wichtigsten Wörter zu diesem Thema.');
   return lines.filter(Boolean);
  }
  function highlightPassageWords(node,line,words){
