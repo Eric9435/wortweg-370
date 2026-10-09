@@ -200,7 +200,7 @@
   const bankCount=levels.reduce((sum,level)=>sum+(stat.totals.get(level)?.total||0),0);
   const shell=text(document.createElement('div'),'div','','ww-donut-shell');
   const svg=svgEl('svg',{viewBox:'0 0 280 280',class:'ww-donut-svg',role:'img',
-   'aria-label':'Outer ring: CEFR Word Bank distribution A1 to C2. Middle ring: vocabulary exploration. Innermost ring: grammar mastery.'});
+   'aria-label':'Outer ring: CEFR Word Bank distribution A1 to C2. Middle ring: currently learned vocabulary. Innermost ring: grammar mastery.'});
   const title=svgEl('title');title.textContent='Vocabulary levels and overall learning progress';svg.append(title);
   let pos=0;
   for(const [i,level] of levels.entries()){
@@ -224,7 +224,7 @@
   svg.append(track);
   const fill=svgEl('circle',{cx:140,cy:140,r:66,fill:'none',class:'ww-donut-completed','stroke-width':15,
    transform:'rotate(-90 140 140)','stroke-dasharray':(2*Math.PI*66).toFixed(3),
-   'stroke-dashoffset':(2*Math.PI*66*(1-(stat.total?stat.seen/stat.total:0))).toFixed(3),
+   'stroke-dashoffset':(2*Math.PI*66*(1-(stat.total?stat.learned/stat.total:0))).toFixed(3),
    'stroke-linecap':'butt'});
   svg.append(fill);
   // Third concentric ring shows grammar lesson mastery; original CEFR and vocabulary rings remain unchanged.
@@ -244,9 +244,9 @@
   grammarRing.append(grammarTitle);svg.append(grammarRing);
   shell.append(svg);
   const middle=text(shell,'div','','ww-donut-center');
-  text(middle,'strong',precisePercent(stat.seen,stat.total));
-  text(middle,'span','explored');
-  text(middle,'small',pretty(stat.seen)+' / '+pretty(stat.total));
+  text(middle,'strong',precisePercent(stat.learned,stat.total));
+  text(middle,'span','learned');
+  text(middle,'small',pretty(stat.learned)+' / '+pretty(stat.total));
   return shell;
  }
  function makeLegend(stat){
@@ -273,7 +273,7 @@
   const grammarDot=text(grammarLine,'span','','ww-donut-grammar-dot');grammarDot.setAttribute('aria-hidden','true');
   text(grammarLine,'strong','Grammar mastery');
   text(grammarLine,'span',pretty(grammarDone)+' / '+pretty(Number(grammar.total)||200)+' lessons');
-  text(wrap,'p','Outer CEFR ring = vocabulary distribution; middle blue ring = vocabulary explored; innermost teal ring = grammar lessons mastered.','ww-donut-explainer');
+  text(wrap,'p','Outer CEFR ring = vocabulary distribution; middle blue ring = currently learned words; innermost teal ring = grammar lessons mastered.','ww-donut-explainer');
   return wrap;
  }
  function renderHero(stat){
@@ -281,10 +281,10 @@
   hero.setAttribute('aria-label','Your vocabulary learning journey');
   const headline=text(hero,'div','','ww-donut-copy');
   text(headline,'span','YOUR LEARNING JOURNEY','ww-seen-overline');
-  text(headline,'strong',pretty(stat.seen)+' explored','ww-donut-headline');
-  text(headline,'p',pretty(stat.remaining)+' left to explore','ww-donut-subtitle');
+  text(headline,'strong',pretty(stat.learned)+' learned','ww-donut-headline');
+  text(headline,'p',pretty(Math.max(0,stat.total-stat.learned))+' left to learn','ww-donut-subtitle');
   const metrics=text(headline,'div','','ww-donut-metrics');
-  text(metrics,'strong',precisePercent(stat.seen,stat.total),'ww-donut-metric-number');
+  text(metrics,'strong',precisePercent(stat.learned,stat.total),'ww-donut-metric-number');
   text(metrics,'span','overall progress');
   text(headline,'p',pretty(stat.learned)+' currently learned · '+pretty(stat.needsReview)+' need review','ww-donut-statline');
   text(headline,'p',pretty(stat.seen)+' of '+pretty(stat.total)+' study entries encountered','ww-donut-statline');
@@ -300,22 +300,22 @@
   return {goal,remaining:Math.max(0,goal-seen),percent:Math.round(100*seen/goal)};
  }
  function makeMilestone(stat){
-  const {goal,remaining,percent}=nextMilestone(stat.seen,stat.total);
+  const {goal,remaining,percent}=nextMilestone(stat.learned,stat.total);
   const card=text(document.createElement('div'),'div','','ww-home-milestone');
   const line=text(card,'div','','ww-home-milestone-header');
   const heading=text(line,'div','','ww-home-milestone-heading');
   text(heading,'span','NEXT MILESTONE','ww-home-milestone-eyebrow');
-  text(heading,'strong',remaining?pretty(goal)+' words': 'Vocabulary explored!','ww-home-milestone-title');
+  text(heading,'strong',remaining?pretty(goal)+' words': 'Vocabulary learned!','ww-home-milestone-title');
   text(line,'span',remaining?pretty(remaining)+' to go':'Completed','ww-home-milestone-badge');
   const track=text(card,'div','','ww-home-milestone-track');
   track.setAttribute('role','progressbar');
-  track.setAttribute('aria-label','Next vocabulary exploration milestone');
+  track.setAttribute('aria-label','Next vocabulary learning milestone');
   track.setAttribute('aria-valuemin','0');
   track.setAttribute('aria-valuemax','100');
   track.setAttribute('aria-valuenow',String(percent));
   const fill=text(track,'div','','ww-home-milestone-fill');
   fill.style.width=percent+'%';
-  text(card,'p',remaining?'Already explored '+pretty(stat.seen)+' · keep going!':
+  text(card,'p',remaining?'Currently learned '+pretty(stat.learned)+' · keep going!':
    'You have seen every study entry in the current catalogue.','ww-home-milestone-note');
   return card;
  }
@@ -323,12 +323,13 @@
   home.replaceChildren();
   home.append(renderHero(stat));
   const a1=stat.totals.get('A1')||{seen:0,total:0};
+  const a1Learned=stat.rows.filter(r=>r.group==='A1'&&r.status.known).length;
   const preview=document.createElement('div');preview.className='ww-seen-a1-preview';
   const line=text(preview,'div','','ww-seen-level-head');
   text(line,'strong','A1 Word Bank');
-  text(line,'span',pretty(a1.seen)+' / '+pretty(a1.total)+' explored · '+pretty(Math.max(a1.total-a1.seen,0))+' left');
-  preview.append(progressBar(a1.seen,a1.total,'A1 Word Bank seen'));
-  text(preview,'small',percent(a1.seen,a1.total)+'% of A1 Word Bank explored','ww-home-a1-caption');
+  text(line,'span',pretty(a1Learned)+' / '+pretty(a1.total)+' learned · '+pretty(Math.max(a1.total-a1Learned,0))+' left');
+  preview.append(progressBar(a1Learned,a1.total,'A1 Word Bank learned'));
+  text(preview,'small',percent(a1Learned,a1.total)+'% of A1 Word Bank learned','ww-home-a1-caption');
   const achievements=text(home,'div','','ww-home-achievements');
   achievements.append(preview,makeMilestone(stat));
   const cta=document.createElement('button');cta.type='button';cta.className='ww-seen-home-cta';
