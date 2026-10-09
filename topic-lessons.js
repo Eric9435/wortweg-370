@@ -106,7 +106,7 @@
   366:'employee right work',367:'career learn develop',368:'network job friend',
   369:'business company start',370:'self employed business'
  };
- const starterRows=String.raw\`
+ const starterRows=String.raw`
  5|Hallo=hello|Guten Tag=good day|Guten Morgen=good morning
  6|jemanden treffen=to meet someone|sich vorstellen=to introduce oneself|die Bekanntschaft=acquaintance
  8|der Onkel=uncle|die Tante=aunt|der Cousin=cousin
@@ -202,7 +202,7 @@
  341|die Beerdigung=funeral|das Grab=grave|trauern=to mourn
  361|die Rente=pension|der Ruhestand=retirement|in Rente gehen=to retire
  369|der Unternehmer=entrepreneur|das Unternehmen=company|gründen=to found or establish
- \`.trim();
+ `.trim();
  const starters=new Map(starterRows.split('\n').map(line=>{
   const [id,...words]=line.trim().split('|');
   return [Number(id),words.filter(Boolean).map((pair,i)=>{
