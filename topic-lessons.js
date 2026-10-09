@@ -339,6 +339,77 @@
   if(className)n.className=className;
   n.textContent=value;parent.append(n);return n;
  }
+
+ // Inline memory practice. All entries have a conversation; common identity nouns
+ // additionally get a contextual, translated sentence.
+ const exampleBank={
+  'der name':['Mein Name ist Alex.','My name is Alex.'],
+  'der vorname':['Mein Vorname ist Alex.','My first name is Alex.'],
+  'der nachname':['Mein Nachname ist Müller.','My last name is Müller.'],
+  'das alter':['Mein Alter ist 25 Jahre.','My age is 25 years.'],
+  'das geburtsdatum':['Mein Geburtsdatum ist der 14. Januar.','My date of birth is January 14.'],
+  'die staatsangehörigkeit':['Meine Staatsangehörigkeit ist deutsch.','My nationality is German.'],
+  'der wohnort':['Mein Wohnort ist Hamburg.','My place of residence is Hamburg.'],
+  'der beruf':['Mein Beruf ist Ingenieur.','My profession is engineer.'],
+  'der familienstand':['Mein Familienstand ist ledig.','My marital status is single.'],
+  'die adresse':['Wie lautet deine Adresse?','What is your address?'],
+  'der geburtsort':['Mein Geburtsort ist Berlin.','My place of birth is Berlin.'],
+  'das geschlecht':['Das Geschlecht ist ein Feld im Formular.','Gender is a field on the form.'],
+  'die muttersprache':['Meine Muttersprache ist Deutsch.','My native language is German.'],
+  'das land':['Deutschland ist ein Land in Europa.','Germany is a country in Europe.'],
+  'ledig':['Ich bin ledig.','I am single.'],
+  'die postleitzahl':['Wie lautet deine Postleitzahl?','What is your postal code?'],
+  'die hausnummer':['Meine Hausnummer ist zwölf.','My house number is twelve.'],
+  'die anrede':['Welche Anrede soll ich verwenden?','Which form of address should I use?'],
+  'die unterschrift':['Bitte setzen Sie hier Ihre Unterschrift.','Please put your signature here.'],
+  'der geburtsname':['Bitte tragen Sie Ihren Geburtsnamen ein.','Please enter your birth name.'],
+  'die ausweisnummer':['Wo steht meine Ausweisnummer?','Where is my ID card number?'],
+  'die telefonnummer':['Wie lautet deine Telefonnummer?','What is your phone number?'],
+  'die e-mail-adresse':['Meine E-Mail-Adresse steht im Formular.','My email address is on the form.'],
+  'die geburtsurkunde':['Ich brauche meine Geburtsurkunde.','I need my birth certificate.'],
+  'die kontaktdaten':['Bitte schicken Sie mir Ihre Kontaktdaten.','Please send me your contact details.'],
+  'das heimatland':['Myanmar ist mein Heimatland.','Myanmar is my home country.'],
+  'der wohnsitz':['Mein Wohnsitz ist in Hamburg.','My legal residence is in Hamburg.'],
+  'die namensänderung':['Ich muss die Namensänderung melden.','I have to report the name change.'],
+  'die anschrift':['Bitte geben Sie Ihre Anschrift an.','Please provide your postal address.'],
+  'das herkunftsland':['Was ist Ihr Herkunftsland?','What is your country of origin?'],
+  'die angabe':['Diese Angabe ist wichtig.','This information is important.'],
+  'der rufname':['Mein Rufname ist Alex.','The name I usually go by is Alex.'],
+  'der familienname':['Mein Familienname ist Müller.','My family name is Müller.'],
+  'der zweitname':['Mein Zweitname ist Paul.','My second given name is Paul.'],
+  'die initialen':['Meine Initialen sind A. M.','My initials are A. M.'],
+  'die schreibweise':['Ist diese Schreibweise richtig?','Is this spelling correct?'],
+  'der geburtsmonat':['Mein Geburtsmonat ist Januar.','My birth month is January.'],
+  'das geburtsjahr':['Mein Geburtsjahr ist 2000.','My birth year is 2000.'],
+  'die geburtsstadt':['Meine Geburtsstadt ist Yangon.','My birth city is Yangon.'],
+  'die meldeadresse':['Meine Meldeadresse ist in Hamburg.','My registered address is in Hamburg.'],
+  'die aufenthaltsdauer':['Die Aufenthaltsdauer beträgt zwei Wochen.','The duration of stay is two weeks.']
+ };
+ function addMemoryPractice(card,w){
+  const outer=tag(card,'div','','ww-topic-memory');
+  const toggle=tag(outer,'button','Example & conversation  ▾','ww-topic-memory-toggle');
+  toggle.type='button';toggle.setAttribute('aria-expanded','false');
+  const panel=tag(outer,'div','','ww-topic-memory-panel');panel.hidden=true;
+  const entry=exampleBank[String(w.de||'').toLocaleLowerCase('de')];
+  const german=entry?.[0]||('Ich lerne heute den Ausdruck „'+w.de+'“.');
+  const english=entry?.[1]||('Today I am learning the expression “'+w.de+'”.');
+  tag(panel,'small','EXAMPLE SENTENCE','ww-topic-memory-label');
+  const sentence=tag(panel,'p',german,'ww-topic-memory-de');
+  tag(panel,'p',english,'ww-topic-memory-en');
+  tag(panel,'small','MINI CONVERSATION','ww-topic-memory-label');
+  const question='Wie sagt man „'+(w.en||w.de)+'“ auf Deutsch?';
+  const answer='Auf Deutsch sagt man „'+w.de+'“.';
+  tag(panel,'p','A: '+question,'ww-topic-memory-de');
+  tag(panel,'p','B: '+answer,'ww-topic-memory-de');
+  tag(panel,'p','A: How do you say “'+(w.en||w.de)+'” in German?','ww-topic-memory-en');
+  tag(panel,'p','B: In German, you say “'+w.de+'”.','ww-topic-memory-en');
+  const hear=tag(panel,'button','🔊 Listen to German','ww-topic-memory-speak');
+  hear.type='button';hear.addEventListener('click',()=>speak(german+' '+question+' '+answer));
+  toggle.addEventListener('click',()=>{
+   panel.hidden=!panel.hidden;toggle.setAttribute('aria-expanded',String(!panel.hidden));
+   toggle.textContent=panel.hidden?'Example & conversation  ▾':'Hide example & conversation  ▴';
+  });
+ }
  function displayWords(){
   if(!selected)return;
   const q=normalize(el('ww-topic-search').value),level=el('ww-topic-level').value;
@@ -368,6 +439,7 @@
    const play=tag(meta,'button','🔊','ww-topic-listen');
    play.type='button';play.setAttribute('aria-label','Hear '+w.de+' pronounced in German');
    play.addEventListener('click',()=>speak(w.de));
+   addMemoryPractice(card,w);
   }
   el('ww-topic-count').textContent=matches.length+' entries · '+Math.min(matches.length,shown)+' shown';
   const more=el('ww-topic-more');more.hidden=shown>=matches.length;
