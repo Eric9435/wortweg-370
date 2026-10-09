@@ -82,7 +82,18 @@ const quiz=add(el('article','wg-panel'),el('h2','', 'Practice'),el('p','wg-quest
 e.options.forEach((opt,i)=>quiz.append(btn(opt,()=>{if(checked)return;chosen=i;render();},'wg-choice '+(i===chosen?'wg-selected ':'')+(checked&&i===e.answer?'wg-correct':checked&&i===chosen?'wg-wrong':''))));
 if(checked){add(quiz,el('p','wg-feedback',chosen===e.answer?'✓ Correct!':'✕ Incorrect. Correct answer: '+e.options[e.answer]),el('p','',e.rule),btn('Try again',()=>{chosen=-1;checked=false;render();}));}
 else quiz.append(btn('Check answer',()=>{if(chosen<0)return;checked=true;const p=stateOf(e.id);const next={tries:p.tries+1,correct:p.correct+(chosen===e.answer?1:0),mastered:p.mastered||(chosen===e.answer)};progress[e.id]=next;writeUser();render();},'wg-primary'+(chosen<0?' wg-disabled':'')));
-body.append(quiz);body.append(el('p','wg-notice','Progress is saved on this device separately from your existing vocabulary history. Cloud syncing for grammar is not yet enabled.'));
+body.append(quiz);
+const guide=topicGuide(e.level,e.title);
+const deeper=el('article','wg-panel');
+add(deeper,el('h2','', 'Why this grammar matters'),el('p','',guide.objective),el('h2','', 'Guided application'),el('p','',guide.method),el('h2','', 'Independent writing practice'),el('p','',guide.exercise));
+const prompt=el('label','wg-writing-label','Write your own German example (self-check exercise)');
+const answer=el('textarea','wg-writing-area');answer.rows=4;answer.maxLength=1800;answer.placeholder='Write a German sentence using the rule…';answer.setAttribute('aria-label','Your own German grammar sentence');
+const draftKey=userKey()+':draft:'+e.id;
+try{answer.value=localStorage.getItem(draftKey)||'';}catch{}
+answer.addEventListener('input',()=>{try{localStorage.setItem(draftKey,answer.value);}catch{}});
+deeper.append(prompt,answer,el('p','wg-notice','Writing practice is a self-study draft saved on this device; it is not automatically corrected or synced.'));
+body.append(deeper);
+body.append(el('p','wg-notice','Progress is saved on this device separately from your existing vocabulary history. Cloud syncing for grammar is not yet enabled.'));
 }
 const css=document.createElement('link');css.rel='stylesheet';css.href='./grammar.css';document.head.append(css);
 // Keep Grammar as a first-class menu row, never an orphan card or text
