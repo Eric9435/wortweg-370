@@ -33,11 +33,13 @@ let state=w.WortWegSeenWords.getSummary();
 assert.equal(state.total,7,'Bank, Topic 1 and New Lessons sources all count toward catalogue');
 assert.equal(state.seen,4,'Only answered entries count as seen');
 assert.equal(state.remaining,3,'Remaining subtracts seen only once');
+assert.equal(state.learned,2,'Only successfully learned legacy words count as mastery');
+assert.equal(state.needsReview,2,'Open mistakes count for review, not recovered mistakes');
 assert.deepEqual(JSON.parse(JSON.stringify(state.totals.get('A1'))),{total:2,seen:2},'A1 refers to Word Bank, not generic quiz completion');
 assert.deepEqual(JSON.parse(JSON.stringify(state.totals.get('Topic 1'))),{total:1,seen:1});
 assert.deepEqual(JSON.parse(JSON.stringify(state.totals.get('New lessons'))),{total:2,seen:1});
-assert.ok($('ww-seen-home').textContent.includes('4 explored'),'Home celebrates answered entries');
-assert.ok($('ww-seen-home').textContent.includes('57.1%'),'Small but accurate decimal overall progress');
+assert.ok($('ww-seen-home').textContent.includes('2 learned'),'Home counts currently learned entries');
+assert.ok($('ww-seen-home').textContent.includes('28.6%'),'Learned percentage excludes current review and not-yet-known words');
 const chart=w.document.querySelector('#ww-seen-home .ww-donut-svg');
 assert.ok(chart,'Home renders double-donut SVG');
 assert.ok(chart.getAttribute('aria-label').includes('CEFR'),'Accessible chart explains CEFR distribution');
@@ -50,10 +52,10 @@ assert.ok($('ww-seen-home').textContent.includes('2 entries'),'Legend shows real
 assert.ok($('ww-seen-home').textContent.includes('50.0%'),'A1 occupies half of the four-entry Word Bank');
 assert.ok($('ww-seen-home').textContent.includes('2 explored · 0 left'),'Legend distinguishes level totals from explored entries');
 assert.ok($('ww-seen-home').textContent.includes('Word Bank total'),'The outer ring explicitly excludes the other sources');
-assert.ok($('ww-seen-home').textContent.includes('3 left to explore'));
+assert.ok($('ww-seen-home').textContent.includes('5 left to learn'));
 assert.ok($('ww-seen-home').textContent.includes('7 words'),'Milestone clamps to current total in small fixture');
-assert.equal($('ww-seen-home').querySelector('.ww-home-milestone-track').getAttribute('aria-valuenow'),'57','Milestone uses real seen count');
-assert.ok($('ww-seen-home').textContent.includes('2 / 2 explored · 0 left'));
+assert.equal($('ww-seen-home').querySelector('.ww-home-milestone-track').getAttribute('aria-valuenow'),'29','Milestone uses currently learned count');
+assert.ok($('ww-seen-home').textContent.includes('1 / 2 learned · 1 left'));
 assert.ok($('seen'),'There is a dedicated all-words page');
 assert.ok(w.document.querySelector('[data-nav="seen"]'),'Main menu has a Seen Words navigation link');
 w.WortWegSeenWords.open();
@@ -74,7 +76,18 @@ $('ww-seen-search').value='';$('ww-seen-search').dispatchEvent(new w.Event('inpu
 progress={...progress,answered:7,correct:4,items:{...progress.items,'b:1':{wrong:0,streak:0}}};
 w.dispatchEvent(new w.Event('wortweg:changed'));
 assert.equal(w.WortWegSeenWords.getSummary().seen,4,'Repeating old answers does not inflate seen count');
-assert.ok($('ww-seen-home').textContent.includes('4 explored'),'Chart updates without counting repeat answers twice');
+assert.ok($('ww-seen-home').textContent.includes('2 learned'),'Chart does not inflate learned count when repeating a word');
+// Simulate actual shared-progress writes from checklist and quiz without fabricating quiz attempts.
+progress.items['b:2']={...progress.items['b:2'],known:true,streak:1};
+w.dispatchEvent(new w.Event('wortweg:changed'));
+assert.equal(w.WortWegSeenWords.getSummary().learned,3,'Checking a reviewed word increases dashboard learned progress');
+progress.items['b:2']={...progress.items['b:2'],known:false,wrong:2,streak:0};
+w.dispatchEvent(new w.Event('wortweg:changed'));
+assert.equal(w.WortWegSeenWords.getSummary().learned,2,'A wrong quiz answer revokes a previously learned word');
+assert.equal(w.WortWegSeenWords.getSummary().needsReview,2,'Wrong answer returns the word to review');
+progress.items['b:2']={...progress.items['b:2'],known:true,wrong:2,streak:1};
+w.dispatchEvent(new w.Event('wortweg:changed'));
+assert.equal(w.WortWegSeenWords.getSummary().learned,3,'Correct reattempt restores learned progress');
 progress={answered:0,correct:0,history:[],seen:{},items:{}};
 liveprogress={};
 w.dispatchEvent(new w.CustomEvent('wortweg:account',{detail:{uid:'another'}}));
@@ -82,7 +95,7 @@ setTimeout(()=>{
  try{
   state=w.WortWegSeenWords.getSummary();
   assert.equal(state.seen,0,'Switching accounts never leaks previous account entries');
-  assert.ok($('ww-seen-home').textContent.includes('0 explored'),'Donut center resets when switching profiles');
+  assert.ok($('ww-seen-home').textContent.includes('0 learned'),'Donut center resets when switching profiles');
   assert.ok($('ww-seen-home').textContent.includes('0%'),'New profile has zero overall progress');
   assert.equal($('ww-seen-rows').children.length,0,'Account switching clears the old visible word table');
   assert.equal($('ww-seen-empty').hidden,false,'New accounts see honest empty state');
