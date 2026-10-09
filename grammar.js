@@ -42,17 +42,37 @@ function ringDashboard(){
  add(wrap,el('p','wg-ring-footnote',mastered+' mastered of 200 planned topics · progress saved locally on this device.'));
  return wrap;
 }
-function render(){body.replaceChildren();if(active){lesson();return;}const h=add(el('div','wg-intro'),el('h1','', 'German Grammar A1–C1'),el('p','', 'Complete learning roadmap · German + English + Myanmar · practice and review'));body.append(h);
+let filterText='';
+const GUIDE_FAMILIES=[
+[/artikel|article|gender|noun|plural|genitive|n-declension|nominal|substantiv|compound/i,'Pay attention to grammatical gender, number and case. Identify the noun phrase, determine its role in the sentence and check the required ending.'],
+[/pronoun|reflexive|relative|pronominal|anaphora|reference/i,'Identify what the pronoun refers to, then determine its grammatical function and required case. Check person, number and agreement.'],
+[/tense|past|perfect|präteritum|plusquamperfekt|present|future|participle|participial|aspect/i,'Locate the auxiliary and main verb. Identify the time relationship, the finite verb position and the appropriate verb form.'],
+[/verb|modal|passive|konjunktiv|subjunctive|imperative|infinitive|valency|government/i,'Find the finite verb, its subject and its complements. Check verb forms, required prepositions and whether the clause expresses fact, possibility or reported information.'],
+[/clause|conjunction|connector|sentence|word order|position|inversion|bracket|syntax|fronting|dislocation/i,'Separate main and subordinate clauses. Mark the finite verb in each, then check clause order and what meaning the connector expresses.'],
+[/adjective|comparative|superlative|declension|attributes/i,'Find the adjective and its noun. Check case, gender, number and the type of determiner before choosing an ending or comparison form.'],
+[/preposition|dative|accusative|case|movement|location/i,'Identify the preposition and the case it governs. For two-way prepositions, distinguish a destination from a static location.'],
+[/negation|nicht|kein|scope|particle/i,'Identify exactly which element is being negated or emphasized. Observe how the placement changes the meaning.'],
+[/discourse|academic|style|formal|register|hedging|coherence|argument|precision|editing|ellipsis|information/i,'Compare the meaning and register of sentence alternatives. Prefer the construction that expresses the intended relationship precisely and unambiguously.']
+];
+function topicGuide(level,title){const text=GUIDE_FAMILIES.find(([pattern])=>pattern.test(title));return {
+ level,title,
+ objective:text?text[1]:'Identify the form, meaning and context of this construction. Compare it with related structures and practise using it in your own sentence.',
+ method:'Study one worked sentence from a trusted German grammar reference, mark the relevant forms, then compose two original examples. Compare them with a corrected reference before using the construction in writing.',
+ exercise:'Write one affirmative sentence and one question or contrasting sentence that demonstrate “'+title+'”. Identify each finite verb and explain why you chose the form.',
+ note:'Independent study guide — a professionally reviewed explanation, example bank and auto-graded exercise for this specific topic have not yet been published.'
+};}
+function overviewTopic(level,title){const g=topicGuide(level,title);body.replaceChildren();body.append(btn('← '+level+' roadmap',()=>{active=null;render();},'wg-link'));add(body,el('p','wg-eyebrow',level+' · Study guide'),el('h1','',title));const panel=add(el('article','wg-panel'),el('h2','', 'Learning focus'),el('p','',g.objective),el('h2','', 'How to study'),el('p','',g.method),el('h2','', 'Your practice task'),el('p','',g.exercise));body.append(panel);body.append(el('p','wg-notice',g.note));}
+function render(){body.replaceChildren();if(active){if(active.guide){overviewTopic(active.level,active.title);}else{lesson();}return;}const h=add(el('div','wg-intro'),el('h1','', 'German Grammar A1–C1'),el('p','', 'Complete learning roadmap · German + English + Myanmar · practice and review'));body.append(h);
 const mastered=entries.filter(e=>stateOf(e.id).mastered).length;
 add(body,el('div','wg-summary',mastered+' / '+entries.length+' interactive lessons mastered · '+Object.values(topics).reduce((a,b)=>a+b.length,0)+' grammar topics in the roadmap'));
 body.append(ringDashboard());
-const nav=el('nav','wg-levels');LEVELS.forEach(l=>nav.append(btn(l,()=>{selectedLevel=l;render();},l===selectedLevel?'wg-active':'')));body.append(nav);
+const nav=el('nav','wg-levels');LEVELS.forEach(l=>nav.append(btn(l,()=>{selectedLevel=l;filterText='';render();},l===selectedLevel?'wg-active':'')));body.append(nav);
 const available=entries.filter(x=>x.level===selectedLevel),done=available.filter(x=>stateOf(x.id).mastered).length;
 const status=el('div','wg-level-info');add(status,el('strong','',selectedLevel+' Grammar'),el('span','',done+' of '+available.length+' interactive lessons mastered'));body.append(status);
 const bar=el('div','wg-bar');bar.append(el('span'));bar.firstChild.style.width=(available.length?done/available.length*100:0)+'%';body.append(bar);
 const lessons=el('div','wg-list');available.forEach(e=>{const st=stateOf(e.id);const card=btn('',()=>{active=e;chosen=-1;checked=false;render();},'wg-lesson');add(card,el('span','wg-lesson-icon',st.mastered?'✓':'📖'),add(el('span','wg-copy'),el('strong','',e.title),el('small','',st.tries?st.correct+'/'+st.tries+' correct · '+(st.mastered?'Mastered':'Keep practicing'):'Learn and practice')),el('span','','›'));lessons.append(card);});body.append(lessons);
 const section=el('section','wg-roadmap');add(section,el('h2','',selectedLevel+' full grammar roadmap'),el('p','', 'All topics are indexed here. Interactive lessons above are authored and quiz-enabled; remaining roadmap topics are not yet full lessons.'));
-const ol=el('ol');topics[selectedLevel].forEach(t=>ol.append(el('li','',t)));section.append(ol);body.append(section);
+const input=el('input','wg-search');input.type='search';input.placeholder='Search '+selectedLevel+' grammar topics…';input.setAttribute('aria-label','Search grammar topics');input.value=filterText;section.append(input);const ol=el('ol','wg-topic-list');function showTopics(){ol.replaceChildren();const needle=filterText.toLocaleLowerCase();topics[selectedLevel].filter(t=>t.toLocaleLowerCase().includes(needle)).forEach(t=>{const li=el('li');const published=entries.some(e=>e.level===selectedLevel&&e.title===t);li.append(btn(t+(published?' · Interactive':' · Study guide'),()=>{active=entries.find(e=>e.level===selectedLevel&&e.title===t)||{guide:true,level:selectedLevel,title:t};chosen=-1;checked=false;render();},'wg-topic-button'));ol.append(li);});if(!ol.children.length)ol.append(el('li','', 'No matching topics.'));}input.addEventListener('input',()=>{filterText=input.value;showTopics();});showTopics();section.append(ol);body.append(section);
 }
 function lesson(){const e=active,st=stateOf(e.id);body.append(btn('← All '+selectedLevel+' lessons',()=>{active=null;render();},'wg-link'));add(body,el('p','wg-eyebrow',e.level+' · Grammar lesson'),el('h1','',e.title));
 const rule=add(el('article','wg-panel'),el('h2','', 'Understand'),el('p','',e.rule),el('code','',e.pattern));body.append(rule);
