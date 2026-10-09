@@ -12,6 +12,16 @@
   let state = {state: 'checking', message: 'Checking German speech…', progress: 0};
   let downloadPromise, enginePromise, context, source, speechId = 0, bannerTimer;
   let automaticDownload = false;
+  // Speech volume follows the existing device-local settings without changing
+  // its key or coupling German audio to authentication or the network.
+  function voiceVolume() {
+    try {
+      const settings = JSON.parse(localStorage.getItem('wortweg370-settings-v1') || '{}');
+      const raw = Number(settings.voiceVolume);
+      return Number.isFinite(raw) && settings.voiceVolume !== undefined && settings.voiceVolume !== null
+        ? Math.max(0, Math.min(100, raw)) / 100 : .5;
+    } catch { return .5; }
+  }
 
   function germanVoice() {
     try {
@@ -197,7 +207,12 @@
       if (context.state !== 'running') throw new Error('Tap the speaker again to enable audio.');
       source = context.createBufferSource();
       source.buffer = buffer;
-      source.connect(context.destination);
+      const voiceGain = context.createGain?.();
+      if (voiceGain) {
+        voiceGain.gain.setValueAtTime(voiceVolume(), context.currentTime);
+        source.connect(voiceGain);
+        voiceGain.connect(context.destination);
+      } else source.connect(context.destination);
       source.start();
     } catch (error) {
       if (id !== speechId) return;
@@ -229,6 +244,7 @@
         utterance.lang = voice.lang;
         utterance.rate = .78;
         utterance.pitch = 1;
+        utterance.volume = voiceVolume();
         utterance.onstart = utterance.onend = () => clearTimeout(timer);
         utterance.onerror = event => {
           if (!['canceled', 'interrupted'].includes(event.error)) fallback();
