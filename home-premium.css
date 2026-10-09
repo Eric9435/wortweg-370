@@ -1,0 +1,298 @@
+/* WortWeg 370 · Premium iOS-inspired Home
+   Scope: Home only. No account, quiz, offline speech or settings behavior. */
+body.ww-game-interface #dashboard .ww-main-menu{
+ --ww-home-stroke:color-mix(in srgb,var(--line) 73%,transparent);
+ --ww-home-shadow:0 8px 28px rgb(25 48 78 / 5%);
+ width:100%;max-width:1060px;margin:0 auto;
+ padding:0 0 34px;
+}
+body.ww-game-interface #dashboard .ww-menu-top{
+ padding:10px 0 20px;
+}
+body.ww-game-interface #dashboard .ww-menu-top h2{
+ margin:9px 0 7px;font-size:clamp(30px,5vw,43px);
+ line-height:1.13;letter-spacing:-.055em;font-weight:820;
+}
+body.ww-game-interface #dashboard .ww-menu-eyebrow{
+ color:var(--teal);letter-spacing:.17em;font-size:10px;font-weight:830;
+}
+body.ww-game-interface #dashboard .ww-menu-top p{
+ color:var(--muted);font-size:14px;line-height:1.55;
+}
+body.ww-game-interface #dashboard .ww-seen-home{
+ gap:12px;margin-bottom:15px;
+}
+body.ww-game-interface #dashboard .ww-donut-hero{
+ grid-template-columns:minmax(0,.82fr) minmax(210px,260px) minmax(0,.95fr);
+ gap:19px;align-items:center;
+ padding:23px 25px;
+ border:1px solid var(--ww-home-stroke);
+ border-radius:25px;background:var(--panel);
+ box-shadow:var(--ww-home-shadow);
+}
+body.ww-game-interface #dashboard .ww-donut-copy{
+ align-self:center;min-width:0;
+}
+body.ww-game-interface #dashboard .ww-donut-headline{
+ font-size:clamp(23px,2.65vw,31px);
+ font-weight:840;line-height:1.15;
+ letter-spacing:-.049em;margin:11px 0 5px;
+}
+body.ww-game-interface #dashboard .ww-donut-subtitle{
+ font-size:13px;line-height:1.5;color:var(--muted);
+}
+body.ww-game-interface #dashboard .ww-donut-metrics{
+ margin:16px 0 12px;padding:14px 0;
+}
+body.ww-game-interface #dashboard .ww-donut-metric-number{
+ font-size:clamp(21px,2.7vw,27px);
+}
+body.ww-game-interface #dashboard .ww-donut-statline{
+ font-size:11px;line-height:1.55;
+}
+body.ww-game-interface #dashboard .ww-donut-shell{
+ max-width:260px;min-width:0;justify-self:center;
+ filter:drop-shadow(0 3px 8px rgb(28 57 89 / 4%));
+}
+body.ww-game-interface #dashboard .ww-donut-center strong{
+ font-size:clamp(20px,2.8vw,27px);
+}
+body.ww-game-interface #dashboard .ww-donut-legend h3{
+ font-size:10px;letter-spacing:.12em;margin-bottom:10px;
+}
+body.ww-game-interface #dashboard .ww-donut-legend-row{
+ grid-template-columns:minmax(40px,.58fr) minmax(0,1.42fr);
+ padding:7px 0;gap:3px 7px;
+}
+body.ww-game-interface #dashboard .ww-donut-legend-dot{
+ width:10px;height:10px;flex-basis:10px;
+}
+body.ww-game-interface #dashboard .ww-donut-legend-name{gap:7px}
+body.ww-game-interface #dashboard .ww-donut-legend-name strong{font-size:12px}
+body.ww-game-interface #dashboard .ww-donut-legend-values span,
+body.ww-game-interface #dashboard .ww-donut-legend-values strong{
+ font-size:11px;white-space:nowrap;
+}
+body.ww-game-interface #dashboard .ww-donut-legend-detail{
+ font-size:10px;line-height:1.4;
+}
+body.ww-game-interface #dashboard .ww-donut-explainer{
+ font-size:10px;line-height:1.55;margin-top:10px;
+}
+/* A1 and next milestone are one coherent grouped area, not two huge hero cards. */
+body.ww-game-interface #dashboard .ww-home-achievements{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;
+}
+body.ww-game-interface #dashboard .ww-home-achievements > div{
+ padding:16px 18px;border-radius:19px;
+ border:1px solid var(--ww-home-stroke);background:var(--panel);
+ box-shadow:0 3px 10px rgb(24 45 80 / 2%);
+ min-width:0;
+}
+body.ww-game-interface #dashboard .ww-home-achievements .ww-seen-a1-preview .ww-seen-meter{
+ height:7px;margin-top:16px;
+}
+body.ww-game-interface #dashboard .ww-home-achievements .ww-seen-level-head{
+ align-items:flex-start;gap:7px;
+}
+body.ww-game-interface #dashboard .ww-home-achievements .ww-seen-level-head strong{
+ font-size:14px;letter-spacing:-.022em;
+}
+body.ww-game-interface #dashboard .ww-home-achievements .ww-seen-level-head span{
+ font-size:11px;line-height:1.5;max-width:65%;
+}
+body.ww-game-interface #dashboard .ww-home-a1-caption{
+ display:block;color:var(--muted);margin-top:9px;font-size:11px;
+}
+body.ww-game-interface #dashboard .ww-home-milestone-header{
+ display:flex;justify-content:space-between;align-items:center;gap:9px;
+}
+body.ww-game-interface #dashboard .ww-home-milestone-heading{
+ display:grid;gap:4px;min-width:0;
+}
+body.ww-game-interface #dashboard .ww-home-milestone-eyebrow{
+ font-size:10px;letter-spacing:.105em;color:var(--teal);font-weight:830;
+}
+body.ww-game-interface #dashboard .ww-home-milestone-title{
+ font-size:17px;letter-spacing:-.045em;font-weight:780;
+ color:var(--txt);line-height:1.32;
+}
+body.ww-game-interface #dashboard .ww-home-milestone-badge{
+ border-radius:99px;background:color-mix(in srgb,var(--teal) 12%,var(--panel));
+ color:var(--teal);font-size:11px;font-weight:770;padding:5px 9px;
+ white-space:nowrap;
+}
+body.ww-game-interface #dashboard .ww-home-milestone-track{
+ height:7px;background:var(--line);border-radius:99px;
+ overflow:hidden;margin-top:14px;
+}
+body.ww-game-interface #dashboard .ww-home-milestone-fill{
+ height:100%;background:linear-gradient(90deg,#0f8e9a,#46c9b1);
+ border-radius:inherit;transition:width .3s ease;
+}
+body.ww-game-interface #dashboard .ww-home-milestone-note{
+ margin:9px 0 0;color:var(--muted);font-size:11px;line-height:1.5;
+}
+body.ww-game-interface #dashboard .ww-seen-home-cta{
+ margin:0;padding:4px 10px;
+ border:1px solid transparent;
+ min-height:39px;border-radius:12px;
+ color:var(--accent);font-size:13px;font-weight:770;
+ width:max-content;max-width:100%;
+}
+body.ww-game-interface #dashboard .ww-seen-home-cta:hover{
+ background:color-mix(in srgb,var(--accent) 7%,var(--panel));
+}
+/* Home menu: a distinct hero action followed by grouped native-style rows. */
+body.ww-game-interface #dashboard .ww-menu-options{
+ display:flex;flex-direction:column;gap:0;
+ border-radius:19px;
+}
+body.ww-game-interface #dashboard .ww-menu-options > button{
+ min-height:65px;padding:11px 15px;
+ grid-template-columns:43px minmax(0,1fr) 21px;
+ align-items:center;gap:12px;
+ border-color:var(--ww-home-stroke);
+ box-shadow:none;
+ border-radius:0;
+ font-size:14px;
+}
+body.ww-game-interface #dashboard .ww-menu-options > button.ww-menu-primary{
+ min-height:73px;margin-bottom:13px;padding:12px 16px;
+ border-radius:19px!important;
+ background:var(--accent)!important;
+ box-shadow:0 10px 20px color-mix(in srgb,var(--accent) 18%,transparent)!important;
+}
+body.ww-game-interface #dashboard .ww-menu-options > button.ww-menu-primary + button{
+ border-radius:19px 19px 0 0;
+}
+body.ww-game-interface #dashboard .ww-menu-options > button:last-child{
+ border-radius:0 0 19px 19px;
+ border-bottom:1px solid var(--ww-home-stroke);
+}
+body.ww-game-interface #dashboard .ww-menu-options > button .ww-menu-icon{
+ width:41px;height:41px;border-radius:12px;
+ font-size:18px;
+}
+body.ww-game-interface #dashboard .ww-menu-options > button strong{
+ font-weight:750;font-size:14px;letter-spacing:-.021em;
+}
+body.ww-game-interface #dashboard .ww-menu-options > button small{
+ font-size:11px;line-height:1.42;margin-top:3px;
+}
+body.ww-game-interface #dashboard .ww-menu-options > button .ww-menu-arrow{
+ font-size:24px;line-height:1;
+}
+body.ww-game-interface #dashboard .ww-menu-options > button.ww-grammar-menu-card{
+ display:grid!important;
+ grid-template-columns:43px minmax(0,1fr) 21px;
+ width:100%;box-sizing:border-box;
+ font:inherit;white-space:normal;
+ min-width:0;text-align:left;
+ cursor:pointer;
+ background:var(--panel);
+ color:var(--txt);
+ font-weight:normal;
+}
+body.ww-game-interface #dashboard .ww-menu-options .ww-grammar-menu-card .ww-menu-icon{
+ color:#7951ba;background:color-mix(in srgb,#7951ba 10%,var(--panel));
+ font-size:15px;font-weight:830;
+}
+body.ww-game-interface #dashboard .ww-grammar-menu-card .ww-grammar-label{
+ display:block;min-width:0;
+}
+html[data-mode=dark] body.ww-game-interface #dashboard .ww-donut-hero,
+html[data-mode=dark] body.ww-game-interface #dashboard .ww-home-achievements > div{
+ box-shadow:0 9px 25px rgb(0 0 0 / 12%);
+}
+html[data-mode=dark] body.ww-game-interface #dashboard .ww-home-milestone-badge{
+ color:#72e0c3;
+}
+html[data-mode=dark] body.ww-game-interface #dashboard .ww-menu-options .ww-grammar-menu-card .ww-menu-icon{
+ color:#c5a4ff;
+}
+@media(max-width:960px){
+ body.ww-game-interface #dashboard .ww-donut-hero{
+  grid-template-columns:minmax(0,1fr) minmax(205px,260px);
+  padding:19px 20px;gap:15px 20px;
+ }
+ body.ww-game-interface #dashboard .ww-donut-legend{
+  grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0 13px;
+ }
+ body.ww-game-interface #dashboard .ww-donut-legend h3,
+ body.ww-game-interface #dashboard .ww-donut-legend-total,
+ body.ww-game-interface #dashboard .ww-donut-explainer{grid-column:1/-1}
+ body.ww-game-interface #dashboard .ww-donut-legend-row{grid-template-columns:1fr;gap:4px}
+ body.ww-game-interface #dashboard .ww-donut-legend-detail{grid-column:1}
+ body.ww-game-interface #dashboard .ww-donut-legend-values{justify-content:flex-start;gap:8px}
+}
+@media(max-width:650px){
+ body.ww-game-interface #dashboard .ww-main-menu{padding-bottom:22px}
+ body.ww-game-interface #dashboard .ww-menu-top{padding:6px 0 15px}
+ body.ww-game-interface #dashboard .ww-menu-top h2{
+  font-size:clamp(27px,7vw,35px);margin:8px 0 6px;
+ }
+ body.ww-game-interface #dashboard .ww-seen-home{gap:10px;margin-bottom:11px}
+ body.ww-game-interface #dashboard .ww-donut-hero{
+  display:grid;grid-template-columns:minmax(0,1fr);
+  padding:18px 17px 15px;gap:8px;border-radius:21px;
+ }
+ body.ww-game-interface #dashboard .ww-donut-copy{text-align:left}
+ body.ww-game-interface #dashboard .ww-donut-headline{font-size:27px;margin:7px 0 4px}
+ body.ww-game-interface #dashboard .ww-donut-metrics{display:none}
+ body.ww-game-interface #dashboard .ww-donut-statline{font-size:11px;margin-top:6px}
+ body.ww-game-interface #dashboard .ww-donut-shell{max-width:225px;margin:3px auto 0}
+ body.ww-game-interface #dashboard .ww-donut-center strong{font-size:23px}
+ body.ww-game-interface #dashboard .ww-donut-legend{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:0 12px;grid-column:auto;align-items:start;
+ }
+ body.ww-game-interface #dashboard .ww-donut-legend h3{grid-column:1/-1;margin:6px 0 7px}
+ body.ww-game-interface #dashboard .ww-donut-legend-row{
+  grid-template-columns:1fr;gap:3px;padding:8px 0;
+ }
+ body.ww-game-interface #dashboard .ww-donut-legend-values{
+  display:flex;justify-content:space-between;gap:5px;
+ }
+ body.ww-game-interface #dashboard .ww-donut-legend-values span,
+ body.ww-game-interface #dashboard .ww-donut-legend-values strong{font-size:11px}
+ body.ww-game-interface #dashboard .ww-donut-legend-detail{
+  grid-column:1;font-size:10px;
+ }
+ body.ww-game-interface #dashboard .ww-donut-legend-total{
+  grid-column:1/-1;padding-top:9px;
+ }
+ body.ww-game-interface #dashboard .ww-donut-explainer{
+  grid-column:1/-1;font-size:10px;line-height:1.5;
+ }
+ body.ww-game-interface #dashboard .ww-home-achievements{
+  grid-template-columns:minmax(0,1fr);gap:9px;
+ }
+ body.ww-game-interface #dashboard .ww-home-achievements > div{
+  padding:13px 14px;border-radius:16px;
+ }
+ body.ww-game-interface #dashboard .ww-home-achievements .ww-seen-a1-preview .ww-seen-meter{
+  margin-top:10px;
+ }
+ body.ww-game-interface #dashboard .ww-menu-options > button{
+  min-height:63px;padding:10px 12px;gap:11px;
+ }
+ body.ww-game-interface #dashboard .ww-menu-options > button.ww-menu-primary{
+  min-height:70px;margin-bottom:12px;
+ }
+}
+@media(max-width:370px){
+ body.ww-game-interface #dashboard .ww-donut-legend-values{
+  flex-wrap:wrap;
+ }
+ body.ww-game-interface #dashboard .ww-home-achievements .ww-seen-level-head{
+  flex-wrap:wrap;
+ }
+ body.ww-game-interface #dashboard .ww-home-achievements .ww-seen-level-head span{
+  max-width:none;text-align:left;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body.ww-game-interface #dashboard .ww-home-milestone-fill{transition:none}
+}
