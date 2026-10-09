@@ -71,6 +71,11 @@
    const status=entryStatus(e,p),bucket=totals.get(e.group);
    if(bucket)bucket.total++;
    if(!status)continue;
+   const item=p.items[e.key];
+   status.known=item
+    ?(Number(item.wrong)>0&&Number(item.streak)===0?false:
+      typeof item.known==='boolean'?item.known:(status.correctLast===true))
+    :status.correctLast===true;
    seen++;
    if(bucket)bucket.seen++;
    rows.push({...e,status});
@@ -85,7 +90,9 @@
     status:{wrong,correctLast:wrong===0?true:n(s.streak)>0,last:s.last||null}});
   }
   const total=records.length;
-  return {rows,totals,total,seen,remaining:Math.max(0,total-seen),pct:percent(seen,total),
+  const learned=rows.filter(row=>row.status.known===true).length;
+  const needsReview=rows.filter(row=>row.status.wrong>0&&row.status.known!==true).length;
+  return {rows,totals,total,seen,learned,needsReview,remaining:Math.max(0,total-seen),pct:percent(seen,total),
    bankTotal:bank.length,curatedTotal:curated.length,liveTotal:records.length-bank.length-curated.length};
  }
  function progressBar(seen,total,label){
@@ -143,7 +150,7 @@
   const copy=text(row,'div','','ww-seen-overview-copy');
   text(copy,'span','YOUR LEARNING JOURNEY','ww-seen-overline');
   text(copy,'strong',pretty(remaining)+' left to explore','ww-seen-overview-title');
-  text(copy,'span',pretty(seen)+' of '+pretty(total)+' study entries seen · '+pct+'% complete','ww-seen-overview-sub');
+  text(copy,'span',pretty(seen)+' of '+pretty(total)+' entries encountered · '+pct+'% explored','ww-seen-overview-sub');
   text(row,'strong',pct+'%','ww-seen-overview-percent');
   node.append(progressBar(seen,total,'Overall vocabulary exploration'));
   text(node,'div',pretty(bankTotal)+' Word Bank + '+pretty(curatedTotal)+' Topic 1'+(liveTotal?' + '+pretty(liveTotal)+' New Lessons':''),'ww-seen-small-note');
@@ -280,7 +287,8 @@
   const metrics=text(headline,'div','','ww-donut-metrics');
   text(metrics,'strong',precisePercent(stat.seen,stat.total),'ww-donut-metric-number');
   text(metrics,'span','overall progress');
-  text(headline,'p',pretty(stat.seen)+' of '+pretty(stat.total)+' study entries seen','ww-donut-statline');
+  text(headline,'p',pretty(stat.learned)+' currently learned · '+pretty(stat.needsReview)+' need review','ww-donut-statline');
+  text(headline,'p',pretty(stat.seen)+' of '+pretty(stat.total)+' study entries encountered','ww-donut-statline');
   hero.append(makeDonut(stat));
   hero.append(makeLegend(stat));
   return hero;
@@ -362,7 +370,7 @@
    text(row,'td',word.my||word.mm||'—');
    text(row,'td',entry.source==='Topic 1'?'Topic 1':entry.source==='New lessons'?'New · '+entry.level:(entry.group||'—'),'ww-seen-level');
    const statusCell=text(row,'td','','ww-seen-result');
-   const badge=text(statusCell,'strong',hasMistakes?'Missed '+pretty(status.wrong)+'×':status.correctLast===null?'Seen':'Correct','ww-seen-status');
+   const badge=text(statusCell,'strong',status.known?'Learned':hasMistakes?'Review · missed '+pretty(status.wrong)+'×':status.correctLast===null?'Seen':'Not learned','ww-seen-status');
    if(hasMistakes)text(statusCell,'small',status.correctLast===true?'Answered correctly later':status.correctLast===false?'Review this word':'Mistake in history');
    const soundCell=text(row,'td','','ww-seen-audio');
    const btn=text(soundCell,'button','🔊','ww-seen-play');btn.type='button';
