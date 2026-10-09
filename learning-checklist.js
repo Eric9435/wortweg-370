@@ -51,6 +51,35 @@ const css=document.createElement('style');css.textContent=`
 #ww-curriculum .ww-cl-table-row[data-state="Know it"] .ww-cl-topic-name strong{color:#15803d}
 #ww-curriculum .ww-cl-table-row[data-state="Learning"] .ww-cl-topic-name strong{color:#b9770e}
 @media(max-width:650px){#ww-curriculum .ww-cl-table-wrap{max-height:65vh}}
+
+/* Table layout repair: desktop columns fit without sideways scrolling. */
+#ww-curriculum .ww-cl-table-wrap{width:100%;max-width:100%;max-height:none;overflow-x:auto;overflow-y:visible}
+#ww-curriculum .ww-cl-table{width:100%;min-width:0;table-layout:fixed}
+#ww-curriculum .ww-cl-table th,#ww-curriculum .ww-cl-table td{box-sizing:border-box;padding:10px 8px;overflow-wrap:anywhere}
+#ww-curriculum .ww-cl-table th:nth-child(1){width:4%}
+#ww-curriculum .ww-cl-table th:nth-child(2){width:29%}
+#ww-curriculum .ww-cl-table th:nth-child(3){width:11%}
+#ww-curriculum .ww-cl-table th:nth-child(4){width:9%}
+#ww-curriculum .ww-cl-table th:nth-child(5){width:16%}
+#ww-curriculum .ww-cl-table th:nth-child(6){width:21%}
+#ww-curriculum .ww-cl-table th:nth-child(7){width:10%}
+#ww-curriculum .ww-cl-topic-name{min-width:0}
+#ww-curriculum .ww-cl-status-select,#ww-curriculum .ww-cl-note{min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+#ww-curriculum .ww-cl-open{padding:9px 6px;max-width:100%;font-size:12px}
+@media(max-width:720px){
+ #ww-curriculum .ww-cl-table-wrap{max-height:none;overflow-x:auto}
+ #ww-curriculum .ww-cl-table{min-width:760px;table-layout:fixed}
+ #ww-curriculum .ww-cl-table th:nth-child(1){width:40px}
+ #ww-curriculum .ww-cl-table th:nth-child(2){width:220px}
+ #ww-curriculum .ww-cl-table th:nth-child(3){width:85px}
+ #ww-curriculum .ww-cl-table th:nth-child(4){width:70px}
+ #ww-curriculum .ww-cl-table th:nth-child(5){width:135px}
+ #ww-curriculum .ww-cl-table th:nth-child(6){width:140px}
+ #ww-curriculum .ww-cl-table th:nth-child(7){width:70px}
+ #ww-curriculum .ww-cl-table th:nth-child(2),#ww-curriculum .ww-cl-table td:nth-child(2){position:sticky;left:40px;z-index:1;background:var(--panel)}
+ #ww-curriculum .ww-cl-table th:nth-child(1),#ww-curriculum .ww-cl-table td:nth-child(1){position:sticky;left:0;z-index:1;background:var(--panel)}
+ #ww-curriculum .ww-cl-table th:nth-child(1),#ww-curriculum .ww-cl-table th:nth-child(2){z-index:3;background:var(--panel2)}
+}
 `;document.head.append(css);dashboard.before(root);
 const $=id=>root.querySelector('#'+id);
 const account=()=>String(window.WortWegAccountSnapshot?.uid||'guest');
@@ -68,6 +97,7 @@ function render(){
  const filtered=items.filter(i=>(level==='All'||i.level===level)&&(kind==='All'||i.kind===kind)&&(filter==='All'||status(i.id)===filter)&&(!q||(i.title+' '+i.subtitle).toLocaleLowerCase().includes(q)));
  $('ww-cl-count').textContent=filtered.length+' lessons shown · Progress saved on this device for this account';
  const list=$('ww-cl-list');list.replaceChildren();
+ const tableWrap=root.querySelector('.ww-cl-table-wrap');if(tableWrap)tableWrap.scrollLeft=0;
  const makeCell=(row,text,cls)=>{const td=document.createElement('td');if(cls)td.className=cls;if(text!==undefined)td.textContent=text;row.append(td);return td;};
  for(const i of filtered){
   const tr=document.createElement('tr');tr.className='ww-cl-table-row';tr.dataset.state=status(i.id);
