@@ -117,3 +117,6 @@ The grammar module is an incremental content foundation, **not yet a 200-lesson 
 ### Complete A1–C1 interactive topic coverage
 
 Each of the 200 CEFR-organized grammar topics now has a short authored explanation, German example, English/Myanmar meaning and interactive multiple-choice question. The lesson collection is a first pass requiring further language-pedagogy review and deeper exercises; it is **not yet a professional multi-exercise textbook**. Grammar progress is device-local; publishing this website change does not issue an Android APK.
+
+### Textbook-inspired deep grammar references
+14 original enhanced chapters introduce carefully explained rules, reference tables, worked German–English–Myanmar examples, common errors and free-writing challenges. The chapter structure was informed by the publicly described teaching approaches of Cornelsen *Grammatik aktiv* and Schubert *Begegnungen*; no textbook text is copied. Other grammar lessons remain concise first-pass lessons and should not be advertised as fully textbook-depth. The CEFR grammatical-accuracy descriptors are proficiency criteria, not a mandated list of grammatical chapters.
