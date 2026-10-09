@@ -100,3 +100,16 @@ body.ww-game-interface .ww-topic-memory-panel .ww-topic-memory-en{font-size:12px
 body.ww-game-interface .ww-topic-memory-label{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--muted);margin:12px 0 6px}
 body.ww-game-interface .ww-topic-memory-label:first-child{margin-top:0}
 body.ww-game-interface .ww-topic-memory-speak{margin-top:10px;padding:9px 13px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--txt);cursor:pointer}
+
+/* Inline passage reader: one sentence and one pronunciation control per row. */
+body.ww-game-interface .ww-passage[hidden]{display:none!important}
+body.ww-game-interface .ww-passage{margin:10px 0 20px;padding:16px;background:var(--panel);border:1px solid var(--line);border-radius:18px}
+body.ww-game-interface .ww-passage-heading{font-size:19px;line-height:1.35;font-weight:800;color:var(--txt);margin:0 0 10px}
+body.ww-game-interface .ww-passage-controls{display:flex;gap:8px;margin-bottom:12px}
+body.ww-game-interface .ww-passage-info{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 15px}
+body.ww-game-interface .ww-passage-row{display:grid;grid-template-columns:30px minmax(0,1fr) 44px;align-items:center;gap:10px;border-top:1px solid var(--line);padding:11px 0;min-height:65px}
+body.ww-game-interface .ww-passage-number{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+body.ww-game-interface .ww-passage-sentence{color:var(--txt);font-size:15px;line-height:1.65;margin:0;overflow-wrap:anywhere}
+body.ww-game-interface .ww-passage-audio{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--txt);cursor:pointer;font-size:17px}
+body.ww-game-interface .ww-passage-audio:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+@media(max-width:480px){body.ww-game-interface .ww-passage{padding:12px}body.ww-game-interface .ww-passage-row{gap:7px;grid-template-columns:22px minmax(0,1fr) 44px}body.ww-game-interface .ww-passage-sentence{font-size:14px}}
