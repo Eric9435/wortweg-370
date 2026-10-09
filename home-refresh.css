@@ -33,3 +33,20 @@ body.ww-game-interface #dashboard .ww-home-modern .ww-menu-options{margin-top:14
 
 /* Single Home mode: no legacy switch or alternative presentation exposed. */
 body.ww-game-interface #dashboard .ww-home-view-toggle{display:none!important}
+
+/* One combined primary ring; original analytics remain in Seen Words, without a second Home pie. */
+body.ww-game-interface #dashboard .ww-home-modern .ww-donut-hero{display:none!important}
+body.ww-game-interface #dashboard .ww-home-combined{background:var(--panel);border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:23px;padding:20px 22px 23px;margin:19px 0;box-shadow:0 8px 24px rgb(24 40 65 / 4%)}
+body.ww-game-interface #dashboard .ww-home-combined-heading h3{font-size:23px;font-weight:830;letter-spacing:-.04em;line-height:1.2;margin:7px 0 5px;color:var(--txt)}
+body.ww-game-interface #dashboard .ww-home-combined-heading p{font-size:12px;color:var(--muted);margin:0;line-height:1.5}
+body.ww-game-interface #dashboard .ww-home-combined-visual{width:min(232px,64vw);height:min(232px,64vw);margin:20px auto 17px;border-radius:50%;background:conic-gradient(#3774df 0 var(--ww-part-vocab,0%),#23a589 var(--ww-part-vocab,0%) var(--ww-part-grammar,0%),var(--line,#e8edf3) var(--ww-part-grammar,0%) 100%);display:grid;place-items:center;position:relative;isolation:isolate}
+body.ww-game-interface #dashboard .ww-home-combined-visual::before{content:'';position:absolute;inset:20px;border-radius:50%;background:var(--panel);z-index:0}
+body.ww-game-interface #dashboard .ww-home-combined-center{position:relative;z-index:1;display:grid;gap:5px;text-align:center}
+body.ww-game-interface #dashboard .ww-home-combined-center strong{font-size:clamp(32px,8vw,42px);letter-spacing:-.06em;color:var(--txt);font-weight:850;line-height:1}
+body.ww-game-interface #dashboard .ww-home-combined-center small{font-size:12px;color:var(--muted)}
+body.ww-game-interface #dashboard .ww-home-combined-legend{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+body.ww-game-interface #dashboard .ww-home-combined-stat{display:flex;align-items:center;gap:9px;background:var(--panel2);padding:13px;border-radius:14px;min-height:47px}
+body.ww-game-interface #dashboard .ww-home-combined-dot{width:11px;height:11px;border-radius:50%;flex:0 0 11px;background:#3774df}
+body.ww-game-interface #dashboard .ww-home-combined-grammar .ww-home-combined-dot{background:#23a589}
+body.ww-game-interface #dashboard .ww-home-combined-stat-copy{font-size:12px;line-height:1.5;color:var(--txt);font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+@media(max-width:550px){body.ww-game-interface #dashboard .ww-home-combined{padding:17px 15px;border-radius:20px}body.ww-game-interface #dashboard .ww-home-combined-legend{grid-template-columns:1fr;gap:8px}}
