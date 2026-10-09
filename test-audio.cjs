@@ -142,7 +142,7 @@ function launch(options = {}) {
   const handlers = {}, deleted = [];
   vm.runInNewContext(fs.readFileSync('sw.js', 'utf8'), {
     self: {addEventListener: (name, fn) => { handlers[name] = fn; }, clients: {claim: async () => {}}},
-    caches: {keys: async () => ['wortweg370-v12', 'wortweg370-v13', 'wortweg370-v14', 'wortweg370-v15', 'wortweg370-v16', 'wortweg370-v17', 'wortweg370-v18', 'wortweg370-v19', 'wortweg370-v20', 'wortweg370-v21', 'wortweg370-v22', 'wortweg370-v23', 'wortweg370-v24', 'wortweg370-v25', 'wortweg370-v26', 'wortweg370-v27', 'wortweg370-v28', 'wortweg370-voice-v1', 'other-app'],
+    caches: {keys: async () => ['wortweg370-v12', 'wortweg370-v13', 'wortweg370-v14', 'wortweg370-v15', 'wortweg370-v16', 'wortweg370-v17', 'wortweg370-v18', 'wortweg370-v19', 'wortweg370-v20', 'wortweg370-v21', 'wortweg370-v22', 'wortweg370-v23', 'wortweg370-v24', 'wortweg370-v25', 'wortweg370-v26', 'wortweg370-v27', 'wortweg370-v28', 'wortweg370-v29', 'wortweg370-voice-v1', 'other-app'],
       delete: async key => { deleted.push(key); }}
   });
   let activation;
