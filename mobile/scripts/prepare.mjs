@@ -4,7 +4,7 @@ const root = new URL('../../',import.meta.url);
 const out = new URL('../www/',import.meta.url);
 await rm(out,{recursive:true,force:true});
 await mkdir(out,{recursive:true});
-for (const file of ['settings.css','settings-navigation.css','settings-navigation.js','ios-polish.css','ios-polish.js','seen-words.css','seen-words.js','topic-lessons.css','topic-lessons.js','audio.css','account.css','app-updates.css','live-content.css','live-content.js','content','icon.svg','vendor/mespeak']) {
+for (const file of ['settings.css','settings-navigation.css','settings-navigation.js','ios-polish.css','ios-polish.js','seen-words.css','seen-words.js','grammar.js','grammar-expanded.js','grammar-more-a1-a2.js','grammar-more-b1.js','grammar-more-b2.js','grammar-more-c1.js','grammar.css','topic-lessons.css','topic-lessons.js','audio.css','account.css','app-updates.css','live-content.css','live-content.js','content','icon.svg','vendor/mespeak']) {
   await cp(new URL(file,root),new URL(file,out),{recursive:true});
 }
 function replace(source,before,after) {
