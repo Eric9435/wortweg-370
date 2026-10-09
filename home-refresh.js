@@ -28,7 +28,7 @@ const grid=make('div','ww-home-focus-grid');for(const a of actions.slice(1)){
  const b=make('button','ww-home-focus-tile ww-home-focus-'+a.id);b.type='button';
  const icon=make('span','ww-home-focus-tile-icon',a.icon),copy=make('span','ww-home-focus-tile-copy');copy.append(make('strong','',a.title),make('small','',a.caption));b.append(icon,copy);b.addEventListener('click',()=>a.run());grid.append(b);
 }zone.append(grid);
-function paint(){menu.classList.toggle('ww-home-modern',modern);toggle.textContent=modern?'Original home':'New home';toggle.setAttribute('aria-pressed',String(!modern));zone.hidden=!modern;}
+function paint(){menu.classList.toggle('ww-home-modern',modern);toggle.textContent=modern?'Original home':'New home';toggle.setAttribute('aria-pressed',String(!modern));zone.classList.toggle('ww-home-focus-classic',!modern);}
 toggle.addEventListener('click',()=>{modern=!modern;try{localStorage.setItem('wortweg370-home-view',modern?'modern':'classic');}catch{}paint();});
 top.after(zone);paint();
 window.WortWegHomeRefresh={setModern:value=>{modern=Boolean(value);paint();}};
