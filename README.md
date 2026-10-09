@@ -108,7 +108,7 @@ If the public lesson hosting URL changes during a future repository-privacy migr
 
 ## Grammar Academy (feature branch)
 
-A distinct grammar study interface has been added with 200 indexed grammar topics (40 each in A1, A2, B1, B2 and C1), **33 fully authored interactive lessons** and responsive controls. Each authored lesson has a rule explanation, pattern, German example, English and Myanmar translations, pronunciation using the system speech engine where available, a multiple-choice check, retry, and locally saved progress. The index topics that are not authored are correctly labelled as roadmap entries, not finished interactive lessons.
+A distinct grammar study interface has been added with 200 searchable and accessible grammar topics (40 each in A1, A2, B1, B2 and C1), **33 fully authored interactive lessons** and responsive controls. Each authored lesson has a rule explanation, pattern, German example, English and Myanmar translations, pronunciation using the system speech engine where available, a multiple-choice check, retry, and locally saved progress. The 167 index topics that are not fully authored open honest, interactive study-guide pages with a learning objective and writing exercise; they are not represented as finished lessons or automatically graded.
 
 Open the app and select **Grammar A1–C1**. The grammar interface loads through `ios-polish.js`; the native packaging script includes `grammar.js` and `grammar.css` in future builds. The service worker caches the resources for offline use. Grammar progress is stored separately from all existing vocabulary records and **does not yet synchronize through Firebase**. Existing installed Android APKs do not gain the JavaScript module until a newly built APK is released.
 
