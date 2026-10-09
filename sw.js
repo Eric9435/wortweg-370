@@ -1,4 +1,4 @@
-const CACHE='wortweg370-v23';
+const CACHE='wortweg370-v24';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg?v=11','./cloud.js?v=14','./account.css?v=14','./settings.js','./settings.css','./audio.js','./audio.css','./enterprise.css','./enterprise.js','./settings-navigation.js','./settings-navigation.css','./ios-polish.js','./ios-polish.css','./seen-words.js','./seen-words.css','./grammar.js','./grammar.css','./topic-lessons.js','./topic-lessons.css','./live-content.js','./live-content.css','./content/v1/pack.json'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
@@ -35,7 +35,7 @@ self.addEventListener('fetch',event=>{
   // settings.js permanently stale, preventing new Home/menu features from loading
   // even when Pages had deployed them. Offline users still get the cached copy.
   const root=self.registration.scope;
-  const freshUI=['settings.js','settings.css','settings-navigation.js','settings-navigation.css',
+  const freshUI=['audio.js','settings.js','settings.css','settings-navigation.js','settings-navigation.css',
     'ios-polish.js','ios-polish.css','seen-words.js','seen-words.css','grammar.js','grammar.css','topic-lessons.js','topic-lessons.css',
     'live-content.js','live-content.css','enterprise.js','enterprise.css'];
   const requested=new URL(event.request.url);
