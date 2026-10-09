@@ -132,5 +132,5 @@ new MutationObserver(install).observe(document.body,{childList:true,subtree:true
 window.addEventListener('hashchange',()=>{if(location.hash==='#grammar'&&root.hidden)open();else if(location.hash!=='#grammar'&&!root.hidden)close();});
 window.addEventListener('wortweg:account',()=>{if(!root.hidden){readUser();render();}});
 if(location.hash==='#grammar')open();
-window.WortWegGrammar={open,topics,lessons:entries};
+window.WortWegGrammar={open,topics,lessons:entries,getSummary:()=>{readUser();return {mastered:entries.filter(e=>stateOf(e.id).mastered).length,total:entries.length};}};
 })();
