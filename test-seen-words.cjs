@@ -36,6 +36,19 @@ assert.equal(state.remaining,3,'Remaining subtracts seen only once');
 assert.deepEqual(JSON.parse(JSON.stringify(state.totals.get('A1'))),{total:2,seen:2},'A1 refers to Word Bank, not generic quiz completion');
 assert.deepEqual(JSON.parse(JSON.stringify(state.totals.get('Topic 1'))),{total:1,seen:1});
 assert.deepEqual(JSON.parse(JSON.stringify(state.totals.get('New lessons'))),{total:2,seen:1});
+assert.ok($('ww-seen-home').textContent.includes('4 explored'),'Home celebrates answered entries');
+assert.ok($('ww-seen-home').textContent.includes('57.1%'),'Small but accurate decimal overall progress');
+const chart=w.document.querySelector('#ww-seen-home .ww-donut-svg');
+assert.ok(chart,'Home renders double-donut SVG');
+assert.ok(chart.getAttribute('aria-label').includes('CEFR'),'Accessible chart explains CEFR distribution');
+assert.equal(chart.querySelectorAll('path').length,3,'Only real Word Bank levels receive outer-ring segments');
+assert.equal(chart.querySelectorAll('circle').length,2,'Inner progress uses separate track and completed ring');
+assert.ok(chart.querySelector('.ww-donut-completed').getAttribute('stroke-dashoffset'),'Inner ring uses dynamic progress');
+assert.equal(w.document.querySelectorAll('#ww-seen-home .ww-donut-legend-row').length,6,'Always display six actual CEFR level rows');
+assert.ok($('ww-seen-home').textContent.includes('2 entries'),'Legend shows real A1 entry count');
+assert.ok($('ww-seen-home').textContent.includes('50.0%'),'A1 occupies half of the four-entry Word Bank');
+assert.ok($('ww-seen-home').textContent.includes('2 explored · 0 left'),'Legend distinguishes level totals from explored entries');
+assert.ok($('ww-seen-home').textContent.includes('Word Bank total'),'The outer ring explicitly excludes the other sources');
 assert.ok($('ww-seen-home').textContent.includes('3 left to explore'));
 assert.ok($('ww-seen-home').textContent.includes('0 remaining · 100%'));
 assert.ok($('seen'),'There is a dedicated all-words page');
@@ -58,6 +71,7 @@ $('ww-seen-search').value='';$('ww-seen-search').dispatchEvent(new w.Event('inpu
 progress={...progress,answered:7,correct:4,items:{...progress.items,'b:1':{wrong:0,streak:0}}};
 w.dispatchEvent(new w.Event('wortweg:changed'));
 assert.equal(w.WortWegSeenWords.getSummary().seen,4,'Repeating old answers does not inflate seen count');
+assert.ok($('ww-seen-home').textContent.includes('4 explored'),'Chart updates without counting repeat answers twice');
 progress={answered:0,correct:0,history:[],seen:{},items:{}};
 liveprogress={};
 w.dispatchEvent(new w.CustomEvent('wortweg:account',{detail:{uid:'another'}}));
@@ -65,6 +79,8 @@ setTimeout(()=>{
  try{
   state=w.WortWegSeenWords.getSummary();
   assert.equal(state.seen,0,'Switching accounts never leaks previous account entries');
+  assert.ok($('ww-seen-home').textContent.includes('0 explored'),'Donut center resets when switching profiles');
+  assert.ok($('ww-seen-home').textContent.includes('0%'),'New profile has zero overall progress');
   assert.equal($('ww-seen-rows').children.length,0,'Account switching clears the old visible word table');
   assert.equal($('ww-seen-empty').hidden,false,'New accounts see honest empty state');
   const css=fs.readFileSync('seen-words.css','utf8');
