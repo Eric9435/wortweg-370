@@ -34,3 +34,8 @@ body.ww-game-interface #dashboard .ww-home-modern .ww-menu-options{margin-top:14
 /* Single Home mode: no legacy switch or alternative presentation exposed. */
 body.ww-game-interface #dashboard .ww-home-view-toggle{display:none!important}
 
+
+/* Hide the obsolete standalone Checklist tile above the progress section.
+   Real Learning tools tiles live inside .ww-home-focus-grid and are unaffected. */
+body.ww-game-interface #dashboard #ww-home-focus > button.ww-home-focus-tile{display:none!important}
+body.ww-game-interface #dashboard #ww-home-focus > button.ww-cl-home-launch{display:none!important}
