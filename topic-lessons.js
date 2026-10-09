@@ -467,12 +467,12 @@
  ];
  function passageSentences(){
   if(!selected)return [];
-  if(selected.topic.id===1)return identityPassage.split('\\n');
+  if(selected.topic.id===1)return identityPassage.split('\n');
   const {id,de}=selected.topic;
   const scene=sceneSets.find(x=>id>=x[0]&&id<=x[1]);
   const lines=['Mein heutiges Thema ist „'+de+'“.',...(scene?scene[2]:[])];
   const used=new Set();
-  const stripArticle=w=>String(w||'').replace(/^(der|die|das)\\s+/i,'').trim();
+  const stripArticle=w=>String(w||'').replace(/^(der|die|das)\s+/i,'').trim();
   const includesWord=(line,term)=>line.toLocaleLowerCase('de').includes(term.toLocaleLowerCase('de'));
   for(const word of selected.all){
    const term=stripArticle(word.de);
@@ -490,7 +490,7 @@
     'Wir lesen das Wort „'+label+'“ im Zusammenhang mit unserem Thema. Danach notiere ich ein Beispiel.',
     'Meine Lehrperson erklärt uns „'+label+'“. Ich höre gut zu und stelle eine Frage.'
    ][(lines.length+id)%4];
-   lines.push(...frame.split(/(?<=\\.)\\s+(?=[A-ZÄÖÜ])/));
+   lines.push(...frame.split(/(?<=\.)\s+(?=[A-ZÄÖÜ])/));
   }
   lines.push('Jetzt kann ich über „'+de+'“ sprechen und kenne die wichtigsten Wörter zu diesem Thema.');
   return lines.filter(Boolean);
