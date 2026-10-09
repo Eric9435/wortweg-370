@@ -32,5 +32,5 @@ menu.classList.add('ww-home-modern');
 zone.classList.remove('ww-home-focus-classic');
 try{localStorage.removeItem('wortweg370-home-view');}catch{}
 window.WortWegHomeRefresh={open:()=>zone.scrollIntoView({behavior:'smooth',block:'start'})};
-const checklistScript=document.createElement('script');checklistScript.src='./learning-checklist.js?v=4';document.body.append(checklistScript);
+const checklistScript=document.createElement('script');checklistScript.src='./learning-checklist.js?v=5';document.body.append(checklistScript);
 })();
