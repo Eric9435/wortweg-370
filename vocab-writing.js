@@ -5,6 +5,7 @@ let json;try{json=JSON.parse(node.textContent)}catch{return}
 const catalog=[...(json.bank||[]).map(w=>({id:'b:'+w.id,...w})),...(json.curated||[]).map(w=>({id:'c:'+w.de.toLocaleLowerCase(),...w}))];
 const seen=new Set(catalog.map(x=>x.id));
 function allWords(){const list=catalog.slice();const pack=window.WortWegLive?.getPack?.();for(const lesson of pack?.lessons||[])for(const w of lesson.words||[]){const id='l:'+w.id;if(!seen.has(id)){list.push({id,...w,level:lesson.level});}}return list.filter(w=>typeof w.de==='string'&&w.de.trim());}
+const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='./vocab-writing.css';document.head.append(stylesheet);
 const root=document.createElement('section');root.className='ww-write-screen';root.hidden=true;root.setAttribute('aria-label','Vocabulary writing practice');document.body.append(root);
 let words=[],position=0,sessionCorrect=0,sessionAttempts=0,sessionKey='',query='',countWanted=5;
 const statusTypes=[['learning','Still learning'],['review','Need more review'],['average','Average'],['remembered','Fully remembered']];
