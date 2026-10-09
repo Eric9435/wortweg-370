@@ -42,6 +42,8 @@ jobs:
           node test-grammar-catalog.cjs
       - name: Verify vocabulary writing repetition tracking
         run: node test-vocab-writing.cjs
+      - name: Validate reversible iPhone Home dashboard
+        run: node test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
       - name: Verify dynamic lessons, offline cache, and secure account separation
