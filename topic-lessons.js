@@ -360,7 +360,7 @@
   const extraCount=selected.extras.length,extraDone=selected.extras.filter(seen).length;
   el('ww-topic-summary').textContent=
    'Quiz ready · '+selected.all.length+' practice entries · '+
-   (bankCount?bankDone+' / '+bankCount+' Word Bank entries explored':'No matched Word Bank entries yet')+
+   (bankCount?bankDone+' / '+bankCount+' Word Bank entries answered':'No matched Word Bank entries yet')+
    (extraCount?' · '+extraDone+' / '+extraCount+' topic expressions practised':'');
   el('ww-topic-practice').disabled=!selected.all.length;
   el('ww-topic-practice').title='Start the '+selected.topic.en+' vocabulary quiz';
@@ -408,8 +408,14 @@
   if(!selected?.all?.length)return;
   // Include the topic expression when present, even if a large CEFR bank
   // provides other questions. Single-expression lessons still have a real quiz.
-  const list=shuffle(selected.all.filter((w,i,a)=>
-   a.findIndex(other=>normalize(other.de)===normalize(w.de))===i)).slice(0,10);
+  const unique=items=>items.filter((w,i,a)=>
+   a.findIndex(other=>normalize(other.de)===normalize(w.de))===i);
+  // A real bank word stays first when available. This guarantees that the
+  // existing quiz updates legacy progress correctly; starter phrases are
+  // included after it and are recorded in the separate topic practice store.
+  const bankQuestions=shuffle(unique(selected.curated)).slice(0,selected.extras.length?9:10);
+  const extraQuestions=shuffle(unique(selected.extras)).slice(0,Math.max(1,10-bankQuestions.length));
+  const list=bankQuestions.concat(extraQuestions).slice(0,10);
   lesson={list,pos:0,correct:0,answered:false,bankAnswered:0,expressionAnswered:0};
   el('ww-topic-study').hidden=true;el('ww-topic-quiz').hidden=false;
   el('ww-topic-show').hidden=false;el('ww-topic-practice').hidden=true;
