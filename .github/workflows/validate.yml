@@ -16,6 +16,7 @@ jobs:
           node --check live-content.js
           node --check ios-polish.js
           node --check seen-words.js
+          node --check grammar.js
           node --check topic-lessons.js
           node <<'NODE'
           const fs=require('fs'),vm=require('vm');
@@ -58,6 +59,8 @@ jobs:
         run: node test-game-ui.cjs
       - name: Verify iOS-inspired UI and account-aware progress
         run: node test-ios-polish.cjs
+      - name: Verify premium iPhone-style Home, grammar card and mobile layout
+        run: node test-premium-home.cjs
       - name: Verify Seen Words table and CEFR progress
         run: node test-seen-words.cjs
       - name: Verify all 370 Topics have word lists and functional quizzes
