@@ -115,3 +115,13 @@ body.ww-game-interface .ww-passage-audio:focus-visible{outline:3px solid #60a5fa
 @media(max-width:480px){body.ww-game-interface .ww-passage{padding:12px}body.ww-game-interface .ww-passage-row{gap:7px;grid-template-columns:22px minmax(0,1fr) 44px}body.ww-game-interface .ww-passage-sentence{font-size:14px}}
 
 body.ww-game-interface .ww-passage-vocab{font-weight:800;color:var(--txt);text-decoration:underline;text-decoration-color:rgba(59,130,246,.3);text-underline-offset:3px}
+
+body.ww-game-interface .ww-passage-controls{flex-wrap:wrap}
+body.ww-game-interface .ww-passage-copy{min-width:0}
+body.ww-game-interface .ww-passage-en{font-size:13px;line-height:1.5;color:var(--muted);margin:6px 0 0}
+body.ww-game-interface .ww-passage-en[hidden]{display:none!important}
+body.ww-game-interface .ww-passage-complete[aria-pressed="true"]{border:1px solid #16a34a;color:#15803d;font-weight:750}
+body.ww-game-interface .ww-passage-extra{border-top:1px solid var(--line);padding-top:15px;margin-top:15px}
+body.ww-game-interface .ww-passage-extra-toggle{min-height:44px;margin-bottom:9px}
+body.ww-game-interface .ww-passage-vocab{font-weight:800;text-decoration:underline;text-decoration-color:rgba(37,99,235,.32);text-underline-offset:3px}
+@media(max-width:480px){body.ww-game-interface .ww-passage-controls .btn{flex-grow:1;min-height:44px}}
