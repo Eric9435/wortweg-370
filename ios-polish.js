@@ -77,4 +77,4 @@
  refresh();
 })();
 /* Grammar Academy bootstraps separately so existing vocabulary flows remain unchanged. */
-(()=>{const script=document.createElement('script');script.src='./grammar.js';script.defer=true;document.head.append(script);})();
+(()=>{const extra=document.createElement('script');extra.src='./grammar-expanded.js';extra.onload=()=>{const app=document.createElement('script');app.src='./grammar.js';document.head.append(app);};extra.onerror=()=>{const app=document.createElement('script');app.src='./grammar.js';document.head.append(app);};document.head.append(extra);})();
