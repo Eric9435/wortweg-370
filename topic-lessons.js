@@ -351,7 +351,7 @@
    const desc=tag(card,'div','','ww-topic-word-copy');
    // Colour only the definite article; keep the complete German word accessible.
    const name=tag(desc,'strong','','ww-topic-german');
-   const articleMatch=String(w.de||'').match(/^(der|die|das)\\s+(.+)$/i);
+   const articleMatch=String(w.de||'').match(/^(der|die|das)\s+(.+)$/i);
    if(articleMatch){
     name.classList.add('ww-topic-article-'+articleMatch[1].toLowerCase());
     tag(name,'span',articleMatch[1]+' ','ww-topic-article');
