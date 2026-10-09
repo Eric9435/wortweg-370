@@ -5,7 +5,8 @@ const LESSONS=[["A1","Definite articles","der / die / das mark grammatical gende
 const LEVELS=['A1','A2','B1','B2','C1'];
 const STORAGE='wortweg370-grammar-v1';
 const topics=Object.fromEntries(LEVELS.map(l=>[l,TOPICS[l].split('|')]));
-const entries=LESSONS.map((r,i)=>({id:r[0].toLowerCase()+'-'+r[1].toLowerCase().replace(/[^a-z0-9]+/g,'-'),level:r[0],title:r[1],rule:r[2],pattern:r[3],example:r[4],english:r[5],myanmar:r[6],question:r[7],options:r.slice(8),answer:0}));
+const ALL_LESSONS=LESSONS.concat(Array.isArray(window.WortWegGrammarExtra)?window.WortWegGrammarExtra:[]);
+const entries=ALL_LESSONS.map((r,i)=>({id:r[0].toLowerCase()+'-'+r[1].toLowerCase().replace(/[^a-z0-9]+/g,'-'),level:r[0],title:r[1],rule:r[2],pattern:r[3],example:r[4],english:r[5],myanmar:r[6],question:r[7],options:r.slice(8),answer:0}));
 let progress={};let selectedLevel='A1',active=null,chosen=-1,checked=false;
 function load(){try{const value=JSON.parse(localStorage.getItem(STORAGE)||'{}');if(value&&typeof value==='object'&&!Array.isArray(value))progress=value;}catch{}}
 function save(){try{localStorage.setItem(STORAGE,JSON.stringify(progress));}catch{}}
