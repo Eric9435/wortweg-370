@@ -30,6 +30,15 @@ jobs:
           }
           console.log('PASS: JavaScript syntax, manifest, and persistence hooks');
           NODE
+      - name: Verify A1-C1 grammar lesson completeness and packaged assets
+        run: |
+          node --check grammar.js
+          node --check grammar-expanded.js
+          node --check grammar-more-a1-a2.js
+          node --check grammar-more-b1.js
+          node --check grammar-more-b2.js
+          node --check grammar-more-c1.js
+          node test-grammar-catalog.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
       - name: Verify dynamic lessons, offline cache, and secure account separation
