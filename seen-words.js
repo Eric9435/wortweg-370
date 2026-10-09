@@ -165,10 +165,108 @@
  }
  const mini=document.createElement('div');mini.id='ww-seen-home-levels';
  home.append(mini);
+
+ // The outer donut describes the composition of the existing 10,876-entry
+ // CEFR Word Bank (not six equal slices or sample numbers from a mockup).
+ // The inner donut describes progress through *all* included study entries.
+ const levelColors=['#1b548a','#5a94cf','#1b9b96','#7ad9cb','#b5e7e9','#d8e1ed'];
+ const SVG_NS='http://www.w3.org/2000/svg';
+ const svgEl=(tag,attrs={})=>{
+  const el=document.createElementNS(SVG_NS,tag);
+  for(const [name,value] of Object.entries(attrs))el.setAttribute(name,String(value));
+  return el;
+ };
+ const precisePercent=(seen,total)=>{
+  if(!total||!seen)return '0%';
+  const ratio=100*seen/total;
+  return ratio<.1?'<0.1%':ratio.toFixed(1)+'%';
+ };
+ function circlePoint(cx,cy,r,angle){
+  const radians=(angle-90)*Math.PI/180;
+  return [cx+r*Math.cos(radians),cy+r*Math.sin(radians)];
+ }
+ function arcPath(cx,cy,r,start,end){
+  const a=circlePoint(cx,cy,r,start),b=circlePoint(cx,cy,r,end);
+  return 'M '+a[0].toFixed(3)+' '+a[1].toFixed(3)+
+   ' A '+r+' '+r+' 0 '+(end-start>180?1:0)+' 1 '+b[0].toFixed(3)+' '+b[1].toFixed(3);
+ }
+ function makeDonut(stat){
+  const bankCount=levels.reduce((sum,level)=>sum+(stat.totals.get(level)?.total||0),0);
+  const shell=text(document.createElement('div'),'div','','ww-donut-shell');
+  const svg=svgEl('svg',{viewBox:'0 0 280 280',class:'ww-donut-svg',role:'img',
+   'aria-label':'Outer ring: CEFR Word Bank distribution from A1 to C2. Inner ring: overall vocabulary exploration.'});
+  const title=svgEl('title');title.textContent='Vocabulary levels and overall learning progress';svg.append(title);
+  let pos=0;
+  for(const [i,level] of levels.entries()){
+   const total=stat.totals.get(level)?.total||0;
+   if(!total||!bankCount)continue;
+   const delta=360*total/bankCount,start=pos,end=pos+delta;pos=end;
+   // A full circle must use two arcs; the current catalogue always has six levels.
+   const arc=svgEl('path',{d:arcPath(140,140,105,start+.2,end-.2),
+    fill:'none',stroke:levelColors[i],'stroke-width':42});
+   const tooltip=svgEl('title');tooltip.textContent=level+': '+pretty(total)+' entries · '+precisePercent(total,bankCount)+' of Word Bank';
+   arc.append(tooltip);svg.append(arc);
+   if(delta>15){
+    const mid=circlePoint(140,140,105,(start+end)/2);
+    const label=svgEl('text',{x:mid[0].toFixed(2),y:mid[1].toFixed(2),
+     'text-anchor':'middle','dominant-baseline':'central','font-size':delta<21?11:14,
+     'font-weight':800,fill:i<3?'#fff':'#14415d','pointer-events':'none'});
+    label.textContent=level;svg.append(label);
+   }
+  }
+  const track=svgEl('circle',{cx:140,cy:140,r:66,fill:'none',class:'ww-donut-track','stroke-width':15});
+  svg.append(track);
+  const fill=svgEl('circle',{cx:140,cy:140,r:66,fill:'none',class:'ww-donut-completed','stroke-width':15,
+   transform:'rotate(-90 140 140)','stroke-dasharray':(2*Math.PI*66).toFixed(3),
+   'stroke-dashoffset':(2*Math.PI*66*(1-(stat.total?stat.seen/stat.total:0))).toFixed(3),
+   'stroke-linecap':'butt'});
+  svg.append(fill);
+  shell.append(svg);
+  const middle=text(shell,'div','','ww-donut-center');
+  text(middle,'strong',precisePercent(stat.seen,stat.total));
+  text(middle,'span','explored');
+  text(middle,'small',pretty(stat.seen)+' / '+pretty(stat.total));
+  return shell;
+ }
+ function makeLegend(stat){
+  const wrap=text(document.createElement('div'),'div','','ww-donut-legend');
+  text(wrap,'h3','WORD BANK BY CEFR LEVEL');
+  const total=levels.reduce((sum,level)=>sum+(stat.totals.get(level)?.total||0),0);
+  for(const [i,level] of levels.entries()){
+   const values=stat.totals.get(level)||{total:0,seen:0};
+   const row=text(wrap,'div','','ww-donut-legend-row');
+   const name=text(row,'div','','ww-donut-legend-name');
+   const dot=text(name,'span','','ww-donut-legend-dot');dot.style.background=levelColors[i];dot.setAttribute('aria-hidden','true');
+   text(name,'strong',level);
+   const counts=text(row,'div','','ww-donut-legend-values');
+   text(counts,'span',pretty(values.total)+' entries');
+   text(counts,'strong',precisePercent(values.total,total));
+   const help=text(row,'small',pretty(values.seen)+' explored · '+pretty(values.total-values.seen)+' left','ww-donut-legend-detail');
+  }
+  const bottom=text(wrap,'div','','ww-donut-legend-total');
+  text(bottom,'strong','Word Bank total');
+  text(bottom,'strong',pretty(total));
+  text(wrap,'p','Outer ring = distribution of Word Bank entries; inner ring = overall explored entries. Topic 1 and New Lessons count toward overall progress, but not the outer ring.','ww-donut-explainer');
+  return wrap;
+ }
+ function renderHero(stat){
+  const hero=document.createElement('div');hero.className='ww-donut-hero';
+  hero.setAttribute('aria-label','Your vocabulary learning journey');
+  const headline=text(hero,'div','','ww-donut-copy');
+  text(headline,'span','YOUR LEARNING JOURNEY','ww-seen-overline');
+  text(headline,'strong',pretty(stat.seen)+' explored','ww-donut-headline');
+  text(headline,'p',pretty(stat.remaining)+' left to explore','ww-donut-subtitle');
+  const metrics=text(headline,'div','','ww-donut-metrics');
+  text(metrics,'strong',precisePercent(stat.seen,stat.total),'ww-donut-metric-number');
+  text(metrics,'span','overall progress');
+  text(headline,'p',pretty(stat.seen)+' of '+pretty(stat.total)+' study entries seen','ww-donut-statline');
+  hero.append(makeDonut(stat));
+  hero.append(makeLegend(stat));
+  return hero;
+ }
  function renderHome(stat){
   home.replaceChildren();
-  const summary=document.createElement('div');summary.className='ww-seen-home-summary';
-  statsHeader(summary,stat);home.append(summary);
+  home.append(renderHero(stat));
   const a1=stat.totals.get('A1')||{seen:0,total:0};
   const preview=document.createElement('div');preview.className='ww-seen-a1-preview';
   const line=text(preview,'div','','ww-seen-level-head');
