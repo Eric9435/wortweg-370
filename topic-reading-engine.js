@@ -19,7 +19,15 @@ function count(topics){const saved=records();return topics.filter(t=>saved[Strin
 function build(topic,words,identity,examples){
  let story;
  if(topic.id===1){
-  story=String(identity).split('\n').map((de,i)=>({de,en:IDENTITY_EN[i]||'',kind:'story'}));
+  story=String(identity).split('\n').flatMap((de,i)=>{
+   // The greeting and self-introduction are two spoken sentences.
+   // They deserve independent bolding and speaker controls.
+   if(i===0&&de.startsWith('Hallo! ')){
+    return [{de:'Hallo!',en:'Hello!',kind:'story'},
+     {de:de.slice('Hallo! '.length),en:'My name is Eric.',kind:'story'}];
+   }
+   return [{de,en:IDENTITY_EN[i]||'',kind:'story'}];
+  });
  }else{
   const scene=SCENES.find(s=>topic.id>=s.first&&topic.id<=s.last);
   const seed=window.WortWegReadingSeeds?.[topic.id];
