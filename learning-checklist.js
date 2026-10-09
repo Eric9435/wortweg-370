@@ -66,6 +66,24 @@ $('ww-cl-back').addEventListener('click',close);
 ['ww-cl-level','ww-cl-kind','ww-cl-status','ww-cl-query'].forEach(id=>$(id).addEventListener(id==='ww-cl-query'?'input':'change',render));
 window.addEventListener('wortweg:account',()=>{if(!root.hidden){load();render()}});
 window.WortWegChecklist={open,close};
-const launch=document.createElement('button');launch.type='button';launch.className='ww-home-focus-tile';launch.style.width='100%';launch.style.marginTop='12px';launch.textContent='☑  German Learning Checklist · A1–C2 roadmap';launch.addEventListener('click',open);
-const zone=dashboard.querySelector('#ww-home-focus');(zone||dashboard).append(launch);
+const launch=document.createElement('button');
+launch.type='button';
+launch.className='ww-cl-home-launch';
+launch.innerHTML='<span class="ww-cl-home-icon" aria-hidden="true">☑</span><span class="ww-cl-home-copy"><strong>German Learning Checklist</strong><small>A1–C2 roadmap · Topics, grammar & notes</small></span><span class="ww-cl-home-arrow" aria-hidden="true">›</span>';
+launch.addEventListener('click',open);
+const launchStyle=document.createElement('style');
+launchStyle.textContent=`
+#ww-home-focus .ww-cl-home-launch{display:flex;width:100%;align-items:center;gap:13px;text-align:left;background:var(--panel);color:var(--txt);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-height:72px;cursor:pointer;box-shadow:0 5px 18px rgba(15,32,59,.04);transition:transform .15s,border-color .15s}
+#ww-home-focus .ww-cl-home-launch:hover{transform:translateY(-1px);border-color:var(--accent)}
+#ww-home-focus .ww-cl-home-icon{display:grid;place-items:center;flex:none;width:42px;height:42px;background:var(--panel2);color:var(--accent);border-radius:12px;font-size:20px}
+#ww-home-focus .ww-cl-home-copy{display:grid;gap:3px;flex:1;min-width:0}
+#ww-home-focus .ww-cl-home-copy strong{font-size:15px;font-weight:750}
+#ww-home-focus .ww-cl-home-copy small{font-size:12px;color:var(--muted)}
+#ww-home-focus .ww-cl-home-arrow{font-size:26px;color:var(--accent)}
+`;document.head.append(launchStyle);
+const zone=dashboard.querySelector('#ww-home-focus');
+const primary=zone?.querySelector('.ww-home-focus-primary');
+if(primary)primary.before(launch);
+else if(zone)zone.prepend(launch);
+else dashboard.prepend(launch);
 })();
