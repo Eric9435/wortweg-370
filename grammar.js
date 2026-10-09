@@ -15,7 +15,7 @@ function btn(txt,action,cls=''){const b=el('button','wg-btn '+cls,txt);b.type='b
 function add(parent,...children){parent.append(...children);return parent;}
 function userKey(){const id=window.WortWeg?.getUser?.()?.uid || window.WortWeg?.currentUser?.uid || 'local';return STORAGE+'-'+id;}
 function readUser(){try{const value=JSON.parse(localStorage.getItem(userKey())||'{}');progress=value&&typeof value==='object'&&!Array.isArray(value)?value:{};}catch{progress={};}}
-function writeUser(){try{localStorage.setItem(userKey(),JSON.stringify(progress));}catch{}}
+function writeUser(){try{localStorage.setItem(userKey(),JSON.stringify(progress));}catch{}window.dispatchEvent(new Event('wortweg:grammar-changed'));}
 const root=el('section','wg-academy');root.id='wg-academy';root.hidden=true;root.setAttribute('aria-label','German grammar academy');
 const header=el('header','wg-header');add(header,btn('‹  Back',close,'wg-back'),el('strong','', 'Grammar Academy'),el('span','wg-brand','WortWeg 370'));
 const body=el('div','wg-body');add(root,header,body);document.body.append(root);

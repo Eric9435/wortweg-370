@@ -194,7 +194,7 @@
   const bankCount=levels.reduce((sum,level)=>sum+(stat.totals.get(level)?.total||0),0);
   const shell=text(document.createElement('div'),'div','','ww-donut-shell');
   const svg=svgEl('svg',{viewBox:'0 0 280 280',class:'ww-donut-svg',role:'img',
-   'aria-label':'Outer ring: CEFR Word Bank distribution from A1 to C2. Inner ring: overall vocabulary exploration.'});
+   'aria-label':'Outer ring: CEFR Word Bank distribution A1 to C2. Middle ring: vocabulary exploration. Innermost ring: grammar mastery.'});
   const title=svgEl('title');title.textContent='Vocabulary levels and overall learning progress';svg.append(title);
   let pos=0;
   for(const [i,level] of levels.entries()){
@@ -221,6 +221,21 @@
    'stroke-dashoffset':(2*Math.PI*66*(1-(stat.total?stat.seen/stat.total:0))).toFixed(3),
    'stroke-linecap':'butt'});
   svg.append(fill);
+  // Third concentric ring shows grammar lesson mastery; original CEFR and vocabulary rings remain unchanged.
+  const grammar=window.WortWegGrammar?.getSummary?.()||{mastered:0,total:200};
+  const grammarTotal=Math.max(0,Number(grammar.total)||200);
+  const grammarDone=Math.max(0,Math.min(grammarTotal,Number(grammar.mastered)||0));
+  const grammarFraction=grammarTotal?grammarDone/grammarTotal:0;
+  const grammarRadius=45,grammarCirc=2*Math.PI*grammarRadius;
+  svg.append(svgEl('circle',{cx:140,cy:140,r:grammarRadius,fill:'none',
+    class:'ww-donut-grammar-track','stroke-width':10}));
+  const grammarRing=svgEl('circle',{cx:140,cy:140,r:grammarRadius,fill:'none',
+    class:'ww-donut-grammar-completed','stroke-width':10,
+    transform:'rotate(-90 140 140)',
+    'stroke-dasharray':grammarCirc.toFixed(3),
+    'stroke-dashoffset':(grammarCirc*(1-grammarFraction)).toFixed(3)});
+  const grammarTitle=svgEl('title');grammarTitle.textContent='Grammar mastered: '+grammarDone+' of '+grammarTotal+' lessons ('+Math.round(grammarFraction*100)+'%)';
+  grammarRing.append(grammarTitle);svg.append(grammarRing);
   shell.append(svg);
   const middle=text(shell,'div','','ww-donut-center');
   text(middle,'strong',precisePercent(stat.seen,stat.total));
@@ -246,7 +261,13 @@
   const bottom=text(wrap,'div','','ww-donut-legend-total');
   text(bottom,'strong','Word Bank total');
   text(bottom,'strong',pretty(total));
-  text(wrap,'p','Outer ring = distribution of Word Bank entries; inner ring = overall explored entries. Topic 1 and New Lessons count toward overall progress, but not the outer ring.','ww-donut-explainer');
+  const grammar=window.WortWegGrammar?.getSummary?.()||{mastered:0,total:200};
+  const grammarDone=Math.max(0,Math.min(Number(grammar.total)||200,Number(grammar.mastered)||0));
+  const grammarLine=text(wrap,'div','','ww-donut-grammar-summary');
+  const grammarDot=text(grammarLine,'span','','ww-donut-grammar-dot');grammarDot.setAttribute('aria-hidden','true');
+  text(grammarLine,'strong','Grammar mastery');
+  text(grammarLine,'span',pretty(grammarDone)+' / '+pretty(Number(grammar.total)||200)+' lessons');
+  text(wrap,'p','Outer CEFR ring = vocabulary distribution; middle blue ring = vocabulary explored; innermost teal ring = grammar lessons mastered.','ww-donut-explainer');
   return wrap;
  }
  function renderHero(stat){
@@ -375,6 +396,8 @@
  window.addEventListener('wortweg:account',()=>setTimeout(render,0));
  window.addEventListener('wortweg:live-pack',render);
  window.addEventListener('wortweg:live-progress-changed',render);
+ window.addEventListener('wortweg:grammar-ready',render);
+ window.addEventListener('wortweg:grammar-changed',render);
  render();
  window.WortWegSeenWords={refresh:render,getSummary:()=>snapshot(),open:()=>{window.WortWeg.navigate('seen');render();}};
 })();

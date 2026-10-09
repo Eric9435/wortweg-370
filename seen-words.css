@@ -239,3 +239,10 @@ body.ww-game-interface .ww-seen-home > .ww-seen-a1-preview {margin-top:0}
 @media(prefers-reduced-motion:reduce){
  body.ww-game-interface .ww-donut-completed {transition:none}
 }
+/* Third, innermost teal ring: grammar mastery; original CEFR and vocabulary rings preserved. */
+body.ww-game-interface .ww-donut-grammar-track{stroke:var(--line);opacity:.8}
+body.ww-game-interface .ww-donut-grammar-completed{stroke:#23a589;transition:stroke-dashoffset .35s ease}
+body.ww-game-interface .ww-donut-grammar-summary{display:flex;gap:9px;align-items:center;padding:11px 0 3px;flex-wrap:wrap;font-size:12px;color:var(--txt)}
+body.ww-game-interface .ww-donut-grammar-dot{width:11px;height:11px;border-radius:50%;background:#23a589;flex-shrink:0}
+body.ww-game-interface .ww-donut-grammar-summary strong{font-weight:750}
+body.ww-game-interface .ww-donut-grammar-summary span:last-child{color:var(--muted);font-variant-numeric:tabular-nums}
