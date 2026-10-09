@@ -265,10 +265,35 @@
  function key(w){
   return w.source==='curated'?'c:'+w.de.toLowerCase():'b:'+w.id;
  }
+ // Original Word Bank progress stays cloud-compatible. Additional topic
+ // expressions have their own per-account, device-local quiz history.
+ // No artificial A1 / CEFR level is assigned to new expressions.
+ const expressionStorage=()=> 'wortweg370-topic-expressions-v1:'+String(window.WortWegAccountSnapshot?.uid||'guest');
+ function expressionRecords(){
+  try{const saved=JSON.parse(localStorage.getItem(expressionStorage())||'{}');
+   return saved&&typeof saved==='object'&&!Array.isArray(saved)?saved:{};}
+  catch{return {};}
+ }
+ function expressionKey(topicId,w){
+  return String(topicId)+':'+normalize(w.de);
+ }
  function seen(w){
-  if(w.source==='heading'||w.source==='starter')return null;
+  if(w.source==='heading'||w.source==='starter'){
+   return Boolean(selected&&expressionRecords()[expressionKey(selected.topic.id,w)]?.answered);
+  }
   const p=window.WortWeg.getProgress(),k=key(w);
   return Boolean(p?.seen?.[k]||p?.items?.[k]);
+ }
+ function recordExpression(w,correct){
+  if(!selected)return;
+  const all=expressionRecords(),k=expressionKey(selected.topic.id,w);
+  const prev=all[k]||{answered:0,correct:0,wrong:0};
+  all[k]={answered:(Number(prev.answered)||0)+1,
+   correct:(Number(prev.correct)||0)+(correct?1:0),
+   wrong:(Number(prev.wrong)||0)+(correct?0:1),
+   lastCorrect:Boolean(correct),de:w.de,en:w.en};
+  try{localStorage.setItem(expressionStorage(),JSON.stringify(all));}
+  catch{/* Browsers with storage disabled still allow a session quiz. */}
  }
  function speak(de){
   if(window.WortWegAudio?.speak){window.WortWegAudio.speak(de);return;}
@@ -331,11 +356,14 @@
  }
  function refreshSummary(){
   if(!selected)return;
-  const count=selected.curated.length,done=selected.curated.filter(seen).length;
-  const label=count?done+' of '+count+' Word Bank / curated words answered · '+(count?Math.round(100*done/count):0)+'% explored':'This topic has starter expressions; matched CEFR bank words are not yet available.';
-  el('ww-topic-summary').textContent=label;
-  el('ww-topic-practice').disabled=!count;
-  el('ww-topic-practice').title=count?'Practice matched CEFR/curated vocabulary':'More verified words are needed before a quiz can be offered.';
+  const bankCount=selected.curated.length,bankDone=selected.curated.filter(seen).length;
+  const extraCount=selected.extras.length,extraDone=selected.extras.filter(seen).length;
+  el('ww-topic-summary').textContent=
+   'Quiz ready · '+selected.all.length+' practice entries · '+
+   (bankCount?bankDone+' / '+bankCount+' Word Bank entries explored':'No matched Word Bank entries yet')+
+   (extraCount?' · '+extraDone+' / '+extraCount+' topic expressions practised':'');
+  el('ww-topic-practice').disabled=!selected.all.length;
+  el('ww-topic-practice').title='Start the '+selected.topic.en+' vocabulary quiz';
  }
  function showWords(){
   lesson=null;el('ww-topic-quiz').hidden=true;el('ww-topic-study').hidden=false;
@@ -348,7 +376,7 @@
   el('ww-topic-heading').textContent=topic.de;el('ww-topic-english').textContent=topic.en;
   el('ww-topic-note').textContent=selected.curated.length?
    'German–English–Myanmar meanings and audio. Topic matches are suggestions from the existing CEFR Word Bank; topic phrases and starter words are labelled separately.':
-   'Starter expressions for this topic. Additional verified Word Bank terms have not been curated yet; these expressions do not count as CEFR bank progress.';
+   'Quiz ready! Practise the translated topic title and starter expressions. These are saved separately on this device and do not count toward CEFR Word Bank totals.';
   el('ww-topic-search').value='';el('ww-topic-level').value='ALL';
   showWords();
   window.WortWeg.navigate('ww-topic-detail');
@@ -377,8 +405,12 @@
   window.WortWeg.setProgress(p);
  }
  function startQuiz(){
-  if(!selected?.curated?.length)return;
-  lesson={list:shuffle(selected.curated).slice(0,10),pos:0,correct:0,answered:false};
+  if(!selected?.all?.length)return;
+  // Include the topic expression when present, even if a large CEFR bank
+  // provides other questions. Single-expression lessons still have a real quiz.
+  const list=shuffle(selected.all.filter((w,i,a)=>
+   a.findIndex(other=>normalize(other.de)===normalize(w.de))===i)).slice(0,10);
+  lesson={list,pos:0,correct:0,answered:false,bankAnswered:0,expressionAnswered:0};
   el('ww-topic-study').hidden=true;el('ww-topic-quiz').hidden=false;
   el('ww-topic-show').hidden=false;el('ww-topic-practice').hidden=true;
   renderQuestion();
@@ -388,14 +420,32 @@
   if(!lesson)return;
   if(lesson.pos>=lesson.list.length){
    tag(host,'h3','Quiz completed!');
-   tag(host,'p',lesson.correct+' correct out of '+lesson.list.length+'. Your answers were saved in your existing learning history.');
+   tag(host,'p',lesson.correct+' correct out of '+lesson.list.length+'. '+
+    (lesson.bankAnswered?lesson.bankAnswered+' Word Bank answer(s) saved to your regular learning history. ':'')+
+    (lesson.expressionAnswered?lesson.expressionAnswered+' topic expression answer(s) saved on this device separately from CEFR progress.':''));
    const again=tag(host,'button','Practice again','btn primary');again.type='button';again.addEventListener('click',startQuiz);
    return;
   }
   const w=lesson.list[lesson.pos],choices=[w.en];
-  const distractors=shuffle(selected.curated.concat(bank.filter(x=>x.level===w.level))).filter(x=>
-   x.en&&x.en!==w.en&&x.de!==w.de);
-  for(const other of distractors)if(!choices.includes(other.en)&&choices.length<4)choices.push(other.en);
+  // Four distinct English answers for every topic, including lessons whose
+  // only authored entry is their translated heading. Distractors come from
+  // vocabulary entries, never fabricated definitions.
+  const sameLevel=bank.filter(x=>x.level===w.level);
+  const sourcePool=shuffle(selected.all.filter(x=>x!==w)).concat(
+   shuffle(w.source==='heading'||w.source==='starter'?
+    topics.map(t=>({de:t.de,en:t.en})):sameLevel));
+  for(const other of sourcePool){
+   if(choices.length===4)break;
+   if(other.en&&normalize(other.en)!==normalize(w.en)&&
+    !choices.some(choice=>normalize(choice)===normalize(other.en)))choices.push(other.en);
+  }
+  if(choices.length<4){
+   for(const other of bank){
+    if(choices.length===4)break;
+    if(other.en&&normalize(other.en)!==normalize(w.en)&&
+     !choices.some(choice=>normalize(choice)===normalize(other.en)))choices.push(other.en);
+   }
+  }
   const opts=shuffle(choices);
   tag(host,'p','Question '+(lesson.pos+1)+' of '+lesson.list.length,'ww-topic-quiz-counter');
   const question=tag(host,'div','','ww-topic-question');
@@ -421,7 +471,9 @@
    if(!lesson.answered){
     const correct=chosen===w.en;
     lesson.answered=true;if(correct)lesson.correct++;
-    record(w,correct);
+    if(w.source==='heading'||w.source==='starter'){
+     recordExpression(w,correct);lesson.expressionAnswered++;
+    }else{record(w,correct);lesson.bankAnswered++;}
     for(const b of choicesBox.children){
      b.disabled=true;b.classList.toggle('correct',b.textContent===w.en);
      b.classList.toggle('incorrect',b.textContent===chosen&&!correct);
@@ -453,6 +505,25 @@
   event.preventDefault();event.stopImmediatePropagation();
   open(topic);
  },true);
+ // The original Topic browser is regenerated on searches. Replace its
+ // legacy "Roadmap" status without mutating the 2 MB bundled dictionary.
+ const topicList=$('topicList');
+ function updateQuizReadyLabels(){
+  if(!topicList)return;
+  for(const button of topicList.querySelectorAll('button.topic')){
+   const badge=button.lastElementChild;
+   if(badge&&badge.textContent==='Roadmap'){
+    badge.textContent='Quiz ready';
+    badge.classList.add('ww-topic-ready');
+   }else if(badge&&badge.textContent==='Quiz ready'){
+    badge.classList.add('ww-topic-ready');
+   }
+  }
+ }
+ if(topicList){
+  new MutationObserver(updateQuizReadyLabels).observe(topicList,{childList:true});
+  updateQuizReadyLabels();
+ }
  window.addEventListener('wortweg:account',()=>{lesson=null;if(selected)showWords()});
  window.addEventListener('wortweg:changed',()=>{
   if(!selected||!page.classList.contains('active')||lesson)return;
@@ -460,5 +531,7 @@
  });
  window.WortWegTopics={open:id=>{const t=byId.get(Number(id));if(t)open(t)},getWords:id=>{
   const t=byId.get(Number(id));return t?entriesFor(t):null;
- },getCount:()=>topics.length};
+ },getCount:()=>topics.length,isQuizReady:id=>{
+  const t=byId.get(Number(id));return Boolean(t&&entriesFor(t).all.length);
+ },getLocalQuizHistory:()=>expressionRecords()};
 })();
