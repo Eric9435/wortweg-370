@@ -495,16 +495,18 @@
    for(const piece of pieces){
     if(piece.hit){next.push(piece);continue}
     const src=piece.text,hay=src.toLocaleLowerCase('de');
-    let pos=0,at;
-    while((at=hay.indexOf(lower,pos))>=0){
+    let cursor=0,searchFrom=0,at;
+    while((at=hay.indexOf(lower,searchFrom))>=0){
      const finish=at+term.length;
      if((at>0&&isLetter(src[at-1]))||(finish<src.length&&isLetter(src[finish]))){
-      pos=at+1;continue;
+      // Rejected substring: advance search only. Never drop original text.
+      searchFrom=at+1;continue;
      }
-     if(at>pos)next.push({text:src.slice(pos,at),hit:false});
-     next.push({text:src.slice(at,finish),hit:true});pos=finish;
+     if(at>cursor)next.push({text:src.slice(cursor,at),hit:false});
+     next.push({text:src.slice(at,finish),hit:true});
+     cursor=finish;searchFrom=finish;
     }
-    if(pos<src.length)next.push({text:src.slice(pos),hit:false});
+    if(cursor<src.length)next.push({text:src.slice(cursor),hit:false});
    }
    pieces=next;
   }
