@@ -40,6 +40,8 @@ jobs:
           node --check grammar-more-b2.js
           node --check grammar-more-c1.js
           node test-grammar-catalog.cjs
+      - name: Verify vocabulary writing repetition tracking
+        run: node test-vocab-writing.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
       - name: Verify dynamic lessons, offline cache, and secure account separation
