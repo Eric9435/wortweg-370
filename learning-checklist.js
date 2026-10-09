@@ -71,18 +71,10 @@ launch.type='button';
 launch.className='ww-cl-home-launch';
 launch.innerHTML='<span class="ww-cl-home-icon" aria-hidden="true">☑</span><span class="ww-cl-home-copy"><strong>German Learning Checklist</strong><small>A1–C2 roadmap · Topics, grammar & notes</small></span><span class="ww-cl-home-arrow" aria-hidden="true">›</span>';
 launch.addEventListener('click',open);
-const launchStyle=document.createElement('style');
-launchStyle.textContent=`
-#ww-home-focus .ww-cl-home-launch{display:flex;width:100%;align-items:center;gap:13px;text-align:left;background:var(--panel);color:var(--txt);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-height:72px;cursor:pointer;box-shadow:0 5px 18px rgba(15,32,59,.04);transition:transform .15s,border-color .15s}
-#ww-home-focus .ww-cl-home-launch:hover{transform:translateY(-1px);border-color:var(--accent)}
-#ww-home-focus .ww-cl-home-icon{display:grid;place-items:center;flex:none;width:42px;height:42px;background:var(--panel2);color:var(--accent);border-radius:12px;font-size:20px}
-#ww-home-focus .ww-cl-home-copy{display:grid;gap:3px;flex:1;min-width:0}
-#ww-home-focus .ww-cl-home-copy strong{font-size:15px;font-weight:750}
-#ww-home-focus .ww-cl-home-copy small{font-size:12px;color:var(--muted)}
-#ww-home-focus .ww-cl-home-arrow{font-size:26px;color:var(--accent)}
-`;document.head.append(launchStyle);
 // Place Checklist as a normal row in the existing Home menu, beside Grammar Academy.
 launch.id='ww-cl-menu-launch';
+// Remove any obsolete floating launcher left by an older Home script.
+dashboard.querySelectorAll('#ww-home-focus > button.ww-home-focus-tile, #ww-home-focus > button.ww-cl-home-launch').forEach(node=>node.remove());
 launch.className='ww-menu-option ww-grammar-menu-card ww-cl-menu-row';
 launch.removeAttribute('style');
 launch.innerHTML='<span class="ww-menu-icon" aria-hidden="true">☑</span><span class="ww-grammar-label"><strong>German Learning Checklist</strong><small>Topics, grammar, progress & notes</small></span><span class="ww-menu-arrow" aria-hidden="true">›</span>';
