@@ -450,39 +450,69 @@
  const identityPassage="Hallo! Mein Name ist Eric.\nMein Vorname ist Eric und mein Nachname steht in meinem Reisepass.\nMein Familienname und mein Geburtsname sind gleich.\nIch habe keinen Zweitnamen.\nMein Rufname ist Eric.\nMeine Initialen sind E. S.\nDie Schreibweise meines Namens ist wichtig, besonders bei offiziellen Formularen.\nEine Namensänderung habe ich nicht gemacht.\nIch bin ein junger Erwachsener.\nMein Alter ist fünfundzwanzig Jahre.\nMein Geburtsdatum möchte ich hier nicht nennen.\nMein Geburtsmonat und mein Geburtsjahr stehen in meinen persönlichen Dokumenten.\nMein Geburtsort liegt in Myanmar und meine Geburtsstadt ist Yangon.\nMeine Geburtsurkunde enthält diese Informationen.\nMein Heimatland ist Myanmar.\nAuch mein Herkunftsland ist Myanmar.\nDas Land, in dem ich jetzt lebe, ist Deutschland.\nMeine Staatsangehörigkeit ist myanmarisch.\nMeine Muttersprache ist Birmanisch.\nAußerdem spreche ich Englisch und lerne Deutsch.\nMein Wohnort ist Hamburg.\nMein Wohnsitz ist jetzt in Deutschland.\nMeine genaue Adresse ist privat.\nMeine Anschrift möchte ich nicht öffentlich zeigen.\nMeine Postleitzahl und meine Hausnummer stehen in meinen persönlichen Unterlagen.\nMein Beruf ist Ingenieur.\nIch habe Elektrotechnik studiert und studiere jetzt im Master an der Technischen Universität Hamburg.\nIch interessiere mich für Automatisierung, Steuerungstechnik und digitale Technologien.\nAußerdem spiele ich Klavier und unterrichte Musik.\nMein Familienstand ist privat.\nIn einem Formular gibt es verschiedene Möglichkeiten, zum Beispiel ledig oder verheiratet.\nMein Geschlecht ist männlich.\nMeine Kontaktdaten sind ebenfalls privat.\nMeine Telefonnummer und meine E-Mail-Adresse gebe ich nur an vertrauenswürdige Personen weiter.\nMeine Ausweisnummer veröffentliche ich nicht.\nWenn ich ein Formular ausfülle, lese ich zuerst die Anrede, zum Beispiel Herr oder Frau.\nDanach mache ich die erforderlichen Angaben.\nAm Ende kontrolliere ich alles und schreibe meine Unterschrift.\nDas bin ich!\nIch lebe in Hamburg, lerne jeden Tag Deutsch und möchte mich persönlich und beruflich weiterentwickeln.";
  function passageSentences(){
   if(!selected)return [];
-  const words=selected.all;
   const lines=selected.topic.id===1?identityPassage.split('\n'):[
-   'Heute geht es um das Thema „'+selected.topic.de+'“.'
+   'Heute geht es um das Thema „'+selected.topic.de+'“.',
+   'Ich möchte über „'+selected.topic.de+'“ sprechen.',
+   'Dieses Thema ist für meinen Alltag wichtig.'
   ];
-  // Add a contextual example for every topic vocabulary entry, including any
-  // terms not occurring verbatim in the authored Topic 1 introduction.
-  const normalizeToken=word=>String(word||'').replace(/^(der|die|das)\s+/i,'').trim();
-  for(const word of words){
-   const bare=normalizeToken(word.de);
-   const already=lines.some(line=>line.toLocaleLowerCase('de').includes(bare.toLocaleLowerCase('de')));
-   if(already)continue;
-   const entry=exampleBank[String(word.de||'').toLocaleLowerCase('de')];
-   const example=entry?.[0]||('Ich lerne den Ausdruck „'+word.de+'“ zum Thema „'+selected.topic.de+'“.');
-   lines.push(example);
+  for(const word of selected.all){
+   const term=String(word.de||'').replace(/^(der|die|das)\s+/i,'').trim();
+   if(lines.some(line=>line.toLocaleLowerCase('de').includes(term.toLocaleLowerCase('de'))))continue;
+   const example=exampleBank[String(word.de||'').toLocaleLowerCase('de')]?.[0];
+   const label=String(word.de||'');
+   const meaning=String(word.en||'');
+   lines.push(example||('Der Ausdruck „'+label+'“ bedeutet auf Englisch „'+meaning+'“.'));
   }
   return lines.filter(Boolean);
+ }
+ function highlightPassageWords(node,line,words){
+  const terms=[...new Set(words.flatMap(w=>{
+   const full=String(w.de||'').trim();
+   return [full,full.replace(/^(der|die|das)\s+/i,'')];
+  }).filter(w=>w.length>2))].sort((a,b)=>b.length-a.length);
+  let pieces=[{text:line,hit:false}];
+  const isLetter=c=>Boolean(c&&/[a-zA-ZäöüÄÖÜß]/.test(c));
+  for(const term of terms){
+   const lower=term.toLocaleLowerCase('de');
+   const next=[];
+   for(const piece of pieces){
+    if(piece.hit){next.push(piece);continue}
+    const src=piece.text,hay=src.toLocaleLowerCase('de');
+    let pos=0,at;
+    while((at=hay.indexOf(lower,pos))>=0){
+     const finish=at+term.length;
+     if((at>0&&isLetter(src[at-1]))||(finish<src.length&&isLetter(src[finish]))){
+      pos=at+1;continue;
+     }
+     if(at>pos)next.push({text:src.slice(pos,at),hit:false});
+     next.push({text:src.slice(at,finish),hit:true});pos=finish;
+    }
+    if(pos<src.length)next.push({text:src.slice(pos),hit:false});
+   }
+   pieces=next;
+  }
+  for(const p of pieces){
+   if(!p.text)continue;
+   if(p.hit)tag(node,'strong',p.text,'ww-passage-vocab');
+   else node.append(document.createTextNode(p.text));
+  }
  }
  function renderPassage(){
   const host=el('ww-topic-passage-content');host.replaceChildren();
   if(!selected)return;
   const lines=passageSentences(),words=selected.all;
-  const heading=tag(host,'p',selected.topic.id===1?'Über mich – Das bin ich!':'Lesetext – '+selected.topic.de,'ww-passage-heading');
+  tag(host,'p',selected.topic.id===1?'Über mich – Das bin ich!':'Lesetext – '+selected.topic.de,'ww-passage-heading');
   const controls=tag(host,'div','','ww-passage-controls');
   const read=tag(controls,'button','🔊 Play full passage','btn secondary');
   read.type='button';read.addEventListener('click',()=>speak(lines.join(' ')));
-  const note=tag(host,'p',lines.length+' sentences · '+words.length+' / '+words.length+' vocabulary entries included · Tap 🔊 to hear any sentence.','ww-passage-info');
+  tag(host,'p',lines.length+' sentences · Topic vocabulary in bold · Tap 🔊 for sentence audio.','ww-passage-info');
   for(let i=0;i<lines.length;i++){
    const row=tag(host,'div','','ww-passage-row');
    tag(row,'span',String(i+1).padStart(2,'0'),'ww-passage-number');
-   tag(row,'p',lines[i],'ww-passage-sentence');
+   const sentence=tag(row,'p','','ww-passage-sentence');
+   highlightPassageWords(sentence,lines[i],words);
    const listen=tag(row,'button','🔊','ww-passage-audio');
-   listen.type='button';
-   listen.setAttribute('aria-label','Play German sentence '+(i+1));
+   listen.type='button';listen.setAttribute('aria-label','Play German sentence '+(i+1));
    listen.addEventListener('click',()=>speak(lines[i]));
   }
  }
