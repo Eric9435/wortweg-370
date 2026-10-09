@@ -105,3 +105,11 @@ Pack files are schema-checked, bounded in size, rendered as text, and downloaded
 **Scope:** Changes to this JSON feed are synchronized. The original 10,876-entry embedded bank in `index.html` is not automatically rebuilt from the website; moving the legacy bank to the feed requires a separate content migration. Changes to JavaScript, UI components, app permissions or native functions still require a new Android APK. New content cannot be downloaded for the first time while offline; previously cached content remains available.
 
 If the public lesson hosting URL changes during a future repository-privacy migration, update the fixed endpoint in `live-content.js` and ship one APK with the new endpoint before retiring the old one.
+
+## Grammar Academy (feature branch)
+
+A distinct grammar study interface has been added with 200 indexed grammar topics (40 each in A1, A2, B1, B2 and C1), **33 fully authored interactive lessons** and responsive controls. Each authored lesson has a rule explanation, pattern, German example, English and Myanmar translations, pronunciation using the system speech engine where available, a multiple-choice check, retry, and locally saved progress. The index topics that are not authored are correctly labelled as roadmap entries, not finished interactive lessons.
+
+Open the app and select **Grammar A1–C1**. The grammar interface loads through `ios-polish.js`; the native packaging script includes `grammar.js` and `grammar.css` in future builds. The service worker caches the resources for offline use. Grammar progress is stored separately from all existing vocabulary records and **does not yet synchronize through Firebase**. Existing installed Android APKs do not gain the JavaScript module until a newly built APK is released.
+
+The grammar module is an incremental content foundation, **not yet a 200-lesson completed textbook**. Expand and pedagogically review the 167 remaining interactive lessons, add more exercise types and robust authenticated progress synchronization, then verify Android build and existing login/progress regression checks before merging and releasing.
