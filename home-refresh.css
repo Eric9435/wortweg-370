@@ -1,0 +1,32 @@
+/* Home refresh is additive and fully reversible; the original dashboard remains below. */
+body.ww-game-interface #dashboard .ww-home-focus{--focus-line:color-mix(in srgb,var(--line) 72%,transparent);margin:2px 0 21px;padding:0;animation:wwHomeEnter .3s ease both}
+body.ww-game-interface #dashboard .ww-home-focus-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin:5px 0 17px}
+body.ww-game-interface #dashboard .ww-home-focus-copy p{margin:0}
+body.ww-game-interface #dashboard .ww-home-focus-kicker{font-size:10px!important;font-weight:850!important;letter-spacing:.14em;color:var(--teal)!important}
+body.ww-game-interface #dashboard .ww-home-focus-copy h3{margin:7px 0 4px;font-size:clamp(24px,4vw,32px);font-weight:840;letter-spacing:-.047em;line-height:1.2;color:var(--txt)}
+body.ww-game-interface #dashboard .ww-home-focus-sub{font-size:13px;line-height:1.5;color:var(--muted)}
+body.ww-game-interface #dashboard .ww-home-view-toggle{border:1px solid var(--focus-line);background:var(--panel);color:var(--muted);font-size:12px;padding:9px 11px;border-radius:12px;min-height:40px;flex-shrink:0;cursor:pointer}
+body.ww-game-interface #dashboard .ww-home-focus-primary{display:flex;align-items:center;gap:16px;text-align:left;width:100%;min-height:106px;border:1px solid color-mix(in srgb,var(--accent) 60%,transparent);border-radius:24px;padding:22px;background:linear-gradient(118deg,#123c69 0%,#1a548a 65%,#187c92 100%);color:#fff;box-shadow:0 12px 30px rgb(18 60 105 / 15%);cursor:pointer;transition:transform .18s ease}
+body.ww-game-interface #dashboard .ww-home-focus-primary:active,body.ww-game-interface #dashboard .ww-home-focus-tile:active{transform:scale(.985)}
+body.ww-game-interface #dashboard .ww-home-focus-primary-icon{font-size:27px;border:1px solid #ffffff55;width:48px;height:48px;border-radius:15px;display:grid;place-items:center;flex-shrink:0}
+body.ww-game-interface #dashboard .ww-home-focus-primary-copy{display:grid;gap:5px;flex:1}
+body.ww-game-interface #dashboard .ww-home-focus-primary-copy small{font-size:10px;letter-spacing:.08em;color:#c4e4f5;font-weight:700}
+body.ww-game-interface #dashboard .ww-home-focus-primary-copy strong{font-size:19px;line-height:1.2;font-weight:800;letter-spacing:-.025em;color:white}
+body.ww-game-interface #dashboard .ww-home-focus-primary-copy>span{font-size:12px;color:#d5e9f7}
+body.ww-game-interface #dashboard .ww-home-focus-chevron{font-size:30px;color:white}
+body.ww-game-interface #dashboard .ww-home-focus-section{margin:22px 0 11px;font-size:16px;letter-spacing:-.022em;font-weight:770;color:var(--txt)}
+body.ww-game-interface #dashboard .ww-home-focus-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+body.ww-game-interface #dashboard .ww-home-focus-tile{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:13px;padding:17px 15px;min-height:137px;border:1px solid var(--focus-line);border-radius:19px;background:var(--panel);color:var(--txt);box-shadow:0 4px 15px rgb(23 43 69 / 3%);cursor:pointer;transition:transform .18s ease}
+body.ww-game-interface #dashboard .ww-home-focus-tile-icon{display:grid;place-items:center;width:39px;height:39px;border-radius:13px;background:color-mix(in srgb,var(--accent) 10%,var(--panel));color:var(--accent);font-size:21px;font-weight:800}
+body.ww-game-interface #dashboard .ww-home-focus-tile-copy{display:grid;gap:5px}
+body.ww-game-interface #dashboard .ww-home-focus-tile-copy strong{font-size:14px;line-height:1.2;font-weight:770}
+body.ww-game-interface #dashboard .ww-home-focus-tile-copy small{font-size:11px;line-height:1.4;color:var(--muted)}
+body.ww-game-interface #dashboard .ww-home-focus-classic{margin:0 0 10px}
+body.ww-game-interface #dashboard .ww-home-focus-classic .ww-home-focus-head{margin:0}
+body.ww-game-interface #dashboard .ww-home-focus-classic .ww-home-focus-copy,body.ww-game-interface #dashboard .ww-home-focus-classic .ww-home-focus-primary,body.ww-game-interface #dashboard .ww-home-focus-classic .ww-home-focus-section,body.ww-game-interface #dashboard .ww-home-focus-classic .ww-home-focus-grid{display:none}
+body.ww-game-interface #dashboard .ww-home-focus-classic .ww-home-focus-head{justify-content:flex-end}
+body.ww-game-interface #dashboard .ww-home-modern .ww-menu-options{margin-top:14px}
+@media(max-width:760px){body.ww-game-interface #dashboard .ww-home-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.ww-game-interface #dashboard .ww-home-focus-tile{min-height:117px}}
+@media(max-width:480px){body.ww-game-interface #dashboard .ww-home-focus-primary{padding:17px;min-height:92px;gap:11px;border-radius:20px}body.ww-game-interface #dashboard .ww-home-focus-primary-icon{width:40px;height:40px}body.ww-game-interface #dashboard .ww-home-focus-primary-copy strong{font-size:17px}body.ww-game-interface #dashboard .ww-home-focus-head{align-items:flex-start}body.ww-game-interface #dashboard .ww-home-focus-tile{padding:13px;min-height:112px;border-radius:17px}}
+@keyframes wwHomeEnter{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){body.ww-game-interface #dashboard .ww-home-focus,body.ww-game-interface #dashboard .ww-home-focus button{animation:none;transition:none}}
