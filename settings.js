@@ -241,3 +241,6 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
  const css=document.createElement('link');css.rel='stylesheet';css.href='./topic-lessons.css';document.head.append(css);
  const js=document.createElement('script');js.src='./topic-lessons.js';js.defer=true;document.head.append(js);
 })();
+
+// Premium iPhone-inspired Home layout is CSS-only, leaving app workflows unchanged.
+(()=>{const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href='./home-premium.css';document.head.append(sheet);})();
