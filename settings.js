@@ -207,3 +207,10 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
  const css=document.createElement('link');css.rel='stylesheet';css.href='./seen-words.css';document.head.append(css);
  const js=document.createElement('script');js.src='./seen-words.js';js.defer=true;document.head.append(js);
 })();
+
+
+// Topic vocabulary detail pages and topic-specific quiz, shared with offline builds.
+(()=>{
+ const css=document.createElement('link');css.rel='stylesheet';css.href='./topic-lessons.css';document.head.append(css);
+ const js=document.createElement('script');js.src='./topic-lessons.js';js.defer=true;document.head.append(js);
+})();

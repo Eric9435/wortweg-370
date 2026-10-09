@@ -1,0 +1,83 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
+const {JSDOM}=require('jsdom');
+const html=fs.readFileSync('index.html','utf8'),code=fs.readFileSync('topic-lessons.js','utf8');
+new vm.Script(code,{filename:'topic-lessons.js'});
+const errors=[];
+const dom=new JSDOM(html,{
+ url:'https://eric9435.github.io/wortweg-370/',runScripts:'dangerously',
+ beforeParse(w){
+  w.structuredClone=structuredClone;w.scrollTo=()=>{};
+  w.addEventListener('error',e=>errors.push(e.message));
+ }
+});
+const w=dom.window;let pronounced='';
+w.WortWegAudio={speak:word=>{pronounced=word;}};
+w.eval(code);
+assert.deepEqual(errors,[],'No application load errors');
+assert.ok(w.WortWegTopics,'Topic module registers the public API');
+const api=w.WortWegTopics;
+assert.equal(api.getCount(),370,'All 370 topics are available');
+let unmatched=0,matched=0,starter=0;
+for(let id=1;id<=370;id++){
+ const topic=api.getWords(id);
+ assert.ok(topic,'Topic '+id+' is accessible');
+ assert.ok(topic.all.length>=1,'Topic '+id+' has real topic expression or curated vocabulary');
+ assert.ok(topic.all.every(word=>typeof word.de==='string'&&word.de.length>0),'Topic '+id+' contains readable German');
+ assert.ok(topic.all.every(word=>typeof word.en==='string'&&word.en.length>0),'Topic '+id+' has English translations');
+ if(topic.curated.length)matched++;else unmatched++;
+ if(topic.extras.some(x=>x.source==='starter'))starter++;
+}
+assert.ok(matched>150,'Vocabulary matching covers at least 150 existing topics with actual bank entries');
+assert.ok(starter>=80,'Hand-authored starter words cover nearly all missing areas');
+assert.equal(api.getWords(1).curated.length,41,'Original Topic 1 curated vocabulary remains fully available');
+assert.ok(api.getWords(270).all.some(x=>x.de==='das Klavier'),'Piano topic now contains a useful actual German word');
+assert.ok(api.getWords(272).all.some(x=>x.de==='die Chorprobe'),'Choir topic now contains rehearsal vocabulary');
+const $=id=>w.document.getElementById(id);
+w.WortWeg.navigate('topics');
+assert.ok($('topicList').querySelectorAll('button.topic').length>=370,'Existing topic browser is unchanged');
+$('topicList').querySelector('button.topic').click();
+assert.equal(w.document.querySelector('.section.active').id,'ww-topic-detail','Topic button opens word list, not auto-start quiz');
+assert.equal($('ww-topic-list').querySelectorAll('.ww-topic-word').length,40,'Topic 1 first page is fast and paginated');
+$('ww-topic-more').click();
+assert.ok($('ww-topic-list').querySelectorAll('.ww-topic-word').length>=41,'Show more reveals all 41 curated words');
+assert.ok($('ww-topic-heading').textContent.includes('Persönliche'),'Correct topic title');
+const firstListen=$('ww-topic-list').querySelector('button.ww-topic-listen');
+const firstWord=$('ww-topic-list').querySelector('.ww-topic-word strong').textContent;
+firstListen.click();assert.equal(pronounced,firstWord,'Audio play uses existing offline German speech engine');
+api.open(270);
+assert.equal(w.document.querySelector('.section.active').id,'ww-topic-detail','Piano lesson opens');
+assert.ok($('ww-topic-list').textContent.includes('das Klavier'),'Piano appears in the lesson');
+assert.ok($('ww-topic-list').textContent.includes('piano'),'English translation appears');
+api.open(92);
+assert.ok($('ww-topic-list').querySelectorAll('.ww-topic-word').length>=2,'Food topic displays starter/Bank vocabulary');
+assert.ok($('ww-topic-summary').textContent.includes('answered'),'Topic study counter is account-aware');
+const before=w.WortWeg.getProgress().answered;
+$('ww-topic-practice').click();
+assert.equal($('ww-topic-study').hidden,true,'Quiz hides word browsing');
+assert.equal($('ww-topic-quiz').hidden,false,'Topic quiz appears');
+assert.ok($('ww-topic-quiz').querySelectorAll('button.ww-topic-choice').length>=2,'Quiz offers actual answer choices');
+$('ww-topic-quiz').querySelector('.ww-topic-choice').click();
+$('ww-topic-quiz').querySelector('.btn.primary').click();
+assert.equal(w.WortWeg.getProgress().answered,before+1,'Topic quiz records into existing per-account quiz history');
+$('ww-topic-show').click();assert.equal($('ww-topic-quiz').hidden,true,'Return to topic word list');
+assert.equal($('ww-topic-study').hidden,false);
+assert.ok($('ww-topic-list').textContent.includes('Seen'),'Topic words reflect answered history');
+$('ww-topic-search').value='zz-not-a-word';
+$('ww-topic-search').dispatchEvent(new w.Event('input'));
+assert.equal($('ww-topic-list').children.length,0,'Topic search filters word rows');
+$('ww-topic-search').value='';
+$('ww-topic-search').dispatchEvent(new w.Event('input'));
+$('ww-topic-back').click();
+assert.equal(w.document.querySelector('.section.active').id,'topics','Back button returns to all topics');
+const settings=fs.readFileSync('settings.js','utf8'),sw=fs.readFileSync('sw.js','utf8'),
+ prepare=fs.readFileSync('mobile/scripts/prepare.mjs','utf8'),css=fs.readFileSync('topic-lessons.css','utf8');
+assert.match(settings,/topic-lessons\.js/,'Web bootstraps topic script');
+assert.match(settings,/topic-lessons\.css/,'Web bootstraps topic styles');
+assert.match(sw,/'\.\/topic-lessons\.js'/,'Website caches topic script for offline use');
+assert.match(sw,/'topic-lessons\.css'/,'Website serves latest styles before stale cache');
+assert.match(prepare,/topic-lessons\.js/,'Android bundles the exact same script');
+assert.match(prepare,/topic-lessons\.css/,'Android bundles styles for offline use');
+assert.match(css,/@media\(max-width:600px\)/,'Mobile styling exists');
+assert.match(css,/prefers-reduced-motion/,'Reduced motion is respected');
+dom.window.close();
+console.log('PASS: All 370 topics open real lessons; original 41 curated words retained; German/English table, audio, filtered browsing, live topic MCQ, persistence, responsive offline packaging.');

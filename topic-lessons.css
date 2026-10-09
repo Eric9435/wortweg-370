@@ -1,0 +1,69 @@
+/* WortWeg 370 · Topic lessons. Shared by web and offline Android. */
+body.ww-game-interface .ww-topic-detail {max-width:810px;margin-inline:auto;padding-bottom:75px}
+body.ww-game-interface .ww-topic-title {margin:5px 0 17px}
+body.ww-game-interface .ww-topic-title h2 {font-size:clamp(26px,5vw,38px);line-height:1.16;margin:12px 0 5px;letter-spacing:-.05em;color:var(--txt)}
+body.ww-game-interface .ww-topic-title p {font-size:16px;line-height:1.5;color:var(--muted);margin:0}
+body.ww-game-interface .ww-topic-summary {
+ background:var(--panel);border:1px solid var(--line);border-radius:17px;
+ padding:15px 17px;color:var(--txt);font-size:14px;line-height:1.6
+}
+body.ww-game-interface .ww-topic-actions {display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
+body.ww-game-interface .ww-topic-actions .btn {min-height:44px;border-radius:12px}
+body.ww-game-interface .ww-topic-actions [hidden] {display:none!important}
+body.ww-game-interface .ww-topic-note {font-size:12px;line-height:1.6;color:var(--muted);padding:4px 1px;margin:9px 0 17px}
+body.ww-game-interface .ww-topic-filter {display:grid;grid-template-columns:1fr minmax(150px,.32fr);gap:12px;margin-bottom:16px}
+body.ww-game-interface .ww-topic-filter label {font-size:12px;color:var(--muted);font-weight:650;display:grid;gap:6px}
+body.ww-game-interface .ww-topic-filter input,body.ww-game-interface .ww-topic-filter select {
+ background:var(--panel);border:1px solid var(--line);border-radius:12px;
+ width:100%;max-width:100%;min-width:0;color:var(--txt);padding:10px 12px;min-height:45px;font-size:14px
+}
+body.ww-game-interface #ww-topic-count {padding:4px 1px 13px;font-size:12px;color:var(--muted)}
+body.ww-game-interface .ww-topic-list {display:grid;gap:9px}
+body.ww-game-interface .ww-topic-word {
+ background:var(--panel);border:1px solid var(--line);border-radius:16px;
+ padding:14px 14px 14px 17px;display:flex;justify-content:space-between;align-items:center;
+ gap:16px;min-height:74px
+}
+body.ww-game-interface .ww-topic-word-copy {display:grid;min-width:0;gap:4px}
+body.ww-game-interface .ww-topic-word-copy strong {font-size:15px;font-weight:750;color:var(--txt);overflow-wrap:anywhere}
+body.ww-game-interface .ww-topic-word-copy span {font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+body.ww-game-interface .ww-topic-word-copy small {font-size:12px;line-height:1.4;color:var(--muted)}
+body.ww-game-interface .ww-topic-word-end {display:flex;gap:7px;align-items:center;justify-content:flex-end;flex-wrap:wrap;flex:0 0 auto;max-width:43%}
+body.ww-game-interface .ww-topic-tag {font-size:10px;border-radius:999px;padding:5px 8px;background:var(--panel2);color:var(--muted);white-space:nowrap}
+body.ww-game-interface .ww-topic-seen {color:var(--teal);font-size:11px;white-space:nowrap}
+body.ww-game-interface .ww-topic-listen {
+ width:45px;height:45px;min-width:45px;min-height:45px;display:grid;place-items:center;
+ background:var(--panel2);color:var(--accent);border:0;border-radius:14px;font-size:19px
+}
+body.ww-game-interface #ww-topic-more {display:block;margin:16px auto 0;min-height:45px}
+body.ww-game-interface #ww-topic-more[hidden],body.ww-game-interface #ww-topic-quiz[hidden],
+body.ww-game-interface #ww-topic-study[hidden] {display:none!important}
+body.ww-game-interface #ww-topic-quiz {
+ padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--panel)
+}
+body.ww-game-interface .ww-topic-quiz-counter {font-size:12px;color:var(--muted);font-weight:650}
+body.ww-game-interface .ww-topic-question {display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:13px 0 20px}
+body.ww-game-interface .ww-topic-question strong {font-size:clamp(20px,5vw,32px);color:var(--txt)}
+body.ww-game-interface .ww-topic-choices {display:grid;gap:10px;margin:14px 0 17px}
+body.ww-game-interface .ww-topic-choice {
+ width:100%;text-align:left;color:var(--txt);background:var(--panel2);
+ border:1px solid var(--line);border-radius:13px;min-height:49px;
+ padding:13px 15px;font-size:15px;cursor:pointer
+}
+body.ww-game-interface .ww-topic-choice.selected {outline:2px solid var(--accent);outline-offset:1px}
+body.ww-game-interface .ww-topic-choice.correct {border-color:#15916a;background:color-mix(in srgb,#21a17e 15%,var(--panel))}
+body.ww-game-interface .ww-topic-choice.incorrect {border-color:#c6324b;background:color-mix(in srgb,#dc4561 15%,var(--panel))}
+body.ww-game-interface .ww-topic-feedback {font-size:13px;font-weight:600;line-height:1.5}
+body.ww-game-interface .ww-topic-feedback.good {color:#209f7c}
+body.ww-game-interface .ww-topic-feedback.bad {color:#ce4359}
+@media(max-width:600px){
+ body.ww-game-interface .ww-topic-filter {grid-template-columns:1fr 120px;gap:8px}
+ body.ww-game-interface .ww-topic-word {padding:12px;gap:10px}
+ body.ww-game-interface .ww-topic-word-end {max-width:42%}
+ body.ww-game-interface .ww-topic-tag {white-space:normal;text-align:center}
+ body.ww-game-interface #ww-topic-quiz {padding:15px}
+ body.ww-game-interface .ww-topic-question strong {font-size:25px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.ww-game-interface .ww-topic-choice,body.ww-game-interface .ww-topic-listen {transition:none!important}
+}
