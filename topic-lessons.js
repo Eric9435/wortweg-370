@@ -474,7 +474,18 @@
  function highlightPassageWords(node,line,words){
   const terms=[...new Set(words.flatMap(w=>{
    const full=String(w.de||'').trim();
-   return [full,full.replace(/^(der|die|das)\s+/i,'')];
+   const noun=/^(der|die|das)\s+/i.test(full);
+   const base=full.replace(/^(der|die|das)\s+/i,'');
+   const forms=[full,base];
+   // Add common regular noun/verb inflections, but only highlight full words.
+   // Irregular forms remain conservatively excluded to avoid false matches.
+   if(noun&&/^[A-Za-zÄÖÜäöüß-]+$/.test(base)){
+    for(const ending of ['n','en','e','er','s'])forms.push(base+ending);
+   }else if(!noun&&/^[A-Za-zÄÖÜäöüß]+en$/.test(base)){
+    const stem=base.slice(0,-2);
+    for(const ending of ['e','st','t','en'])forms.push(stem+ending);
+   }
+   return forms;
   }).filter(w=>w.length>2))].sort((a,b)=>b.length-a.length);
   let pieces=[{text:line,hit:false}];
   const isLetter=c=>Boolean(c&&/[a-zA-ZäöüÄÖÜß]/.test(c));
