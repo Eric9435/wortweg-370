@@ -73,8 +73,7 @@
    if(!status)continue;
    const item=p.items[e.key];
    status.known=item
-    ?(Number(item.wrong)>0&&Number(item.streak)===0?false:
-      typeof item.known==='boolean'?item.known:(status.correctLast===true))
+    ?(Number(item.wrong)>0?Number(item.streak)>0:item.known!==false)
     :status.correctLast===true;
    seen++;
    if(bucket)bucket.seen++;
