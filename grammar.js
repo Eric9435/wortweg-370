@@ -85,7 +85,28 @@ else quiz.append(btn('Check answer',()=>{if(chosen<0)return;checked=true;const p
 body.append(quiz);body.append(el('p','wg-notice','Progress is saved on this device separately from your existing vocabulary history. Cloud syncing for grammar is not yet enabled.'));
 }
 const css=document.createElement('link');css.rel='stylesheet';css.href='./grammar.css';document.head.append(css);
-const install=()=>{if(document.getElementById('wg-grammar-launch'))return;const button=btn('Grammar A1–C1',open,'wg-launch');button.id='wg-grammar-launch';const menu=document.querySelector('.ww-menu-options')||document.querySelector('#dashboard')||document.querySelector('main');if(menu)menu.prepend(button);else document.body.append(button);};
+// Keep Grammar as a first-class menu row, never an orphan card or text
+// outside the Home menu. The other UI modules may mount in any order.
+const install=()=>{
+ let button=document.getElementById('wg-grammar-launch');
+ if(!button){
+  button=btn('Grammar A1–C1',open,'wg-launch ww-grammar-menu-card');
+  button.id='wg-grammar-launch';button.type='button';
+  button.innerHTML='<span class="ww-menu-icon" aria-hidden="true">Aa</span>'+
+   '<span class="ww-grammar-label"><strong>Grammar Academy</strong><small>A1–C1 lessons and exercises</small></span>'+
+   '<span class="ww-menu-arrow" aria-hidden="true">›</span>';
+ }
+ const menu=document.querySelector('#dashboard .ww-menu-options');
+ if(menu){
+  const start=menu.querySelector('.ww-menu-primary');
+  if(start){
+   if(button.parentElement!==menu||button.previousElementSibling!==start)start.after(button);
+  }else if(button.parentElement!==menu)menu.prepend(button);
+ }else if(!button.isConnected){
+  const fallback=document.querySelector('#dashboard')||document.querySelector('main')||document.body;
+  fallback.append(button);
+ }
+};
 new MutationObserver(install).observe(document.body,{childList:true,subtree:true});install();
 window.addEventListener('hashchange',()=>{if(location.hash==='#grammar'&&root.hidden)open();else if(location.hash!=='#grammar'&&!root.hidden)close();});
 window.addEventListener('wortweg:account',()=>{if(!root.hidden){readUser();render();}});
