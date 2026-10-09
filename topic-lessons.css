@@ -113,3 +113,5 @@ body.ww-game-interface .ww-passage-sentence{color:var(--txt);font-size:15px;line
 body.ww-game-interface .ww-passage-audio{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--panel);color:var(--txt);cursor:pointer;font-size:17px}
 body.ww-game-interface .ww-passage-audio:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
 @media(max-width:480px){body.ww-game-interface .ww-passage{padding:12px}body.ww-game-interface .ww-passage-row{gap:7px;grid-template-columns:22px minmax(0,1fr) 44px}body.ww-game-interface .ww-passage-sentence{font-size:14px}}
+
+body.ww-game-interface .ww-passage-vocab{font-weight:800;color:var(--txt);text-decoration:underline;text-decoration-color:rgba(59,130,246,.3);text-underline-offset:3px}
