@@ -82,3 +82,9 @@ body.ww-game-interface #ww-topic-practice:disabled{opacity:.55;cursor:default}
   font-size:10px;min-width:68px;padding:5px 7px;
  }
 }
+
+/* Article memory colours: existing topic vocabulary cards, no new screen. */
+body.ww-game-interface .ww-topic-word-copy .ww-topic-german .ww-topic-article{font-weight:800!important}
+body.ww-game-interface .ww-topic-word-copy .ww-topic-german.ww-topic-article-der .ww-topic-article{color:#2563eb!important}
+body.ww-game-interface .ww-topic-word-copy .ww-topic-german.ww-topic-article-die .ww-topic-article{color:#db2777!important}
+body.ww-game-interface .ww-topic-word-copy .ww-topic-german.ww-topic-article-das .ww-topic-article{color:#15803d!important}
