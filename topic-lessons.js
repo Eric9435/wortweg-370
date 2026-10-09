@@ -495,22 +495,49 @@
    for(const piece of pieces){
     if(piece.hit){next.push(piece);continue}
     const src=piece.text,hay=src.toLocaleLowerCase('de');
-    let pos=0,at;
-    while((at=hay.indexOf(lower,pos))>=0){
+    let cursor=0,searchFrom=0,at;
+    while((at=hay.indexOf(lower,searchFrom))>=0){
      const finish=at+term.length;
      if((at>0&&isLetter(src[at-1]))||(finish<src.length&&isLetter(src[finish]))){
-      pos=at+1;continue;
+      // Rejected substring: advance search only. Never drop original text.
+      searchFrom=at+1;continue;
      }
-     if(at>pos)next.push({text:src.slice(pos,at),hit:false});
-     next.push({text:src.slice(at,finish),hit:true});pos=finish;
+     if(at>cursor)next.push({text:src.slice(cursor,at),hit:false});
+     next.push({text:src.slice(at,finish),hit:true});
+     cursor=finish;searchFrom=finish;
     }
-    if(pos<src.length)next.push({text:src.slice(pos),hit:false});
+    if(cursor<src.length)next.push({text:src.slice(cursor),hit:false});
    }
    pieces=next;
   }
+  // Not every natural sentence contains a literal topic-bank lemma.
+  // In those rows, emphasize one genuine contextual German vocabulary word
+  // from the ORIGINAL sentence, rather than adding awkward artificial text.
+  // Distinguish the contextual word from an actual topic-bank match.
+  if(!pieces.some(p=>p.hit)){
+   const ignored=new Set(['ich','wir','mir','mich','uns','mein','meine','meinen','meinem',
+    'unser','unsere','unserem','und','oder','aber','auch','noch','schon',
+    'nicht','ein','eine','einen','einem','einer','der','die','das','den','dem',
+    'des','mit','für','von','vom','auf','aus','bei','nach','zum','zur','über',
+    'unter','vor','dann','weil','wenn','dass','als','sich','sie','ihm','ihr',
+    'dieser','diese','dieses','heute','jetzt','hier','dort','sehr','etwas',
+    'mehr','alles','alle','einem','eines','einer','einen','sind','ist',
+    'habe','haben','hat','wird','werden','kann','können','möchte','muss']);
+   const candidates=[...line.matchAll(/\p{L}+(?:[-’']\p{L}+)*/gu)];
+   const focus=candidates.find(m=>m[0].length>=4&&!ignored.has(m[0].toLocaleLowerCase('de')))
+      ||candidates.find(m=>m[0].length>=2);
+   if(focus){
+    const i=focus.index,finish=i+focus[0].length;
+    pieces=[
+     {text:line.slice(0,i),hit:false},
+     {text:line.slice(i,finish),hit:true,context:true},
+     {text:line.slice(finish),hit:false}
+    ];
+   }
+  }
   for(const p of pieces){
    if(!p.text)continue;
-   if(p.hit)tag(node,'strong',p.text,'ww-passage-vocab');
+   if(p.hit)tag(node,'strong',p.text,p.context?'ww-passage-vocab ww-passage-context-vocab':'ww-passage-vocab');
    else node.append(document.createTextNode(p.text));
   }
  }
@@ -534,7 +561,7 @@
   });
   tag(host,'p','Reading '+reader.count(topics)+' / '+topics.length+' topics · '+lesson.story.length+
    ' story sentences · '+lesson.storyVocabulary+' / '+lesson.totalVocabulary+
-   ' vocabulary items in story · '+lesson.reinforcement.length+' extra practice examples.','ww-passage-info');
+   ' vocabulary items in story · '+lesson.reinforcement.length+' extra practice examples · Bold: topic or context words.','ww-passage-info');
   function section(parent,rows,numbered){
    for(let i=0;i<rows.length;i++){
     const row=tag(parent,'div','','ww-passage-row');
@@ -803,5 +830,12 @@
   const t=byId.get(Number(id));return Boolean(t&&entriesFor(t).all.length);
  },getLocalQuizHistory:()=>expressionRecords(),getReading:id=>{
   const t=byId.get(Number(id));return t&&window.WortWegReading?window.WortWegReading.build(t,entriesFor(t).all,identityPassage,exampleBank):null;
- },getReadingProgress:()=>window.WortWegReading?.count(topics)||0};
+ },getReadingProgress:()=>window.WortWegReading?.count(topics)||0,
+ inspectSentence:(sentence,words)=>{
+  const span=document.createElement('span');
+  highlightPassageWords(span,String(sentence||''),Array.isArray(words)?words:[]);
+  return {text:span.textContent,bold:span.querySelectorAll('strong.ww-passage-vocab').length,
+   topic:span.querySelectorAll('strong.ww-passage-vocab:not(.ww-passage-context-vocab)').length,
+   context:span.querySelectorAll('strong.ww-passage-context-vocab').length};
+ }};
 })();

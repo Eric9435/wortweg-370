@@ -27,7 +27,11 @@ const $=id=>w.document.getElementById(id),api=w.WortWegTopics,reading=w.WortWegR
 assert.equal(api.getCount(),370);
 assert.equal(Object.keys(w.WortWegReadingSeeds).length,369,'Each additional topic has an authored bilingual scene');
 const stories=new Set();
-let coverage=0;
+const catalog=JSON.parse($('data').textContent).topics;
+assert.equal(catalog.length,370,'All 370 topic titles are in the catalog');
+const topicNames=new Map(catalog.map(t=>[t.id,t]));
+let coverage=0,storySentenceRows=0,practiceSentenceRows=0,topicBoldRows=0,contextBoldRows=0;
+const missingBold=[];
 for(let id=1;id<=370;id++){
  const pack=api.getWords(id),lesson=api.getReading(id);
  assert.ok(pack&&lesson,'Reading and word bank are accessible for '+id);
@@ -46,8 +50,27 @@ for(let id=1;id<=370;id++){
   assert.ok(seed&&lesson.story.some(r=>r.de===seed[0]&&r.en===seed[1]),'Distinct story scene '+id);
   stories.add(seed[0]);
  }
+ const title=topicNames.get(id);
+ assert.ok(title&&typeof title.de==='string'&&title.de.trim(),'German title exists: '+id);
+ assert.ok(typeof title.en==='string'&&title.en.trim(),'English title exists: '+id);
+ if(id>1)assert.ok(lesson.story[0].de.includes(title.de),'Title used in story intro: '+id);
+ for(const [group,rows] of [['story',lesson.story],['practice',lesson.reinforcement]]){
+  for(const [index,row] of rows.entries()){
+   const check=api.inspectSentence(row.de,pack.all);
+   assert.equal(check.text,row.de,'Bold formatting cannot alter sentence text: '+id);
+   if(!check.bold)missingBold.push({id,group,index,content:row.de});
+   else if(check.topic)topicBoldRows++;
+   else contextBoldRows++;
+   if(group==='story')storySentenceRows++;
+   else practiceSentenceRows++;
+  }
+ }
  coverage+=lesson.totalVocabulary;
 }
+assert.equal(missingBold.length,0,'Every displayed German sentence row must contain a bold word: '+JSON.stringify(missingBold.slice(0,15)));
+console.log('Bold audit: 370 titles, '+storySentenceRows+' story sentences, '+practiceSentenceRows+
+ ' supplementary sentences; '+topicBoldRows+' with exact topic-bank highlights and '+
+ contextBoldRows+' with contextual German word highlights; '+missingBold.length+' missing.');
 assert.equal(stories.size,369,'All 369 added scenes are distinct');
 const storedBefore=JSON.stringify(w.WortWeg.getProgress());
 api.open(1);
