@@ -76,3 +76,5 @@
  }
  refresh();
 })();
+/* Grammar Academy bootstraps separately so existing vocabulary flows remain unchanged. */
+(()=>{const script=document.createElement('script');script.src='./grammar.js';script.defer=true;document.head.append(script);})();
