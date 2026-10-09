@@ -50,6 +50,7 @@ zone.append(combined);
 window.addEventListener('wortweg:changed',updateProgress);
 window.addEventListener('wortweg:live-progress-changed',updateProgress);
 window.addEventListener('wortweg:live-pack',updateProgress);
+window.addEventListener('wortweg:grammar-ready',updateProgress);
 window.addEventListener('wortweg:account',()=>setTimeout(updateProgress,0));
 setTimeout(updateProgress,0);
 const label=make('h4','ww-home-focus-section','Learning tools');zone.append(label);
