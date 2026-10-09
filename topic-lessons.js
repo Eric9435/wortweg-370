@@ -466,34 +466,10 @@
   [351,370,['Heute geht es um eine wichtige Situation im Alltag.','Ich informiere mich über die Möglichkeiten und meine Rechte.','Zuerst prüfe ich alle Details und entscheide, was zu tun ist.','Wenn ich Hilfe brauche, spreche ich mit einer zuständigen Person.','Gemeinsam klären wir die Fragen und finden einen nächsten Schritt.','Ich bewahre wichtige Unterlagen sicher auf.','Danach fühle ich mich auf ähnliche Situationen besser vorbereitet.']]
  ];
  function passageSentences(){
-  if(!selected)return [];
-  if(selected.topic.id===1)return identityPassage.split('\n');
-  const {id,de}=selected.topic;
-  const scene=sceneSets.find(x=>id>=x[0]&&id<=x[1]);
-  const lines=['Mein heutiges Thema ist „'+de+'“.',...(scene?scene[2]:[])];
-  const used=new Set();
-  const stripArticle=w=>String(w||'').replace(/^(der|die|das)\s+/i,'').trim();
-  const includesWord=(line,term)=>line.toLocaleLowerCase('de').includes(term.toLocaleLowerCase('de'));
-  for(const word of selected.all){
-   const term=stripArticle(word.de);
-   if(!term||used.has(term.toLocaleLowerCase('de')))continue;
-   used.add(term.toLocaleLowerCase('de'));
-   if(lines.some(line=>includesWord(line,term)))continue;
-   const entry=exampleBank[String(word.de||'').toLocaleLowerCase('de')];
-   if(entry?.[0]){lines.push(entry[0]);continue;}
-   const label=String(word.de||'');
-   // The vocabulary is used as a quoted word in an authentic German classroom
-   // sentence. This remains grammatical even for verb and adjective lemmas.
-   const frame=[
-    'Im Unterricht begegnet mir auch das Wort „'+label+'“. Ich schreibe es auf und übe einen eigenen Satz.',
-    'Als Nächstes lernen wir den Ausdruck „'+label+'“. Ich spreche ihn laut und wiederhole ihn.',
-    'Wir lesen das Wort „'+label+'“ im Zusammenhang mit unserem Thema. Danach notiere ich ein Beispiel.',
-    'Meine Lehrperson erklärt uns „'+label+'“. Ich höre gut zu und stelle eine Frage.'
-   ][(lines.length+id)%4];
-   lines.push(...frame.split(/(?<=\.)\s+(?=[A-ZÄÖÜ])/));
-  }
-  lines.push('Jetzt kann ich über „'+de+'“ sprechen und kenne die wichtigsten Wörter zu diesem Thema.');
-  return lines.filter(Boolean);
+  if(!selected)return {story:[],reinforcement:[]};
+  const engine=window.WortWegReading;
+  if(!engine)throw Error('Reading module is not yet loaded');
+  return engine.build(selected.topic,selected.all,identityPassage,exampleBank);
  }
  function highlightPassageWords(node,line,words){
   const terms=[...new Set(words.flatMap(w=>{
@@ -527,23 +503,52 @@
    else node.append(document.createTextNode(p.text));
   }
  }
+ let showReadingTranslation=false,showExtraVocabulary=false;
  function renderPassage(){
   const host=el('ww-topic-passage-content');host.replaceChildren();
   if(!selected)return;
-  const lines=passageSentences(),words=selected.all;
-  tag(host,'p',selected.topic.id===1?'Über mich – Das bin ich!':'Lesetext – '+selected.topic.de,'ww-passage-heading');
+  const lesson=passageSentences(),words=selected.all,id=selected.topic.id,reader=window.WortWegReading;
+  tag(host,'h3',id===1?'Über mich – Das bin ich!':'Lesetext – '+selected.topic.de,'ww-passage-heading');
   const controls=tag(host,'div','','ww-passage-controls');
-  const read=tag(controls,'button','🔊 Play full passage','btn secondary');
-  read.type='button';read.addEventListener('click',()=>speak(lines.join(' ')));
-  tag(host,'p',lines.length+' sentences · Topic vocabulary in bold · Tap 🔊 for sentence audio.','ww-passage-info');
-  for(let i=0;i<lines.length;i++){
-   const row=tag(host,'div','','ww-passage-row');
-   tag(row,'span',String(i+1).padStart(2,'0'),'ww-passage-number');
-   const sentence=tag(row,'p','','ww-passage-sentence');
-   highlightPassageWords(sentence,lines[i],words);
-   const listen=tag(row,'button','🔊','ww-passage-audio');
-   listen.type='button';listen.setAttribute('aria-label','Play German sentence '+(i+1));
-   listen.addEventListener('click',()=>speak(lines[i]));
+  const audio=tag(controls,'button','🔊 Read full story','btn secondary');
+  audio.type='button';audio.addEventListener('click',()=>speak(lesson.story.map(row=>row.de).join(' ')));
+  const translations=tag(controls,'button',showReadingTranslation?'Hide English':'Show English','btn secondary');
+  translations.type='button';translations.setAttribute('aria-pressed',String(showReadingTranslation));
+  translations.addEventListener('click',()=>{showReadingTranslation=!showReadingTranslation;renderPassage();});
+  const done=tag(controls,'button',reader.completed(id)?'✓ Reading completed':'Mark reading complete','btn secondary ww-passage-complete');
+  done.type='button';done.setAttribute('aria-pressed',String(reader.completed(id)));
+  done.addEventListener('click',()=>{
+   reader.setCompleted(id,!reader.completed(id));
+   refreshSummary();renderPassage();
+  });
+  tag(host,'p','Reading '+reader.count(topics)+' / '+topics.length+' topics · '+lesson.story.length+
+   ' story sentences · '+lesson.storyVocabulary+' / '+lesson.totalVocabulary+
+   ' vocabulary items in story · '+lesson.reinforcement.length+' extra practice examples.','ww-passage-info');
+  function section(parent,rows,numbered){
+   for(let i=0;i<rows.length;i++){
+    const row=tag(parent,'div','','ww-passage-row');
+    tag(row,'span',numbered?String(i+1).padStart(2,'0'):'•','ww-passage-number');
+    const copy=tag(row,'div','','ww-passage-copy');
+    const german=tag(copy,'p','','ww-passage-sentence');
+    highlightPassageWords(german,rows[i].de,words);
+    const english=tag(copy,'p',rows[i].en||'Translation unavailable','ww-passage-en');
+    english.hidden=!showReadingTranslation;
+    const listen=tag(row,'button','🔊','ww-passage-audio');
+    listen.type='button';listen.setAttribute('aria-label','Hear German sentence '+(i+1));
+    listen.addEventListener('click',()=>speak(rows[i].de));
+   }
+  }
+  const story=tag(host,'div','','ww-passage-story');
+  section(story,lesson.story,true);
+  if(lesson.reinforcement.length){
+   const extra=tag(host,'div','','ww-passage-extra');
+   const open=tag(extra,'button',showExtraVocabulary?'Hide extra vocabulary practice':'Show '+lesson.reinforcement.length+' extra vocabulary examples','btn secondary ww-passage-extra-toggle');
+   open.type='button';open.setAttribute('aria-expanded',String(showExtraVocabulary));
+   open.addEventListener('click',()=>{showExtraVocabulary=!showExtraVocabulary;renderPassage();});
+   if(showExtraVocabulary){
+    tag(extra,'p','Additional word exercises are separate from the natural reading story.','ww-passage-info');
+    section(extra,lesson.reinforcement,false);
+   }
   }
  }
  function togglePassage(force){
@@ -603,7 +608,8 @@
    'Learned '+learned+' / '+selected.all.length+' · Quiz or checklist · '+
    'Quiz ready · '+selected.all.length+' practice entries · '+
    (bankCount?bankDone+' / '+bankCount+' Word Bank entries answered':'No matched Word Bank entries yet')+
-   (extraCount?' · '+extraDone+' / '+extraCount+' topic expressions practised':'');
+   (extraCount?' · '+extraDone+' / '+extraCount+' topic expressions practised':'')+
+   (window.WortWegReading?' · Reading '+window.WortWegReading.count(topics)+' / '+topics.length:'');
   el('ww-topic-practice').disabled=!selected.all.length;
   el('ww-topic-practice').title='Start the '+selected.topic.en+' vocabulary quiz';
  }
@@ -620,6 +626,7 @@
    'German–English–Myanmar meanings and audio. Topic matches are suggestions from the existing CEFR Word Bank; topic phrases and starter words are labelled separately.':
    'Quiz ready! Practise the translated topic title and starter expressions. These are saved separately on this device and do not count toward CEFR Word Bank totals.';
   el('ww-topic-search').value='';el('ww-topic-level').value='ALL';
+  showReadingTranslation=false;showExtraVocabulary=false;
   togglePassage(false);showWords();
   window.WortWeg.navigate('ww-topic-detail');
  }
@@ -774,7 +781,7 @@
   new MutationObserver(updateQuizReadyLabels).observe(topicList,{childList:true});
   updateQuizReadyLabels();
  }
- window.addEventListener('wortweg:account',()=>{lesson=null;if(selected)showWords()});
+ window.addEventListener('wortweg:account',()=>{lesson=null;if(selected){showWords();if(!el('ww-topic-passage').hidden)renderPassage();}});
  window.addEventListener('wortweg:changed',()=>{
   if(!selected||!page.classList.contains('active')||lesson)return;
   refreshSummary();displayWords();
@@ -783,5 +790,7 @@
   const t=byId.get(Number(id));return t?entriesFor(t):null;
  },getCount:()=>topics.length,isQuizReady:id=>{
   const t=byId.get(Number(id));return Boolean(t&&entriesFor(t).all.length);
- },getLocalQuizHistory:()=>expressionRecords()};
+ },getLocalQuizHistory:()=>expressionRecords(),getReading:id=>{
+  const t=byId.get(Number(id));return t&&window.WortWegReading?window.WortWegReading.build(t,entriesFor(t).all,identityPassage,exampleBank):null;
+ },getReadingProgress:()=>window.WortWegReading?.count(topics)||0};
 })();
