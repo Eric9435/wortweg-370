@@ -21,7 +21,7 @@ function launch(options = {}) {
   const dom = new JSDOM('<!doctype html><html><head></head><body></body></html>', {
     url: 'https://eric9435.github.io/wortweg-370/', runScripts: 'outside-only'
   });
-  const w = dom.window, blobs = new Map(), requests = [], notifications = [], native = [], decoded = [];
+  const w = dom.window, blobs = new Map(), requests = [], notifications = [], native = [], decoded = [], speechVolumes = [];
   let plays = 0, online = !options.offline, failOnce = options.failOnce;
   const voices = options.voices || [];
   const cache = options.cache || cacheStorage();
@@ -72,11 +72,12 @@ function launch(options = {}) {
       return {duration: wav.length / 44100};
     }
     createBufferSource() { return {connect() {}, stop() {}, start() { plays++; }}; }
+    createGain() {return {gain:{setValueAtTime:volume=>speechVolumes.push(volume)},connect(){}};}
   };
   const timeout = w.setTimeout.bind(w);
   w.setTimeout = (fn, ms, ...args) => timeout(fn, ms === 1200 ? 20 : ms, ...args);
   w.eval(code);
-  return {dom, w, cache, requests, notifications, native, decoded,
+  return {dom, w, cache, requests, notifications, native, decoded, speechVolumes,
     plays: () => plays, setOnline: value => { online = value; }, close: () => w.close()};
 }
 (async () => {
@@ -88,14 +89,17 @@ function launch(options = {}) {
   missing.w.WortWegAudio.speak('das Heimatland');
   await until(() => missing.plays() === 1);
   assert.equal(missing.native.length, 0, 'A missing German voice must never fall back to an English voice');
+  assert.equal(missing.speechVolumes[0], .5, 'Bundled offline speech starts at medium 50% volume');
   const saved = missing.cache;
   missing.close();
 
   const offline = launch({cache: saved, offline: true});
   await until(() => offline.w.WortWegAudio.getStatus().state === 'ready');
+  offline.w.localStorage.setItem('wortweg370-settings-v1',JSON.stringify({voiceVolume:30}));
   offline.w.WortWegAudio.speak('die Anschrift');
   await until(() => offline.plays() === 1);
   assert.equal(offline.requests.length, 0, 'A downloaded pack must play after a restart without network access');
+  assert.equal(offline.speechVolumes[0],.3,'Offline voice uses the saved 30% volume');
   offline.close();
 
   const broken = launch({failOnce: true});
@@ -111,6 +115,10 @@ function launch(options = {}) {
   const phone = launch({voices: [{lang: 'en-US', localService: true}, {lang: 'de-DE', localService: true}]});
   phone.w.WortWegAudio.speak('Guten Morgen');
   assert.equal(phone.native[0].voice.lang, 'de-DE', 'An existing German phone voice stays preferred');
+  assert.equal(phone.native[0].volume,.5,'German browser TTS starts at 50%');
+  phone.w.localStorage.setItem('wortweg370-settings-v1',JSON.stringify({voiceVolume:80}));
+  phone.w.WortWegAudio.speak('Guten Abend');
+  assert.equal(phone.native[1].volume,.8,'Native German TTS follows saved volume on next word');
   await tick();
   assert.equal(phone.requests.length, 0, 'An uninstalled app with a German voice does not force a download');
   phone.w.localStorage.setItem('wortweg370-settings-v1', '{"notifications":true}');
@@ -134,12 +142,12 @@ function launch(options = {}) {
   const handlers = {}, deleted = [];
   vm.runInNewContext(fs.readFileSync('sw.js', 'utf8'), {
     self: {addEventListener: (name, fn) => { handlers[name] = fn; }, clients: {claim: async () => {}}},
-    caches: {keys: async () => ['wortweg370-v12', 'wortweg370-v13', 'wortweg370-v14', 'wortweg370-v15', 'wortweg370-v16', 'wortweg370-v17', 'wortweg370-v18', 'wortweg370-v19', 'wortweg370-v20', 'wortweg370-v21', 'wortweg370-v22', 'wortweg370-v23', 'wortweg370-voice-v1', 'other-app'],
+    caches: {keys: async () => ['wortweg370-v12', 'wortweg370-v13', 'wortweg370-v14', 'wortweg370-v15', 'wortweg370-v16', 'wortweg370-v17', 'wortweg370-v18', 'wortweg370-v19', 'wortweg370-v20', 'wortweg370-v21', 'wortweg370-v22', 'wortweg370-v23', 'wortweg370-v24', 'wortweg370-voice-v1', 'other-app'],
       delete: async key => { deleted.push(key); }}
   });
   let activation;
   handlers.activate({waitUntil: promise => { activation = promise; }});
   await activation;
-  assert.deepEqual(deleted, ['wortweg370-v12', 'wortweg370-v13', 'wortweg370-v14', 'wortweg370-v15', 'wortweg370-v16', 'wortweg370-v17', 'wortweg370-v18', 'wortweg370-v19', 'wortweg370-v20', 'wortweg370-v21', 'wortweg370-v22'], 'App updates purge old app caches, but retain the current app, downloaded speech and unrelated caches');
+  assert.deepEqual(deleted, ['wortweg370-v12', 'wortweg370-v13', 'wortweg370-v14', 'wortweg370-v15', 'wortweg370-v16', 'wortweg370-v17', 'wortweg370-v18', 'wortweg370-v19', 'wortweg370-v20', 'wortweg370-v21', 'wortweg370-v22', 'wortweg370-v23'], 'App updates purge old app caches, but retain the current app, downloaded speech and unrelated caches');
   console.log('PASS: automatic download, real German WAV synthesis, offline restart, retry, native fallback, notifications, and update persistence');
 })().catch(error => { console.error(error); process.exit(1); });
