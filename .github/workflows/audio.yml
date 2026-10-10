@@ -2,7 +2,7 @@ name: German speech checks
 on:
   push:
     branches: [main]
-    paths: ['audio.js', 'audio.css', 'settings.js', 'sw.js', 'index.html', 'vendor/mespeak/**', 'test-audio.cjs', '.github/workflows/audio.yml']
+    paths: ['audio.js', 'audio.css', 'settings.js', 'sw.js', 'index.html', 'vendor/mespeak/**', 'tests/test-audio.cjs', '.github/workflows/audio.yml']
   pull_request:
   workflow_dispatch:
 jobs:
@@ -20,4 +20,4 @@ jobs:
           node --check settings.js
           node --check sw.js
       - name: Test downloads and offline German speech
-        run: node test-audio.cjs
+        run: node tests/test-audio.cjs

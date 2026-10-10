@@ -2,10 +2,10 @@ name: Build offline mobile apps
 on:
   push:
     branches: [main]
-    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'test-live-content.cjs', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'tests/test-live-content.cjs', '*.css', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
   pull_request:
     branches: [main]
-    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'test-live-content.cjs', '*.css', '*.js', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
+    paths: ['mobile/**', 'index.html', 'audio.js', 'settings.js', 'live-content.js', 'tests/test-live-content.cjs', '*.css', '*.js', 'icon.svg', 'vendor/**', '.github/workflows/mobile.yml']
   workflow_dispatch:
 # Keep only the newest in-flight preview build for this branch.
 # Cancelling an outdated CI run never affects an installed APK or its data.
@@ -58,7 +58,7 @@ jobs:
         working-directory: .
         run: |
           npm install --no-save --no-package-lock jsdom@26
-          node test-live-content.cjs
+          node tests/test-live-content.cjs
       - run: npm run sync
       - run: npm run icons
       - name: Build Android with the registered cached preview certificate
