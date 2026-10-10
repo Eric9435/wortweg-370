@@ -44,17 +44,17 @@ jobs:
           node --check grammar-more-b1.js
           node --check grammar-more-b2.js
           node --check grammar-more-c1.js
-          node test-grammar-catalog.cjs
+          node tests/test-grammar-catalog.cjs
       - name: Verify vocabulary writing repetition tracking
-        run: node test-vocab-writing.cjs
+        run: node tests/test-vocab-writing.cjs
       - name: Validate reversible iPhone Home dashboard
-        run: node test-home-refresh.cjs
+        run: node tests/test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
       - name: Verify dynamic lessons, offline cache, and secure account separation
-        run: node test-live-content.cjs
+        run: node tests/test-live-content.cjs
       - name: Check network-first website lesson updates
-        run: node test-serviceworker-updates.cjs
+        run: node tests/test-serviceworker-updates.cjs
       - name: Verify Android update scripts and public version baseline
         run: |
           node --check mobile/src/update-check.js
@@ -72,23 +72,23 @@ jobs:
           console.log('PASS: Android update syntax, version integrity and safe public release baseline');
           NODE
       - name: Test saved answers and separate account progress
-        run: node test-memory.cjs
+        run: node tests/test-memory.cjs
       - name: Test game-style navigation and Google profile onboarding
-        run: node test-game-ui.cjs
+        run: node tests/test-game-ui.cjs
       - name: Verify iOS-inspired UI and account-aware progress
-        run: node test-ios-polish.cjs
+        run: node tests/test-ios-polish.cjs
       - name: Verify premium iPhone-style Home, grammar card and mobile layout
-        run: node test-premium-home.cjs
+        run: node tests/test-premium-home.cjs
       - name: Verify Seen Words table and CEFR progress
-        run: node test-seen-words.cjs
+        run: node tests/test-seen-words.cjs
       - name: Verify all 370 Topics have word lists and functional quizzes
         run: |
-          node test-topic-lessons.cjs
-          node test-topic-reading.cjs
+          node tests/test-topic-lessons.cjs
+          node tests/test-topic-reading.cjs
       - name: Verify all topic titles have functioning MCQs and isolated practice
-        run: node test-topic-quiz-ready.cjs
+        run: node tests/test-topic-quiz-ready.cjs
       - name: Verify compact Settings navigation and all existing controls
-        run: node test-settings-navigation.cjs
+        run: node tests/test-settings-navigation.cjs
       - name: Verify card-free UI and authentication entry
         run: node mobile/scripts/test-ui.mjs
 
