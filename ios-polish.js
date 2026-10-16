@@ -84,3 +84,6 @@
 
 /* iOS Home refresh: presentation-only, reversible, preserves original Home. */
 (()=>{const style=document.createElement('link');style.rel='stylesheet';style.href='./home-refresh.css';document.head.append(style);const script=document.createElement('script');script.src='./home-refresh.js';document.head.append(script);})();
+
+/* All-word flashcard deck loads independently of the legacy quiz and writing flows. */
+(()=>{const script=document.createElement('script');script.src='./flashcards.js';script.defer=true;document.head.append(script);})();
