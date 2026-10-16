@@ -1,0 +1,34 @@
+/* Full Word Bank browsing — accessible pagination and optional lazy continuous scroll. */
+#bank .ww-bank-toolbar{display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 0 15px;margin:10px 0 0;border-top:1px solid var(--line,#e3e9f2);border-bottom:1px solid var(--line,#e3e9f2)}
+#bank .ww-bank-size,#bank .ww-bank-jump{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:700;color:var(--muted,#68788f)}
+#bank .ww-bank-size select{min-width:180px;max-width:100%;background:var(--panel,#fff);color:var(--txt,#18263e);min-height:42px;padding:9px 12px;border:1px solid var(--line,#d6dfed);border-radius:10px;font-size:13px}
+#bank .ww-bank-pager{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+#bank .ww-bank-btn{min-height:42px;padding:8px 12px;border:1px solid var(--line,#d6dfed);border-radius:11px;background:var(--panel2,#f5f8fe);color:var(--txt,#18263e);font:600 12px/1.35 inherit;cursor:pointer;white-space:nowrap}
+#bank .ww-bank-btn:focus-visible{outline:3px solid #82a9fa;outline-offset:2px}
+#bank .ww-bank-btn:hover:not(:disabled){border-color:var(--blue,#3158ce);background:var(--panel,#fff)}
+#bank .ww-bank-btn:disabled{opacity:.42;cursor:not-allowed}
+#bank .ww-bank-page-label{color:var(--txt,#18263e);font-size:12px;font-weight:700;white-space:nowrap;margin:0 4px}
+#bank .ww-bank-jump input{width:66px;min-height:42px;padding:7px 8px;background:var(--panel,#fff);color:var(--txt,#18263e);border:1px solid var(--line,#d6dfed);border-radius:10px;font-size:13px}
+#bank .ww-bank-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0;padding-top:12px;border-top:1px solid var(--line,#e3e9f2)}
+#bank .ww-bank-footer-count{font-size:12px;font-weight:700;color:var(--muted,#68788f)}
+#bank .ww-bank-more{display:block;width:100%;padding:14px;border-radius:14px;margin:6px 0 22px;font-size:13px;background:var(--panel2,#f5f8fe)}
+#bank .ww-bank-entry{align-items:center;gap:12px}
+#bank .ww-bank-entry-info{min-width:0;flex:1;overflow-wrap:anywhere}
+#bank .ww-bank-word-type{display:inline-block;margin-top:5px;color:var(--muted,#68788f);font-size:11px;font-weight:600;text-transform:capitalize}
+#bank .ww-bank-word-type+.tiny{margin-top:2px}
+#bank .ww-bank-empty{padding:32px 12px;text-align:center;color:var(--muted,#68788f)}
+#bank #bankCount{font-variant-numeric:tabular-nums}
+#bank .ww-bank-pager[hidden],#bank .ww-bank-more[hidden],#bank .ww-bank-bottom .ww-bank-btn[hidden]{display:none!important}
+@media(max-width:680px){
+ #bank .ww-bank-toolbar{align-items:stretch;gap:11px}
+ #bank .ww-bank-size{width:100%}
+ #bank .ww-bank-size select{width:100%}
+ #bank .ww-bank-pager{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;width:100%}
+ #bank .ww-bank-pager .ww-bank-page-label{grid-column:1/-1;text-align:center;grid-row:1;margin:4px}
+ #bank .ww-bank-pager .ww-bank-jump{grid-column:2;grid-row:2;align-items:center}
+ #bank .ww-bank-pager .ww-bank-jump input{width:100%;max-width:86px}
+ #bank .ww-bank-pager .ww-bank-btn{white-space:normal;padding:8px 4px;min-height:44px;font-size:11px}
+ #bank .ww-bank-bottom{display:grid;grid-template-columns:1fr 1fr}
+ #bank .ww-bank-bottom .ww-bank-footer-count{grid-column:1/-1;grid-row:1;text-align:center}
+ #bank .ww-bank-bottom .ww-bank-btn{width:100%;white-space:normal}
+}
