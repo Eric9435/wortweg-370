@@ -3,7 +3,7 @@
 #bank .ww-bank-size,#bank .ww-bank-jump{display:flex;flex-direction:column;gap:5px;font-size:12px;font-weight:700;color:var(--muted,#68788f)}
 #bank .ww-bank-size select{min-width:180px;max-width:100%;background:var(--panel,#fff);color:var(--txt,#18263e);min-height:42px;padding:9px 12px;border:1px solid var(--line,#d6dfed);border-radius:10px;font-size:13px}
 #bank .ww-bank-pager{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-#bank .ww-bank-btn{min-height:42px;padding:8px 12px;border:1px solid var(--line,#d6dfed);border-radius:11px;background:var(--panel2,#f5f8fe);color:var(--txt,#18263e);font:600 12px/1.35 inherit;cursor:pointer;white-space:nowrap}
+#bank .ww-bank-btn{min-height:42px;padding:8px 12px;border:1px solid var(--line,#d6dfed);border-radius:11px;background:var(--panel2,#f5f8fe);color:var(--txt,#18263e);font-family:inherit;font-size:12px;line-height:1.35;font-weight:600;cursor:pointer;white-space:nowrap}
 #bank .ww-bank-btn:focus-visible{outline:3px solid #82a9fa;outline-offset:2px}
 #bank .ww-bank-btn:hover:not(:disabled){border-color:var(--blue,#3158ce);background:var(--panel,#fff)}
 #bank .ww-bank-btn:disabled{opacity:.42;cursor:not-allowed}
