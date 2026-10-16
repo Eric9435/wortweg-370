@@ -1,0 +1,52 @@
+/* WortWeg 370 flashcard workspace - accessible full-screen review. */
+.ww-flash-root[hidden]{display:none!important}
+body.ww-flash-open{overflow:hidden}
+.ww-flash-root{position:fixed;z-index:110000;inset:0;box-sizing:border-box;overflow-y:auto;overscroll-behavior:contain;background:var(--bg,#f7f9fc);color:var(--txt,#182e43);padding:env(safe-area-inset-top) max(16px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(16px,env(safe-area-inset-left));font-family:inherit}
+.ww-flash-root *{box-sizing:border-box}
+.ww-flash-header{display:flex!important;align-items:center;justify-content:space-between;gap:16px;width:min(750px,100%);margin:0 auto 18px;padding:18px 0 12px;border-bottom:1px solid var(--line,#dbe5eb);background:transparent!important;color:inherit!important;box-shadow:none!important;position:static!important}
+.ww-flash-header h1{font-size:clamp(23px,5vw,32px);margin:4px 0!important;letter-spacing:-.045em;line-height:1.2}
+.ww-flash-overline{font-size:10px;letter-spacing:.16em;font-weight:800;color:var(--accent,#245c98)}
+.ww-flash-root button,.ww-flash-root select,.ww-flash-root input{font:inherit}
+.ww-flash-root button{touch-action:manipulation;cursor:pointer}
+.ww-flash-close,.ww-flash-secondary,.ww-flash-audio{border:1px solid var(--line,#dce4eb);background:var(--panel,#fff);color:var(--txt,#24384e);border-radius:14px;min-height:44px;padding:10px 14px;font-size:13px;font-weight:700}
+.ww-flash-panel,.ww-flash-study{width:min(750px,100%);margin:0 auto 30px}
+.ww-flash-intro{font-size:14px;color:var(--muted,#667685);line-height:1.65;margin:5px 0 20px}
+.ww-flash-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:12px 0 24px}
+.ww-flash-metric{display:flex;flex-direction:column;gap:6px;background:var(--panel,#fff);border:1px solid var(--line,#dbe5ec);padding:16px 12px;border-radius:17px;min-width:0}
+.ww-flash-metric strong{font-size:clamp(18px,3vw,25px);font-weight:850;letter-spacing:-.045em;line-height:1.1;overflow-wrap:anywhere}
+.ww-flash-metric small{font-size:11px;color:var(--muted,#67798b);line-height:1.4}
+.ww-flash-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.ww-flash-field{display:grid;gap:8px;margin:0 0 14px;font-size:12px;font-weight:800;color:var(--txt,#1e3449)}
+.ww-flash-field input,.ww-flash-field select{display:block;width:100%;max-width:100%;min-width:0;min-height:48px;padding:10px 13px;border:1px solid var(--line,#d1dce6);border-radius:13px;background:var(--panel,#fff);color:var(--txt,#17344e);font-size:14px;font-weight:500;outline-offset:2px}
+.ww-flash-search{margin:5px 0 14px}
+.ww-flash-check{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:650;margin:8px 0 12px}
+.ww-flash-check input{width:18px;height:18px;accent-color:var(--accent,#1a548a)}
+.ww-flash-count,.ww-flash-note{font-size:12px;color:var(--muted,#647587);line-height:1.5}
+.ww-flash-note{margin:14px 0 35px}
+.ww-flash-primary,.ww-flash-know,.ww-flash-again{min-height:49px;border:0;border-radius:14px;padding:13px 20px;font-size:14px;font-weight:800}
+.ww-flash-primary,.ww-flash-know{background:#1a548a;color:#fff}
+.ww-flash-again{background:#fff0eb;color:#ad392d;border:1px solid #f3b7af}
+.ww-flash-primary:disabled,.ww-flash-secondary:disabled{opacity:.4;cursor:not-allowed}
+.ww-flash-study-top,.ww-flash-navigation{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:12px;font-weight:750;color:var(--muted,#647587)}
+.ww-flash-progress{width:100%;height:6px;border-radius:99px;background:var(--line,#e1eaf1);overflow:hidden;margin:15px 0 26px}
+.ww-flash-progress>span{display:block;height:100%;background:#1b7499;transition:width .2s ease}
+.ww-flash-card{width:100%;min-height:min(54vh,410px);display:flex;align-items:center;justify-content:center;text-align:center;padding:36px 22px;border-radius:26px;border:1px solid color-mix(in srgb,var(--accent,#1a548a) 25%,var(--line,#dbe2e8));background:var(--panel,#fff);color:var(--txt,#16334e);box-shadow:0 14px 40px rgb(18 61 107 / 8%);cursor:pointer}
+.ww-flash-card:focus-visible,.ww-flash-root button:focus-visible,.ww-flash-root input:focus-visible,.ww-flash-root select:focus-visible{outline:3px solid #268ab5;outline-offset:3px}
+.ww-flash-face{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;width:100%}
+.ww-flash-face-caption{font-size:10px;font-weight:850;letter-spacing:.13em;color:var(--accent,#1a548a)}
+.ww-flash-word{font-size:clamp(30px,6vw,54px);font-weight:850;letter-spacing:-.035em;overflow-wrap:anywhere;max-width:100%;line-height:1.22}
+.ww-flash-translation{font-size:clamp(17px,3.5vw,23px);font-weight:550;line-height:1.5;margin:0;overflow-wrap:anywhere}
+.ww-flash-flip-hint{font-size:12px;color:var(--muted,#6b7784)}
+.ww-flash-audio{display:block;margin:16px auto}
+.ww-flash-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ww-flash-actions>.ww-flash-primary{grid-column:1/-1}
+.ww-flash-navigation{margin:15px 0 0}
+.ww-flash-complete{text-align:center;padding:40px 15px;line-height:1.7}
+.ww-flash-complete h2{font-size:28px;letter-spacing:-.035em}
+.ww-flashcards-launch{width:100%;min-height:60px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer}
+.ww-flashcards-launch>span:nth-child(2){display:grid;gap:4px;flex:1}
+.ww-flashcards-launch small{font-size:11px;opacity:.75}
+.ww-flashcards-launch .ww-menu-arrow{margin-left:auto}
+html[data-mode=dark] .ww-flash-again{background:#512d32;color:#ffd4ce;border-color:#9b5c5e}
+@media(max-width:600px){.ww-flash-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ww-flash-fields{grid-template-columns:1fr}.ww-flash-header{padding:13px 0}.ww-flash-card{min-height:46vh;padding:28px 14px;border-radius:20px}.ww-flash-word{font-size:clamp(28px,9vw,42px)}.ww-flash-actions{gap:8px}.ww-flash-again,.ww-flash-know{padding:13px 10px}}
+@media(prefers-reduced-motion:reduce){.ww-flash-progress>span{transition:none}}
