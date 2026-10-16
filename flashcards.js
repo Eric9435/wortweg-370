@@ -200,8 +200,8 @@
   flip.setAttribute('aria-pressed',String(flipped));
   const face=make('div','ww-flash-face');
   const primary=flipped?(back?(w.en||'English meaning unavailable'):(w.de)):(back?w.de:(w.en||'Meaning'));
-  const extra=flipped?(back?w.my:(w.my||'')):(back?'Tap to reveal English + မြန်မာ':'Tap to reveal German');
-  face.append(make('span','ww-flash-face-caption',flipped?'ANSWER':'RECALL THE MEANING'),
+  const extra=flipped?(back?w.my:'German answer'):(back?'Tap to reveal English + မြန်မာ':(w.my?w.my+' · ':'')+'Tap to reveal German');
+  face.append(make('span','ww-flash-face-caption',flipped?'ANSWER':back?'RECALL THE MEANING':'RECALL THE GERMAN'),
    make('strong','ww-flash-word',primary),make('p','ww-flash-translation',extra));
   face.append(make('small','ww-flash-flip-hint',flipped?'Tap to see the front again':'Tap card to flip'));
   flip.append(face);panel.append(flip);
