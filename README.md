@@ -125,3 +125,7 @@ Each of the 200 CEFR-organized grammar topics now has a short authored explanati
 ## Flashcard review
 
 Open **Flashcards** from the Home learning tools or Main menu. The deck includes all 10,876 embedded Word Bank entries, 41 curated Topic 1 entries, and downloaded lessons. Choose a CEFR level, search for a specific word, study 20/50/100 cards or all matching cards, and flip between German and English/Myanmar. Rate cards **Again** or **I knew it**; reviewed cards are scheduled again in an independently saved, account-separated local flashcard record. No existing quiz or writing records are changed. These flashcard ratings do not currently synchronize through Google/Firebase; back up device data before clearing app storage. The website gains the feature after deployment; the previously installed Android APK needs a new build to include UI code.
+
+## Flashcards in My seen words
+
+When you flip a flashcard and select **I knew it** or **Again**, that vocabulary entry is added to **My seen words** and the Home learning progress view. Opening or skipping a card does not count. Existing quiz history is preserved and entries practiced in both modes count once. The Seen Words table labels entries **Quiz**, **Flashcards** or **Quiz + Flashcards**, and its **Practice** filter can isolate card reviews. A subsequent rating updates the current remembered/review state, while historic mistakes remain visible. Flashcard data is kept separately per guest/Google profile on the current device and does not yet sync through Firebase.
