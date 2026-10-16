@@ -1,4 +1,4 @@
-const CACHE='wortweg370-v40';
+const CACHE='wortweg370-v41';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg?v=11','./cloud.js?v=14','./account.css?v=14','./settings.js','./settings.css','./audio.js','./audio.css','./enterprise.css','./enterprise.js','./settings-navigation.js','./settings-navigation.css','./ios-polish.js','./ios-polish.css','./home-premium.css','./home-refresh.js','./home-refresh.css','./seen-words.js','./seen-words.css','./vocab-writing.js','./vocab-writing.css','./flashcards.js','./flashcards.css','./grammar.js','./grammar-deep.js','./grammar-expanded.js','./grammar-more-a1-a2.js','./grammar-more-b1.js','./grammar-more-b2.js','./grammar-more-c1.js','./grammar.css','./topic-reading-seeds-1.js','./topic-reading-seeds-2.js','./topic-reading-seeds-3.js','./topic-reading-seeds-4.js','./topic-reading-engine.js','./topic-lessons.js','./topic-lessons.css','./learning-checklist.js','./live-content.js','./live-content.css','./content/v1/pack.json'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
