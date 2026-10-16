@@ -2,6 +2,7 @@
    Small pages and lazy continuous scrolling keep 10,876 entries usable on phones. */
 (()=>{
  'use strict';
+ const stylesheet=document.createElement('link');stylesheet.rel='stylesheet';stylesheet.href='./bank-browser.css';document.head.append(stylesheet);
  const $=id=>document.getElementById(id);
  const section=$('bank'),list=$('wordList'),search=$('wordSearch'),level=$('bankLevel'),counter=$('bankCount'),data=$('data');
  if(!section||!list||!search||!level||!counter||!data)return;
