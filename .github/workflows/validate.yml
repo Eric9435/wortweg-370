@@ -16,6 +16,7 @@ jobs:
           node --check live-content.js
           node --check ios-polish.js
           node --check seen-words.js
+          node --check flashcards.js
           node --check grammar.js
           node --check topic-reading-seeds-1.js
           node --check topic-reading-seeds-2.js
