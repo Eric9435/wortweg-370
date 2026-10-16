@@ -1,5 +1,5 @@
 /* WortWeg 370 · Seen Words + CEFR exploration progress.
-   Read-only over the existing per-account legacy progress and live-pack history.
+   Read-only over quiz, live-pack and per-profile flashcard review history.
    No migration or reset: existing Google and guest records remain untouched. */
 (()=>{
  'use strict';
@@ -29,6 +29,22 @@
    return p&&typeof p==='object'&&p.seen&&p.items?p:{seen:{},items:{}};
   }catch{return {seen:{},items:{}};}
  }
+ // Read flashcards directly so the dashboard also restores past reviews on startup,
+ // regardless of the independent flashcards.js loading order. Keys match the quiz bank.
+ function flashHistory(){
+  const uid=window.WortWegAccountSnapshot?.uid;
+  const profile=uid&&/^[\w-]{1,128}$/.test(uid)?uid:'guest';
+  try{
+   const value=JSON.parse(localStorage.getItem('wortweg370-flashcards-v1-'+profile)||'{}');
+   return value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+  }catch{return {};}
+ }
+ function timestamp(value){
+  if(typeof value==='number'&&Number.isFinite(value))
+   return value<100000000000?value*1000:value;
+  const date=typeof value==='string'?Date.parse(value):NaN;
+  return Number.isFinite(date)?date:0;
+ }
  function liveEntries(){
   const pack=window.WortWegLive?.getPack?.();
   if(!pack||!Array.isArray(pack.lessons))return [];
@@ -43,24 +59,42 @@
   }
   return result;
  }
- function entryStatus(entry,p){
+ function quizStatus(entry,p){
   if(entry.source==='New lessons'){
    const record=entry.live;
    const answered=n(record?.answered),correct=n(record?.correct);
    if(!answered)return null;
    const wrong=n(record?.wrong)||(answered-Math.min(answered,correct));
-   return {wrong,correctLast:typeof record.lastCorrect==='boolean'?record.lastCorrect:(wrong===0?true:null),answered,last:record.lastAnsweredAt||null};
+   return {wrong,correctLast:typeof record.lastCorrect==='boolean'?record.lastCorrect:(wrong===0?true:null),
+    answered,last:record.lastAnsweredAt||null};
   }
   if(!p.seen[entry.key]&&!p.items[entry.key])return null;
-  const s=p.items[entry.key]||{};
-  const wrong=n(s.wrong);
-  // Existing saved history records "wrong" and "streak" but not exact
-  // per-word answer counts. A positive streak means the latest answer was
-  // correct after a prior mistake; never fabricate a historical count.
-  return {wrong,correctLast:wrong===0?(p.items[entry.key]?true:null):n(s.streak)>0,last:s.last||null};
+  const item=p.items[entry.key]||{},wrong=n(item.wrong);
+  return {wrong,correctLast:wrong===0?(p.items[entry.key]?true:null):n(item.streak)>0,last:item.last||null};
+ }
+ function entryStatus(entry,p,flash){
+  const quiz=quizStatus(entry,p);
+  const r=flash[entry.key];
+  // Only rated cards are seen: opening, flipping and skipping do not count.
+  const card=r&&typeof r==='object'&&Number.isFinite(r.reps)&&r.reps>0?r:null;
+  if(!quiz&&!card)return null;
+  const item=p.items[entry.key];
+  const quizKnown=quiz?(item
+   ?(Number(item.wrong)>0?Number(item.streak)>0:item.known!==false)
+   :quiz.correctLast===true):false;
+  if(!card)return {...quiz,known:quizKnown,practice:'Quiz',flashcard:false};
+  const cardKnown=typeof card.lastKnown==='boolean'?card.lastKnown:n(card.intervalDays)>0;
+  const cardTime=timestamp(card.lastReviewed),quizTime=timestamp(quiz?.last);
+  // The most recent rated activity determines current mastery. Keep the entire
+  // mistake history, even if a later quiz or flashcard review is correct.
+  const newestCard=!quiz||(cardTime>0&&(!quizTime||cardTime>=quizTime));
+  const known=newestCard?cardKnown:quizKnown;
+  return {wrong:n(quiz?.wrong)+n(card.missed),known,correctLast:known,
+   answered:quiz?.answered,last:newestCard?card.lastReviewed:quiz?.last,
+   flashcard:true,practice:quiz?'Quiz + Flashcards':'Flashcards'};
  }
  function snapshot(){
-  const p=current(),records=[...bank,...curated,...liveEntries()];
+  const p=current(),flash=flashHistory(),records=[...bank,...curated,...liveEntries()];
   const rows=[];
   const totals=new Map();
   for(const group of [...levels,'Topic 1','New lessons']){
@@ -68,13 +102,9 @@
   }
   let seen=0;
   for(const e of records){
-   const status=entryStatus(e,p),bucket=totals.get(e.group);
+   const status=entryStatus(e,p,flash),bucket=totals.get(e.group);
    if(bucket)bucket.total++;
    if(!status)continue;
-   const item=p.items[e.key];
-   status.known=item
-    ?(Number(item.wrong)>0?Number(item.streak)>0:item.known!==false)
-    :status.correctLast===true;
    seen++;
    if(bucket)bucket.seen++;
    rows.push({...e,status});
@@ -86,13 +116,14 @@
    if(catalogKeys.has(key)||!p.seen[key]||!s||typeof s.de!=='string')continue;
    const wrong=n(s.wrong);
    rows.push({key,word:{de:s.de,en:s.en||'',mm:s.mm||'',level:'—'},group:'Archived',source:'Earlier version',
-    status:{wrong,correctLast:wrong===0?true:n(s.streak)>0,last:s.last||null}});
+    status:{wrong,known:wrong===0?true:n(s.streak)>0,correctLast:wrong===0?true:n(s.streak)>0,last:s.last||null,practice:'Quiz',flashcard:false}});
   }
   const total=records.length;
   const learned=rows.filter(row=>row.status.known===true).length;
   const needsReview=rows.filter(row=>row.status.wrong>0&&row.status.known!==true).length;
+  const flashcardSeen=rows.filter(row=>row.status.flashcard).length;
   return {rows,totals,total,seen,learned,needsReview,remaining:Math.max(0,total-seen),pct:percent(seen,total),
-   bankTotal:bank.length,curatedTotal:curated.length,liveTotal:records.length-bank.length-curated.length};
+   bankTotal:bank.length,curatedTotal:curated.length,liveTotal:records.length-bank.length-curated.length,flashcardSeen};
  }
  function progressBar(seen,total,label){
   const outer=document.createElement('div');outer.className='ww-seen-meter';
@@ -112,7 +143,7 @@
  if(options)menu.insertBefore(home,options);else menu.append(home);
  const seenButton=document.createElement('button');
  seenButton.type='button';seenButton.dataset.nav='seen';seenButton.className='ww-seen-menu-option';
- seenButton.innerHTML='<span class="ww-menu-icon" aria-hidden="true">▤</span><span><strong>My seen words</strong><small>Every word answered · listen and review</small></span><span class="ww-menu-arrow" aria-hidden="true">›</span>';
+ seenButton.innerHTML='<span class="ww-menu-icon" aria-hidden="true">▤</span><span><strong>My seen words</strong><small>Quizzes + rated flashcards · listen and review</small></span><span class="ww-menu-arrow" aria-hidden="true">›</span>';
  const reviewButton=options?.querySelector('[data-nav=review]');
  if(reviewButton)reviewButton.before(seenButton);
  else options?.append(seenButton);
@@ -120,7 +151,7 @@
  page.id='seen';page.className='section ww-seen-page';
  page.innerHTML='<button type="button" class="ww-menu-back" id="ww-seen-back">‹  Main menu</button>'+
   '<div class="ww-seen-heading"><span class="ww-menu-eyebrow">YOUR VOCABULARY JOURNEY</span><h2>My seen words</h2>'+
-  '<p>Every vocabulary entry you have answered, including correct answers and mistakes.</p></div>'+
+  '<p>Every entry you have answered in quizzes or rated in flashcards, including mistakes.</p></div>'+
   '<div id="ww-seen-page-overview" class="ww-seen-page-overview"></div>'+
   '<div id="ww-seen-levels" class="ww-seen-levels"></div>'+
   '<div class="ww-seen-history-header"><h3>Your word history</h3><p>Words you missed are marked red, even when you later answer them correctly.</p></div>'+
@@ -128,20 +159,21 @@
   '<label>Result<select id="ww-seen-status"><option value="all">All answers</option><option value="wrong">Missed before</option><option value="correct">Never missed</option></select></label>'+
   '<label>Level / source<select id="ww-seen-level"><option value="all">All levels</option>'+
   '<option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C1</option><option>C2</option>'+
-  '<option value="Topic 1">Topic 1</option><option value="New lessons">New lessons</option><option value="Archived">Earlier versions</option></select></label></div>'+
+  '<option value="Topic 1">Topic 1</option><option value="New lessons">New lessons</option><option value="Archived">Earlier versions</option></select></label>'+ 
+  '<label>Practice<select id="ww-seen-practice"><option value="all">All activity</option><option value="flashcards">Flashcards</option><option value="quiz">Quizzes</option></select></label></div>'+
   '<p id="ww-seen-results" class="muted tiny" aria-live="polite"></p>'+
   '<div class="ww-seen-table-wrap" role="region" aria-label="All seen words, scroll horizontally for columns" tabindex="0">'+
-  '<table class="ww-seen-table"><thead><tr><th scope="col">Word</th><th scope="col">English</th><th scope="col">မြန်မာ</th><th scope="col">Level</th><th scope="col">Result</th><th scope="col">Listen</th></tr></thead>'+
+  '<table class="ww-seen-table"><thead><tr><th scope="col">Word</th><th scope="col">English</th><th scope="col">မြန်မာ</th><th scope="col">Level</th><th scope="col">Result</th><th scope="col">Practice</th><th scope="col">Listen</th></tr></thead>'+
   '<tbody id="ww-seen-rows"></tbody></table></div>'+
-  '<p id="ww-seen-empty" class="ww-seen-empty" hidden>No words here yet. Start a quiz to build your word history.</p>'+
+  '<p id="ww-seen-empty" class="ww-seen-empty" hidden>No words here yet. Start a quiz or rate a flashcard.</p>'+
   '<button type="button" id="ww-seen-more" class="btn secondary ww-seen-more" hidden>Show 50 more words</button>'+
-  '<p class="ww-seen-footnote">Seen means answered at least once, not mastered. Counts cover study entries across the Word Bank, Topic 1, and downloaded New Lessons. Repeated quizzes do not increase the seen count. New Lessons progress currently remains on this device.</p>';
+  '<p class="ww-seen-footnote">Seen means answered in a quiz or rated in a flashcard, not necessarily mastered. Repeated reviews count once per study entry. Word Bank, Topic 1 and downloaded New Lessons are included. Flashcard and New Lessons histories currently remain on this device.</p>';
  root.append(page);
  const $local=id=>page.querySelector('#'+id);
  $local('ww-seen-back').addEventListener('click',()=>window.WortWeg.navigate('dashboard'));
  // The app's existing Home click handler delegates on [data-nav], so
  // the new menu option automatically uses the original navigation logic.
- const filters=['ww-seen-search','ww-seen-status','ww-seen-level'];
+ const filters=['ww-seen-search','ww-seen-status','ww-seen-level','ww-seen-practice'];
  let cached=null,shown=50;
  function statsHeader(node,{total,seen,remaining,pct,bankTotal,curatedTotal,liveTotal}){
   node.replaceChildren();
@@ -350,11 +382,14 @@
  }
  function renderTable(){
   const {rows}=cached||snapshot(),filter=$local('ww-seen-status').value,
-   level=$local('ww-seen-level').value,q=$local('ww-seen-search').value.trim().toLocaleLowerCase();
+   level=$local('ww-seen-level').value,practice=$local('ww-seen-practice').value,
+   q=$local('ww-seen-search').value.trim().toLocaleLowerCase();
   const matches=rows.filter(r=>{
    if(filter==='wrong'&&!r.status.wrong)return false;
    if(filter==='correct'&&r.status.wrong)return false;
    if(level!=='all'&&r.group!==level)return false;
+   if(practice==='flashcards'&&!r.status.flashcard)return false;
+   if(practice==='quiz'&&r.status.practice==='Flashcards')return false;
    if(q&&![r.word.de,r.word.en,r.word.my||r.word.mm,r.word.level].some(x=>String(x||'').toLocaleLowerCase().includes(q)))return false;
    return true;
   });
@@ -372,6 +407,7 @@
    const statusCell=text(row,'td','','ww-seen-result');
    const badge=text(statusCell,'strong',status.known?'Learned':hasMistakes?'Review · missed '+pretty(status.wrong)+'×':status.correctLast===null?'Seen':'Not learned','ww-seen-status');
    if(hasMistakes)text(statusCell,'small',status.correctLast===true?'Answered correctly later':status.correctLast===false?'Review this word':'Mistake in history');
+   text(row,'td',status.practice||'Quiz','ww-seen-method');
    const soundCell=text(row,'td','','ww-seen-audio');
    const btn=text(soundCell,'button','🔊','ww-seen-play');btn.type='button';
    btn.setAttribute('aria-label','Hear German pronunciation for '+word.de);
@@ -401,6 +437,7 @@
   }
  },true);
  window.addEventListener('wortweg:changed',render);
+ window.addEventListener('wortweg:flashcards-changed',render);
  window.addEventListener('wortweg:account',()=>setTimeout(render,0));
  window.addEventListener('wortweg:live-pack',render);
  window.addEventListener('wortweg:live-progress-changed',render);
