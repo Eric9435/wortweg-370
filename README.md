@@ -9,6 +9,7 @@ German–English–Myanmar vocabulary practice with multiple-choice quizzes, pro
 - A 370-topic roadmap and an A1–C2 vocabulary bank with 10,876 entries.
 - 41 curated personal-identity entries for Topic 1; other topic-specific sets are not yet fully curated.
 - Quizzes, spaced review, and previously missed words.
+- All-word flashcards (Word Bank, Topic 1, downloaded lessons), German↔English/Myanmar reveal, audio, CEFR filters and device-local per-profile review scheduling.
 - German pronunciation with system-voice support and bundled speech fallback.
 - Local learning history with JSON export/import.
 - Google sign-in, profile-picture display, and account-based learning-history synchronization.
@@ -120,3 +121,7 @@ Each of the 200 CEFR-organized grammar topics now has a short authored explanati
 
 ### Textbook-inspired deep grammar references
 14 original enhanced chapters introduce carefully explained rules, reference tables, worked German–English–Myanmar examples, common errors and free-writing challenges. The chapter structure was informed by the publicly described teaching approaches of Cornelsen *Grammatik aktiv* and Schubert *Begegnungen*; no textbook text is copied. Other grammar lessons remain concise first-pass lessons and should not be advertised as fully textbook-depth. The CEFR grammatical-accuracy descriptors are proficiency criteria, not a mandated list of grammatical chapters.
+
+## Flashcard review
+
+Open **Flashcards** from the Home learning tools or Main menu. The deck includes all 10,876 embedded Word Bank entries, 41 curated Topic 1 entries, and downloaded lessons. Choose a CEFR level, search for a specific word, study 20/50/100 cards or all matching cards, and flip between German and English/Myanmar. Rate cards **Again** or **I knew it**; reviewed cards are scheduled again in an independently saved, account-separated local flashcard record. No existing quiz or writing records are changed. These flashcard ratings do not currently synchronize through Google/Firebase; back up device data before clearing app storage. The website gains the feature after deployment; the previously installed Android APK needs a new build to include UI code.
