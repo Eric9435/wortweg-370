@@ -152,7 +152,7 @@
    start.textContent='Study '+(settings.size==='all'?amount:Math.min(amount,Number(settings.size))).toLocaleString('en-US')+' cards';
   }
   input.addEventListener('input',refreshCount);refreshCount();
-  pane.append(make('p','ww-flash-note','Flashcard review history is saved on this device for the current profile. Quiz and writing progress remain unchanged.'));
+  pane.append(make('p','ww-flash-note','Rate a flashcard to add it to My seen words; skipped cards do not count. Your flashcard history is saved on this device for this profile. Quiz and writing records remain unchanged.'));
   root.append(pane);
  }
  function startSession(){
@@ -175,8 +175,12 @@
   const intervalDays=remembered?(old.intervalDays?Math.min(365,Math.round(old.intervalDays*2.5)||1):1):0;
   const dueAt=remembered?today()+intervalDays*86400000:today();
   records[w.key]={reps:(old.reps||0)+1,missed:(old.missed||0)+(remembered?0:1),
-   intervalDays,dueAt,lastReviewed:new Date().toISOString()};
-  save();position++;flipped=false;renderCard();
+   intervalDays,dueAt,lastKnown:remembered,lastReviewed:new Date().toISOString(),
+   de:w.de,en:w.en,my:w.my,level:w.level};
+  save();
+  // Seen Words reads the same profile's flashcard records without touching quiz history.
+  window.dispatchEvent(new CustomEvent('wortweg:flashcards-changed',{detail:{key:w.key,remembered}}));
+  position++;flipped=false;renderCard();
  }
  function renderCard(){
   if(sessionProfile!==profile())return renderSetup();
