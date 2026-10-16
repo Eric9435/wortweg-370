@@ -17,6 +17,7 @@ jobs:
           node --check ios-polish.js
           node --check seen-words.js
           node --check flashcards.js
+          node --check bank-browser.js
           node --check grammar.js
           node --check topic-reading-seeds-1.js
           node --check topic-reading-seeds-2.js
@@ -52,6 +53,8 @@ jobs:
         run: node test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
+      - name: Verify every vocabulary word is accessible with pagination and continuous scrolling
+        run: node test-bank-browser.cjs
       - name: Verify all-word flashcards and saved review records
         run: node test-flashcards.cjs
       - name: Verify flashcard ratings appear in Seen Words
