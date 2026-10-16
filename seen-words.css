@@ -69,7 +69,7 @@ body.ww-game-interface .ww-seen-history-header h3 {
  font-size:19px;font-weight:780;letter-spacing:-.035em;margin:0 0 5px
 }
 body.ww-game-interface .ww-seen-filters {
- display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr);gap:9px;margin:14px 0;
+ display:grid;grid-template-columns:minmax(0,1.6fr) repeat(3,minmax(0,1fr));gap:9px;margin:14px 0;
 }
 body.ww-game-interface .ww-seen-filters label {
  display:flex;flex-direction:column;gap:6px;
@@ -246,3 +246,5 @@ body.ww-game-interface .ww-donut-grammar-summary{display:flex;gap:9px;align-item
 body.ww-game-interface .ww-donut-grammar-dot{width:11px;height:11px;border-radius:50%;background:#23a589;flex-shrink:0}
 body.ww-game-interface .ww-donut-grammar-summary strong{font-weight:750}
 body.ww-game-interface .ww-donut-grammar-summary span:last-child{color:var(--muted);font-variant-numeric:tabular-nums}
+
+body.ww-game-interface .ww-seen-table td.ww-seen-method{min-width:110px;color:var(--muted);font-size:11px;font-weight:650}
