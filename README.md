@@ -7,6 +7,7 @@ German–English–Myanmar vocabulary practice with multiple-choice quizzes, pro
 ## Features
 
 - A 370-topic roadmap and an A1–C2 vocabulary bank with 10,876 entries.
+- The full Word Bank is browsable with page navigation (100, 250, or 500 entries per page), page jumping, and an **All words · continuous scroll** mode that loads more entries on demand; searches apply to the complete bank, never just the first 70.
 - 41 curated personal-identity entries for Topic 1; other topic-specific sets are not yet fully curated.
 - Quizzes, spaced review, and previously missed words.
 - All-word flashcards (Word Bank, Topic 1, downloaded lessons), German↔English/Myanmar reveal, audio, CEFR filters and device-local per-profile review scheduling.
