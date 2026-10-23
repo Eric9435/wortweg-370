@@ -1,0 +1,70 @@
+/* Special Vocabulary: catalog, navigation, translations, quiz and profile isolation. */
+const fs=require('node:fs');
+const vm=require('node:vm');
+const assert=require('node:assert/strict');
+const {JSDOM}=require('jsdom');
+const source=fs.readFileSync('special-vocabulary.js','utf8');
+new vm.Script(source,{filename:'special-vocabulary.js'});
+const html='<!doctype html><html><head></head><body class="ww-game-interface"><main>'+
+'<section id="dashboard" class="section active"></section></main></body></html>';
+const dom=new JSDOM(html,{url:'https://example.org/',runScripts:'outside-only'});
+const w=dom.window;w.scrollTo=()=>{};
+w.WortWegAccountSnapshot={uid:'accountA'};
+let spoken='';
+w.WortWegAudio={speak:de=>spoken=de};
+const existingProgress={answered:40,correct:31};
+w.WortWeg={navigate:id=>w.document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id)),getProgress:()=>existingProgress};
+w.eval(source);
+const $=id=>w.document.getElementById(id);
+const api=w.WortWegSpecialVocabulary;
+assert.ok(api,'API is available');
+assert.deepEqual(Array.from(api.getCategories(),c=>c.id),
+ ['conjunctions','prepositions','interjections','directions','numbers','clock']);
+assert.equal(api.getCategories().reduce((n,c)=>n+c.count,0),347);
+assert.ok(fs.readFileSync('home-refresh.js','utf8').includes('WortWegSpecialVocabulary'));
+for(const asset of ['special-vocabulary.js','special-vocabulary.css']){
+ assert.ok(fs.readFileSync('sw.js','utf8').includes(asset),'PWA cache contains '+asset);
+ assert.ok(fs.readFileSync('mobile/scripts/prepare.mjs','utf8').includes(asset),'Android bundle contains '+asset);
+}
+api.open();
+assert.ok($('ww-special-vocab').classList.contains('active'),'Screen navigates correctly');
+const setCategory=id=>$('ww-special-categories').querySelector('[data-category="'+id+'"]').click();
+function search(value){const input=$('ww-special-search');input.value=value;input.dispatchEvent(new w.Event('input',{bubbles:true}))}
+setCategory('conjunctions');search('deshalb');
+assert.equal($('ww-special-list').children.length,1,'Search filters selected category');
+assert.ok($('ww-special-list').textContent.includes('အဲ့ဒါကြောင့်'),'Myanmar translation is visible');
+$('ww-special-list .ww-special-sound').click();
+assert.equal(spoken,'deshalb','German pronunciation supported');
+$('ww-special-practice').click();
+assert.ok(!$('ww-special-quiz').hidden,'MCQ practice opens');
+assert.ok($('ww-special-quiz').textContent.includes('deshalb'));
+const correct=[...w.document.querySelectorAll('.ww-special-option')].find(b=>b.textContent==="therefore / that's why");
+assert.ok(correct,'Correct English meaning appears');
+correct.click();
+assert.ok($('ww-special-quiz').textContent.includes('Correct'));
+assert.equal(api.getProgress().learned,1);
+assert.equal(w.WortWeg.getProgress().answered,40,'Existing quiz history unchanged');
+$('ww-special-quiz .ww-special-exit').click();
+setCategory('numbers');search('siebzehn');
+assert.equal($('ww-special-list').children.length,1,'German number filtering');
+$('ww-special-practice').click();
+const wrong=[...w.document.querySelectorAll('.ww-special-option')].find(b=>b.textContent!=='seventeen');
+wrong.click();
+assert.equal(api.getProgress().mistakes,1,'Wrong answers tracked separately');
+$('ww-special-quiz .ww-special-exit').click();
+assert.equal($('ww-special-review').disabled,false,'Review mistakes available');
+$('ww-special-review').click();
+assert.ok($('ww-special-quiz').textContent.includes('siebzehn'));
+const correctAgain=[...w.document.querySelectorAll('.ww-special-option')].find(b=>b.textContent==='seventeen');
+correctAgain.click();
+assert.equal(api.getProgress().mistakes,0,'Correct review clears mistake');
+assert.equal(api.getProgress().learned,2,'Correct answer marks as learned');
+w.WortWegAccountSnapshot={uid:'accountB'};
+w.dispatchEvent(new w.CustomEvent('wortweg:account',{detail:{uid:'accountB'}}));
+assert.equal(api.getProgress().learned,0,'Second account progress isolated');
+w.WortWegAccountSnapshot={uid:'accountA'};
+w.dispatchEvent(new w.CustomEvent('wortweg:account',{detail:{uid:'accountA'}}));
+assert.equal(api.getProgress().learned,2,'First account progress restored');
+assert.ok(w.localStorage.getItem('wortweg370-special-vocabulary-v1:accountA'));
+dom.window.close();
+console.log('PASS: 347 German-English-Myanmar entries, six categories, translation search, audio, MCQ, wrong-answer review, account isolation, offline packaging.');
