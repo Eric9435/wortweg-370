@@ -14,6 +14,8 @@ const actions=[
  {id:'review',icon:'↻',title:'Review',caption:'Words to revisit',run:()=>clickExisting('[data-nav="review"]')},
  {id:'library',icon:'▤',title:'Word Library',caption:'Your word history',run:()=>{if(window.WortWegSeenWords?.open){window.WortWegSeenWords.open();return true;}return clickExisting('[data-nav="seen"]');}},
  {id:'grammar',icon:'Aa',title:'Grammar',caption:'A1–C1 academy',run:()=>{if(window.WortWegGrammar?.open){window.WortWegGrammar.open();return true;}return clickExisting('#wg-grammar-launch');}}
+,
+ {id:'special',icon:'Aa+',title:'Special Vocabulary',caption:'Conjunctions, numbers, time & more',run:()=>{if(window.WortWegSpecialVocabulary?.open){window.WortWegSpecialVocabulary.open();return true}return false}}
 ];
 const zone=make('section','ww-home-focus');zone.id='ww-home-focus';zone.setAttribute('aria-label','Learning shortcuts');
 const heading=make('div','ww-home-focus-head');
@@ -35,3 +37,5 @@ try{localStorage.removeItem('wortweg370-home-view');}catch{}
 window.WortWegHomeRefresh={open:()=>zone.scrollIntoView({behavior:'smooth',block:'start'})};
 const checklistScript=document.createElement('script');checklistScript.src='./learning-checklist.js?v=7';document.body.append(checklistScript);
 })();
+/* All six language-support categories use one independent learning collection. */
+(()=>{const css=document.createElement('link');css.rel='stylesheet';css.href='./special-vocabulary.css';document.head.append(css);const js=document.createElement('script');js.src='./special-vocabulary.js';document.head.append(js);})();
