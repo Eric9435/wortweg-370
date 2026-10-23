@@ -123,6 +123,23 @@ Each of the 200 CEFR-organized grammar topics now has a short authored explanati
 ### Textbook-inspired deep grammar references
 14 original enhanced chapters introduce carefully explained rules, reference tables, worked German–English–Myanmar examples, common errors and free-writing challenges. The chapter structure was informed by the publicly described teaching approaches of Cornelsen *Grammatik aktiv* and Schubert *Begegnungen*; no textbook text is copied. Other grammar lessons remain concise first-pass lessons and should not be advertised as fully textbook-depth. The CEFR grammatical-accuracy descriptors are proficiency criteria, not a mandated list of grammatical chapters.
 
+## Special Vocabulary — six categories
+
+The **Special Vocabulary** launcher on Home opens one independent collection with **347 German–English–Myanmar entries**, organized by category:
+
+| Category | Entries |
+| --- | ---: |
+| Conjunctions & Connectors | 46 |
+| Prepositions | 56 |
+| Interjections | 45 |
+| Directions | 59 |
+| Numbers | 74 |
+| Clock & Time | 67 |
+
+The collection supports category filtering, search across the three languages, German pronunciation, case/grammar notes, learned-word marking, 15-question multiple-choice sessions, mistake review, and progress saved separately per local guest or signed-in profile. **This module's progress is device-local, not yet Firestore-synchronized.** It does not alter the original 10,876-word bank, quiz attempts, or CEFR progress totals. Main menu and other learning modules remain unchanged.
+
+Assets: `special-vocabulary.js` and `special-vocabulary.css`, cached by the web service worker and bundled in new native builds through `mobile/scripts/prepare.mjs`. Existing installed APKs will not get the new JavaScript module until a new signed APK is built and installed. Run `node test-special-vocabulary.cjs` (requires jsdom) for category, translation, quiz, audio, review, isolation and cache checks.
+
 ## Flashcard review
 
 Open **Flashcards** from the Home learning tools or Main menu. The deck includes all 10,876 embedded Word Bank entries, 41 curated Topic 1 entries, and downloaded lessons. Choose a CEFR level, search for a specific word, study 20/50/100 cards or all matching cards, and flip between German and English/Myanmar. Rate cards **Again** or **I knew it**; reviewed cards are scheduled again in an independently saved, account-separated local flashcard record. No existing quiz or writing records are changed. These flashcard ratings do not currently synchronize through Google/Firebase; back up device data before clearing app storage. The website gains the feature after deployment; the previously installed Android APK needs a new build to include UI code.
