@@ -1,0 +1,60 @@
+/* WortWeg 370 · Special Vocabulary. Scoped, responsive, accessible. */
+#ww-special-vocab{--sv-ink:var(--txt,#18263e);--sv-sub:var(--muted,#66748b);--sv-line:var(--line,#e0e6ef);--sv-bg:var(--panel,#fff);max-width:1120px;margin:0 auto;padding:5px 0 50px;color:var(--sv-ink)}
+#ww-special-vocab[hidden]{display:none!important}
+#ww-special-vocab .ww-special-head{padding:0 0 24px}
+#ww-special-vocab button,#ww-special-vocab select,#ww-special-vocab input{font:inherit}
+#ww-special-vocab button{cursor:pointer}
+#ww-special-vocab button:disabled{cursor:not-allowed;opacity:.5}
+#ww-special-vocab button:focus-visible,#ww-special-vocab input:focus-visible,#ww-special-vocab select:focus-visible{outline:3px solid #5076ed;outline-offset:3px}
+#ww-special-vocab .ww-special-back{display:inline-flex;align-items:center;border:0;background:transparent;color:var(--sv-sub);font-weight:650;padding:12px 4px;margin-bottom:13px}
+#ww-special-vocab .ww-special-heading{display:flex;justify-content:space-between;gap:20px;align-items:end}
+#ww-special-vocab .ww-special-eyebrow{font-size:11px;font-weight:850;letter-spacing:.15em;color:#236e87;margin:0 0 8px;text-transform:uppercase}
+#ww-special-vocab h2{font-size:clamp(28px,6vw,44px);line-height:1.13;letter-spacing:-.045em;margin:0 0 8px}
+#ww-special-vocab .ww-special-heading p:not(.ww-special-eyebrow){margin:0;color:var(--sv-sub);font-size:14px}
+#ww-special-vocab .ww-special-meter{min-width:120px;text-align:right;padding:10px 0}
+#ww-special-vocab .ww-special-meter strong{display:block;font-size:28px;line-height:1.2;font-variant-numeric:tabular-nums}
+#ww-special-vocab .ww-special-meter span{font-size:12px;color:var(--sv-sub)}
+#ww-special-vocab .ww-special-categories{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin:0 0 22px}
+#ww-special-vocab .ww-special-category{min-height:73px;display:flex;flex-direction:column;align-items:start;justify-content:space-between;gap:6px;text-align:left;background:var(--sv-bg);border:1px solid var(--sv-line);border-radius:13px;padding:14px;transition:border-color .15s,background .15s}
+#ww-special-vocab .ww-special-category strong{font-weight:750;line-height:1.25;font-size:14px}
+#ww-special-vocab .ww-special-category span{font-size:12px;color:var(--sv-sub);font-variant-numeric:tabular-nums}
+#ww-special-vocab .ww-special-category.selected{border-color:#2b6de8;background:color-mix(in srgb,#447bea 8%,var(--sv-bg))}
+#ww-special-vocab .ww-special-toolbar{display:grid;gap:11px;padding:18px;border:1px solid var(--sv-line);background:var(--sv-bg);border-radius:16px}
+#ww-special-vocab .ww-special-search-label{font-size:13px;font-weight:750}
+#ww-special-vocab #ww-special-search{width:100%;box-sizing:border-box;border:1px solid var(--sv-line);background:var(--sv-bg);color:var(--sv-ink);padding:13px 15px;border-radius:10px;min-height:45px}
+#ww-special-vocab .ww-special-tools{display:flex;align-items:center;flex-wrap:wrap;gap:9px}
+#ww-special-vocab .ww-special-filter-label{font-size:12px;color:var(--sv-sub);font-weight:650}
+#ww-special-vocab #ww-special-filter{border:1px solid var(--sv-line);padding:11px;border-radius:10px;background:var(--sv-bg);color:var(--sv-ink);min-height:43px;margin-right:auto}
+#ww-special-vocab .ww-special-btn{min-height:43px;padding:10px 15px;border:1px solid var(--sv-line);background:var(--sv-bg);color:var(--sv-ink);font-weight:750;border-radius:10px}
+#ww-special-vocab .ww-special-btn.ww-special-primary{background:#245bd7;border-color:#245bd7;color:white}
+#ww-special-vocab .ww-special-summary{font-size:13px;color:var(--sv-sub);padding:15px 1px 12px}
+#ww-special-vocab .ww-special-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#ww-special-vocab .ww-special-card{background:var(--sv-bg);border:1px solid var(--sv-line);border-radius:14px;padding:17px;min-width:0}
+#ww-special-vocab .ww-special-card-top{display:flex;align-items:start;gap:12px;justify-content:space-between}
+#ww-special-vocab .ww-special-word{display:flex;flex-direction:column;align-items:start;gap:5px;min-width:0;overflow-wrap:anywhere}
+#ww-special-vocab .ww-special-word strong{font-size:19px;line-height:1.25;letter-spacing:-.025em}
+#ww-special-vocab .ww-special-en{font-size:14px}
+#ww-special-vocab .ww-special-my{font-size:13px;color:var(--sv-sub);line-height:1.65}
+#ww-special-vocab .ww-special-case{font-size:11px;font-weight:650;color:#297b87;background:color-mix(in srgb,#1b968d 8%,var(--sv-bg));border-radius:6px;padding:4px 7px}
+#ww-special-vocab .ww-special-card-actions{display:flex;align-items:flex-end;flex-direction:column;gap:8px;flex-shrink:0}
+#ww-special-vocab .ww-special-card-actions button{border:1px solid var(--sv-line);background:transparent;border-radius:8px;padding:7px 9px;font-size:12px;min-height:35px}
+#ww-special-vocab .ww-special-card-actions button.is-learned{color:#17704d;border-color:#6fb696;background:color-mix(in srgb,#49bd8c 7%,var(--sv-bg))}
+#ww-special-vocab .ww-special-empty{grid-column:1/-1;text-align:center;color:var(--sv-sub);padding:36px}
+#ww-special-vocab .ww-special-pagination{display:flex;align-items:center;justify-content:center;gap:15px;padding-top:24px;font-size:13px}
+#ww-special-vocab .ww-special-quiz{max-width:690px;margin:20px auto 0;border:1px solid var(--sv-line);background:var(--sv-bg);padding:25px;border-radius:18px}
+#ww-special-vocab .ww-special-quiz[hidden]{display:none!important}
+#ww-special-vocab .ww-special-quiz-heading{padding:0 0 17px}
+#ww-special-vocab .ww-special-quiz-heading p{color:var(--sv-sub);font-size:13px}
+#ww-special-vocab .ww-special-quiz-heading h3{font-size:clamp(25px,5vw,36px);margin:12px 0}
+#ww-special-vocab .ww-special-options{display:grid;gap:10px;margin-bottom:15px}
+#ww-special-vocab .ww-special-option{text-align:left;border:1px solid var(--sv-line);background:transparent;color:var(--sv-ink);border-radius:10px;padding:15px;font-size:15px}
+#ww-special-vocab .ww-special-option.is-correct{border-color:#248d65;background:color-mix(in srgb,#35a879 12%,var(--sv-bg));font-weight:750;opacity:1}
+#ww-special-vocab .ww-special-option.is-incorrect{border-color:#bc5050;background:color-mix(in srgb,#bc5050 10%,var(--sv-bg));opacity:1}
+#ww-special-vocab .ww-special-feedback{padding:13px 15px;border-left:3px solid #22845d;background:color-mix(in srgb,#22845d 7%,var(--sv-bg));margin:12px 0 16px;font-weight:750}
+#ww-special-vocab .ww-special-feedback.wrong{border-color:#bf5959;background:color-mix(in srgb,#c35d5d 7%,var(--sv-bg))}
+#ww-special-vocab .ww-special-feedback p{font-size:13px;line-height:1.7;font-weight:400;margin:9px 0 0}
+#ww-special-vocab .ww-special-exit{display:block;border:0;background:transparent;color:var(--sv-sub);padding:15px 2px;margin-top:12px}
+#ww-special-vocab .ww-special-finished{text-align:center;padding:24px 0;line-height:1.6}
+@media(max-width:780px){#ww-special-vocab .ww-special-categories{grid-template-columns:repeat(2,minmax(0,1fr))}#ww-special-vocab .ww-special-list{grid-template-columns:1fr}#ww-special-vocab .ww-special-card{padding:15px}#ww-special-vocab .ww-special-tools{display:grid;grid-template-columns:1fr 1fr}#ww-special-vocab .ww-special-filter-label{grid-column:1/-1}#ww-special-vocab #ww-special-filter{grid-column:1/-1;margin:0}#ww-special-vocab .ww-special-tools .ww-special-btn{font-size:13px;padding:10px}#ww-special-vocab .ww-special-quiz{padding:18px}}
+@media(max-width:410px){#ww-special-vocab .ww-special-heading{align-items:start}#ww-special-vocab .ww-special-meter{min-width:65px}#ww-special-vocab .ww-special-meter strong{font-size:23px}#ww-special-vocab .ww-special-meter span{font-size:10px}#ww-special-vocab .ww-special-category{padding:11px;min-height:67px}#ww-special-vocab .ww-special-card-top{flex-direction:column}#ww-special-vocab .ww-special-card-actions{width:100%;flex-direction:row;align-items:center}#ww-special-vocab .ww-special-card-actions button{flex:1}}
+@media(prefers-reduced-motion:reduce){#ww-special-vocab .ww-special-category{transition:none}}
