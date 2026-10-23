@@ -12,7 +12,7 @@ const page=mk('section','section ww-special-page');page.id='ww-special-vocab';
 page.setAttribute('aria-label','Special Vocabulary learning collection');
 const main=document.querySelector('main');if(!main)return;main.append(page);
 page.innerHTML='<div class="ww-special-head"><button class="ww-special-back" type="button">‹ Main menu</button><div class="ww-special-heading"><div><p class="ww-special-eyebrow">WORTWEG 370 · VOCABULARY LIBRARY</p><h2>Special Vocabulary</h2><p>Six essential German language categories · Deutsch / English / မြန်မာ</p></div><div class="ww-special-meter" aria-live="polite"><strong id="ww-special-learned">0</strong><span id="ww-special-outof">learned</span></div></div></div><div class="ww-special-categories" id="ww-special-categories" role="group" aria-label="Vocabulary categories"></div><div class="ww-special-toolbar"><label class="ww-special-search-label" for="ww-special-search">Search this collection</label><input type="search" id="ww-special-search" placeholder="German, English or မြန်မာ…" autocomplete="off"><div class="ww-special-tools"><label class="ww-special-filter-label" for="ww-special-filter">Show</label><select id="ww-special-filter"><option value="all">All entries</option><option value="unlearned">Not learned</option><option value="learned">Learned</option><option value="mistakes">Needs review</option></select><button type="button" class="ww-special-btn" id="ww-special-review">Review mistakes</button><button type="button" class="ww-special-btn ww-special-primary" id="ww-special-practice">Practice quiz</button></div></div><div id="ww-special-state" class="ww-special-summary" aria-live="polite"></div><div id="ww-special-list" class="ww-special-list"></div><div id="ww-special-pagination" class="ww-special-pagination"></div><div id="ww-special-quiz" class="ww-special-quiz" hidden></div>';
-let active='all',profile='guest',viewPage=0,mode='words',questions=[],qIndex=0,picked=-1,answered=false;
+let active='all',profile='guest',viewPage=0,mode='words',questions=[],qIndex=0,picked=-1,answered=false,sessionCorrect=0;
 let progress={learned:{},mistakes:{}};
 const key=()=> 'wortweg370-special-vocabulary-v1:'+profile;
 function load(){try{const v=JSON.parse(localStorage.getItem(key())||'{}');progress={learned:v.learned&&typeof v.learned==='object'?v.learned:{},mistakes:v.mistakes&&typeof v.mistakes==='object'?v.mistakes:{}};}catch{progress={learned:{},mistakes:{}};}}
@@ -68,24 +68,25 @@ function renderWords(){
 function shuffled(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 function beginQuiz(review){
  let pool=review?listMistakes():list();if(pool.length<1)return;
- questions=shuffled(pool).slice(0,Math.min(15,pool.length));qIndex=0;picked=-1;answered=false;mode='quiz';
+ questions=shuffled(pool).slice(0,Math.min(15,pool.length)).map(w=>{
+  const candidates=[w],source=shuffled(active==='all'?all:activeCategory(active).words);
+  for(const item of [...source,...shuffled(all)]){if(candidates.length>=4)break;if(!candidates.some(v=>v.en===item.en))candidates.push(item)}
+  return {...w,options:shuffled(candidates)};
+ });qIndex=0;picked=-1;answered=false;sessionCorrect=0;mode='quiz';
  $('ww-special-list').hidden=true;$('ww-special-pagination').hidden=true;$('ww-special-quiz').hidden=false;
  renderQuiz();window.scrollTo?.(0,0);
 }
 function renderQuiz(){
  const holder=$('ww-special-quiz');holder.replaceChildren();
- if(qIndex>=questions.length){let correct=questions.filter(w=>!!progress.learned[w.id]).length;const done=mk('div','ww-special-finished');done.append(mk('h3','','Session complete'),mk('p','',questions.length+' questions attempted. Learned status is saved on this device.'),mk('p','','Continue studying or review missed entries.'));
+ if(qIndex>=questions.length){const done=mk('div','ww-special-finished');done.append(mk('h3','','Session complete'),mk('p','',sessionCorrect+' / '+questions.length+' correct · Saved on this device.'),mk('p','','Continue studying or review missed entries.'));
   const back=mk('button','ww-special-btn ww-special-primary','Back to vocabulary');back.onclick=()=>{mode='words';render()};done.append(back);holder.append(done);return;}
  const w=questions[qIndex];
  const heading=mk('div','ww-special-quiz-heading');heading.append(mk('p','','Question '+(qIndex+1)+' / '+questions.length),mk('h3','',w.de),mk('p','','Choose the English meaning.'));
  const speakB=mk('button','ww-special-btn','Listen to German');speakB.onclick=()=>speak(w.de);heading.append(speakB);holder.append(heading);
- const meanings=[w,...shuffled((active==='all'?all:activeCategory(active).words).filter(x=>x.id!==w.id&&x.en!==w.en))].slice(0,4);
- // If a category has very few entries, use the whole collection for distractors.
- while(meanings.length<4){const extra=shuffled(all).find(x=>!meanings.some(z=>z.en===x.en));if(!extra)break;meanings.push(extra);}
- const options=shuffled(meanings);const area=mk('div','ww-special-options');
+ const options=w.options;const area=mk('div','ww-special-options');
  options.forEach((answer,i)=>{const b=mk('button','ww-special-option',answer.en);b.type='button';b.disabled=answered;
  b.setAttribute('aria-pressed',String(i===picked));if(answered){b.classList.toggle('is-correct',answer.id===w.id);b.classList.toggle('is-incorrect',i===picked&&answer.id!==w.id)}
- b.onclick=()=>{if(answered)return;picked=i;answered=true;if(answer.id===w.id){progress.learned[w.id]=1;delete progress.mistakes[w.id]}else{progress.mistakes[w.id]=(progress.mistakes[w.id]||0)+1;delete progress.learned[w.id]}save();renderQuiz()};area.append(b);});holder.append(area);
+ b.onclick=()=>{if(answered)return;picked=i;answered=true;if(answer.id===w.id){sessionCorrect++;progress.learned[w.id]=1;delete progress.mistakes[w.id]}else{progress.mistakes[w.id]=(progress.mistakes[w.id]||0)+1;delete progress.learned[w.id]}save();renderQuiz()};area.append(b);});holder.append(area);
  if(answered){const correct=options[picked]?.id===w.id;
   const note=mk('div','ww-special-feedback',correct?'Correct · မှန်ပါတယ်':'Not quite · မမှန်သေးပါ');note.classList.toggle('wrong',!correct);
   note.append(mk('p','',w.de+' — '+w.en+' — '+w.my));holder.append(note);
