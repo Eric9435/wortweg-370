@@ -45,6 +45,7 @@ let button=[...w.document.querySelectorAll('#topicList button.topic')].find(b=>b
 assert(button,'Topic button exists');
 button.click();
 assert(w.document.querySelector('.wwr-overlay'),'Topic title opens modal');
+assert.equal(w.document.querySelector('.wwr-header'),null,'Duplicate title header is removed');
 assert.equal(w.document.querySelectorAll('.wwr-row').length,chapters[1].rows.length);
 const row=w.document.querySelector('.wwr-row');
 assert(row.querySelector('.wwr-de').textContent.includes('Mein Name'));
@@ -53,9 +54,9 @@ assert.equal(row.querySelector('.wwr-mm').hidden,false,'Myanmar text must be vis
 assert.equal(row.querySelector('.wwr-en').lang,'en');
 assert.equal(row.querySelector('.wwr-mm').lang,'my');
 assert.equal(w.document.querySelectorAll('.wwr-labels span').length,3,'All language headings present');
-w.document.querySelector('.wwr-header button[aria-pressed]').click();
+w.document.querySelector('.wwr-toggle-my').click();
 assert.equal(row.querySelector('.wwr-mm').hidden,true,'Myanmar can be hidden');
-w.document.querySelector('.wwr-header button[aria-pressed]').click();
+w.document.querySelector('.wwr-toggle-my').click();
 assert.equal(row.querySelector('.wwr-mm').hidden,false,'Myanmar can be shown again');
 w.document.querySelector('.wwr-play').click();
 assert.equal(utterances.length,1);
@@ -73,8 +74,8 @@ assert.equal(seek.value,'3','Seek selects a sentence index');
 assert.equal(utterances[1].lang,'de-DE');
 assert(w.document.querySelector('.wwr-row.wwr-current .wwr-en.wwr-trans-active'),'Translation highlight retained after seeking');
 assert(w.document.querySelector('.wwr-row.wwr-current .wwr-mm.wwr-trans-active'),'Myanmar highlight retained after seeking');
-w.document.querySelector('.wwr-header .wwr-close')?.click();
-w.document.querySelector('.wwr-header button:last-child').click();
+assert(w.document.querySelector('.wwr-menu-current').textContent.includes('Persönliche Angaben'),'Topic label moved into floating menu');
+w.document.querySelector('.wwr-close-reader').click();
 assert(!w.document.querySelector('.wwr-overlay'),'Close removes window');
 w.WortWegTopics.open(10);
 const detail=w.document.querySelector('.wwr-detail-button');
@@ -98,7 +99,7 @@ floating.click();
 assert.equal(w.document.querySelector('.wwr-menu').hidden,false);
 const topicButton=w.document.querySelector('.wwr-index button[data-topic="24"]');
 topicButton.click();
-assert.match(w.document.querySelector('.wwr-header h2').textContent,/Hände und Füße/);
+assert.match(w.document.querySelector('.wwr-menu-current').textContent,/Hände und Füße/);
 assert.equal(w.document.querySelectorAll('.wwr-row').length,chapters[24].rows.length);
 floatingMenuCheck();
 function floatingMenuCheck(){
@@ -117,6 +118,8 @@ function floatingMenuCheck(){
  w.document.querySelector('.wwr-toggle-my').click();
  assert.equal(w.document.querySelector('.wwr-mm').hidden,false,'Menu shows Myanmar translation again');
  assert(menu.querySelector('.wwr-search'),'Floating searchable index exists');
+ assert(menu.querySelector('.wwr-vocabulary'),'Vocabulary action moved into menu');
+ assert(menu.querySelector('.wwr-close-reader'),'Close action moved into menu');
 }
 w.WortWegReadingStudio.close();
 assert.equal(launcher.hidden,false,'Launcher visible again after reader closes');
