@@ -41,6 +41,40 @@
 #ww-special-vocab .ww-special-card-actions button.is-learned{color:#17704d;border-color:#6fb696;background:color-mix(in srgb,#49bd8c 7%,var(--sv-bg))}
 #ww-special-vocab .ww-special-empty{grid-column:1/-1;text-align:center;color:var(--sv-sub);padding:36px}
 #ww-special-vocab .ww-special-pagination{display:flex;align-items:center;justify-content:center;gap:15px;padding-top:24px;font-size:13px}
+/* One entry per window; navigation replaces the former 24-card page grid. */
+#ww-special-vocab .ww-special-list.ww-special-single-window{
+ display:flex;flex-direction:column;gap:0;max-width:720px;margin:0 auto;
+ scroll-margin-top:16px;
+}
+#ww-special-vocab .ww-special-window-heading{
+ display:flex;justify-content:space-between;align-items:center;gap:12px;
+ padding:0 2px 12px;
+}
+#ww-special-vocab .ww-special-window-eyebrow{
+ font-size:11px;font-weight:800;letter-spacing:.15em;color:var(--sv-sub);
+}
+#ww-special-vocab .ww-special-window-count{
+ font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;color:var(--sv-sub);
+}
+#ww-special-vocab .ww-special-single-window .ww-special-card{
+ width:100%;box-sizing:border-box;min-height:215px;
+ padding:clamp(21px,4vw,32px);border-radius:18px;
+ display:flex;align-items:center;
+}
+#ww-special-vocab .ww-special-single-window .ww-special-card-top{width:100%}
+#ww-special-vocab .ww-special-single-window .ww-special-word{gap:10px}
+#ww-special-vocab .ww-special-single-window .ww-special-word strong{font-size:clamp(26px,5vw,37px)}
+#ww-special-vocab .ww-special-single-window .ww-special-en{font-size:clamp(16px,3vw,20px)}
+#ww-special-vocab .ww-special-single-window .ww-special-my{font-size:15px}
+#ww-special-vocab .ww-special-pagination{max-width:720px;margin:0 auto;padding-top:17px}
+#ww-special-vocab .ww-special-pagination-status{flex:1;text-align:center;min-width:80px;font-variant-numeric:tabular-nums;color:var(--sv-sub)}
+#ww-special-vocab .ww-special-window-nav{min-width:130px}
+@media(max-width:480px){
+ #ww-special-vocab .ww-special-single-window .ww-special-card{min-height:245px;padding:22px}
+ #ww-special-vocab .ww-special-pagination{gap:8px}
+ #ww-special-vocab .ww-special-pagination-status{min-width:50px;font-size:11px}
+ #ww-special-vocab .ww-special-window-nav{min-width:0;flex:1;padding:11px 7px;font-size:12px}
+}
 #ww-special-vocab .ww-special-quiz{max-width:690px;margin:20px auto 0;border:1px solid var(--sv-line);background:var(--sv-bg);padding:25px;border-radius:18px}
 #ww-special-vocab .ww-special-quiz[hidden]{display:none!important}
 #ww-special-vocab .ww-special-quiz-heading{padding:0 0 17px}
