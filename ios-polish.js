@@ -87,3 +87,6 @@
 
 /* All-word flashcard deck loads independently of the legacy quiz and writing flows. */
 (()=>{const script=document.createElement('script');script.src='./flashcards.js';script.defer=true;document.head.append(script);})();
+
+/* Floating, screen-wide teaching whiteboard on every WortWeg view. */
+(()=>{const script=document.createElement('script');script.src='./whiteboard.js?v=1';script.defer=true;document.head.append(script);})();
