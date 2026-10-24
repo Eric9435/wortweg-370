@@ -8,6 +8,7 @@
  const pages=()=>[...main.querySelectorAll(':scope > .section')];
  const visibleMain=()=>pages().find(p=>p.classList.contains('active'))||null;
  let routeStack=[],lastRoute=null,pending=false;
+ const observedRoots=new WeakSet();
  function trackRoute(){
    const id=visibleMain()?.id;
    if(!id||lastRoute===id)return;
@@ -100,8 +101,18 @@
    // The Dashboard is the navigation destination, not a closable page.
    pages().filter(p=>p.id&&p.id!=='dashboard').forEach(p=>ensure(p,'main'));
    ensure(reader(),'reader');
-   ensure(document.getElementById('wg-academy'),'grammar');
-   ensure(document.getElementById('ww-flashcards'),'flashcards');
+   const grammarRoot=document.getElementById('wg-academy');
+   const flashRoot=document.getElementById('ww-flashcards');
+   ensure(grammarRoot,'grammar');
+   ensure(flashRoot,'flashcards');
+   // Flashcards repeatedly replace their own children; subscribe even when
+   // the module was dynamically added after the navigation loader.
+   if(grammarRoot&&!observedRoots.has(grammarRoot)){
+     observer.observe(grammarRoot,{childList:true});observedRoots.add(grammarRoot);
+   }
+   if(flashRoot&&!observedRoots.has(flashRoot)){
+     observer.observe(flashRoot,{childList:true});observedRoots.add(flashRoot);
+   }
    // The former global reader shortcut must never float over unrelated pages.
    document.getElementById('wwr-launcher')?.remove();
    trackRoute();
@@ -114,14 +125,11 @@
  style.rel='stylesheet';style.href='./page-navigation.css?v=1';document.head.append(style);
  refresh();
  const observer=new MutationObserver(records=>{
-   if(records.some(record=>record.type==='childList'||record.target?.classList?.contains('section'))queue();
+   if(records.some(record=>record.type==='childList'||record.target?.classList?.contains('section')))queue();
  });
  observer.observe(main,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
  observer.observe(document.body,{childList:true});
- const grammar=document.getElementById('wg-academy');
- if(grammar)observer.observe(grammar,{childList:true,subtree:false});
- const flash=document.getElementById('ww-flashcards');
- if(flash)observer.observe(flash,{childList:true,subtree:false});
+
  window.addEventListener('hashchange',queue);
  document.addEventListener('click',event=>{
    if(event.target.closest('.ww-page-nav'))return;
