@@ -345,7 +345,7 @@
   }
   function create(){
     if(document.getElementById('ww-whiteboard-panel'))return;
-    const css=document.createElement('link');css.rel='stylesheet';css.href='./whiteboard.css?v=2';document.head.append(css);
+    const css=document.createElement('link');css.rel='stylesheet';css.href='./whiteboard.css?v=3';document.head.append(css);
     canvas=document.createElement('canvas');canvas.id='ww-whiteboard-canvas';canvas.setAttribute('aria-hidden','true');
     ctx=canvas.getContext('2d');if(!ctx)return;
     panel=document.createElement('aside');panel.id='ww-whiteboard-panel';panel.setAttribute('aria-label','Temporary annotations');
