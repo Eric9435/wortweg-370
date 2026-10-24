@@ -239,11 +239,11 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
 // Topic vocabulary detail pages and topic-specific quiz, shared with offline builds.
 (()=>{
  const css=document.createElement('link');css.rel='stylesheet';css.href='./topic-lessons.css';document.head.append(css);
- for(const filename of ["topic-reading-seeds-1.js","topic-reading-seeds-2.js","topic-reading-seeds-3.js","topic-reading-seeds-4.js","topic-reading-engine.js","reading-studio-topics-01-12.js","reading-studio-topics-13-24.js"]){
+ for(const filename of ["topic-reading-seeds-1.js","topic-reading-seeds-2.js","topic-reading-seeds-3.js","topic-reading-seeds-4.js","topic-reading-engine.js","reading-studio-topics-01-12.js","reading-studio-topics-13-24.js","reading-sentence-my-01-06.js","reading-sentence-my-07-12.js","reading-sentence-my-13-18.js","reading-sentence-my-19-24.js","reading-sentence-en-fixes.js"]){
   const part=document.createElement('script');part.src='./'+filename+(filename.startsWith('reading-studio-')?'?v=20261024-1940':'');part.async=false;document.head.append(part);
  }
  const js=document.createElement('script');js.src='./topic-lessons.js';js.async=false;document.head.append(js);
- const reader=document.createElement('script');reader.src='./reading-studio.js?v=20261024-headerless';reader.async=false;document.head.append(reader);
+ const reader=document.createElement('script');reader.src='./reading-studio.js?v=20261024-sentence-sync';reader.async=false;document.head.append(reader);
  const explorer=document.createElement('script');explorer.src='./reading-word-explorer.js?v=20261024-word-explorer2';explorer.async=false;document.head.append(explorer);
 })();
 
