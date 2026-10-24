@@ -87,6 +87,7 @@ function toggle(){
 }
 function seek(to){stop();idx=Math.min(items.length-1,Math.max(0,to));sync();start(idx);}
 function close(){
+ window.WortWegWordExplorer?.detach?.();
  stop();
  if(overlay){overlay.remove();overlay=null;}
  document.body.style.overflow=oldOverflow;
@@ -120,6 +121,7 @@ function draw(chapter){
   });
  }
  sync();
+ window.WortWegWordExplorer?.attach?.(overlay);
 }
 
 function userLastReading(){
@@ -307,7 +309,7 @@ function integrate(){
  }
 }
 installLauncher();
-window.WortWegReadingStudio={open,close,getCount:()=>Object.keys(chapters()).length};
+window.WortWegReadingStudio={open,close,stopNarration:()=>stop(),getCount:()=>Object.keys(chapters()).length};
 integrate();
 window.addEventListener('pagehide',stop);
 })();
