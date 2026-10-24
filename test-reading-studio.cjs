@@ -101,11 +101,10 @@ detail.click();
 assert(w.document.querySelector('.wwr-overlay'),'Detail button opens modal');
 w.WortWegReadingStudio.close();
 const launcher=w.document.getElementById('wwr-launcher');
-assert(launcher,'Global floating reading menu launcher exists');
-assert.equal(launcher.hidden,false);
-launcher.click();
-assert(w.document.querySelector('.wwr-overlay'),'Launcher opens full reader');
-assert.equal(w.document.querySelector('.wwr-menu').hidden,false,'Launcher opens floating topic index');
+assert.equal(launcher,null,'Reading Passages launcher no longer leaks across app screens');
+assert(w.WortWegReadingStudio.open(10),'Direct reader entry still works');
+w.document.querySelector('.wwr-fab').click();
+assert.equal(w.document.querySelector('.wwr-menu').hidden,false,'Floating topic menu works inside reader only');
 assert.equal(w.document.querySelectorAll('.wwr-index button').length,24,'All 24 topics available in menu');
 const allRows=w.document.querySelectorAll('.wwr-row');
 assert.equal(allRows.length,chapters[10].rows.length,'All paragraphs are rendered, not just a preview');
@@ -139,6 +138,6 @@ function floatingMenuCheck(){
  assert(menu.querySelector('.wwr-close-reader'),'Close action moved into menu');
 }
 w.WortWegReadingStudio.close();
-assert.equal(launcher.hidden,false,'Launcher visible again after reader closes');
+assert.equal(w.document.getElementById('wwr-launcher'),null,'No global reading launcher after exit');
 dom.window.close();
 console.log('PASS: '+Object.keys(chapters).length+' chapters, '+total+' paragraphs, '+matchedSentenceCount+' trilingual sentence pairs; synchronized German-English-Myanmar highlighting and seeking.');
