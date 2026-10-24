@@ -90,3 +90,6 @@
 
 /* Floating, screen-wide teaching whiteboard on every WortWeg view. */
 (()=>{const script=document.createElement('script');script.src='./whiteboard.js?v=1';script.defer=true;document.head.append(script);})();
+
+/* Contextual Back / Close controls on every non-Home view and full-screen lesson. */
+(()=>{const script=document.createElement('script');script.src='./page-navigation.js?v=1';script.defer=true;document.head.append(script);})();
