@@ -15,6 +15,7 @@ jobs:
           node --check sw.js
           node --check live-content.js
           node --check ios-polish.js
+          node --check whiteboard.js
           node --check seen-words.js
           node --check flashcards.js
           node --check special-vocabulary.js
@@ -59,6 +60,8 @@ jobs:
         run: node test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
+      - name: Verify teaching whiteboard tools and independent screen annotations
+        run: node test-whiteboard.cjs
       - name: Verify every vocabulary word is accessible with pagination and continuous scrolling
         run: node test-bank-browser.cjs
       - name: Verify six-category Special Vocabulary and isolated progress
