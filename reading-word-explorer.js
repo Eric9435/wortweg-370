@@ -73,7 +73,7 @@ function speak(entry){
  window.WortWegReadingStudio?.stopNarration?.();
  try{
   if(!window.speechSynthesis||!window.SpeechSynthesisUtterance)return;
-  const u=new SpeechSynthesisUtterance(entry.base||entry.surface);u.lang='de-DE';u.rate=.85;
+  const u=new SpeechSynthesisUtterance(String(entry.surface||entry.base).replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu,''));u.lang='de-DE';u.rate=.85;
   const v=window.speechSynthesis.getVoices?.()||[];
   const voice=v.find(x=>x.lang.toLowerCase()==='de-de')||v.find(x=>/^de/i.test(x.lang));if(voice)u.voice=voice;
   window.speechSynthesis.speak(u);
