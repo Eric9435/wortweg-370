@@ -6,6 +6,8 @@
   /* Ink deliberately exists only in RAM for the currently visible page.
      Tool preferences (never strokes) may be saved to the device. */
   const PREFS='wortweg370-teaching-whiteboard-prefs-v1';
+  /* Remove persisted ink left by the previous whiteboard version. */
+  try{localStorage.removeItem('wortweg370-teaching-whiteboard-v1');}catch{}
   const MAX_STROKES=500, MAX_POINTS=1800;
   const COLORS=['#e34343','#e58a20','#efc348','#2c9b75','#2788d8','#7867d8','#161d2a','#ffffff'];
   const SIZES={pencil:[1,2,3,5],pen:[1.5,3,5,9],highlighter:[9,16,24,36],eraser:[8,16,28,44]};
