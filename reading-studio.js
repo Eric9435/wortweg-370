@@ -244,17 +244,12 @@ function floatingMenu(panel,toggleMyanmar,openVocabulary){
  }
  setLayout(readingLayout);setFont(fontScale);updateMenu();
 }
+/* The old global Reading Passages button leaked into every app screen.
+   The topic list/detail remain the only entry points, with a menu inside
+   the reader itself. Remove any launcher from a prior UI mount. */
 function installLauncher(){
- if(floatingLauncher)return;
- floatingLauncher=node('button','wwr-global',document.body,'☷ Reading passages');
- floatingLauncher.id='wwr-launcher';floatingLauncher.type='button';
- floatingLauncher.setAttribute('aria-label','Open WortWeg full-screen reading passages and floating topic menu');
- floatingLauncher.addEventListener('click',()=>{
-  if(open(userLastReading())){
-   menuVisible=true;updateMenu();
-   q('.wwr-search')?.focus();
-  }
- });
+ document.getElementById('wwr-launcher')?.remove();
+ floatingLauncher=null;
 }
 
 function open(id){
