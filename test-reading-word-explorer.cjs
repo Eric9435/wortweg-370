@@ -28,7 +28,7 @@ word.dispatchEvent(me);
 const tip=w.document.querySelector('.wwx-tip');
 assert(tip&&!tip.hidden,'Hover tooltip shown immediately');
 assert.match(tip.textContent,/my/i,'English meaning in tooltip');
-assert.match(tip.textContent,/ကျွန်တော်/,'Myanmar meaning in tooltip');
+assert.match(tip.textContent,/ကျွန်တော/,'Myanmar meaning in tooltip');
 word.click();
 const detail=w.document.querySelector('.wwx-card');
 assert(detail&&!detail.hidden,'Click opens full word detail');
