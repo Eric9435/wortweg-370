@@ -33,7 +33,7 @@
   if(!/^#[0-9a-f]{6}$/i.test(prefs.color))prefs.color=COLORS[0];
   if(!prefs.sizes||typeof prefs.sizes!=='object')prefs.sizes={};
   const savePrefs=()=>{try{localStorage.setItem(PREFS,JSON.stringify(prefs));}catch{}};
-  let pageKey='',strokes=[],undone=[],working=null,raf=0;
+  let pageKey='',strokes=[],undone=[],working=null,raf=0,touchPan=null;
   let canvas,ctx,panel,launcher,popover,live,toolButtons;
   const announce=msg=>{if(live)live.textContent=msg;};
   function visible(element){
@@ -130,7 +130,7 @@
     return Number.isFinite(w)&&w>0?Math.min(60,w):DEFAULT[tool]||3;
   }
   function beginStroke(e){
-    if(prefs.tool==='pointer'||(e.pointerType==='mouse'&&e.button!==0)||working)return;
+    if(prefs.tool==='pointer'||touchPan||(e.pointerType==='mouse'&&e.button!==0)||working)return;
     e.preventDefault();
     try{canvas.setPointerCapture(e.pointerId);}catch{}
     const root=getRoot(e);
@@ -145,6 +145,33 @@
     if(working.p.length<MAX_POINTS)working.p.push(p);
     scheduleRender();
   }
+  /* Two fingers pan the underlying document, even with a pen selected.
+     A single finger or stylus still draws; pointer mode scrolls normally. */
+  function touchMidpoint(touches){
+    return {x:(touches[0].clientX+touches[1].clientX)/2,
+            y:(touches[0].clientY+touches[1].clientY)/2};
+  }
+  function twoFingerStart(e){
+    if(e.touches.length<2)return;
+    working=null; // Cancel an unfinished one-finger stroke before panning.
+    const center=touchMidpoint(e.touches);
+    touchPan={...center,root:getRoot({clientX:center.x,clientY:center.y})};
+    scheduleRender();
+  }
+  function twoFingerMove(e){
+    if(!touchPan||e.touches.length<2)return;
+    e.preventDefault();
+    const next=touchMidpoint(e.touches);
+    const dx=touchPan.x-next.x,dy=touchPan.y-next.y;
+    if(touchPan.root?.isConnected){
+      touchPan.root.scrollLeft+=dx;touchPan.root.scrollTop+=dy;
+    }else{
+      window.scrollBy(dx,dy);
+    }
+    touchPan.x=next.x;touchPan.y=next.y;
+    scheduleRender();
+  }
+  function twoFingerEnd(e){if(e.touches.length<2)touchPan=null;}
   function finishStroke(e){
     if(!working||e&&working.id!==e.pointerId)return;
     if(e?.type==='pointercancel'){working=null;scheduleRender();return;}
@@ -308,6 +335,10 @@
     canvas.addEventListener('pointermove',moveStroke);
     canvas.addEventListener('pointerup',finishStroke);
     canvas.addEventListener('pointercancel',finishStroke);
+    canvas.addEventListener('touchstart',twoFingerStart,{passive:false});
+    canvas.addEventListener('touchmove',twoFingerMove,{passive:false});
+    canvas.addEventListener('touchend',twoFingerEnd,{passive:true});
+    canvas.addEventListener('touchcancel',twoFingerEnd,{passive:true});
     /* Capture-phase scroll catches window AND nested reading-panel scrolling. */
     document.addEventListener('scroll',scheduleRender,{passive:true,capture:true});
     window.addEventListener('scroll',scheduleRender,{passive:true});
