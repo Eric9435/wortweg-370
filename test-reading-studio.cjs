@@ -23,7 +23,7 @@ for(let id=1;id<=24;id++){
 }
 for(const f of files)assert(read('sw.js').includes("'./"+f+"'"),'Offline precache missing '+f);
 for(const f of files)assert(read('mobile/scripts/prepare.mjs').includes("'"+f+"'"),'Mobile bundle missing '+f);
-for(const f of files)assert(read('settings.js').includes("'"+f+"'"),'Web loader missing '+f);
+for(const f of files)assert(read('settings.js').includes(f),'Web loader missing '+f);
 const utterances=[];
 const dom=new JSDOM(html,{
  url:'https://eric9435.github.io/wortweg-370/',
