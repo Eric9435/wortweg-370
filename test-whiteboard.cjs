@@ -81,6 +81,17 @@ assert.ok(points.some(([x,y])=>x===40&&y===110),'Initial stroke follows content 
 points.length=0;pane.scrollTop=110;
 doc.dispatchEvent(new w.Event('scroll',{bubbles:false}));flush();
 assert.ok(points.some(([x,y])=>x===40&&y===50),'Ink stays anchored after nested-pane scrolling');
+function touch(type,touches){
+  const e=new w.Event(type,{cancelable:true,bubbles:true});
+  Object.defineProperty(e,'touches',{value:touches});
+  canvas.dispatchEvent(e);flush();
+}
+const fingers=(y)=>[{clientX:100,clientY:y},{clientX:140,clientY:y}];
+touch('touchstart',fingers(140));
+touch('touchmove',fingers(120));
+assert.equal(pane.scrollTop,130,'Two-finger gesture scrolls a nested reading pane while pen is selected');
+touch('touchend',[]);
+
 $('ww-wb-clear').click();flush();
 assert.equal(w.WortWegWhiteboard.getStrokeCount(),0,'Clear removes page ink');
 panel.querySelector('.ww-wb-close').click();
