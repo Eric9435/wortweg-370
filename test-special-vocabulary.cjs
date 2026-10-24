@@ -28,6 +28,23 @@ for(const asset of ['special-vocabulary.js','special-vocabulary.css']){
 }
 api.open();
 assert.ok($('ww-special-vocab').classList.contains('active'),'Screen navigates correctly');
+assert.equal($('ww-special-list').querySelectorAll('.ww-special-card').length,1,
+ 'Window-by-window view renders exactly one word');
+assert.ok($('ww-special-list').textContent.includes('WINDOW BY WINDOW'));
+assert.ok($('ww-special-pagination').textContent.includes('Word 1 of 347'));
+const firstWord=$('ww-special-list').querySelector('.ww-special-word strong').textContent;
+const navButtons=$('ww-special-pagination').querySelectorAll('button');
+assert.equal(navButtons.length,2,'One-word window has previous and next controls');
+assert.equal(navButtons[0].disabled,true,'Previous is disabled in first window');
+navButtons[1].click();
+assert.equal($('ww-special-list').querySelectorAll('.ww-special-card').length,1,
+ 'Navigating never displays multiple words');
+assert.notEqual($('ww-special-list').querySelector('.ww-special-word strong').textContent,firstWord,
+ 'Next advances to the next vocabulary window');
+assert.ok($('ww-special-pagination').textContent.includes('Word 2 of 347'));
+$('ww-special-pagination').querySelectorAll('button')[0].click();
+assert.equal($('ww-special-list').querySelector('.ww-special-word strong').textContent,firstWord,
+ 'Previous returns to the first vocabulary window');
 const setCategory=id=>$('ww-special-categories').querySelector('[data-category="'+id+'"]').click();
 function search(value){const input=$('ww-special-search');input.value=value;input.dispatchEvent(new w.Event('input',{bubbles:true}))}
 setCategory('conjunctions');search('deshalb');
@@ -67,4 +84,4 @@ w.dispatchEvent(new w.CustomEvent('wortweg:account',{detail:{uid:'accountA'}}));
 assert.equal(api.getProgress().learned,2,'First account progress restored');
 assert.ok(w.localStorage.getItem('wortweg370-special-vocabulary-v1:accountA'));
 dom.window.close();
-console.log('PASS: 347 German-English-Myanmar entries, six categories, translation search, audio, MCQ, wrong-answer review, account isolation, offline packaging.');
+console.log('PASS: 347 entries, six categories, exactly one word window at a time, next/previous, translation search, audio, MCQ, review, account isolation, offline packaging.');
