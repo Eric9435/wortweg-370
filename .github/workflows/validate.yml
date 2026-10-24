@@ -30,6 +30,7 @@ jobs:
           node --check reading-studio-topics-01-12.js
           node --check reading-studio-topics-13-24.js
           node --check reading-studio.js
+          node --check reading-word-explorer.js
           node <<'NODE'
           const fs=require('fs'),vm=require('vm');
           const html=fs.readFileSync('index.html','utf8');
@@ -100,6 +101,8 @@ jobs:
         run: |
           node test-topic-lessons.cjs
           node test-topic-reading.cjs
+      - name: Verify per-word German tooltip, English Myanmar detail, grammar and word voice
+        run: node test-reading-word-explorer.cjs
       - name: Verify trilingual long-form reading window and German narration seeking
         run: node test-reading-studio.cjs
       - name: Verify all topic titles have functioning MCQs and isolated practice
