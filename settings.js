@@ -244,7 +244,7 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
  }
  const js=document.createElement('script');js.src='./topic-lessons.js';js.async=false;document.head.append(js);
  const reader=document.createElement('script');reader.src='./reading-studio.js?v=20261024-headerless';reader.async=false;document.head.append(reader);
- const explorer=document.createElement('script');explorer.src='./reading-word-explorer.js?v=20261024-word-explorer';explorer.async=false;document.head.append(explorer);
+ const explorer=document.createElement('script');explorer.src='./reading-word-explorer.js?v=20261024-word-explorer2';explorer.async=false;document.head.append(explorer);
 })();
 
 // Premium iPhone-inspired Home layout is CSS-only, leaving app workflows unchanged.
