@@ -51,19 +51,39 @@ function wordCard(w){
  actions.append(audio,learned);top.append(word,actions);card.append(top);return card;
 }
 function renderWords(){
- const container=$('ww-special-list');container.replaceChildren();const arr=list(),per=24;
- const pages=Math.max(1,Math.ceil(arr.length/per));viewPage=Math.min(viewPage,pages-1);
- const group=arr.slice(viewPage*per,(viewPage+1)*per);
- if(!group.length){container.append(mk('p','ww-special-empty','No matching words. Try another search or category.'))}
- else group.forEach(w=>container.append(wordCard(w)));
- const pager=$('ww-special-pagination');pager.replaceChildren();
- if(pages>1){
-  const prev=mk('button','ww-special-btn','← Previous'),status=mk('span','', 'Page '+(viewPage+1)+' / '+pages),next=mk('button','ww-special-btn','Next →');
-  prev.type=next.type='button';prev.disabled=viewPage===0;next.disabled=viewPage===pages-1;
-  prev.onclick=()=>{viewPage--;renderWords();page.scrollIntoView({block:'start'})};
-  next.onclick=()=>{viewPage++;renderWords();page.scrollIntoView({block:'start'})};
-  pager.append(prev,status,next);
+ // Window by window only: exactly one vocabulary entry is visible at a time.
+ // Keep the existing learned/review records and all six categories unchanged.
+ const container=$('ww-special-list');
+ const pager=$('ww-special-pagination');
+ container.replaceChildren();
+ pager.replaceChildren();
+ container.classList.add('ww-special-single-window');
+ const arr=list();
+ viewPage=Math.max(0,Math.min(viewPage,Math.max(0,arr.length-1)));
+ if(!arr.length){
+  container.append(mk('p','ww-special-empty','No matching words. Try another search or category.'));
+  return;
  }
+ const current=arr[viewPage];
+ const heading=mk('div','ww-special-window-heading');
+ heading.append(mk('span','ww-special-window-eyebrow','WINDOW BY WINDOW'),
+                mk('span','ww-special-window-count',(viewPage+1)+' / '+arr.length));
+ container.append(heading,wordCard(current));
+ const prev=mk('button','ww-special-btn ww-special-window-nav','← Previous');
+ const next=mk('button','ww-special-btn ww-special-window-nav ww-special-primary','Next →');
+ const status=mk('span','ww-special-pagination-status','Word '+(viewPage+1)+' of '+arr.length);
+ prev.type=next.type='button';
+ prev.disabled=viewPage===0;
+ next.disabled=viewPage===arr.length-1;
+ const move=delta=>{
+  const updated=viewPage+delta;
+  if(updated<0||updated>=arr.length)return;
+  viewPage=updated;renderWords();
+  container.scrollIntoView?.({behavior:'smooth',block:'start'});
+ };
+ prev.onclick=()=>move(-1);
+ next.onclick=()=>move(1);
+ pager.append(prev,status,next);
 }
 function shuffled(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
 function beginQuiz(review){
@@ -98,6 +118,29 @@ function render(){
  renderCategories();updateSummary();if(mode==='quiz'){renderQuiz();return}
  $('ww-special-list').hidden=false;$('ww-special-pagination').hidden=false;$('ww-special-quiz').hidden=true;renderWords();
 }
+// Touch and keyboard navigation are limited to the single-word window.
+let touchStartX=null;
+$('ww-special-list').addEventListener('touchstart',e=>{
+ touchStartX=e.touches?.length===1?e.touches[0].clientX:null;
+},{passive:true});
+$('ww-special-list').addEventListener('touchend',e=>{
+ if(mode!=='words'||touchStartX===null)return;
+ const end=e.changedTouches?.[0]?.clientX;
+ if(typeof end!=='number')return;
+ const dx=end-touchStartX;touchStartX=null;
+ if(Math.abs(dx)<75)return;
+ const count=list().length;
+ const target=viewPage+(dx<0?1:-1);
+ if(target>=0&&target<count){viewPage=target;renderWords();}
+},{passive:true});
+document.addEventListener('keydown',e=>{
+ if(!page.classList.contains('active')||mode!=='words'||e.altKey||e.ctrlKey||e.metaKey)return;
+ if(['INPUT','SELECT','TEXTAREA','BUTTON'].includes(document.activeElement?.tagName))return;
+ if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight')return;
+ const target=viewPage+(e.key==='ArrowRight'?1:-1);
+ if(target<0||target>=list().length)return;
+ viewPage=target;renderWords();e.preventDefault();
+});
 $('ww-special-search').oninput=()=>{viewPage=0;mode='words';render()};
 $('ww-special-filter').onchange=()=>{viewPage=0;mode='words';render()};
 $('ww-special-practice').onclick=()=>beginQuiz(false);
