@@ -243,7 +243,7 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
   const part=document.createElement('script');part.src='./'+filename+(filename.startsWith('reading-studio-')?'?v=20261024-1940':'');part.async=false;document.head.append(part);
  }
  const js=document.createElement('script');js.src='./topic-lessons.js';js.async=false;document.head.append(js);
- const reader=document.createElement('script');reader.src='./reading-studio.js?v=20261024-1940';reader.async=false;document.head.append(reader);
+ const reader=document.createElement('script');reader.src='./reading-studio.js?v=20261024-headerless';reader.async=false;document.head.append(reader);
 })();
 
 // Premium iPhone-inspired Home layout is CSS-only, leaving app workflows unchanged.
