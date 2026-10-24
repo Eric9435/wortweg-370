@@ -16,6 +16,8 @@ jobs:
           node --check live-content.js
           node --check ios-polish.js
           node --check whiteboard.js
+          node --check page-navigation.js
+          node --check reading-studio.js
           node --check seen-words.js
           node --check flashcards.js
           node --check special-vocabulary.js
@@ -60,6 +62,8 @@ jobs:
         run: node test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
+      - name: Check per-page navigation and reading menu scope
+        run: node test-page-navigation.cjs
       - name: Verify teaching whiteboard tools and independent screen annotations
         run: node test-whiteboard.cjs
       - name: Verify every vocabulary word is accessible with pagination and continuous scrolling
