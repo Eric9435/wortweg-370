@@ -147,3 +147,56 @@
 @media(prefers-reduced-motion:reduce){
   #ww-whiteboard-panel *,#ww-whiteboard-launcher{transition:none!important}
 }
+
+/* Compact website-native confirmations. These never show the browser's URL. */
+#ww-wb-confirm.ww-wb-confirm-backdrop{
+  position:fixed!important;inset:0!important;z-index:2147483200!important;
+  display:grid!important;place-items:center!important;
+  background:rgba(12,22,39,.52)!important;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+  padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right))
+          max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))!important;
+  box-sizing:border-box!important;font-family:Inter,system-ui,-apple-system,sans-serif!important;
+}
+#ww-wb-confirm.ww-wb-confirm-backdrop[hidden]{display:none!important}
+#ww-wb-confirm .ww-wb-confirm-card{
+  box-sizing:border-box!important;width:min(370px,100%)!important;
+  border-radius:18px!important;border:1px solid #e4e9f0!important;
+  background:#fff!important;color:#182b45!important;
+  box-shadow:0 25px 70px #09142652!important;padding:24px!important;
+  text-align:left!important;line-height:1.5!important;
+}
+#ww-wb-confirm .ww-wb-confirm-symbol{
+  width:38px;height:38px;display:grid;place-items:center;border-radius:11px;
+  background:#fff0ed;color:#b9463a;margin-bottom:14px;
+}
+#ww-wb-confirm .ww-wb-confirm-symbol svg{width:21px;height:21px}
+#ww-wb-confirm #ww-wb-confirm-title{
+  display:block;font:700 19px/1.25 Inter,system-ui,sans-serif!important;
+  margin:0 0 7px!important;color:#172942!important;
+}
+#ww-wb-confirm #ww-wb-confirm-message{
+  display:block;font:400 13px/1.6 Inter,system-ui,sans-serif!important;
+  color:#5b687b!important;margin:0 0 22px!important;
+}
+#ww-wb-confirm .ww-wb-confirm-actions{
+  display:flex!important;flex-direction:row!important;gap:10px!important;
+  align-items:center!important;justify-content:flex-end!important;
+}
+#ww-wb-confirm .ww-wb-confirm-actions button{
+  appearance:none!important;display:inline-flex!important;align-items:center!important;
+  justify-content:center!important;min-width:90px!important;min-height:39px!important;
+  font:650 13px/1.2 Inter,system-ui,sans-serif!important;cursor:pointer!important;
+  padding:9px 18px!important;border-radius:10px!important;
+  border:1px solid #d6dfeb!important;background:#f8fafc!important;color:#29415d!important;
+  box-shadow:none!important;margin:0!important;
+}
+#ww-wb-confirm .ww-wb-confirm-actions [data-answer="yes"]{
+  background:#1c5eb2!important;border-color:#1c5eb2!important;color:#fff!important;
+}
+#ww-wb-confirm .ww-wb-confirm-actions button:focus-visible{
+  outline:3px solid #8cbbf2!important;outline-offset:2px!important;
+}
+@media(prefers-reduced-motion:reduce){
+  #ww-wb-confirm *{transition:none!important;animation:none!important}
+}
