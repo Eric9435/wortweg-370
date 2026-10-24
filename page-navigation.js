@@ -123,12 +123,12 @@
  }
  const style=document.createElement('link');
  style.rel='stylesheet';style.href='./page-navigation.css?v=1';document.head.append(style);
- refresh();
  const observer=new MutationObserver(records=>{
    if(records.some(record=>record.type==='childList'||record.target?.classList?.contains('section')))queue();
  });
  observer.observe(main,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
  observer.observe(document.body,{childList:true});
+ refresh();
 
  window.addEventListener('hashchange',queue);
  document.addEventListener('click',event=>{
