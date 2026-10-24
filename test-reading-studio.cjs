@@ -5,25 +5,38 @@ const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('index.html','utf8');
 const read=name=>fs.readFileSync(name,'utf8');
 const files=['reading-studio-topics-01-12.js','reading-studio-topics-13-24.js','reading-studio.js'];
-for(const name of files)new Function(read(name));
+const alignmentFiles=["reading-sentence-my-01-06.js","reading-sentence-my-07-12.js","reading-sentence-my-13-18.js","reading-sentence-my-19-24.js","reading-sentence-en-fixes.js"];
+for(const name of [...files,...alignmentFiles])new Function(read(name));
 const loaded={WortWegLongReadings:{}};
 new Function('window',read(files[0]))(loaded);
 new Function('window',read(files[1]))(loaded);
+for(const filename of alignmentFiles)new Function('window',read(filename))(loaded);
 const chapters=loaded.WortWegLongReadings;
 assert.equal(Object.keys(chapters).length,24);
+assert.equal(Object.keys(loaded.WortWegSentenceMyanmar).length,24);
+const splitSentences=s=>s.match(/[^.!?]+[.!?]+|[^.!?]+$/gu)?.map(x=>x.trim()).filter(Boolean)||[];
+let matchedSentenceCount=0;
 let total=0;
 for(let id=1;id<=24;id++){
  const x=chapters[id];assert(x&&x.title&&x.en);
  assert(x.rows.length>=4);
- for(const row of x.rows){
+ for(const [rIndex,row] of x.rows.entries()){
   assert.equal(row.length,3);
   row.forEach(v=>assert(v&&v.trim().length>15,'Translation missing for chapter '+id));
-  total++;
+  const german=splitSentences(row[0]);
+  const english=loaded.WortWegEnglishSentenceFixes?.[id]?.[rIndex]||splitSentences(row[1]);
+  const myanmar=loaded.WortWegSentenceMyanmar?.[id]?.[rIndex];
+  assert(Array.isArray(myanmar),'Missing Myanmar sentence translation for '+id+'/'+rIndex);
+  assert.equal(english.length,german.length,'English sentence count mismatch '+id+'/'+rIndex);
+  assert.equal(myanmar.length,german.length,'Myanmar sentence count mismatch '+id+'/'+rIndex);
+  assert(myanmar.every(x=>x.length>8),'Empty / short Myanmar sentence '+id+'/'+rIndex);
+  matchedSentenceCount+=german.length;total++;
  }
 }
-for(const f of files)assert(read('sw.js').includes("'./"+f+"'"),'Offline precache missing '+f);
-for(const f of files)assert(read('mobile/scripts/prepare.mjs').includes("'"+f+"'"),'Mobile bundle missing '+f);
-for(const f of files)assert(read('settings.js').includes(f),'Web loader missing '+f);
+assert.equal(matchedSentenceCount,425,'Every German sentence is translated at sentence level');
+for(const f of [...files,...alignmentFiles])assert(read('sw.js').includes("'./"+f+"'"),'Offline precache missing '+f);
+for(const f of [...files,...alignmentFiles])assert(read('mobile/scripts/prepare.mjs').includes("'"+f+"'"),'Mobile bundle missing '+f);
+for(const f of [...files,...alignmentFiles])assert(read('settings.js').includes(f),'Web loader missing '+f);
 const utterances=[];
 const dom=new JSDOM(html,{
  url:'https://eric9435.github.io/wortweg-370/',
@@ -38,7 +51,7 @@ const dom=new JSDOM(html,{
  }
 });
 const w=dom.window;
-for(const f of ['topic-reading-seeds-1.js','topic-reading-seeds-2.js','topic-reading-seeds-3.js','topic-reading-seeds-4.js','topic-reading-engine.js',...files.slice(0,2),'topic-lessons.js',files[2]])w.eval(read(f));
+for(const f of ['topic-reading-seeds-1.js','topic-reading-seeds-2.js','topic-reading-seeds-3.js','topic-reading-seeds-4.js','topic-reading-engine.js',...files.slice(0,2),...alignmentFiles,'topic-lessons.js',files[2]])w.eval(read(f));
 assert.equal(w.WortWegReadingStudio.getCount(),24);
 w.WortWeg.navigate('topics');
 let button=[...w.document.querySelectorAll('#topicList button.topic')].find(b=>b.textContent.includes('Persönliche Angaben'));
@@ -64,16 +77,20 @@ assert.equal(utterances[0].lang,'de-DE','Audio must be German');
 assert.match(utterances[0].text,/Mein Name/);
 assert(row.classList.contains('wwr-current'),'German row is highlighted');
 assert(row.querySelector('.wwr-sentence.wwr-active'),'German sentence is highlighted');
-assert(row.querySelector('.wwr-en.wwr-trans-active'),'English translation highlights with German audio');
-assert(row.querySelector('.wwr-mm.wwr-trans-active'),'Myanmar translation highlights with German audio');
+assert(row.querySelector('.wwr-en .wwr-translation-sentence.wwr-trans-active'),'Only corresponding English sentence highlights');
+assert.equal(row.querySelectorAll('.wwr-en .wwr-trans-active').length,1,'Only one English sentence at once');
+assert(row.querySelector('.wwr-mm .wwr-translation-sentence.wwr-trans-active'),'Only corresponding Myanmar sentence highlights');
+assert.equal(row.querySelectorAll('.wwr-mm .wwr-trans-active').length,1,'Only one Myanmar sentence at once');
 assert.equal(row.getAttribute('aria-current'),'true');
 const seek=w.document.querySelector('.wwr-seek');
 seek.value='3';seek.dispatchEvent(new w.Event('change',{bubbles:true}));
 assert.equal(utterances.length,2,'Seek restarts German audio');
 assert.equal(seek.value,'3','Seek selects a sentence index');
 assert.equal(utterances[1].lang,'de-DE');
-assert(w.document.querySelector('.wwr-row.wwr-current .wwr-en.wwr-trans-active'),'Translation highlight retained after seeking');
-assert(w.document.querySelector('.wwr-row.wwr-current .wwr-mm.wwr-trans-active'),'Myanmar highlight retained after seeking');
+assert(w.document.querySelector('.wwr-row.wwr-current .wwr-en .wwr-translation-sentence.wwr-trans-active'),'Matching English sentence highlights after seeking');
+assert(w.document.querySelector('.wwr-row.wwr-current .wwr-mm .wwr-translation-sentence.wwr-trans-active'),'Matching Myanmar sentence highlights after seeking');
+assert.equal(w.document.querySelectorAll('.wwr-en .wwr-trans-active').length,1,'No stale English highlight after seek');
+assert.equal(w.document.querySelectorAll('.wwr-mm .wwr-trans-active').length,1,'No stale Myanmar highlight after seek');
 assert(w.document.querySelector('.wwr-menu-current').textContent.includes('Persönliche Angaben'),'Topic label moved into floating menu');
 w.document.querySelector('.wwr-close-reader').click();
 assert(!w.document.querySelector('.wwr-overlay'),'Close removes window');
@@ -124,4 +141,4 @@ function floatingMenuCheck(){
 w.WortWegReadingStudio.close();
 assert.equal(launcher.hidden,false,'Launcher visible again after reader closes');
 dom.window.close();
-console.log('PASS: '+Object.keys(chapters).length+' complete parallel chapters, '+total+' trilingual paragraphs; modal routing, optional Myanmar, German-only audio and sentence seeking.');
+console.log('PASS: '+Object.keys(chapters).length+' chapters, '+total+' paragraphs, '+matchedSentenceCount+' trilingual sentence pairs; synchronized German-English-Myanmar highlighting and seeking.');
