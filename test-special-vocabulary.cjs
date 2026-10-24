@@ -48,7 +48,7 @@ assert.equal($('ww-special-list').querySelector('.ww-special-word strong').textC
 const setCategory=id=>$('ww-special-categories').querySelector('[data-category="'+id+'"]').click();
 function search(value){const input=$('ww-special-search');input.value=value;input.dispatchEvent(new w.Event('input',{bubbles:true}))}
 setCategory('conjunctions');search('deshalb');
-assert.equal($('ww-special-list').children.length,1,'Search filters selected category');
+assert.equal($('ww-special-list').querySelectorAll('.ww-special-card').length,1,'Search filters selected category');
 assert.ok($('ww-special-list').textContent.includes('အဲ့ဒါကြောင့်'),'Myanmar translation is visible');
 w.document.querySelector('#ww-special-list .ww-special-sound').click();
 assert.equal(spoken,'deshalb','German pronunciation supported');
@@ -63,7 +63,7 @@ assert.equal(api.getProgress().learned,1);
 assert.equal(w.WortWeg.getProgress().answered,40,'Existing quiz history unchanged');
 w.document.querySelector('#ww-special-quiz .ww-special-exit').click();
 setCategory('numbers');search('siebzehn');
-assert.equal($('ww-special-list').children.length,1,'German number filtering');
+assert.equal($('ww-special-list').querySelectorAll('.ww-special-card').length,1,'German number filtering');
 $('ww-special-practice').click();
 const wrong=[...w.document.querySelectorAll('.ww-special-option')].find(b=>b.textContent!=='seventeen');
 wrong.click();
