@@ -161,8 +161,8 @@ function integrate(){
  const list=document.getElementById('topicList');
  if(list&&!list.dataset.wwrAttached){
   list.dataset.wwrAttached='1';
-  list.addEventListener('click',e=>{
-   const b=e.target.closest('button.topic');if(!b)return;
+  window.addEventListener('click',e=>{
+   const b=e.target.closest('#topicList button.topic');if(!b)return;
    const id=Number(b.querySelector('strong')?.textContent?.match(/\d+/)?.[0]);
    if(!chapters()[id])return;
    e.preventDefault();e.stopImmediatePropagation();e.stopPropagation();open(id);
