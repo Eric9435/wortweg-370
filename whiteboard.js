@@ -57,6 +57,7 @@
     const next=safeKey();
     if(next===pageKey)return;
     /* Leaving the page destroys its ink instead of stashing it for return. */
+    if(activeQuestion)activeQuestion.cancel();
     pageKey=next;working=null;strokes=[];undone=[];
     scheduleRender();updateControls();
   }
@@ -128,6 +129,22 @@
   function widthFor(tool){
     const w=Number(prefs.sizes[tool]);
     return Number.isFinite(w)&&w>0?Math.min(60,w):DEFAULT[tool]||3;
+  }
+  /* In ink modes the fixed canvas receives wheel events instead of the
+     reader beneath it. Re-dispatch scrolling to the correct content pane. */
+  function wheelScroll(event){
+    if(prefs.tool==='pointer'||event.ctrlKey||event.metaKey)return;
+    event.preventDefault();
+    const unit=event.deltaMode===1?16:event.deltaMode===2?Math.max(1,innerHeight):1;
+    let dx=event.deltaX*unit,dy=event.deltaY*unit;
+    const root=getRoot(event);
+    if(root?.isConnected){
+      const oldX=root.scrollLeft,oldY=root.scrollTop;
+      root.scrollLeft+=dx;root.scrollTop+=dy;
+      dx-=root.scrollLeft-oldX;dy-=root.scrollTop-oldY;
+    }
+    if(dx||dy)window.scrollBy(dx,dy);
+    scheduleRender();
   }
   function beginStroke(e){
     if(prefs.tool==='pointer'||touchPan||(e.pointerType==='mouse'&&e.button!==0)||working)return;
@@ -234,12 +251,61 @@
     });
     if(launcher)launcher.setAttribute('aria-expanded',String(!panel.hidden));
   }
+  /* An in-app Yes / No dialog. Never use browser confirm() with URL/title chrome. */
+  let activeQuestion=null;
+  function showConfirmation({title,message,onYes}){
+    if(activeQuestion)return;
+    const overlay=document.getElementById('ww-wb-confirm');
+    if(!overlay)return;
+    const heading=overlay.querySelector('#ww-wb-confirm-title');
+    const description=overlay.querySelector('#ww-wb-confirm-message');
+    const no=overlay.querySelector('[data-answer="no"]');
+    const yes=overlay.querySelector('[data-answer="yes"]');
+    const before=document.activeElement;
+    heading.textContent=title;
+    description.textContent=message;
+    overlay.hidden=false;
+    const finish=confirmed=>{
+      if(!activeQuestion)return;
+      activeQuestion=null;overlay.hidden=true;
+      no.removeEventListener('click',cancel);
+      yes.removeEventListener('click',accept);
+      overlay.removeEventListener('click',backdropClick);
+      document.removeEventListener('keydown',keyboard,true);
+      if(before?.isConnected)before.focus();
+      if(confirmed)onYes?.();
+    };
+    const cancel=()=>finish(false);
+    const accept=()=>finish(true);
+    const backdropClick=e=>{if(e.target===overlay)cancel();};
+    const keyboard=e=>{
+      if(e.key==='Escape'){e.preventDefault();e.stopImmediatePropagation();cancel();return;}
+      if(e.key!=='Tab')return;
+      const target=document.activeElement;
+      if(e.shiftKey&&target===no){e.preventDefault();yes.focus();}
+      else if(!e.shiftKey&&target===yes){e.preventDefault();no.focus();}
+    };
+    activeQuestion={cancel};
+    no.addEventListener('click',cancel);
+    yes.addEventListener('click',accept);
+    overlay.addEventListener('click',backdropClick);
+    document.addEventListener('keydown',keyboard,true);
+    no.focus();
+  }
   function undo(){if(!strokes.length)return;undone.push(strokes.pop());scheduleRender();updateControls();}
   function redo(){if(!undone.length)return;strokes.push(undone.pop());scheduleRender();updateControls();}
   function clear(){
     if(!strokes.length)return;
-    if(!confirm('Clear the annotations on this page?'))return;
-    strokes=[];undone=[];scheduleRender();updateControls();announce('Current page cleared');
+    const originalPage=pageKey;
+    showConfirmation({
+      title:'Clear annotations?',
+      message:'Remove all temporary ink from this page? This cannot be undone.',
+      onYes:()=>{
+        if(pageKey!==originalPage)return;
+        strokes=[];undone=[];scheduleRender();updateControls();
+        announce('Current page cleared');
+      }
+    });
   }
   function exportInk(){
     if(!strokes.length)return;
@@ -326,7 +392,17 @@
     launcher=makeButton('pencil','Open annotation toolbar',()=>setOpen(true));
     launcher.id='ww-whiteboard-launcher';launcher.setAttribute('aria-controls','ww-whiteboard-panel');
     panel.querySelector('.ww-wb-close').addEventListener('click',()=>setOpen(false));
-    document.body.append(canvas,panel,launcher);
+    /* Use alertdialog so screen identification ignores this transient UI. */
+    const confirmation=document.createElement('div');
+    confirmation.id='ww-wb-confirm';
+    confirmation.className='ww-wb-confirm-backdrop';
+    confirmation.hidden=true;
+    confirmation.innerHTML='<div class="ww-wb-confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="ww-wb-confirm-title" aria-describedby="ww-wb-confirm-message">'+
+      '<span class="ww-wb-confirm-symbol" aria-hidden="true">'+icon('clear')+'</span>'+
+      '<h2 id="ww-wb-confirm-title"></h2><p id="ww-wb-confirm-message"></p>'+
+      '<div class="ww-wb-confirm-actions"><button type="button" data-answer="no">No</button>'+
+      '<button type="button" data-answer="yes">Yes</button></div></div>';
+    document.body.append(canvas,panel,launcher,confirmation);
     setupDrag(panel.querySelector('.ww-wb-grip'));
     document.addEventListener('pointerdown',e=>{
       if(!panel.contains(e.target)&&e.target!==launcher)popover.hidden=true;
@@ -335,6 +411,7 @@
     canvas.addEventListener('pointermove',moveStroke);
     canvas.addEventListener('pointerup',finishStroke);
     canvas.addEventListener('pointercancel',finishStroke);
+    canvas.addEventListener('wheel',wheelScroll,{passive:false});
     canvas.addEventListener('touchstart',twoFingerStart,{passive:false});
     canvas.addEventListener('touchmove',twoFingerMove,{passive:false});
     canvas.addEventListener('touchend',twoFingerEnd,{passive:true});
