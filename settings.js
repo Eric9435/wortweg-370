@@ -239,10 +239,11 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
 // Topic vocabulary detail pages and topic-specific quiz, shared with offline builds.
 (()=>{
  const css=document.createElement('link');css.rel='stylesheet';css.href='./topic-lessons.css';document.head.append(css);
- for(const filename of ["topic-reading-seeds-1.js","topic-reading-seeds-2.js","topic-reading-seeds-3.js","topic-reading-seeds-4.js","topic-reading-engine.js"]){
+ for(const filename of ["topic-reading-seeds-1.js","topic-reading-seeds-2.js","topic-reading-seeds-3.js","topic-reading-seeds-4.js","topic-reading-engine.js","reading-studio-topics-01-12.js","reading-studio-topics-13-24.js"]){
   const part=document.createElement('script');part.src='./'+filename;part.async=false;document.head.append(part);
  }
  const js=document.createElement('script');js.src='./topic-lessons.js';js.async=false;document.head.append(js);
+ const reader=document.createElement('script');reader.src='./reading-studio.js';reader.async=false;document.head.append(reader);
 })();
 
 // Premium iPhone-inspired Home layout is CSS-only, leaving app workflows unchanged.
