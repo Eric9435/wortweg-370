@@ -15,7 +15,7 @@ const dom=new JSDOM(file('index.html'),{
  }
 });
 const w=dom.window;
-for(const p of ['topic-reading-seeds-1.js','topic-reading-seeds-2.js','topic-reading-seeds-3.js','topic-reading-seeds-4.js','topic-reading-engine.js','reading-studio-topics-01-12.js','reading-studio-topics-13-24.js','topic-lessons.js','reading-studio.js','reading-word-explorer.js'])w.eval(file(p));
+for(const p of ['topic-reading-seeds-1.js','topic-reading-seeds-2.js','topic-reading-seeds-3.js','topic-reading-seeds-4.js','topic-reading-engine.js','reading-studio-topics-01-12.js','reading-studio-topics-13-24.js','reading-sentence-my-01-06.js','reading-sentence-my-07-12.js','reading-sentence-my-13-18.js','reading-sentence-my-19-24.js','reading-sentence-en-fixes.js','topic-lessons.js','reading-studio.js','reading-word-explorer.js'])w.eval(file(p));
 assert(w.WortWegReadingStudio.open(1),'Full-screen reader opens');
 const word=w.document.querySelector('.wwr-de .wwr-word');
 assert(word,'German words exist');
