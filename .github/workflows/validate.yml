@@ -56,12 +56,23 @@ jobs:
           node --check grammar-more-b2.js
           node --check grammar-more-c1.js
           node test-grammar-catalog.cjs
+      - name: Validate 288-table Lifetime Grammar index and separate offline workspace
+        run: |
+          node --check lifetime-grammar.js
+          node --check lifetime-grammar-index-1.js
+          node --check lifetime-grammar-index-2.js
+          node --check lifetime-grammar-examples.js
+          node --check lifetime-grammar-rules-1.js
+          node --check lifetime-grammar-rules-2.js
+          node test-lifetime-grammar.cjs
       - name: Verify vocabulary writing repetition tracking
         run: node test-vocab-writing.cjs
       - name: Validate reversible iPhone Home dashboard
         run: node test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
+      - name: Smoke test Lifetime Grammar browser navigation, reference tables and progress
+        run: node test-lifetime-grammar-ui.cjs
       - name: Check per-page navigation and reading menu scope
         run: node test-page-navigation.cjs
       - name: Verify teaching whiteboard tools and independent screen annotations

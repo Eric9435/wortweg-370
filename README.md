@@ -147,3 +147,15 @@ Open **Flashcards** from the Home learning tools or Main menu. The deck includes
 ## Flashcards in My seen words
 
 When you flip a flashcard and select **I knew it** or **Again**, that vocabulary entry is added to **My seen words** and the Home learning progress view. Opening or skipping a card does not count. Existing quiz history is preserved and entries practiced in both modes count once. The Seen Words table labels entries **Quiz**, **Flashcards** or **Quiz + Flashcards**, and its **Practice** filter can isolate card reviews. A subsequent rating updates the current remembered/review state, while historic mistakes remain visible. Flashcard data is kept separately per guest/Google profile on the current device and does not yet sync through Firebase.
+
+## Lifetime Grammar A1–C2 (separate workspace)
+
+Choose **Lifetime Grammar A1–C2** in Home, or open [Lifetime Grammar](lifetime-grammar.html). This is a separate reference workspace from the existing Grammar Academy and the vocabulary bank. The web version has:
+
+- **36 numbered chapters** and **288 stable bilingual table IDs (T001–T288)**, with English and Myanmar headings and 288 authored topic-focus rules.
+- Responsive chapter browsing, English/Myanmar text search, approximate level filters, contextual Back/Close and direct `#T145`-style table links.
+- Reviewed core reference grids for the most important article/case/pronoun/conjugation/preposition structures. Other tables reuse **related** examples and one-question checks from the 200 authored A1–C1 Grammar Academy lessons when a relevant match exists.
+- German pronunciation via a system speech voice where available, independent writing notes, device-local reviewed/practice-pass tracking, JSON backup and print.
+- Offline PWA precache and bundled assets in **future** Android/iOS native builds. Existing installed APKs require a new signed release to receive changes.
+
+**Coverage boundary:** All 288 topics have a unique rule and bilingual index entry, but not all 288 have a separately authored, pedagogically reviewed multi-row reference matrix or independently authored exercise. These are explicitly labeled when absent; related grammar examples are not represented as exact-match lessons. Progress is local to this browser/device and is not yet connected to Firebase account sync. Grammar structure alone does not certify a CEFR level.

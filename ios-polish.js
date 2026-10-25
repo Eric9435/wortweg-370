@@ -93,3 +93,21 @@
 
 /* Contextual Back / Close controls on every non-Home view and full-screen lesson. */
 (()=>{const script=document.createElement('script');script.src='./page-navigation.js?v=1';script.defer=true;document.head.append(script);})();
+
+
+/* Lifetime Grammar lives in its own standalone workspace, next to Grammar Academy. */
+(()=>{'use strict';
+const install=()=>{
+ const menu=document.querySelector('#dashboard .ww-menu-options');
+ if(!menu)return;
+ let item=document.getElementById('ww-lifetime-grammar-launch');
+ if(!item){item=document.createElement('button');item.type='button';item.id='ww-lifetime-grammar-launch';item.className='wg-launch ww-grammar-menu-card';item.setAttribute('aria-label','Open Lifetime Grammar A1 to C2');
+   item.innerHTML='<span class="ww-menu-icon" aria-hidden="true">A–Z</span><span class="ww-grammar-label"><strong>Lifetime Grammar A1–C2</strong><small>36 chapters · 288 master tables</small></span><span class="ww-menu-arrow" aria-hidden="true">›</span>';
+   item.addEventListener('click',()=>{location.href='./lifetime-grammar.html';});
+ }
+ const anchor=document.getElementById('wg-grammar-launch')||menu.querySelector('.ww-menu-primary');
+ if(anchor&&anchor.parentElement===menu){if(item.parentElement!==menu||item.previousElementSibling!==anchor)anchor.after(item);}
+ else if(item.parentElement!==menu)menu.prepend(item);
+};
+const observe=new MutationObserver(install);observe.observe(document.body,{childList:true,subtree:true});install();
+})();
