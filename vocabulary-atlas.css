@@ -1,0 +1,27 @@
+/* WortWeg 370: full-screen, compact and zoomable vocabulary image. */
+#ww-vocabulary-atlas[hidden]{display:none!important}
+#ww-vocabulary-atlas{position:fixed;inset:0;z-index:100000;display:flex;flex-direction:column;background:#fff;color:#17263b;padding:0;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+#ww-vocabulary-atlas *{box-sizing:border-box}
+#ww-vocabulary-atlas .ww-atlas-topbar{display:flex;align-items:center;gap:12px;flex:none;min-height:66px;padding:10px max(10px,env(safe-area-inset-right)) 10px max(10px,env(safe-area-inset-left));border-bottom:1px solid #e4eaf0;background:#fff}
+#ww-vocabulary-atlas .ww-atlas-heading{display:flex;flex:1;flex-direction:column;min-width:0;gap:3px}
+#ww-vocabulary-atlas .ww-atlas-heading strong{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em}
+#ww-vocabulary-atlas .ww-atlas-heading small{font-size:11px;color:#68768a}
+#ww-vocabulary-atlas .ww-atlas-controls{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+#ww-vocabulary-atlas .ww-atlas-btn,.ww-atlas-bank-launch{border:1px solid #d9e0e8;background:#f7f9fb;color:#26374d;font:700 13px system-ui,sans-serif;min-width:37px;min-height:37px;padding:7px 10px;display:inline-flex;justify-content:center;align-items:center;border-radius:9px;text-decoration:none;cursor:pointer}
+#ww-vocabulary-atlas .ww-atlas-btn:focus-visible,.ww-atlas-bank-launch:focus-visible{outline:3px solid #2b69a3;outline-offset:2px}
+#ww-vocabulary-atlas .ww-atlas-zoom{font-size:11px;min-width:35px;text-align:center;font-variant-numeric:tabular-nums}
+#ww-vocabulary-atlas .ww-atlas-back{white-space:nowrap}
+#ww-vocabulary-atlas .ww-atlas-close{font-size:23px;line-height:1}
+#ww-vocabulary-atlas .ww-atlas-viewport{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;touch-action:pan-x pan-y;scrollbar-color:#b4c4d7 #f5f7fb;background:#fff;outline:none}
+#ww-vocabulary-atlas .ww-atlas-image{width:100%;height:auto;max-width:none;display:block;user-select:none;-webkit-user-drag:none}
+#ww-vocabulary-atlas .ww-atlas-footer{flex:none;min-height:30px;border-top:1px solid #eef1f5;background:#fff;padding:5px 12px calc(5px + env(safe-area-inset-bottom))}
+#ww-vocabulary-atlas .ww-atlas-hint{font-size:11px;color:#68768a;line-height:1.4;margin:0}
+.ww-atlas-bank-launch{margin:8px;white-space:nowrap}
+@media(max-width:650px){
+ #ww-vocabulary-atlas .ww-atlas-topbar{gap:7px;flex-wrap:wrap;padding:8px 9px}
+ #ww-vocabulary-atlas .ww-atlas-heading{min-width:150px}
+ #ww-vocabulary-atlas .ww-atlas-heading strong{font-size:12px}
+ #ww-vocabulary-atlas .ww-atlas-controls{width:100%;justify-content:flex-end}
+ #ww-vocabulary-atlas .ww-atlas-btn{min-height:34px;min-width:34px;padding:4px 9px}
+ #ww-vocabulary-atlas .ww-atlas-footer{padding:5px 9px calc(5px + env(safe-area-inset-bottom))}
+}
