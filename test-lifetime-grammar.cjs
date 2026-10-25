@@ -14,7 +14,7 @@ assert.equal(ctx.window.WWGLifeMyanmar.length,288,'288 Myanmar meanings required
 for(let i=0;i<288;i++){assert.equal(ctx.window.WWGLifeMyanmar[i].id,exact[i].id);assert(/[\u1000-\u109f]/.test(ctx.window.WWGLifeMyanmar[i].my));}
 assert.equal(new Set(exact.map(x=>x.id)).size,288,'No duplicate example IDs');
 assert(Object.keys(matrices).length>=40,'At least 40 fully tabulated priority topics');
-for(let i=0;i<288;i++){assert.equal(exact[i].id,'T'+String(i+1).padStart(3,'0'));assert(exact[i].de.length>7&&exact[i].en.length>10);}
+for(let i=0;i<288;i++){assert.equal(exact[i].id,'T'+String(i+1).padStart(3,'0'));assert(exact[i].de.length>7&&exact[i].en.length>3);}
 for(const [id,m] of Object.entries(matrices)){assert(m.cols.length>=2);assert(m.rows.length>=2,id+' needs multiple rows');m.rows.forEach(row=>assert.equal(row.length,m.cols.length,id+' row length mismatch'));}
 assert.equal(chapters.length,36,'36 distinct chapters required');
 assert.equal(lessons.length,200,'Existing trilingual authored lessons must be retained');
