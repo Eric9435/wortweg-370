@@ -73,6 +73,12 @@ jobs:
         run: npm install --no-save --no-package-lock jsdom@26
       - name: Prevent Home menu MutationObserver infinite reordering on mobile
         run: node test-menu-observer-stability.cjs
+      - name: Verify 48 memorize charts and interactive study mode
+        run: |
+          node --check lifetime-memorize.js
+          node --check lifetime-memorize-1.js
+          node --check lifetime-memorize-2.js
+          node test-lifetime-memorize.cjs
       - name: Smoke test Lifetime Grammar browser navigation, reference tables and progress
         run: node test-lifetime-grammar-ui.cjs
       - name: Check per-page navigation and reading menu scope
