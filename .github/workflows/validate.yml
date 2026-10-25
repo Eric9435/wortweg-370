@@ -71,6 +71,8 @@ jobs:
         run: node test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
+      - name: Prevent Home menu MutationObserver infinite reordering on mobile
+        run: node test-menu-observer-stability.cjs
       - name: Smoke test Lifetime Grammar browser navigation, reference tables and progress
         run: node test-lifetime-grammar-ui.cjs
       - name: Check per-page navigation and reading menu scope
