@@ -26,7 +26,7 @@ const $=sel=>w.document.querySelector(sel);
 assert.equal(w.WortWegLifetime.memorizationTables,48);
 assert.equal(w.WortWegLifetime.tables,288);
 w.WortWegLifetime.openMemorization();assert($('#wl-root').textContent.includes('Memorization Tables'));assert.equal(w.document.querySelectorAll('.wl-memo-topic').length,48);
-const first=w.document.querySelector('.wl-memo-topic');first.click();assert($('#wl-root h1').textContent.includes('M001'));
+const first=w.document.querySelector('.wl-memo-topic');first.click();w.dispatchEvent(new w.Event('hashchange'));assert($('#wl-root h1').textContent.includes('M001'));
 assert.equal(w.document.querySelectorAll('.wl-memo-table tbody tr').length,4);
 const hide=Array.from(w.document.querySelectorAll('button')).find(x=>x.textContent.includes('Hide answers'));assert(hide);hide.click();
 assert(w.document.querySelectorAll('.wl-memo-reveal').length>=16);assert(!w.document.querySelector('.wl-memo-table').textContent.includes('der'));
