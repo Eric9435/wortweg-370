@@ -1,5 +1,5 @@
-const CACHE='wortweg370-v54';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg?v=11','./cloud.js?v=14','./account.css?v=14','./settings.js','./settings.css','./audio.js','./audio.css','./enterprise.css','./enterprise.js','./settings-navigation.js','./settings-navigation.css','./ios-polish.js','./ios-polish.css','./whiteboard.js','./whiteboard.css','./page-navigation.js','./page-navigation.css','./home-premium.css','./home-refresh.js','./home-refresh.css','./special-vocabulary.js','./special-vocabulary.css','./seen-words.js','./seen-words.css','./vocab-writing.js','./vocab-writing.css','./flashcards.js','./flashcards.css','./bank-browser.js','./bank-browser.css','./grammar.js','./grammar-deep.js','./grammar-expanded.js','./grammar-more-a1-a2.js','./grammar-more-b1.js','./grammar-more-b2.js','./grammar-more-c1.js','./grammar.css','./topic-reading-seeds-1.js','./topic-reading-seeds-2.js','./topic-reading-seeds-3.js','./topic-reading-seeds-4.js','./topic-reading-engine.js','./reading-studio-topics-01-12.js','./reading-studio-topics-13-24.js','./reading-sentence-my-01-06.js','./reading-sentence-my-07-12.js','./reading-sentence-my-13-18.js','./reading-sentence-my-19-24.js','./reading-sentence-en-fixes.js','./reading-studio.js','./reading-word-explorer.js','./topic-lessons.js','./topic-lessons.css','./learning-checklist.js','./live-content.js','./live-content.css','./content/v1/pack.json'];
+const CACHE='wortweg370-v55';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icon.svg?v=11','./cloud.js?v=14','./account.css?v=14','./settings.js','./settings.css','./audio.js','./audio.css','./enterprise.css','./enterprise.js','./settings-navigation.js','./settings-navigation.css','./ios-polish.js','./ios-polish.css','./whiteboard.js','./whiteboard.css','./page-navigation.js','./page-navigation.css','./home-premium.css','./home-refresh.js','./home-refresh.css','./special-vocabulary.js','./special-vocabulary.css','./seen-words.js','./seen-words.css','./vocab-writing.js','./vocab-writing.css','./flashcards.js','./flashcards.css','./bank-browser.js','./bank-browser.css','./grammar.js','./grammar-deep.js','./grammar-expanded.js','./grammar-more-a1-a2.js','./grammar-more-b1.js','./grammar-more-b2.js','./grammar-more-c1.js','./grammar.css','./lifetime-grammar.html','./lifetime-grammar.css','./lifetime-grammar.js','./lifetime-grammar-index-1.js','./lifetime-grammar-index-2.js','./lifetime-grammar-examples.js','./topic-reading-seeds-1.js','./topic-reading-seeds-2.js','./topic-reading-seeds-3.js','./topic-reading-seeds-4.js','./topic-reading-engine.js','./reading-studio-topics-01-12.js','./reading-studio-topics-13-24.js','./reading-sentence-my-01-06.js','./reading-sentence-my-07-12.js','./reading-sentence-my-13-18.js','./reading-sentence-my-19-24.js','./reading-sentence-en-fixes.js','./reading-studio.js','./reading-word-explorer.js','./topic-lessons.js','./topic-lessons.css','./learning-checklist.js','./live-content.js','./live-content.css','./content/v1/pack.json'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)).then(()=>self.skipWaiting()));
 });
@@ -25,17 +25,20 @@ self.addEventListener('fetch',event=>{
     return;
   }
   if(event.request.mode==='navigate'){
+    const path=new URL(event.request.url).pathname;
+    const lifetimePath=new URL('./lifetime-grammar.html',self.registration.scope).pathname;
+    const fallback=path===lifetimePath?'./lifetime-grammar.html':'./index.html';
     event.respondWith(fetch(event.request).then(response=>{
-      if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put('./index.html',copy));}
+      if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(fallback,copy)).catch(()=>{});}
       return response;
-    }).catch(()=>caches.match('./index.html')));
+    }).catch(()=>caches.match(fallback)));
     return;
   }
   // Network-first app UI updates: the old cache-first policy could keep
   // settings.js permanently stale, preventing new Home/menu features from loading
   // even when Pages had deployed them. Offline users still get the cached copy.
   const root=self.registration.scope;
-  const freshUI=['audio.js','settings.js','settings.css','settings-navigation.js','settings-navigation.css',
+  const freshUI=['lifetime-grammar.css','lifetime-grammar.js','lifetime-grammar-index-1.js','lifetime-grammar-index-2.js','lifetime-grammar-examples.js','audio.js','settings.js','settings.css','settings-navigation.js','settings-navigation.css',
     'ios-polish.js','ios-polish.css','whiteboard.js','whiteboard.css','page-navigation.js','page-navigation.css','home-premium.css','home-refresh.js','home-refresh.css','special-vocabulary.js','special-vocabulary.css','seen-words.js','seen-words.css','vocab-writing.js','vocab-writing.css','flashcards.js','flashcards.css','bank-browser.js','bank-browser.css','grammar.js','grammar-deep.js','grammar-expanded.js','grammar.css','topic-reading-seeds-1.js','topic-reading-seeds-2.js','topic-reading-seeds-3.js','topic-reading-seeds-4.js','topic-reading-engine.js','reading-studio-topics-01-12.js','reading-studio-topics-13-24.js','reading-sentence-my-01-06.js','reading-sentence-my-07-12.js','reading-sentence-my-13-18.js','reading-sentence-my-19-24.js','reading-sentence-en-fixes.js','reading-studio.js','reading-word-explorer.js','topic-lessons.js','topic-lessons.css','learning-checklist.js',
     'live-content.js','live-content.css','enterprise.js','enterprise.css'];
   const requested=new URL(event.request.url);
