@@ -71,6 +71,8 @@ jobs:
         run: node test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
+      - name: Smoke test Lifetime Grammar browser navigation, reference tables and progress
+        run: node test-lifetime-grammar-ui.cjs
       - name: Check per-page navigation and reading menu scope
         run: node test-page-navigation.cjs
       - name: Verify teaching whiteboard tools and independent screen annotations
