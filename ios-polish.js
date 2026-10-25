@@ -105,9 +105,21 @@ const install=()=>{
    item.innerHTML='<span class="ww-menu-icon" aria-hidden="true">A–Z</span><span class="ww-grammar-label"><strong>Lifetime Grammar A1–C2</strong><small>36 chapters · 288 master tables</small></span><span class="ww-menu-arrow" aria-hidden="true">›</span>';
    item.addEventListener('click',()=>{location.href='./lifetime-grammar.html';});
  }
- const anchor=document.getElementById('wg-grammar-launch')||menu.querySelector('.ww-menu-primary');
- if(anchor&&anchor.parentElement===menu){if(item.parentElement!==menu||item.previousElementSibling!==anchor)anchor.after(item);}
- else if(item.parentElement!==menu)menu.prepend(item);
+ // The Checklist module *owns* the slot immediately after Grammar Academy.
+ // Never compete for that same sibling position: two MutationObservers
+ // repeatedly moving rows create a microtask loop and freeze mobile browsers.
+ const anchor=menu.querySelector('#ww-cl-menu-launch')||
+              menu.querySelector('#wg-grammar-launch')||
+              menu.querySelector('.ww-menu-primary');
+ if(anchor&&anchor.parentElement===menu){
+   if(item.parentElement!==menu||item.previousElementSibling!==anchor)anchor.after(item);
+ }else if(item.parentElement!==menu)menu.append(item);
 };
-const observe=new MutationObserver(install);observe.observe(document.body,{childList:true,subtree:true});install();
+const menu=document.querySelector('#dashboard .ww-menu-options');
+// Observe the menu only, not the entire document's thousands of mutations.
+// Once Grammar Academy / Checklist load asynchronously, this repositions once
+// to the stable order: primary → Grammar Academy → Checklist → Lifetime Grammar.
+if(menu){const observe=new MutationObserver(install);
+ observe.observe(menu,{childList:true});}
+install();
 })();
