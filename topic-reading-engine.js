@@ -13,7 +13,7 @@ function records(){
 function completed(id){return records()[String(id)]?.complete===true;}
 function setCompleted(id,value){
  const copy=records();copy[String(id)]={complete:!!value,updatedAt:new Date().toISOString()};
- try{localStorage.setItem(storageKey(),JSON.stringify(copy));}catch{}
+ try{localStorage.setItem(storageKey(),JSON.stringify(copy));window.dispatchEvent(new Event('wortweg:study-changed'));}catch{}
 }
 function count(topics){const saved=records();return topics.filter(t=>saved[String(t.id)]?.complete===true).length;}
 function build(topic,words,identity,examples){
