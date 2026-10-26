@@ -54,6 +54,7 @@
    }
    if(source==='flashcards'){modalClose();return;}
    const active=visibleMain();
+   if(active?.id==='quiz'){navigate('study');return;}
    if(active?.id==='settings'&&document.querySelector('#ww-settings-detail:not([hidden])')){
      if(clickExisting(document.getElementById('ww-settings-back')))return;
    }
@@ -70,7 +71,27 @@
    if(source==='grammar'||source==='flashcards'){modalClose();navigate('dashboard');return;}
    navigate('dashboard');
  }
- function makeBar(source){
+ const titles={
+  study:'Practice',quiz:'Quiz',topics:'Topics',bank:'Word bank',
+  review:'Review',stats:'Progress',settings:'Settings',
+  'ww-topic-detail':'Topic lesson','ww-special-vocab':'Special vocabulary',
+  'ww-curriculum':'Learning plan'
+ };
+ function titleFor(target,source){
+  if(source!=='main')return source==='reader'?'Reading':source==='grammar'?'Grammar':'Flashcards';
+  if(target?.id==='settings'){
+   const detail=document.querySelector('#ww-settings-detail:not([hidden])');
+   if(detail)return document.getElementById('ww-settings-heading')?.textContent?.trim()||'Settings';
+  }
+  return titles[target?.id]||target?.getAttribute('aria-label')||'Learning';
+ }
+ function openAnnotation(){
+  const launcher=document.getElementById('ww-whiteboard-launcher');
+  if(launcher){launcher.click();return;}
+  // The toolbar is loaded independently and may still be initializing.
+  window.WortWegWhiteboard?.open?.();
+ }
+ function makeBar(source,target){
    const bar=document.createElement('nav');
    bar.className='ww-page-nav';
    bar.setAttribute('aria-label','Page navigation');
@@ -78,28 +99,37 @@
    const back=document.createElement('button');
    back.type='button';back.className='ww-page-nav-back';
    back.setAttribute('aria-label','Back to previous page');
-   back.textContent='← Back';back.addEventListener('click',()=>goBack(source));
+   back.textContent='‹ Back';back.addEventListener('click',()=>goBack(source));
    const label=document.createElement('span');
    label.className='ww-page-nav-label';
-   label.textContent=source==='reader'?'Reading Passage':source==='grammar'?'Grammar':source==='flashcards'?'Flashcards':'WortWeg';
+   label.textContent=titleFor(target,source);
    const close=document.createElement('button');
    close.type='button';close.className='ww-page-nav-close';
    close.setAttribute('aria-label','Close current page');
    close.textContent='✕ Close';close.addEventListener('click',()=>closePage(source));
-   bar.append(back,label,close);
+   if(source==='main'){
+    const tools=document.createElement('button');tools.type='button';
+    tools.className='ww-page-nav-tools';tools.setAttribute('aria-label','Open annotation tools');
+    tools.setAttribute('title','Annotation tools');
+    tools.innerHTML='<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4 20 4.5-1 11-11a2 2 0 0 0-3-3l-11 11L4 20Z"/><path d="m14.5 6.5 3 3"/></svg>';
+    tools.addEventListener('click',openAnnotation);
+    bar.append(back,label,tools);
+   }else bar.append(back,label,close);
    return bar;
  }
  function ensure(target,source){
    if(!target)return;
    const existing=[...target.children].find(el=>el.classList?.contains('ww-page-nav'));
-   if(existing)return;
-   target.prepend(makeBar(source));
+   if(existing){const label=existing.querySelector('.ww-page-nav-label'),next=titleFor(target,source);if(label&&label.textContent!==next)label.textContent=next;return;}
+   target.prepend(makeBar(source,target));
    target.classList.add('ww-has-page-nav');
  }
  function refresh(){
    pending=false;
    // The Dashboard is the navigation destination, not a closable page.
    pages().filter(p=>p.id&&p.id!=='dashboard').forEach(p=>ensure(p,'main'));
+   // A standalone quiz has one navigation bar, not its own Back plus a global Close.
+   document.getElementById('backToSetup')?.remove();
    ensure(reader(),'reader');
    const grammarRoot=document.getElementById('wg-academy');
    const flashRoot=document.getElementById('ww-flashcards');
