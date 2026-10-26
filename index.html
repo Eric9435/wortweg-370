@@ -103,7 +103,7 @@ main{min-height:100dvh}
  <div class="ww-resume-eyebrow">UNFINISHED QUIZ</div>
  <strong id="resumeSummary"></strong>
  <p class="muted tiny">Your answers are saved automatically, including offline.</p>
- <button class="btn primary" type="button" id="continueQuiz">Continue quiz</button>
+ <div class="ww-resume-actions"><button class="btn primary" type="button" id="continueQuiz">Continue quiz</button><button class="btn secondary" type="button" id="newQuizFromResume">Start new quiz</button></div>
 </div></div></section>
 <section id="quiz" class="section" aria-label="Vocabulary quiz"><div class="card" id="quizCard">
 <div class="spread"><span class="badgetext" id="quizLabel">READY TO LEARN</span><span class="muted tiny" id="quizCounter">10 questions per round</span></div><div class="progress" id="quizProgress" role="progressbar" aria-label="Quiz completion" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="margin:13px 0 20px"><div id="quizBar" style="width:0%"></div></div><div id="quizStage"><p class="muted">Select a source and start your quiz. Your mistakes are tracked automatically on this device.</p></div></div></section>
@@ -181,7 +181,23 @@ function continueQuiz(){
  showQuestion(true);
 }
 $('continueQuiz').addEventListener('click',continueQuiz);
+$('newQuizFromResume').addEventListener('click',()=>{const mode=$('mode').value,level=$('level').value;startQuiz(selectedQuizPool(),mode==='topic1'?'Topic 1 · Personal Identity':(level==='ALL'?'All levels':level)+' · Word Bank')});
 window.addEventListener('wortweg:sync-applied',()=>{if(document.body.dataset.page!=='quiz')refreshQuizResume();});
+const quizReplaceDialog=document.createElement('div');
+quizReplaceDialog.id='ww-quiz-replace-dialog';quizReplaceDialog.className='ww-quiz-dialog-backdrop';quizReplaceDialog.hidden=true;
+quizReplaceDialog.innerHTML='<div class="ww-quiz-dialog" role="dialog" aria-modal="true" aria-labelledby="ww-quiz-replace-title" aria-describedby="ww-quiz-replace-summary"><span class="ww-quiz-dialog-kicker">SAVED SESSION</span><h2 id="ww-quiz-replace-title">Continue your quiz?</h2><p id="ww-quiz-replace-summary"></p><p class="ww-quiz-dialog-hint">Your current place is saved. Starting a new quiz replaces the unfinished session, but keeps your recorded answers and learning history.</p><div class="ww-quiz-dialog-actions"><button type="button" class="btn primary" id="ww-quiz-replace-continue">Continue previous quiz</button><button type="button" class="btn secondary" id="ww-quiz-replace-new">Start new quiz</button><button type="button" class="ww-quiz-dialog-cancel" id="ww-quiz-replace-cancel">Cancel</button></div></div>';
+document.body.appendChild(quizReplaceDialog);
+$('ww-quiz-replace-continue').addEventListener('click',()=>{closeQuizReplaceDialog();continueQuiz();});
+$('ww-quiz-replace-new').addEventListener('click',()=>{const proceed=awaitingQuizReplacement;closeQuizReplaceDialog();proceed?.();});
+$('ww-quiz-replace-cancel').addEventListener('click',closeQuizReplaceDialog);
+quizReplaceDialog.addEventListener('click',event=>{if(event.target===quizReplaceDialog)closeQuizReplaceDialog();});
+quizReplaceDialog.addEventListener('keydown',event=>{
+ if(event.key==='Escape'){event.preventDefault();closeQuizReplaceDialog();}
+ if(event.key==='Tab'){const items=[...quizReplaceDialog.querySelectorAll('button')];const current=items.indexOf(document.activeElement);
+  if(event.shiftKey&&current===0){event.preventDefault();items[items.length-1].focus();}
+  if(!event.shiftKey&&current===items.length-1){event.preventDefault();items[0].focus();}
+ }
+});
 const quizLevels=new Map();
 for(const w of BANK){if(!quizLevels.has(w.level))quizLevels.set(w.level,[]);quizLevels.get(w.level).push(w)}
 function selectedQuizPool(){
@@ -199,8 +215,25 @@ function updateQuizOptions(){
  $('startQuiz').textContent=value==='all'?'Start quiz · All '+pool.length.toLocaleString()+' questions':'Start quiz · '+count+' questions';
 }
 for(const id of ['mode','level','quizLength'])$(id).addEventListener('change',updateQuizOptions);
-function startQuiz(pool,label,kind='new'){
+let awaitingQuizReplacement=null,quizReplaceInvoker=null;
+function closeQuizReplaceDialog(){
+ const dialog=$('ww-quiz-replace-dialog');if(dialog)dialog.hidden=true;
+ const invoker=quizReplaceInvoker;quizReplaceInvoker=null;awaitingQuizReplacement=null;
+ try{invoker?.focus?.({preventScroll:true});}catch{}
+}
+function confirmQuizReplacement(action){
+ if(!pendingSession()){action();return;}
+ awaitingQuizReplacement=action;quizReplaceInvoker=document.activeElement;
+ const dialog=$('ww-quiz-replace-dialog'),s=pendingSession();
+ $('ww-quiz-replace-summary').textContent=s.label+' · Question '+(s.i+1).toLocaleString()+' of '+s.keys.length.toLocaleString();
+ dialog.hidden=false;
+ $('ww-quiz-replace-continue').focus({preventScroll:true});
+}
+function startQuiz(pool,label,kind='new',confirmed=false){
  if(!pool.length){toast('No words available in this selection.');return}
+ if(!confirmed&&pendingSession()){
+  confirmQuizReplacement(()=>startQuiz(pool,label,kind,true));return;
+ }
  const count=selectedQuizCount(pool.length);
  const list=kind==='review'?shuffle(pool).slice(0,count):pick(pool,count);
  quiz={id:String(Date.now())+'-'+Math.random().toString(36).slice(2,8),list,
