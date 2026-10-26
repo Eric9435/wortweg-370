@@ -2,14 +2,23 @@
 (()=>{'use strict';
  const tables=Array.isArray(window.WWGMemoTables)?window.WWGMemoTables:[];
  const byId=new Map(tables.map(t=>[t.id,t]));
- const key='wortweg:lifetime-grammar:memorized:v1';
- let memory={};try{const j=JSON.parse(localStorage.getItem(key)||'{}');if(j&&typeof j==='object'&&!Array.isArray(j))memory=j;}catch{}
+ const legacy='wortweg:lifetime-grammar:memorized:v1';
+ const account=()=>{try{return localStorage.getItem('wortweg370-last-google-uid')||''}catch{return ''}};
+ const key=()=>account()?legacy+':'+account():legacy;
+ try{
+  const uid=account(),owner='wortweg370-memorized-migrated-owner';
+  if(uid&&!localStorage.getItem(key())&&!localStorage.getItem(owner)){
+   const old=localStorage.getItem(legacy);if(old){localStorage.setItem(key(),old);localStorage.setItem(owner,uid);}
+  }
+ }catch{}
+ let memory={};try{const j=JSON.parse(localStorage.getItem(key())||'{}');if(j&&typeof j==='object'&&!Array.isArray(j))memory=j;}catch{}
+ window.addEventListener('storage',e=>{if(e.key==='wortweg370-last-google-uid')location.reload()});
  let query='',group='All',hidden=false,uncovered=new Set();
  const h=(tag,klass,label)=>{const e=document.createElement(tag);if(klass)e.className=klass;if(label!==undefined)e.textContent=label;return e};
  const push=(p,...cs)=>{cs.forEach(c=>c&&p.append(c));return p};
  const btn=(s,fn,klass='wl-action')=>{const e=h('button',klass,s);e.type='button';e.addEventListener('click',fn);return e};
  const count=()=>tables.filter(x=>memory[x.id]===true).length;
- const save=()=>{try{localStorage.setItem(key,JSON.stringify(memory));}catch{}};
+ const save=()=>{try{localStorage.setItem(key(),JSON.stringify(memory));}catch{}};
  const href=hash=>{location.hash=hash;};
  const back=(root,title,subtitle)=>push(root,push(h('div','wl-headrow'),btn('← Back',()=>href('memorize'),'wl-action'),push(h('div'),h('div','wl-kicker','Lifetime Grammar · Memorization'),h('h1','',title),h('p','wl-muted',subtitle))));
  function landing(root){
