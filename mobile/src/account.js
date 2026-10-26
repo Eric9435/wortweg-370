@@ -3,6 +3,7 @@ import {initializeApp} from 'firebase/app';
 import {initializeAuth,browserLocalPersistence,onAuthStateChanged,GoogleAuthProvider,signInWithCredential,signOut} from 'firebase/auth';
 import {initializeFirestore,persistentLocalCache,persistentSingleTabManager,doc,getDocFromServer,setDoc,serverTimestamp,onSnapshot} from 'firebase/firestore';
 import config from './firebase-config.json';
+import {createExtraProgressSync} from '../../extra-progress-sync.js';
 
 // Native Google account chooser returns a credential; Firebase JS authenticates
 // the same UID used by the website and persists it on this phone.
@@ -33,6 +34,11 @@ export function initNativeAccount(){
  const mark=uid=>localStorage.setItem(dirtyKey(uid),'1');
  const clear=uid=>localStorage.removeItem(dirtyKey(uid));
  const ref=uid=>doc(db,'users',uid,'state','progress');
+ const extra=createExtraProgressSync({
+  readCloud:async uid=>(await getDocFromServer(ref(uid))).data()||{},
+  writeCloud:(uid,records)=>setDoc(ref(uid),{extraProgress:{version:1,records},extrasUpdatedAt:serverTimestamp()},{merge:true}),
+  onStatus:message=>{if(/retry|Storage full/.test(message))status(message);}
+ });
  const stable=v=>v&&typeof v==='object'?Array.isArray(v)?v.map(stable):Object.fromEntries(Object.keys(v).sort().map(k=>[k,stable(v[k])])):v;
  const same=(a,b)=>JSON.stringify(stable(a))===JSON.stringify(stable(b));
  const baseKey=uid=>'wortweg370-cloud-base:'+uid;
@@ -95,9 +101,10 @@ export function initNativeAccount(){
  };
  retry.onclick=()=>{alternate=true;return login.onclick();};
  onAuthStateChanged(auth,async account=>{
-  const current=++version;ready=false;clearTimeout(timer);unsubscribe?.();unsubscribe=null;cloudChoice=null;conflict.hidden=true;user=account;welcome.hidden=!!account||sessionStorage.getItem(guestPreference)==='1';renderAccount(account);window.WortWeg.switchProfile(account?.uid||'guest');window.WortWegNative.accountReady=true;
+  const current=++version;ready=false;clearTimeout(timer);unsubscribe?.();unsubscribe=null;extra.stop();cloudChoice=null;conflict.hidden=true;user=account;welcome.hidden=!!account||sessionStorage.getItem(guestPreference)==='1';renderAccount(account);window.WortWeg.switchProfile(account?.uid||'guest');window.WortWegNative.accountReady=true;
   const justSignedIn=Boolean(account&&requestedGoogleLogin);requestedGoogleLogin=false;
   window.WortWegAccountSnapshot={uid:account?.uid||null,name:account?.displayName||'',email:account?.email||'',photoURL:account?.photoURL||'',justSignedIn};window.dispatchEvent(new CustomEvent('wortweg:account',{detail:window.WortWegAccountSnapshot}));
+  try{if(account)localStorage.setItem('wortweg370-last-google-uid',account.uid);else localStorage.removeItem('wortweg370-last-google-uid');}catch{}
   if(!account){status('Saved on this phone');ready=true;return;}
   const uid=account.uid;status('Loading your cloud history…');let timeout;
   try{
@@ -110,7 +117,7 @@ export function initNativeAccount(){
    }else status('Account ready · saved on this phone');
   }catch{if(current===version)status('Offline · saved on this phone');}
   finally{clearTimeout(timeout);}
-  if(current!==version)return;ready=true;
+  if(current!==version)return;ready=true;extra.start(uid);
   unsubscribe=onSnapshot(ref(uid),{includeMetadataChanges:true},snapshot=>{
    if(current!==version||snapshot.metadata.hasPendingWrites||snapshot.metadata.fromCache)return;
    const remote=snapshot.data()?.progress;if(!valid(remote)||same(remote,window.WortWeg.getProgress()))return;
