@@ -25,6 +25,14 @@ assert.equal(first.window.document.querySelector('.section.active').id,'dashboar
 first.window.document.querySelector('#dashboard [data-nav="study"]').click();
 assert.equal(first.window.document.querySelector('.section.active').id,'study');
 assert.equal(progress(first).answered,0,'A new guest begins with no answers');
+// Load the same page-navigation module used by the deployed site (no remote resources).
+first.window.requestAnimationFrame=cb=>{cb();return 1};
+first.window.eval(fs.readFileSync('page-navigation.js','utf8'));
+assert.equal(first.window.document.querySelectorAll('#study > .ww-page-nav').length,1,'One navigation bar per main screen');
+assert.equal(first.window.document.querySelectorAll('#quiz > .ww-page-nav').length,1,'Quiz has its own singular navigation bar');
+assert.equal(first.window.document.querySelectorAll('#quiz .ww-page-nav-back').length,1,'Quiz has one Back control');
+assert.equal(first.window.document.querySelectorAll('#quiz .ww-page-nav-close').length,0,'No redundant Close on main Quiz');
+assert.equal(first.window.document.querySelectorAll('#quiz #backToSetup').length,0,'No second Back inside Quiz');
 // Quiz length controls must respect every word rather than hardcoding 10.
 const bankData=JSON.parse(first.window.document.getElementById('data').textContent);
 const selector=first.window.document.getElementById('quizLength');
@@ -35,12 +43,12 @@ selector.value='all';
 first.window.document.getElementById('mode').value='topic1';
 click(first,'startQuiz');
 assert.equal(first.window.document.querySelector('.section.active').id,'quiz','Starting a quiz opens a separate full-page quiz screen');
-assert.equal(first.window.document.getElementById('ww-view-title').textContent,'Quiz','Navigation header reflects the quiz screen');
+assert.equal(first.window.document.querySelector('#quiz .ww-page-nav-label').textContent,'Quiz','Navigation title reflects Quiz');
 assert.equal(first.window.document.getElementById('study').classList.contains('active'),false,'Setup is hidden while taking a quiz');
 assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / '+bankData.curated.length,'All for Topic 1 includes every curated question');
-click(first,'backToSetup');
+first.window.document.querySelector('#quiz .ww-page-nav-back').click();
 assert.equal(first.window.document.querySelector('.section.active').id,'study','Back to setup switches to setup-only screen');
-assert.equal(first.window.document.getElementById('ww-view-title').textContent,'Practice','Setup header is restored');
+assert.equal(first.window.document.querySelector('#study .ww-page-nav-label').textContent,'Practice','Setup header is restored');
 assert.equal(first.window.document.getElementById('quiz').classList.contains('active'),false,'Quiz content is hidden on setup');
 click(first,'startQuiz');
 assert.equal(first.window.document.querySelector('.section.active').id,'quiz','Restart reopens quiz screen');
@@ -54,9 +62,9 @@ click(first,'startQuiz');
 assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / '+bankData.bank.length,'All levels includes the complete word bank');
 selector.value='25';click(first,'startQuiz');
 assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / 25','Custom short lengths remain available');
-click(first,'ww-back');
+first.window.document.querySelector('#quiz .ww-page-nav-back').click();
 assert.equal(first.window.document.querySelector('.section.active').id,'study','Global Back button returns quiz to setup');
-assert.equal(first.window.document.getElementById('ww-view-title').textContent,'Practice','Global Back updates heading');
+assert.equal(first.window.document.querySelector('#study .ww-page-nav-label').textContent,'Practice','Single Back updates heading');
 selector.value='10';click(first,'startQuiz');
 first.window.document.querySelector('#answerButtons .choice').click();click(first,'submitAnswer');
 assert.equal(progress(first).answered,1,'Answers save immediately');
@@ -85,4 +93,4 @@ third.window.WortWeg.switchProfile('test-user-b');assert.equal(progress(third).a
 third.window.WortWeg.setProgress({answered:'invalid'});
 assert.equal(progress(third).answered,3,'Invalid imported progress cannot replace saved answers');
 third.window.close();
-console.log('PASS: quiz and setup have separate screens, Back navigation works, answers auto-save and account progress stays separate');
+console.log('PASS: standalone quiz, single Back/navigation, all-question limits, answer accessibility, persistence and account isolation');
