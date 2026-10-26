@@ -44,6 +44,22 @@ export function initNativeAccount(){
  const baseKey=uid=>'wortweg370-cloud-base:'+uid;
  const remember=(uid,p)=>localStorage.setItem(baseKey(uid),JSON.stringify(stable(p)));
  const valid=p=>p&&Number.isFinite(p.answered)&&Number.isFinite(p.correct)&&p.items&&p.seen&&Array.isArray(p.history);
+ function mergeQuiz(local,remote){
+  if(!valid(local))return valid(remote)?remote:{answered:0,correct:0,items:{},seen:{},history:[]};
+  if(!valid(remote))return local;
+  const items={...remote.items};
+  for(const [id,entry] of Object.entries(local.items)){
+   const other=items[id];
+   if(!other||Number(entry?.answered||entry?.tries||0)>=Number(other?.answered||other?.tries||0))items[id]=entry;
+  }
+  const seenHistory=new Set(),history=[];
+  for(const row of [...remote.history,...local.history]){
+   const fingerprint=JSON.stringify(row);
+   if(!seenHistory.has(fingerprint)){seenHistory.add(fingerprint);history.push(row);}
+  }
+  return {...remote,...local,answered:Math.max(local.answered,remote.answered),
+   correct:Math.max(local.correct,remote.correct),items,seen:{...remote.seen,...local.seen},history:history.slice(-1200)};
+ }
  function renderAccount(account){
   const current=++avatarVersion,name=account?(account.displayName||account.email||'Google account'):'On-device learning';
   $('ww-identity').textContent=name;$('ww-account-avatar').hidden=!account;photo.hidden=true;initials.hidden=true;photo.onload=photo.onerror=null;photo.removeAttribute('src');
@@ -53,7 +69,23 @@ export function initNativeAccount(){
   try{const address=new URL(account.photoURL);if(address.protocol!=='https:')return;photo.alt='Google profile picture for '+name;photo.onload=()=>{if(current!==avatarVersion)return;photo.hidden=false;initials.hidden=true};photo.onerror=()=>{if(current!==avatarVersion)return;photo.hidden=true;initials.hidden=false;photo.removeAttribute('src')};photo.src=address.href;}catch{}
  }
  function apply(p){applying=true;try{window.WortWeg.setProgress(p);}finally{applying=false;}}
- function choose(p){cloudChoice=p;conflict.hidden=false;status('Choose phone or cloud history before syncing.');}
+ function choose(remote){
+  if(!user||!valid(remote))return;
+  const uid=user.uid,local=window.WortWeg.getProgress(),merged=mergeQuiz(local,remote);
+  if(!same(local,remote)){
+   // Preserve both versions before automated conflict resolution.
+   try{
+    const prefix='wortweg370-cloud-backup:'+uid+':';
+    localStorage.setItem(prefix+'device:'+Date.now(),JSON.stringify(local));
+    localStorage.setItem(prefix+'server:'+Date.now(),JSON.stringify(remote));
+   }catch{}
+  }
+  remember(uid,remote);
+  if(!same(local,merged))apply(merged);
+  conflict.hidden=true;cloudChoice=null;
+  if(!same(merged,remote)){mark(uid);if(ready)queueSave();status('Offline and cloud answers merged · syncing…');}
+  else{clear(uid);status('Cloud history loaded');}
+ }
  function queueSave(){clearTimeout(timer);timer=setTimeout(flush,900);}
  async function flush(){
   if(!user||!ready||cloudChoice||!dirty(user.uid))return;
@@ -112,22 +144,24 @@ export function initNativeAccount(){
    if(current!==version)return;
    const remote=snapshot.data()?.progress;
    if(valid(remote)){
-    if(dirty(uid)&&!same(remote,window.WortWeg.getProgress()))choose(remote);
-    else{apply(remote);remember(uid,remote);clear(uid);status('Cloud history loaded');}
-   }else status('Account ready · saved on this phone');
+    if(!same(remote,window.WortWeg.getProgress()))choose(remote);
+    else{remember(uid,remote);clear(uid);status('Cloud history loaded');}
+   }else{if(valid(window.WortWeg.getProgress())&&window.WortWeg.getProgress().answered>0)mark(uid);status('Account ready · saved on this phone');}
   }catch{if(current===version)status('Offline · saved on this phone');}
   finally{clearTimeout(timeout);}
   if(current!==version)return;ready=true;extra.start(uid);
   unsubscribe=onSnapshot(ref(uid),{includeMetadataChanges:true},snapshot=>{
    if(current!==version||snapshot.metadata.hasPendingWrites||snapshot.metadata.fromCache)return;
    const remote=snapshot.data()?.progress;if(!valid(remote)||same(remote,window.WortWeg.getProgress()))return;
-   if(dirty(uid))choose(remote);else{apply(remote);remember(uid,remote);status('Cloud synced');}
+   choose(remote);
   },()=>{if(current===version)status('Saved on phone · cloud unavailable');});
   if(dirty(uid)&&!cloudChoice)queueSave();
  });
  window.addEventListener('wortweg:changed',()=>{
   if(applying||!user)return;revision++;mark(user.uid);status('Saved on phone');if(ready&&!cloudChoice)queueSave();
  });
- window.addEventListener('online',()=>{if(user&&ready&&!cloudChoice)queueSave();});
+ window.addEventListener('online',()=>{if(user&&ready){if(dirty(user.uid))queueSave();extra.sync();}});
+ window.addEventListener('focus',()=>{if(user&&ready&&dirty(user.uid))queueSave();});
+ window.addEventListener('visibilitychange',()=>{if(!document.hidden&&user&&ready&&dirty(user.uid))queueSave();});
  setInterval(()=>{if(user&&ready&&dirty(user.uid)&&!cloudChoice)queueSave();},30000);
 }
