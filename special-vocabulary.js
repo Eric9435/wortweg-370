@@ -147,7 +147,7 @@ $('ww-special-practice').onclick=()=>beginQuiz(false);
 $('ww-special-review').onclick=()=>beginQuiz(true);
 page.querySelector('.ww-special-back').onclick=()=>{mode='words';navigate('dashboard')};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&page.classList.contains('active')&&mode==='quiz'){mode='words';render()}});
-window.addEventListener('wortweg:account',e=>{const next=window.WortWegAccountSnapshot?.uid||e.detail?.uid||'guest';if(next!==profile){profile=next;load();if(mode==='quiz')mode='words';render()}});
+window.addEventListener('wortweg:account',e=>{const next=window.WortWegAccountSnapshot?.uid||e.detail?.uid||'guest';if(next!==profile||e.detail?.syncedProgress){profile=next;load();if(mode==='quiz')mode='words';render()}});
 function open(category){if(category&&activeCategory(category))active=category;mode='words';viewPage=0;render();navigate(page.id)}
 window.WortWegSpecialVocabulary={open, getCategories:()=>CATEGORIES.map(c=>({id:c.id,title:c.title,count:c.words.length})),getLookupWords:()=>CATEGORIES.flatMap(c=>c.words.map(w=>({de:w.de,en:w.en,my:w.my,gram:w.gram,category:c.title}))),getProgress:()=>({learned:Object.keys(progress.learned).length,mistakes:Object.keys(progress.mistakes).length})};
 load();render();
