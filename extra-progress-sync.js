@@ -12,9 +12,9 @@ const stores=[
  ['memorized',u=>'wortweg:lifetime-grammar:memorized:v1:'+u],
  ['lastReading',u=>'wortweg370-long-reading-last:'+u]
 ];
-const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
-const clean=x=>x===undefined?null:x;
+const stable=x=>Array.isArray(x)?x.map(stable):object(x)?Object.fromEntries(Object.keys(x).sort().filter(k=>!['__proto__','constructor','prototype'].includes(k)).map(k=>[k,stable(x[k])])):x;
+const equal=(a,b)=>JSON.stringify(stable(a))===JSON.stringify(stable(b));
 const stamp=x=>{if(!object(x))return 0;const t=x.updatedAt||x.lastReviewedAt||x.lastPracticedAt||x.reviewedAt;return typeof t==='number'?t:Date.parse(t||'')||0;};
 /* Three-way merging avoids overwriting work completed offline on either device. */
 export function mergeStudyData(base,local,cloud){
@@ -79,7 +79,11 @@ export function createExtraProgressSync({readCloud,writeCloud,onStatus=()=>{}}){
    if(t!==serial)return;
    const cloud=object(payload?.extraProgress?.records)?payload.extraProgress.records:{};
    const merged=mergeStudyData(base,local,cloud)||{};
-   if(!equal(merged,cloud))await writeCloud(u,merged);
+   if(!equal(merged,cloud)){
+    // A recoverable pre-merge copy protects cloud-only edits during conflicts.
+    if(Object.keys(cloud).length){try{localStorage.setItem(prefix+u+':cloud:'+Date.now(),JSON.stringify(cloud));}catch{}}
+    await writeCloud(u,merged);
+   }
    if(t!==serial)return;
    saveLocal(u,merged);
    localStorage.setItem(baselineKey(u),JSON.stringify(merged));
