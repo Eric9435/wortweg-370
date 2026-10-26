@@ -126,6 +126,7 @@
  }
  function refresh(){
    pending=false;
+   if(!window.document?.body)return;
    // The Dashboard is the navigation destination, not a closable page.
    pages().filter(p=>p.id&&p.id!=='dashboard').forEach(p=>ensure(p,'main'));
    // A standalone quiz has one navigation bar, not its own Back plus a global Close.
@@ -148,7 +149,7 @@
    trackRoute();
  }
  function queue(){
-   if(pending)return;pending=true;
+   if(!window.document?.body||pending)return;pending=true;
    requestAnimationFrame(refresh);
  }
  const style=document.createElement('link');
