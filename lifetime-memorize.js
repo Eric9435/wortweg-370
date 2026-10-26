@@ -18,7 +18,7 @@
  const push=(p,...cs)=>{cs.forEach(c=>c&&p.append(c));return p};
  const btn=(s,fn,klass='wl-action')=>{const e=h('button',klass,s);e.type='button';e.addEventListener('click',fn);return e};
  const count=()=>tables.filter(x=>memory[x.id]===true).length;
- const save=()=>{try{localStorage.setItem(key(),JSON.stringify(memory));}catch{}};
+ const save=()=>{try{localStorage.setItem(key(),JSON.stringify(memory));window.dispatchEvent(new Event('wortweg:study-changed'));}catch{}};
  const href=hash=>{location.hash=hash;};
  const back=(root,title,subtitle)=>push(root,push(h('div','wl-headrow'),btn('← Back',()=>href('memorize'),'wl-action'),push(h('div'),h('div','wl-kicker','Lifetime Grammar · Memorization'),h('h1','',title),h('p','wl-muted',subtitle))));
  function landing(root){
