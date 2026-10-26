@@ -10,7 +10,10 @@ const stores=[
  ['grammar',u=>'wortweg370-grammar-v1-'+u],
  ['lifetime',u=>'wortweg:lifetime-grammar:review:v1:'+u],
  ['memorized',u=>'wortweg:lifetime-grammar:memorized:v1:'+u],
- ['lastReading',u=>'wortweg370-long-reading-last:'+u]
+ ['lastReading',u=>'wortweg370-long-reading-last:'+u],
+ // Session stores only stable vocabulary IDs + current choice, not the full word bank.
+ // A finished:true record is a tombstone so clearing a completed quiz also syncs.
+ ['quizSession',u=>'wortweg370-quiz-session-v1:'+u]
 ];
 const object=x=>x!==null&&typeof x==='object'&&!Array.isArray(x);
 const stable=x=>Array.isArray(x)?x.map(stable):object(x)?Object.fromEntries(Object.keys(x).sort().filter(k=>!['__proto__','constructor','prototype'].includes(k)).map(k=>[k,stable(x[k])])):x;
