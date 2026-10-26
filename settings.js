@@ -72,13 +72,10 @@ const menu=document.createElement('div');menu.className='ww-main-menu';
 menu.innerHTML='<div class="ww-menu-top"><span class="ww-menu-eyebrow">LEARN GERMAN FOR LIFE</span><h2>What would you like to do?</h2><p>Choose your next step.</p></div><div class="ww-menu-options"><button type="button" class="ww-menu-primary" data-nav="study"><span class="ww-menu-icon">▶</span><span><strong>Start learning</strong><small>Vocabulary practice</small></span><span class="ww-menu-arrow">›</span></button><button type="button" data-nav="topics"><span class="ww-menu-icon">▦</span><span><strong>Topics</strong><small>Browse German lessons</small></span><span class="ww-menu-arrow">›</span></button><button type="button" data-nav="bank"><span class="ww-menu-icon">⌕</span><span><strong>Vocabulary bank</strong><small>Find and practise words</small></span><span class="ww-menu-arrow">›</span></button><button type="button" data-nav="review"><span class="ww-menu-icon">↺</span><span><strong>Review mistakes</strong><small>Learn from your answers</small></span><span class="ww-menu-arrow">›</span></button><button type="button" data-nav="stats"><span class="ww-menu-icon">▥</span><span><strong>My progress</strong><small>Scores and learning history</small></span><span class="ww-menu-arrow">›</span></button></div>';
 const home=$('dashboard');
 if(home){home.prepend(menu);document.body.classList.add('ww-game-interface')}
-const views=['study','topics','bank','review','stats','settings'];
-for(const id of views){const view=$(id);if(!view)continue;const back=document.createElement('button');back.className='ww-menu-back';back.type='button';back.setAttribute('aria-label','Back to main menu');back.textContent='‹  Main menu';view.prepend(back);back.addEventListener('click',()=>goTo('dashboard'))}
+// Screen navigation is owned by page-navigation.js; avoid injecting duplicate Back buttons.
 function goTo(id){
  if(window.WortWeg?.navigate)window.WortWeg.navigate(id);
  else for(const el of document.querySelectorAll('.section'))el.classList.toggle('active',el.id===id);
- document.body.classList.remove('ww-quiz-mode');
- if(id==='study'&&document.querySelector('#quizStage #nextQuiz'))document.body.classList.add('ww-quiz-mode');
  window.scrollTo?.(0,0);
 }
 menu.addEventListener('click',event=>{const b=event.target.closest('button[data-nav]');if(!b)return;event.preventDefault();event.stopPropagation();goTo(b.dataset.nav)});
