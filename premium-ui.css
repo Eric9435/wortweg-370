@@ -190,3 +190,77 @@ body.ww-game-interface :is(#bank,#topics,#review,#stats) .card{padding:clamp(18p
  body.ww-game-interface #study #quizLength{width:100%!important}
  body.ww-game-interface #study #startQuiz{width:100%}
 }
+
+/* Persistent unfinished-quiz card: surfaced above the setup controls on return. */
+body.ww-game-interface #study #quizResume{
+ margin-top:22px;padding:20px;border:1px solid var(--ww-border);
+ background:var(--panel2);border-radius:20px;
+ box-shadow:none;color:var(--txt);
+}
+body.ww-game-interface #study #quizResume[hidden]{display:none!important}
+body.ww-game-interface #study #quizResume .ww-resume-eyebrow{
+ color:var(--accent);letter-spacing:.12em;font-size:11px;font-weight:800;
+ margin-bottom:8px;
+}
+body.ww-game-interface #study #quizResume strong{
+ display:block;line-height:1.4;font-size:clamp(16px,3vw,20px);
+ letter-spacing:-.025em;overflow-wrap:anywhere;
+}
+body.ww-game-interface #study #quizResume p{margin:8px 0 16px;line-height:1.55}
+body.ww-game-interface #study .ww-resume-actions{display:flex;gap:10px;flex-wrap:wrap}
+body.ww-game-interface #study .ww-resume-actions .btn{flex:1 1 160px;font-size:14px}
+body.ww-game-interface #study .ww-resume-actions .btn.secondary{
+ border:1px solid var(--ww-border)!important;background:var(--panel)!important;
+ color:var(--txt)!important;
+}
+/* Real on-page confirmation rather than a browser-native confirm/alert. */
+#ww-quiz-replace-dialog[hidden]{display:none!important}
+#ww-quiz-replace-dialog.ww-quiz-dialog-backdrop{
+ position:fixed;inset:0;z-index:2147481900;
+ background:rgb(10 23 38 / 48%);display:grid;place-items:center;
+ padding:20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));
+ overflow-y:auto;box-sizing:border-box;
+}
+#ww-quiz-replace-dialog .ww-quiz-dialog{
+ background:var(--ww-surface,#fff);color:var(--ww-ink,#1a2b41);
+ border:1px solid var(--ww-border,#dce5ef);
+ border-radius:26px;box-shadow:0 28px 75px rgb(0 0 0 / 18%);
+ width:min(440px,100%);max-height:calc(100dvh - 44px);
+ overflow-y:auto;box-sizing:border-box;padding:clamp(23px,5vw,32px);
+}
+#ww-quiz-replace-dialog .ww-quiz-dialog-kicker{
+ display:block;color:var(--ww-brand,#176a86);letter-spacing:.13em;
+ font-weight:800;font-size:11px;margin-bottom:10px;
+}
+#ww-quiz-replace-dialog h2{
+ color:inherit!important;font-weight:790;font-size:clamp(23px,5vw,29px);
+ letter-spacing:-.047em;line-height:1.17;margin:0 0 14px;
+}
+#ww-quiz-replace-dialog #ww-quiz-replace-summary{
+ font-size:16px;font-weight:730;line-height:1.5;margin:0 0 13px;
+}
+#ww-quiz-replace-dialog .ww-quiz-dialog-hint{
+ color:var(--ww-secondary,#637387);line-height:1.6;
+ font-size:13px;margin:0 0 24px;
+}
+#ww-quiz-replace-dialog .ww-quiz-dialog-actions{display:grid;gap:10px}
+#ww-quiz-replace-dialog .ww-quiz-dialog-actions button{
+ width:100%;min-height:49px;font:650 15px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ border-radius:14px;padding:12px 14px;cursor:pointer;
+}
+#ww-quiz-replace-dialog .ww-quiz-dialog-actions .primary{
+ background:#195c86;color:#fff;border:1px solid #195c86;
+}
+#ww-quiz-replace-dialog .ww-quiz-dialog-actions .secondary{
+ background:var(--ww-surface,#fff);color:var(--ww-ink,#1a2b41);
+ border:1px solid var(--ww-border,#dce5ef);
+}
+#ww-quiz-replace-dialog .ww-quiz-dialog-cancel{
+ border:0;background:transparent;color:var(--ww-secondary,#637387);
+}
+#ww-quiz-replace-dialog button:focus-visible{outline:3px solid var(--ww-focus,#217fa9);outline-offset:2px}
+@media(max-width:600px){
+ body.ww-game-interface #study #quizResume{padding:18px}
+ #ww-quiz-replace-dialog.ww-quiz-dialog-backdrop{place-items:end center;padding:0 10px calc(10px + env(safe-area-inset-bottom))}
+ #ww-quiz-replace-dialog .ww-quiz-dialog{border-radius:24px;padding:25px 21px}
+}
