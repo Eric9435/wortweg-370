@@ -25,7 +25,25 @@ assert.equal(first.window.document.querySelector('.section.active').id,'dashboar
 first.window.document.querySelector('#dashboard [data-nav="study"]').click();
 assert.equal(first.window.document.querySelector('.section.active').id,'study');
 assert.equal(progress(first).answered,0,'A new guest begins with no answers');
+// Quiz length controls must respect every word rather than hardcoding 10.
+const bankData=JSON.parse(first.window.document.getElementById('data').textContent);
+const selector=first.window.document.getElementById('quizLength');
+assert.deepEqual([...selector.options].map(x=>x.value),['10','25','50','100','all']);
+selector.value='all';
+first.window.document.getElementById('mode').value='topic1';
 click(first,'startQuiz');
+assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / '+bankData.curated.length,'All for Topic 1 includes every curated question');
+assert.equal(first.window.document.querySelectorAll('#answerButtons .choice').length,4);
+first.window.document.getElementById('mode').value='bank';
+first.window.document.getElementById('level').value='A1';
+click(first,'startQuiz');
+assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / '+bankData.bank.filter(x=>x.level==='A1').length,'All within a selected level includes every word');
+first.window.document.getElementById('level').value='ALL';
+click(first,'startQuiz');
+assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / '+bankData.bank.length,'All levels includes the complete word bank');
+selector.value='25';click(first,'startQuiz');
+assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / 25','Custom short lengths remain available');
+selector.value='10';click(first,'startQuiz');
 first.window.document.querySelector('#answerButtons .choice').click();click(first,'submitAnswer');
 assert.equal(progress(first).answered,1,'Answers save immediately');
 assert.equal(JSON.parse(first.window.localStorage.getItem(KEY+':guest')).answered,1);
