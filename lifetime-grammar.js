@@ -12,9 +12,20 @@ const root=document.getElementById('wl-root');
 if(!root)return;
 const flat=chapters.flatMap(c=>c.topics.map(t=>({...t,chapter:c.chapter,level:c.level,chapterEN:c.en,chapterMY:c.my})));
 const byId=new Map(flat.map(t=>[t.id,t]));
-const storeKey='wortweg:lifetime-grammar:review:v1';
+const legacyKey='wortweg:lifetime-grammar:review:v1';
+const account=()=>{try{return localStorage.getItem('wortweg370-last-google-uid')||''}catch{return ''}};
+const storeKey=()=>account()?legacyKey+':'+account():legacyKey;
+// Keep the previous guest file untouched and migrate it once into the first Google profile.
+try{
+ const uid=account(),owner='wortweg370-lifetime-migrated-owner';
+ if(uid&&!localStorage.getItem(storeKey())&&!localStorage.getItem(owner)){
+  const old=localStorage.getItem(legacyKey);
+  if(old){localStorage.setItem(storeKey(),old);localStorage.setItem(owner,uid);}
+ }
+}catch{}
 let saved={};
-try{const p=JSON.parse(localStorage.getItem(storeKey)||'{}');if(p&&typeof p==='object'&&!Array.isArray(p))saved=p;}catch{}
+try{const p=JSON.parse(localStorage.getItem(storeKey())||'{}');if(p&&typeof p==='object'&&!Array.isArray(p))saved=p;}catch{}
+window.addEventListener('storage',e=>{if(e.key==='wortweg370-last-google-uid')location.reload()});
 let filter='',level='All',language='both',testPick=-1,testChecked=false;
 const stop=new Set('the and of with vs by in from to for a an or after and across into versus forms form rules rule german english grammar nouns noun verbs verb article articles pronouns pronoun case cases overview comparison construction constructions adjective adjectives clauses clause words word types type tense tenses use usage'.split(' '));
 function tokens(s){return [...new Set(String(s).toLowerCase().replace(/[^a-zäöüß0-9]+/g,' ').split(' ').filter(x=>x.length>2&&!stop.has(x)).map(x=>x.replace(/(ing|tion|sion|ments|ment|es|s)$/,'')||x))];}
@@ -65,7 +76,7 @@ const CORE={
 function el(tag,cls,value){const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=String(value);return n;}
 function add(parent,...children){children.forEach(c=>c&&parent.append(c));return parent;}
 function button(label,fn,cls){const b=el('button',cls||'wl-action',label);b.type='button';b.addEventListener('click',fn);return b;}
-function write(){try{localStorage.setItem(storeKey,JSON.stringify(saved));}catch{}}
+function write(){try{localStorage.setItem(storeKey(),JSON.stringify(saved));}catch{}}
 function state(id){return saved[id]||{};}
 function updateState(id,patch){saved[id]={...state(id),...patch,updatedAt:new Date().toISOString()};write();}
 function nReviewed(){return flat.filter(t=>state(t.id).reviewed).length;}
