@@ -13,7 +13,7 @@ w.AudioContext=class {
  resume(){this.state='running';return Promise.resolve()}
 };
 w.WortWeg={navigate(id){for(const item of w.document.querySelectorAll('.section'))item.classList.toggle('active',item.id===id)}};
-const source=fs.readFileSync('settings.js','utf8');w.eval(source);
+const source=fs.readFileSync('settings.js','utf8'),navigation=fs.readFileSync('page-navigation.js','utf8');w.eval(source);w.eval(navigation);
 const $=id=>w.document.getElementById(id);
 assert.equal(w.document.querySelector('#dashboard .ww-main-menu')!==null,true,'Dashboard starts with main menu');
 assert.equal(w.document.querySelectorAll('#dashboard button[data-nav]').length,5,'All five game menu destinations');
@@ -29,7 +29,7 @@ for(const id of ['voiceVolume','musicVolume','fxVolume']){
 assert.ok(gains.some(x=>x===1),'At default 50%, ambient-music bus preserves existing pleasant base volume');
 w.document.querySelector('#dashboard button[data-nav=study]').click();
 assert.equal(w.document.querySelector('.section.active').id,'study','Start learning navigates to practice');
-w.document.querySelector('#study .ww-menu-back').click();
+w.document.querySelector('#study .ww-page-nav-back').click();
 assert.equal(w.document.querySelector('.section.active').id,'dashboard','Back returns to game main menu');
 w.document.querySelector('header .ww-settings-icon').click();
 assert.equal(w.document.querySelector('.section.active').id,'settings','Gear opens Settings');
@@ -74,13 +74,13 @@ Promise.resolve().then(()=>{
   w.scrollTo=()=>{};w.structuredClone=structuredClone;
   w.matchMedia=()=>({matches:false,addEventListener:()=>{}});
  }});
- live.window.eval(source);
+ live.window.eval(source);live.window.eval(navigation);
  const liveHome=live.window.document.getElementById('dashboard');
  assert.ok(liveHome?.querySelector('.ww-main-menu'),'The real app has the game-style start menu');
  assert.equal(liveHome.querySelectorAll('.ww-menu-options button').length,5);
  liveHome.querySelector('[data-nav=study]').click();
  assert.equal(live.window.document.querySelector('.section.active')?.id,'study','Production quiz route opens from game menu');
- live.window.document.querySelector('#study .ww-menu-back').click();
+ live.window.document.querySelector('#study .ww-page-nav-back').click();
  assert.equal(live.window.document.querySelector('.section.active')?.id,'dashboard','Production back button returns home');
  live.window.close();
  assert.equal(JSON.parse(w.localStorage.getItem('wortweg370-settings-v1')).backgroundMusic,false,'Music off remains saved');
