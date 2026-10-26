@@ -26,7 +26,7 @@ function renderAccount(user){
   photo.src=image.href;
  }catch{}
 }
-let active=null,ready=false,syncTimer=null,busy=false,applying=false,requestedGoogleLogin=false,generation=0,unsubscribe=null;
+let active=null,ready=false,syncTimer=null,busy=false,applying=false,requestedGoogleLogin=false,generation=0,unsubscribe=null,coreRevision=0;
 const setStatus=t=>{status.textContent=t};
 const ref=uid=>doc(db,'users',uid,'state','progress');
 const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
@@ -54,13 +54,13 @@ const extra=createExtraProgressSync({
 });
 function queueCore(){
  if(!active||!ready||applying)return;
- const uid=active.uid;
+ const uid=active.uid;coreRevision++;
  try{localStorage.setItem(pendingKey(uid),'1')}catch{}
  clearTimeout(syncTimer);syncTimer=setTimeout(flushCore,850);
 }
 async function flushCore(){
  if(!active||!ready||busy)return;
- const uid=active.uid,token=generation;
+ const uid=active.uid,token=generation,savingRevision=coreRevision;
  busy=true;
  try{
   const snapshot=await getDocFromServer(ref(uid));
@@ -70,7 +70,9 @@ async function flushCore(){
   if(!same(merged,remote))await setDoc(ref(uid),{progress:merged,updatedAt:serverTimestamp()},{merge:true});
   if(token!==generation)return;
   if(!same(local,merged)){applying=true;try{window.WortWeg.setProgress(merged)}finally{applying=false}}
-  localStorage.removeItem(pendingKey(uid));setStatus('Cloud synced');
+  if(savingRevision===coreRevision)localStorage.removeItem(pendingKey(uid));
+  else setTimeout(()=>{if(active?.uid===uid&&ready)queueCore();},0);
+  setStatus('Cloud synced');
  }catch{if(token===generation)setStatus('Saved on this device · sync will retry');}
  finally{busy=false;}
 }
