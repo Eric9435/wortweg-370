@@ -16,6 +16,8 @@ jobs:
           node --input-type=module --check < extra-progress-sync.js
           node --input-type=module --check < cloud.js
           node test-extra-progress-sync.cjs
+          node --check settings.js
+          node test-offline-account.cjs
           node --check live-content.js
           node --check ios-polish.js
           node --check whiteboard.js
