@@ -13,7 +13,7 @@ function profile(){const uid=window.WortWegAccountSnapshot?.uid;return uid&&/^[\
 function key(){return 'wortweg370-writing-v1-'+profile();}
 function load(){try{const v=JSON.parse(localStorage.getItem(key())||'{}');return v&&typeof v==='object'&&!Array.isArray(v)?v:{}}catch{return {};}}
 let records=load();
-function persist(){try{localStorage.setItem(key(),JSON.stringify(records));}catch{}}
+function persist(){try{localStorage.setItem(key(),JSON.stringify(records));window.dispatchEvent(new Event('wortweg:study-changed'));}catch{}}
 function rowFor(w){return records[w.id]||{repetitions:0,correct:0,status:'learning',history:[]};}
 function safeText(tag,content,cls){const e=document.createElement(tag);if(cls)e.className=cls;if(content!==undefined)e.textContent=content;return e}
 function button(text,cb,cls){const b=safeText('button',text,cls||'');b.type='button';b.addEventListener('click',cb);return b;}
