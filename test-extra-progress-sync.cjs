@@ -3,8 +3,8 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const code=fs.readFileSync('extra-progress-sync.js','utf8').replace(/^export /gm,'');
 const data=new Map();
 const localStorage={getItem:key=>data.has(key)?data.get(key):null,setItem:(key,v)=>data.set(key,String(v)),removeItem:key=>data.delete(key)};
-const events=[];
-const window={WortWegAccountSnapshot:{uid:'userA'},addEventListener:()=>{},dispatchEvent:e=>events.push(e.type)};
+const events=[],listeners=new Map();
+const window={WortWegAccountSnapshot:{uid:'userA'},addEventListener:(type,fn)=>{const list=listeners.get(type)||[];list.push(fn);listeners.set(type,list)},dispatchEvent:e=>{events.push(e.type);for(const fn of listeners.get(e.type)||[])fn(e)}};
 const context={localStorage,window,document:{visibilityState:'visible'},setTimeout,clearTimeout,setInterval,clearInterval,CustomEvent:class{constructor(type,opts){this.type=type;this.detail=opts.detail}},Event:class{constructor(type){this.type=type}}};
 vm.createContext(context);
 vm.runInContext(code+'\n;globalThis.TestSync={mergeStudyData,createExtraProgressSync}',context);
@@ -40,7 +40,7 @@ const sync=createExtraProgressSync({readCloud,writeCloud});
  // An offline update is retained and uploaded after reconnection.
  result['b:3']={repetitions:6};localStorage.setItem('wortweg370-flashcards-v1-userA',JSON.stringify(result));
  offline=true;await sync.sync();assert.equal(JSON.parse(localStorage.getItem('wortweg370-flashcards-v1-userA'))['b:3'].repetitions,6);
- offline=false;await sync.sync();assert.equal(cloud.extraProgress.records.flashcards['b:3'].repetitions,6);
+ offline=false;window.dispatchEvent(new context.Event('online'));await new Promise(resolve=>setTimeout(resolve,1050));assert.equal(cloud.extraProgress.records.flashcards['b:3'].repetitions,6,'Returning online automatically uploads offline study history without a manual button');
  sync.stop();localStorage.getItem=original;
  console.log('Cloud learning sync tests passed');
 })().catch(error=>{sync.stop();console.error(error);process.exitCode=1});
