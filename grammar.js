@@ -13,7 +13,7 @@ function save(){try{localStorage.setItem(STORAGE,JSON.stringify(progress));}catc
 function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e;}
 function btn(txt,action,cls=''){const b=el('button','wg-btn '+cls,txt);b.type='button';b.addEventListener('click',action);return b;}
 function add(parent,...children){parent.append(...children);return parent;}
-function userKey(){const id=window.WortWeg?.getUser?.()?.uid || window.WortWeg?.currentUser?.uid || 'local';return STORAGE+'-'+id;}
+function userKey(){const id=window.WortWegAccountSnapshot?.uid || window.WortWeg?.getUser?.()?.uid || window.WortWeg?.currentUser?.uid || 'local';return STORAGE+'-'+id;}
 function readUser(){try{const value=JSON.parse(localStorage.getItem(userKey())||'{}');progress=value&&typeof value==='object'&&!Array.isArray(value)?value:{};}catch{progress={};}}
 function writeUser(){try{localStorage.setItem(userKey(),JSON.stringify(progress));}catch{}window.dispatchEvent(new Event('wortweg:grammar-changed'));}
 const root=el('section','wg-academy');root.id='wg-academy';root.hidden=true;root.setAttribute('aria-label','German grammar academy');
