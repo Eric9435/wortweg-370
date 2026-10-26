@@ -43,6 +43,7 @@ export function createExtraProgressSync({readCloud,writeCloud,onStatus=()=>{}}){
  let uid=null,serial=0,working=false,again=false,interval=null,debounce=null;
  const baselineKey=u=>'wortweg370-extras-baseline-v1:'+u;
  const prefix='wortweg370-extras-backup-v1:';
+ const pendingKey=u=>'wortweg370-extras-pending-v1:'+u;
  const eligible=u=>typeof u==='string'&&/^[a-zA-Z0-9_-]{1,128}$/.test(u);
  function fromLocal(u){
   const data={};
@@ -74,10 +75,13 @@ export function createExtraProgressSync({readCloud,writeCloud,onStatus=()=>{}}){
   if(working){again=true;return;}
   const u=uid,t=serial;working=true;
   try{
-   const local=fromLocal(u),base=baseline(u);
+   if(typeof navigator!=='undefined'&&navigator.onLine===false){onStatus('Offline · answers saved on this device');return;}
+   const base=baseline(u);
    const payload=await readCloud(u);
    if(t!==serial)return;
    const cloud=object(payload?.extraProgress?.records)?payload.extraProgress.records:{};
+   // Read local data AFTER the network request so newly completed offline questions are included.
+   const local=fromLocal(u);
    const merged=mergeStudyData(base,local,cloud)||{};
    if(!equal(merged,cloud)){
     // A recoverable pre-merge copy protects cloud-only edits during conflicts.
@@ -85,29 +89,42 @@ export function createExtraProgressSync({readCloud,writeCloud,onStatus=()=>{}}){
     await writeCloud(u,merged);
    }
    if(t!==serial)return;
+   // Never overwrite questions answered while a cloud upload was in flight.
+   if(!equal(fromLocal(u),local)){
+    try{localStorage.setItem(pendingKey(u),'1');}catch{}
+    again=true;return;
+   }
    saveLocal(u,merged);
-   localStorage.setItem(baselineKey(u),JSON.stringify(merged));
-   if(!equal(merged,cloud)||!equal(local,merged))onStatus('Learning progress synced across devices');
+   // If device storage is full, do not acknowledge an incomplete restore.
+   if(!equal(fromLocal(u),merged)){
+    try{localStorage.setItem(pendingKey(u),'1');}catch{}
+    onStatus('Device storage full · original progress preserved');return;
+   }
+   try{localStorage.setItem(baselineKey(u),JSON.stringify(merged));localStorage.removeItem(pendingKey(u));}catch{}
+   if(!equal(merged,cloud)||!equal(local,merged))onStatus('Cloud synced · all learning progress up to date');
   }catch(error){
-   if(t===serial)onStatus('Saved on this device · account sync will retry');
+   if(t===serial){try{localStorage.setItem(pendingKey(u),'1');}catch{}onStatus('Saved on this device · account sync will retry');}
   }finally{
    working=false;
    if(again&&uid){again=false;queue();}
   }
  }
- function queue(){if(!uid)return;clearTimeout(debounce);debounce=setTimeout(sync,1000);}
+ function queue(){if(!uid)return;try{localStorage.setItem(pendingKey(uid),'1');}catch{}clearTimeout(debounce);debounce=setTimeout(sync,850);}
  function start(userId){
   stop();
   if(!eligible(userId))return;
   uid=userId;serial++;
   queue();
-  interval=setInterval(()=>{if(document.visibilityState!=='hidden')void sync();},20000);
+  // Continue after offline work, sleeping tabs and device reconnects without manual input.
+  interval=setInterval(()=>{if(document.visibilityState!=='hidden')void sync();},15000);
  }
  function stop(){uid=null;serial++;clearTimeout(interval);clearTimeout(debounce);interval=null;debounce=null;again=false;}
  window.addEventListener('online',queue);
  window.addEventListener('focus',queue);
+ window.addEventListener('pageshow',queue);
+ window.addEventListener('storage',event=>{if(uid&&event.key&&stores.some(([,key])=>key(uid)===event.key))queue();});
  window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')queue();});
- for(const event of ['wortweg:changed','wortweg:flashcards-changed','wortweg:grammar-changed','wortweg:live-progress-changed']){
+ for(const event of ['wortweg:changed','wortweg:flashcards-changed','wortweg:grammar-changed','wortweg:live-progress-changed','wortweg:study-changed']){
   window.addEventListener(event,queue);
  }
  window.WortWegExtraProgress={sync:queue,getStores:()=>stores.map(([name])=>name)};
