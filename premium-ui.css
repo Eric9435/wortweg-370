@@ -1,0 +1,192 @@
+/* WortWeg 370 · unified Apple-inspired interface.
+   Presentation only: no changes to learning data, Firebase or lesson sources. */
+:root{
+ --ww-radius-xl:24px;--ww-radius-lg:18px;--ww-radius-md:14px;
+ --ww-surface:#fff;--ww-canvas:#f5f7fa;--ww-ink:#192b42;
+ --ww-secondary:#637387;--ww-border:#e1e7ef;
+ --ww-brand:#176a86;--ww-focus:#217fa9;
+ --ww-soft-shadow:0 4px 24px rgb(20 44 70 / 4%);
+}
+html{scroll-behavior:smooth}
+body.ww-game-interface{
+ --panel:var(--ww-surface);--panel2:#f7f9fc;--line:var(--ww-border);
+ --txt:var(--ww-ink);--muted:var(--ww-secondary);
+ --accent:var(--ww-brand);--bg:var(--ww-canvas);
+ background:var(--bg)!important;
+ color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+ -webkit-font-smoothing:antialiased;
+}
+html[data-mode="dark"] body.ww-game-interface{
+ --ww-surface:#1a2738;--ww-canvas:#101925;--ww-ink:#eaf1f9;
+ --ww-secondary:#b5c2d1;--ww-border:#354456;--ww-brand:#70d8dc;
+ --ww-focus:#80ddea;
+ --panel2:#233247;
+ --ww-soft-shadow:0 5px 25px rgb(0 0 0 / 12%);
+ color-scheme:dark;
+}
+body.ww-game-interface main{max-width:1120px!important;padding:20px clamp(16px,4vw,35px) calc(80px + env(safe-area-inset-bottom))!important}
+body.ww-game-interface main>header{
+ border:0!important;border-bottom:1px solid var(--ww-border)!important;
+ box-shadow:none!important;border-radius:0!important;padding:6px 0 19px!important;
+ background:transparent!important;gap:12px!important;margin-bottom:12px!important;
+}
+body.ww-game-interface .brand h1{font-size:clamp(20px,3vw,25px)!important;font-weight:780;letter-spacing:-.045em}
+body.ww-game-interface .brand .logo{border-radius:14px;overflow:hidden}
+body.ww-game-interface header .ww-settings-icon{
+ display:grid;place-items:center;min-width:44px;min-height:44px;
+ background:var(--panel2)!important;border:1px solid var(--ww-border)!important;
+ border-radius:15px!important;color:var(--txt)!important;
+}
+body.ww-game-interface .section{width:100%;min-width:0}
+body.ww-game-interface main>.section:not(#dashboard){max-width:980px;margin:0 auto}
+body.ww-game-interface main>.section.active{animation:wwPremiumArrive .21s ease-out both!important}
+@keyframes wwPremiumArrive{from{opacity:.65;transform:translate3d(0,6px,0)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ body.ww-game-interface main>.section.active{animation:none!important}
+ body.ww-game-interface *,body.ww-game-interface *::before,body.ww-game-interface *::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+body.ww-game-interface main>.section .card{
+ background:var(--panel);border:1px solid var(--ww-border);
+ border-radius:var(--ww-radius-xl);box-shadow:var(--ww-soft-shadow);
+}
+body.ww-game-interface main>.section :is(h2,h3){letter-spacing:-.035em;color:var(--txt)!important}
+body.ww-game-interface :is(button,a,input,select,textarea):focus-visible{
+ outline:3px solid var(--ww-focus)!important;outline-offset:3px!important;
+}
+body.ww-game-interface button{touch-action:manipulation}
+body.ww-game-interface :is(input:not([type=checkbox]),select,textarea){
+ color:var(--txt)!important;background:var(--panel)!important;
+ border:1px solid var(--ww-border)!important;
+ border-radius:var(--ww-radius-md)!important;min-height:48px!important;
+}
+body.ww-game-interface label{color:var(--muted);font-weight:600;letter-spacing:-.01em}
+body.ww-game-interface :is(.btn,.ww-account-btn){
+ min-height:45px;border-radius:var(--ww-radius-md)!important;
+ padding:11px 16px;box-shadow:none!important;line-height:1.35;
+}
+body.ww-game-interface .btn.primary{
+ color:#fff!important;background:#195c86!important;border-color:#195c86!important;
+}
+body.ww-game-interface .btn.primary:hover:not(:disabled){background:#104c73!important}
+html[data-mode="dark"] body.ww-game-interface .btn.primary{background:#347eb1!important;border-color:#347eb1!important}
+body.ww-game-interface :is(.btn,.choice):disabled{opacity:.48;cursor:not-allowed}
+body.ww-game-interface main>.section>.ww-page-nav{
+ display:grid!important;grid-template-columns:minmax(72px,1fr) minmax(0,2fr) minmax(44px,1fr);
+ align-items:center!important;width:100%!important;min-height:59px!important;
+ gap:7px!important;padding:3px 0 13px!important;margin:0 0 18px!important;
+ background:transparent!important;border:0!important;
+ border-bottom:1px solid var(--ww-border)!important;
+ border-radius:0!important;box-shadow:none!important;isolation:auto!important;
+}
+body.ww-game-interface main>.section>.ww-page-nav .ww-page-nav-back{
+ justify-self:start!important;padding:9px 8px!important;
+ min-height:44px!important;border:0!important;background:transparent!important;
+ border-radius:11px!important;box-shadow:none!important;
+ font-size:15px!important;letter-spacing:-.02em;color:var(--accent)!important;
+ font-weight:650!important;
+}
+body.ww-game-interface main>.section>.ww-page-nav .ww-page-nav-label{
+ justify-self:center;min-width:0;text-align:center;font-size:16px!important;
+ font-weight:745!important;color:var(--txt)!important;opacity:1!important;letter-spacing:-.03em;
+}
+body.ww-game-interface main>.section>.ww-page-nav .ww-page-nav-tools{
+ justify-self:end!important;display:grid!important;place-items:center!important;
+ width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;
+ border:1px solid var(--ww-border)!important;background:var(--panel)!important;
+ border-radius:13px!important;color:var(--txt)!important;padding:8px!important;
+}
+body.ww-game-interface main>.section>.ww-page-nav .ww-page-nav-tools:hover{background:var(--panel2)!important}
+body.ww-game-interface[data-page]:not([data-page="dashboard"]) #ww-whiteboard-launcher{display:none!important}
+/* Main nav replaces legacy Back/Close implementations. */
+body.ww-game-interface main>.section>.ww-menu-back,
+body.ww-game-interface main>.section>.ww-back,
+body.ww-game-interface #ww-workspace-head,
+body.ww-game-interface main>.section #backToSetup,
+body.ww-game-interface main>.section #ww-settings-back{display:none!important}
+body.ww-game-interface #study>.card{padding:clamp(20px,4vw,30px)!important}
+body.ww-game-interface #study>.card h3{font-size:clamp(23px,5vw,29px)!important;margin:0 0 24px}
+body.ww-game-interface #study .form-grid{gap:18px!important;margin-bottom:24px!important}
+body.ww-game-interface #study label{margin-bottom:8px}
+body.ww-game-interface #quizAvailable{margin:17px 0 0!important;line-height:1.6}
+body.ww-game-interface #study #startQuiz{font-size:15px;font-weight:735}
+body.ww-game-interface #study #startReview{background:var(--panel)!important;color:var(--txt)!important;border:1px solid var(--ww-border)!important}
+body.ww-game-interface main>#quiz{max-width:780px!important}
+body.ww-game-interface #quiz #quizCard{
+ background:transparent!important;border:0!important;border-radius:0!important;
+ box-shadow:none!important;padding:2px 0 28px!important;
+}
+body.ww-game-interface #quizCard>.spread{align-items:center!important;margin-bottom:17px}
+body.ww-game-interface #quizLabel{
+ display:inline-flex;align-items:center;border:0;background:transparent!important;
+ padding:0!important;font-size:12px;font-weight:810;letter-spacing:.075em;
+ color:var(--accent)!important;
+}
+body.ww-game-interface #quizCounter{font-weight:650;letter-spacing:.02em;font-variant-numeric:tabular-nums}
+body.ww-game-interface #quizProgress{height:7px!important;border-radius:99px!important;margin:0 0 33px!important;background:var(--ww-border)!important}
+body.ww-game-interface #quizProgress>div{background:var(--accent)!important;transition:width .18s ease!important}
+body.ww-game-interface #quizStage>.muted.tiny{font-size:13px!important;line-height:1.5;color:var(--muted)!important}
+body.ww-game-interface #quizStage .question{
+ color:var(--txt);font-weight:790;line-height:1.18;
+ font-size:clamp(27px,6vw,37px);letter-spacing:-.055em;
+ overflow-wrap:anywhere;max-width:100%;
+}
+body.ww-game-interface #quizStage #sayQuestion{
+ min-height:44px;background:var(--panel2)!important;
+ color:var(--accent)!important;border:1px solid var(--ww-border)!important;
+ border-radius:14px!important;white-space:nowrap;
+}
+body.ww-game-interface #quiz #answerButtons{
+ display:grid!important;grid-template-columns:1fr!important;gap:12px!important;
+ margin:25px 0 28px!important;
+}
+body.ww-game-interface #quiz #answerButtons .choice{
+ box-sizing:border-box!important;width:100%;min-height:72px!important;
+ display:flex!important;align-items:center!important;
+ padding:17px 20px!important;line-height:1.4!important;
+ font-size:clamp(16px,3vw,19px)!important;font-weight:530;
+ border:1px solid var(--ww-border)!important;
+ border-radius:var(--ww-radius-lg)!important;
+ background:var(--panel)!important;color:var(--txt)!important;
+ box-shadow:none!important;overflow-wrap:anywhere;
+}
+body.ww-game-interface #quiz #answerButtons .choice:hover:not(:disabled){border-color:var(--accent)!important}
+body.ww-game-interface #quiz #answerButtons .choice.selected{
+ border:2px solid var(--accent)!important;
+ background:color-mix(in srgb,var(--accent) 10%,var(--panel))!important;
+}
+body.ww-game-interface #quiz #answerButtons .choice.good{
+ border:2px solid #239872!important;background:color-mix(in srgb,#239872 13%,var(--panel))!important
+}
+body.ww-game-interface #quiz #answerButtons .choice.bad{
+ border:2px solid #c85461!important;background:color-mix(in srgb,#c85461 11%,var(--panel))!important
+}
+body.ww-game-interface #quiz #answerFeedback{line-height:1.6!important;margin:4px 0 14px}
+body.ww-game-interface #quiz #submitAnswer{
+ width:100%!important;max-width:none!important;min-height:56px!important;
+ margin:24px 0 calc(18px + env(safe-area-inset-bottom))!important;
+ padding:14px 18px!important;font-size:17px!important;
+ border-radius:16px!important;font-weight:760!important;
+}
+body.ww-game-interface #quiz #submitAnswer:disabled{opacity:.56}
+body.ww-game-interface #quiz #misses{max-height:min(45vh,450px);overflow-y:auto}
+body.ww-game-interface #settings #ww-settings-topbar{padding-top:0!important}
+body.ww-game-interface #settings #ww-settings-topbar .ww-settings-back{display:none!important}
+body.ww-game-interface #settings #ww-settings-topbar #ww-settings-heading{margin-top:0!important}
+body.ww-game-interface :is(#bank,#topics,#review,#stats) .card{padding:clamp(18px,3.5vw,27px)}
+@media(min-width:760px){
+ body.ww-game-interface #quiz #answerButtons{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.ww-game-interface #quiz #answerButtons .choice{min-height:88px!important}
+}
+@media(max-width:600px){
+ body.ww-game-interface main{padding:12px 18px calc(70px + env(safe-area-inset-bottom))!important}
+ body.ww-game-interface main>header{padding-bottom:12px!important}
+ body.ww-game-interface main>.section>.ww-page-nav{margin-bottom:15px!important}
+ body.ww-game-interface #quiz #quizCard{padding-top:0!important}
+ body.ww-game-interface #quizProgress{margin-bottom:26px!important}
+ body.ww-game-interface #quiz #answerButtons{margin-top:21px!important;gap:10px!important}
+ body.ww-game-interface #quiz #answerButtons .choice{min-height:66px!important;padding:15px 16px!important}
+ body.ww-game-interface #study .form-grid{grid-template-columns:1fr!important}
+ body.ww-game-interface #study #quizLength{width:100%!important}
+ body.ww-game-interface #study #startQuiz{width:100%}
+}
