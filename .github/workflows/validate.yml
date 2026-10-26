@@ -22,6 +22,7 @@ jobs:
           node --check ios-polish.js
           node --check whiteboard.js
           node --check page-navigation.js
+          node test-premium-ui.cjs
           node --check reading-studio.js
           node --check seen-words.js
           node --check flashcards.js
