@@ -76,7 +76,7 @@ const CORE={
 function el(tag,cls,value){const n=document.createElement(tag);if(cls)n.className=cls;if(value!==undefined)n.textContent=String(value);return n;}
 function add(parent,...children){children.forEach(c=>c&&parent.append(c));return parent;}
 function button(label,fn,cls){const b=el('button',cls||'wl-action',label);b.type='button';b.addEventListener('click',fn);return b;}
-function write(){try{localStorage.setItem(storeKey(),JSON.stringify(saved));}catch{}}
+function write(){try{localStorage.setItem(storeKey(),JSON.stringify(saved));window.dispatchEvent(new Event('wortweg:study-changed'));}catch{}}
 function state(id){return saved[id]||{};}
 function updateState(id,patch){saved[id]={...state(id),...patch,updatedAt:new Date().toISOString()};write();}
 function nReviewed(){return flat.filter(t=>state(t.id).reviewed).length;}
