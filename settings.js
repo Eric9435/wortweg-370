@@ -249,3 +249,30 @@ media.addEventListener('change',apply);apply();permissionStatus();tick();
 
 // Premium iPhone-inspired Home layout is CSS-only, leaving app workflows unchanged.
 (()=>{const sheet=document.createElement('link');sheet.rel='stylesheet';sheet.href='./home-premium.css';document.head.append(sheet);})();
+
+// Restore the previously authenticated profile even when Firebase's remote
+// JavaScript cannot load during a cold offline PWA launch. A true sign-out
+// clears this account ID, so guest answers are never sent to a stranger.
+(()=>{
+ 'use strict';
+ if(window.WortWegNative)return; // Capacitor handles persisted native sign-in.
+ let restored=false;
+ function restore(){
+  if(navigator.onLine!==false||window.WortWegAccountSnapshot?.uid)return;
+  let uid='';
+  try{uid=localStorage.getItem('wortweg370-last-google-uid')||'';}catch{}
+  if(!/^[a-zA-Z0-9_-]{1,128}$/.test(uid)||!window.WortWeg?.switchProfile)return;
+  window.WortWeg.switchProfile(uid);
+  window.WortWegAccountSnapshot={uid,offline:true};
+  window.dispatchEvent(new CustomEvent('wortweg:account',{detail:window.WortWegAccountSnapshot}));
+  restored=true;
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',restore,{once:true});
+ else restore();
+ window.addEventListener('online',()=>{
+  if(!restored||!window.WortWegAccountSnapshot?.offline)return;
+  // Reconnect account synchronizer without discarding quiz answers or reloading
+  // the active study page. The unique query avoids caching a failed module fetch.
+  import('./cloud.js?v=14&offline-reconnect='+Date.now()).catch(()=>{});
+ });
+})();
