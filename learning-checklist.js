@@ -86,7 +86,7 @@ const account=()=>String(window.WortWegAccountSnapshot?.uid||'guest');
 const storageKey=()=> 'wortweg370-curriculum-v1:'+account();
 let state={};
 function load(){try{const data=JSON.parse(localStorage.getItem(storageKey())||'{}');state=data&&typeof data==='object'&&!Array.isArray(data)?data:{}}catch{state={}}}
-function save(){try{localStorage.setItem(storageKey(),JSON.stringify(state))}catch{}}
+function save(){try{localStorage.setItem(storageKey(),JSON.stringify(state));window.dispatchEvent(new Event('wortweg:study-changed'));}catch{}}
 const status=id=>state[id]?.status||'Not started';
 function render(){
  const total=items.length,done=items.filter(i=>status(i.id)==='Know it').length,learning=items.filter(i=>status(i.id)==='Learning').length;
