@@ -16,7 +16,7 @@ let active='all',profile=(window.WortWegAccountSnapshot?.uid||'guest'),viewPage=
 let progress={learned:{},mistakes:{}};
 const key=()=> 'wortweg370-special-vocabulary-v1:'+profile;
 function load(){try{const v=JSON.parse(localStorage.getItem(key())||'{}');progress={learned:v.learned&&typeof v.learned==='object'?v.learned:{},mistakes:v.mistakes&&typeof v.mistakes==='object'?v.mistakes:{}};}catch{progress={learned:{},mistakes:{}};}}
-function save(){try{localStorage.setItem(key(),JSON.stringify(progress))}catch{}}
+function save(){try{localStorage.setItem(key(),JSON.stringify(progress));window.dispatchEvent(new Event('wortweg:study-changed'));}catch{}}
 function activeCategory(id){return CATEGORIES.find(c=>c.id===id)}
 function list(){const source=active==='all'?all:activeCategory(active).words;const term=$('ww-special-search').value.trim().toLocaleLowerCase();const filter=$('ww-special-filter').value;return source.filter(w=>(!term||[w.de,w.en,w.my].some(s=>s.toLocaleLowerCase().includes(term)))&&(filter==='all'||(filter==='learned'&&progress.learned[w.id])||(filter==='unlearned'&&!progress.learned[w.id])||(filter==='mistakes'&&progress.mistakes[w.id]>0)))}
 function navigate(id){if(window.WortWeg?.navigate)window.WortWeg.navigate(id);else document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo?.(0,0);}
