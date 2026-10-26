@@ -36,5 +36,5 @@ for(const f of ['lifetime-grammar.html','lifetime-grammar.css','lifetime-grammar
 }
 assert(fs.readFileSync('ios-polish.js','utf8').includes('ww-lifetime-grammar-launch'),'Lifetime home-menu launcher missing');
 assert(fs.readFileSync('lifetime-grammar.js','utf8').includes('authoredRules:focusedRules.length'));
-assert(sw.includes("fallback=path===lifetimePath?'./lifetime-grammar.html':'./index.html'"),'Offline subpage fallback missing');
+assert(sw.includes("fallback=path===lifetimePath?'./lifetime-grammar.html':")&&sw.includes("path===posterPath?'./grammar-120.html':'./index.html'"),'Offline subpage fallback missing');
 console.log('PASS: 36 chapters, 288 bilingual topics/rules/topic-specific examples; verified paradigms, offline/native coverage');
