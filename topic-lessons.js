@@ -293,7 +293,7 @@
    const records=expressionRecords(),k=expressionKey(selected.topic.id,w);
    records[k]={...(records[k]||{}),de:w.de,en:w.en,known:value,lastCorrect:value,
     answered:records[k]?.answered||0,correct:records[k]?.correct||0,wrong:records[k]?.wrong||0};
-   try{localStorage.setItem(expressionStorage(),JSON.stringify(records));}catch{}
+   try{localStorage.setItem(expressionStorage(),JSON.stringify(records));window.dispatchEvent(new Event('wortweg:study-changed'));}catch{}
   }else{
    const p=window.WortWeg.getProgress(),k=key(w);
    const old=p.items[k]||{de:w.de,en:w.en,mm:w.mm||'',wrong:0,streak:0,due:null,last:null};
@@ -324,7 +324,7 @@
    correct:(Number(prev.correct)||0)+(correct?1:0),
    wrong:(Number(prev.wrong)||0)+(correct?0:1),
    lastCorrect:Boolean(correct),known:Boolean(correct),de:w.de,en:w.en};
-  try{localStorage.setItem(expressionStorage(),JSON.stringify(all));}
+  try{localStorage.setItem(expressionStorage(),JSON.stringify(all));window.dispatchEvent(new Event('wortweg:study-changed'));}
   catch{/* Browsers with storage disabled still allow a session quiz. */}
  }
  function speak(de){
