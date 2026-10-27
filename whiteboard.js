@@ -435,12 +435,29 @@
       }
     });
     const app=document.querySelector('#app')||document.body;
-    const observer=new MutationObserver(()=>{
+    const checkOnFrame=()=>{
       if(observer.pending)return;
       observer.pending=true;
-      requestAnimationFrame(()=>{observer.pending=false;checkPage();});
+      requestAnimationFrame(()=>{observer.pending=false;if(window.document?.body)checkPage();});
+    };
+    const observer=new MutationObserver(records=>{
+      // A new quiz answer is not a new whiteboard page. Ignore hundreds of
+      // choice/feedback DOM updates and check only routes or modal changes.
+      if(records.some(record=>{
+        const target=record.target;
+        if(record.type==='attributes'){
+          return target?.classList?.contains('section')||
+           target?.matches?.('.wwr-overlay,#wg-academy,#ww-flashcards,[role="dialog"],.ww-special-vocabulary');
+        }
+        if(target===app||target===document.body)return true;
+        if(target?.matches?.('.wwr-overlay,#wg-academy,#ww-flashcards'))return true;
+        if([...record.addedNodes,...record.removedNodes].some(node=>node.nodeType===1&&node.matches?.('.wwr-overlay,#wg-academy,#ww-flashcards,[role="dialog"],.ww-special-vocabulary')))return true;
+        return false;
+      }))checkOnFrame();
     });
     observer.observe(app,{attributes:true,attributeFilter:['class','hidden','aria-hidden'],childList:true,subtree:true});
+    window.addEventListener('wortweg:page-changed',checkOnFrame);
+    window.addEventListener('hashchange',checkOnFrame);
     window.WortWegWhiteboard={open:()=>setOpen(true),close:()=>setOpen(false),setTool:switchTool,
       undo,redo,clear,getStrokeCount:()=>strokes.length,getPage:()=>pageKey};
     pageKey=safeKey();
