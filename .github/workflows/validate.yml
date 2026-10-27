@@ -121,6 +121,8 @@ jobs:
           NODE
       - name: Test saved answers and separate account progress
         run: node test-memory.cjs
+      - name: Verify offline quiz checkpoint and Continue / New flow
+        run: node test-quiz-resume.cjs
       - name: Test game-style navigation and Google profile onboarding
         run: node test-game-ui.cjs
       - name: Verify iOS-inspired UI and account-aware progress
