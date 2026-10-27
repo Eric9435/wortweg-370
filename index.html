@@ -121,8 +121,99 @@ const $=id=>document.getElementById(id), KEY='wortweg370-progress-v3', DAY=86400
 
 const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`};
 const seed=()=>({answered:0,correct:0,history:[],items:{},seen:{}});
+
+const progressWriteStampKey=p=>'wortweg370-progress-written-v1:'+p;
+let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false;
+function validProgress(p){return !!(p&&typeof p==='object'&&Number.isFinite(p.answered)&&Number.isFinite(p.correct)&&p.items&&typeof p.items==='object'&&p.seen&&typeof p.seen==='object'&&Array.isArray(p.history));}
+function quotaError(e){return !!(e&&(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22||e.code===1014));}
+function tryLocalSave(k,value){
+ try{localStorage.setItem(k,value);return true;}catch(e){
+  // Preserve all learning records. Only a re-downloadable lessons cache
+  // can be evicted when Safari has exhausted localStorage.
+  if(!quotaError(e))return false;
+  try{
+   if(k!=='wortweg370-live-pack-v1'&&localStorage.getItem('wortweg370-live-pack-v1')!==null){
+    localStorage.removeItem('wortweg370-live-pack-v1');
+    localStorage.setItem(k,value);
+    return true;
+   }
+  }catch{}
+  return false;
+ }
+}
+function progressDatabase(mode,p,data){
+ return new Promise((resolve,reject)=>{
+  if(!('indexedDB' in window)){reject(new Error('IndexedDB unavailable'));return;}
+  let opening;try{opening=indexedDB.open('wortweg370-progress-backup-v1',1);}catch(e){reject(e);return;}
+  opening.onupgradeneeded=()=>{
+   if(!opening.result.objectStoreNames.contains('profiles'))opening.result.createObjectStore('profiles');
+  };
+  opening.onerror=()=>reject(opening.error||new Error('IndexedDB open failed'));
+  opening.onsuccess=()=>{
+   const db=opening.result;let result;
+   try{
+    const tx=db.transaction('profiles',mode==='get'?'readonly':'readwrite'), store=tx.objectStore('profiles');
+    const request=mode==='get'?store.get(p):store.put(data,p);
+    request.onsuccess=()=>{result=request.result;};
+    tx.oncomplete=()=>{db.close();resolve(mode==='get'?result:true);};
+    tx.onerror=()=>{db.close();reject(tx.error||new Error('IndexedDB write failed'));};
+    tx.onabort=()=>{db.close();reject(tx.error||new Error('IndexedDB transaction aborted'));};
+   }catch(e){db.close();reject(e);}
+  };
+ });
+}
+function saveProgressBackup(p,snapshot,time){
+ progressBackupQueue=progressBackupQueue.catch(()=>{}).then(()=>progressDatabase('put',p,{data:snapshot,savedAt:time}));
+ return progressBackupQueue;
+}
+function storageWarning(){
+ if(storageNotice)return;
+ const el=document.createElement('div');
+ el.id='wortweg-storage-recovery';
+ el.setAttribute('role','alert');
+ el.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:2147483640;padding:14px 16px;background:#17365d;color:white;border:2px solid #ffce83;border-radius:14px;box-shadow:0 5px 20px #0005;font:15px/1.45 system-ui,sans-serif';
+ const msg=document.createElement('div');
+ msg.textContent='Your learning progress could not be saved on this device. Keep this tab open and export your progress now.';
+ const exportButton=document.createElement('button');
+ exportButton.type='button';exportButton.textContent='Export progress';
+ exportButton.style.cssText='margin-top:10px;padding:9px 14px;border:0;border-radius:9px;background:white;color:#17365d;font-weight:700';
+ exportButton.addEventListener('click',()=>{
+  const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress},null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(file),a=document.createElement('a');
+  a.href=url;a.download='WortWeg-progress-'+profile+'.json';document.body.append(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+ });
+ el.append(msg,exportButton);document.body.append(el);storageNotice=el;
+}
+function clearStorageWarning(){if(storageNotice){storageNotice.remove();storageNotice=null;}}
+function recoverIndexedProgress(p=profile){
+ const revision=progressRevision;
+ progressDatabase('get',p).then(record=>{
+  if(profile!==p||progressRevision!==revision||!record||!validProgress(record.data))return;
+  let lastLocal=0;
+  try{lastLocal=Number(localStorage.getItem(progressWriteStampKey(p)))||0;}catch{}
+  if(record.savedAt<=lastLocal)return;
+  progress=structuredClone(record.data);
+  const restored=tryLocalSave(storageKey(),JSON.stringify(progress));
+  if(restored)tryLocalSave(progressWriteStampKey(p),String(record.savedAt));
+  refreshStats();showReview();showSummary();refreshQuizResume();
+  toast('Saved learning progress recovered.');
+ }).catch(()=>{});
+}
+
 let progress;try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()};if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];
-function save(){try{localStorage.setItem(storageKey(),JSON.stringify(progress))}catch(e){toast('Storage unavailable. Check browser settings.')}refreshStats();window.dispatchEvent(new Event('wortweg:changed'))}
+function save(){
+ const p=profile, snapshot=structuredClone(progress), savedAt=Date.now(), written=tryLocalSave(storageKey(),JSON.stringify(snapshot));
+ ++progressRevision;
+ if(written)tryLocalSave(progressWriteStampKey(p),String(savedAt));
+ saveProgressBackup(p,snapshot,savedAt).then(()=>{
+  if(!written&&!reportedBackupUse){reportedBackupUse=true;toast('Progress saved using backup storage.');}
+  clearStorageWarning();
+ }).catch(()=>{
+  if(!written)storageWarning();
+ });
+ refreshStats();window.dispatchEvent(new Event('wortweg:changed'));
+}
 function toast(t){const el=$('toast');el.textContent=t;el.style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display='none',3300)}
 function escapeHTML(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function key(w){return String(w.id).startsWith('t1-')?'c:'+w.de.toLowerCase():'b:'+w.id}
@@ -184,7 +275,7 @@ function saveQuizSession(){
   }else{
    localStorage.setItem(sessionKey(),JSON.stringify(payload));
   }
- }catch{toast('Quiz storage is unavailable. Free device space to keep your place.');}
+ }catch{toast('Quiz position could not be saved. Please export your progress and check Safari storage.');storageWarning();}
  refreshQuizResume(quiz);
  // Debounce cloud notification: each selected answer still saves immediately
  // offline, while rapid taps don't cause repeated Firebase serialization.
@@ -334,9 +425,9 @@ function showSummary(){const mastered=Object.values(progress.items).filter(s=>s.
 window.WortWeg={
  getProgress:()=>structuredClone(progress),
  setProgress:p=>{if(!p||typeof p!=='object'||!Number.isFinite(p.answered)||!Number.isFinite(p.correct)||!p.items||!p.seen||!Array.isArray(p.history))return;progress=structuredClone(p);save();showReview();showSummary();},
- switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard')},
+ switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard');++progressRevision;recoverIndexedProgress()},
  navigate:nav
 };
-updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
+updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');recoverIndexedProgress();if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();
 </script><script src="./bank-browser.js"></script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js?v=14"></script></body></html>
