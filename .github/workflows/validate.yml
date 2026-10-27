@@ -48,7 +48,7 @@ jobs:
           new vm.Script(script[1],{filename:'wortweg-app.js'});
           const manifest=JSON.parse(fs.readFileSync('manifest.webmanifest','utf8'));
           if(!manifest.name)throw Error('Manifest missing name');
-          for(const marker of ['wortweg370-progress-v3','localStorage.setItem(storageKey()','switchProfile:id=>','function record(w,good)']){
+          for(const marker of ['wortweg370-progress-v3','tryLocalSave(storageKey()','switchProfile:id=>','function record(w,good)']){
             if(!html.includes(marker))throw Error('Missing persistence feature: '+marker);
           }
           console.log('PASS: JavaScript syntax, manifest, and persistence hooks');
