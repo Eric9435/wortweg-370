@@ -36,7 +36,7 @@ const tick=()=>new Promise(resolve=>setTimeout(resolve,5));
  assert.equal(JSON.parse(w.localStorage.getItem('wortweg370-settings-v1')).name,'Sample Learner','Profile data persists under the unchanged key');
  $('ww-settings-back').click();
  assert.equal(nav.getCurrent(),null,'Back returns to the Settings hub instead of the game menu');
- assert.equal(w.document.querySelectorAll('#settings > .ww-menu-back').length,1,'Legacy back control remains functional but is hidden by CSS');
+ assert.equal(w.document.querySelectorAll('#settings > .ww-menu-back').length,0,'No redundant legacy Back button is injected into Settings');
  w.document.querySelector('[data-settings-page=sound]').click();
  assert.ok($('pref-touchSound').closest('[data-settings-view=sound]'));
  assert.ok($('audio-pack-test').closest('[data-settings-view=sound]'),'Offline German speech controls retained');
