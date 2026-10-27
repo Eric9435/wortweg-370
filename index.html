@@ -188,7 +188,7 @@ function storageWarning(){
 function clearStorageWarning(){if(storageNotice){storageNotice.remove();storageNotice=null;}}
 function recoverIndexedProgress(p=profile){
  const revision=progressRevision;
- progressDatabase('get',p).then(record=>{
+ return progressDatabase('get',p).then(record=>{
   if(profile!==p||progressRevision!==revision||!record||!validProgress(record.data))return;
   let lastLocal=0;
   try{lastLocal=Number(localStorage.getItem(progressWriteStampKey(p)))||0;}catch{}
@@ -425,9 +425,9 @@ function showSummary(){const mastered=Object.values(progress.items).filter(s=>s.
 window.WortWeg={
  getProgress:()=>structuredClone(progress),
  setProgress:p=>{if(!p||typeof p!=='object'||!Number.isFinite(p.answered)||!Number.isFinite(p.correct)||!p.items||!p.seen||!Array.isArray(p.history))return;progress=structuredClone(p);save();showReview();showSummary();},
- switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard');++progressRevision;recoverIndexedProgress()},
+ switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard');++progressRevision;return recoverIndexedProgress()},
  navigate:nav
 };
-updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');recoverIndexedProgress();if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
+updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');window.WortWeg.storageReady=recoverIndexedProgress();if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();
-</script><script src="./bank-browser.js"></script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js?v=14"></script></body></html>
+</script><script src="./bank-browser.js"></script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js?v=15"></script></body></html>
