@@ -33,6 +33,7 @@ const same=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const valid=p=>p&&Number.isFinite(p.answered)&&Number.isFinite(p.correct)&&p.items&&p.seen&&Array.isArray(p.history);
 const blank=()=>({answered:0,correct:0,items:{},seen:{},history:[]});
 const pendingKey=uid=>'wortweg370-cloud-pending:'+uid;
+const hasPending=uid=>{try{return localStorage.getItem(pendingKey(uid))==='1'}catch{return false}};
 function mergeQuiz(local,remote){
  if(!valid(local))return valid(remote)?remote:blank();
  if(!valid(remote))return local;
@@ -70,7 +71,7 @@ async function flushCore(){
   if(!same(merged,remote))await setDoc(ref(uid),{progress:merged,updatedAt:serverTimestamp()},{merge:true});
   if(token!==generation)return;
   if(!same(local,merged)){applying=true;try{window.WortWeg.setProgress(merged)}finally{applying=false}}
-  if(savingRevision===coreRevision)localStorage.removeItem(pendingKey(uid));
+  if(savingRevision===coreRevision){try{localStorage.removeItem(pendingKey(uid))}catch{}}
   else setTimeout(()=>{if(active?.uid===uid&&ready)queueCore();},0);
   setStatus('Cloud synced');
  }catch{if(token===generation)setStatus('Saved on this device · sync will retry');}
@@ -96,14 +97,17 @@ onAuthStateChanged(auth,async user=>{
  window.WortWegAccountSnapshot={uid:user?.uid||null,name:user?.displayName||'',email:user?.email||'',photoURL:user?.photoURL||'',justSignedIn};
  window.dispatchEvent(new CustomEvent('wortweg:account',{detail:window.WortWegAccountSnapshot}));
  if(!window.WortWeg){setStatus('App update needed. Reload this page.');return}
- if(!user){window.WortWeg.switchProfile('guest');setStatus('Saved on this device');ready=true;return}
- window.WortWeg.switchProfile(user.uid);setStatus('Loading your cloud history…');
+ await window.WortWeg.storageReady;
+ if(token!==generation)return;
+ if(!user){await window.WortWeg.switchProfile('guest');if(token!==generation)return;setStatus('Saved on this device');ready=true;return}
+ await window.WortWeg.switchProfile(user.uid);if(token!==generation)return;setStatus('Loading your cloud history…');
+ let uploadNeeded=false;
  try{
   const snapshot=await getDocFromServer(ref(user.uid));
   if(token!==generation)return;
   const local=window.WortWeg.getProgress(),remote=snapshot.data()?.progress,merged=mergeQuiz(local,remote);
   if(!same(local,merged)){applying=true;try{window.WortWeg.setProgress(merged)}finally{applying=false}}
-  if(!valid(remote)||!same(merged,remote))localStorage.setItem(pendingKey(user.uid),'1');
+  if(!valid(remote)||!same(merged,remote)){uploadNeeded=true;try{localStorage.setItem(pendingKey(user.uid),'1')}catch{}}
   setStatus('Account history loaded');
  }catch{if(token===generation)setStatus('Offline · saved on this device')}
  if(token!==generation)return;
@@ -117,8 +121,8 @@ onAuthStateChanged(auth,async user=>{
   if(!same(local,merged)){applying=true;try{window.WortWeg.setProgress(merged)}finally{applying=false}}
   if(!same(merged,remote))queueCore();else setStatus('Cloud synced');
  },()=>{if(token===generation)setStatus('Cloud listener unavailable · retrying')});
- if(localStorage.getItem(pendingKey(user.uid))==='1')queueCore();
+ if(uploadNeeded||hasPending(user.uid))queueCore();
 });
 window.addEventListener('wortweg:changed',queueCore);
-window.addEventListener('wortweg:page-changed',event=>{if(event.detail?.page!=='quiz'&&active&&ready&&localStorage.getItem(pendingKey(active.uid))==='1')queueCore()});
-window.addEventListener('online',()=>{if(active&&ready){if(localStorage.getItem(pendingKey(active.uid))==='1')queueCore();extra.sync()}});
+window.addEventListener('wortweg:page-changed',event=>{if(event.detail?.page!=='quiz'&&active&&ready&&hasPending(active.uid))queueCore()});
+window.addEventListener('online',()=>{if(active&&ready){if(hasPending(active.uid))queueCore();extra.sync()}});
