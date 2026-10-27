@@ -155,7 +155,16 @@
  const style=document.createElement('link');
  style.rel='stylesheet';style.href='./page-navigation.css?v=1';document.head.append(style);
  const observer=new MutationObserver(records=>{
-   if(records.some(record=>record.type==='childList'||record.target?.classList?.contains('section')))queue();
+   // Rebuild navigation only for actual screens/overlays. Answer-button changes
+   // during a 900+ question quiz must never rescan the entire application.
+   if(records.some(record=>{
+     if(record.type==='attributes')return record.target?.classList?.contains('section');
+     const target=record.target;
+     if(target===main||target===document.body)return true;
+     if(target?.id==='ww-flashcards'||target?.id==='wg-academy')return true;
+     if(target?.classList?.contains('wwr-overlay'))return true;
+     return false;
+   }))queue();
  });
  observer.observe(main,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
  observer.observe(document.body,{childList:true});
