@@ -20,6 +20,7 @@ function stored(dom){return Object.fromEntries(Array.from({length:dom.window.loc
  const key=dom.window.localStorage.key(i);return [key,dom.window.localStorage.getItem(key)];
 }))}
 function click(dom,id){dom.window.document.getElementById(id).click()}
+function startNew(dom){click(dom,'startQuiz');const dialog=dom.window.document.getElementById('ww-quiz-replace-dialog');if(dialog&&!dialog.hidden)click(dom,'ww-quiz-replace-new');}
 const first=launch();
 assert.equal(first.window.document.querySelector('.section.active').id,'dashboard');
 first.window.document.querySelector('#dashboard [data-nav="study"]').click();
@@ -41,7 +42,7 @@ assert.ok(first.window.document.querySelector('#quiz #quizCard'),'Quiz has a ded
 assert.deepEqual([...selector.options].map(x=>x.value),['10','25','50','100','all']);
 selector.value='all';
 first.window.document.getElementById('mode').value='topic1';
-click(first,'startQuiz');
+startNew(first);
 assert.equal(first.window.document.querySelector('.section.active').id,'quiz','Starting a quiz opens a separate full-page quiz screen');
 assert.equal(first.window.document.querySelector('#quiz .ww-page-nav-label').textContent,'Quiz','Navigation title reflects Quiz');
 assert.equal(first.window.document.getElementById('study').classList.contains('active'),false,'Setup is hidden while taking a quiz');
@@ -50,22 +51,22 @@ first.window.document.querySelector('#quiz .ww-page-nav-back').click();
 assert.equal(first.window.document.querySelector('.section.active').id,'study','Back to setup switches to setup-only screen');
 assert.equal(first.window.document.querySelector('#study .ww-page-nav-label').textContent,'Practice','Setup header is restored');
 assert.equal(first.window.document.getElementById('quiz').classList.contains('active'),false,'Quiz content is hidden on setup');
-click(first,'startQuiz');
+startNew(first);
 assert.equal(first.window.document.querySelector('.section.active').id,'quiz','Restart reopens quiz screen');
 assert.equal(first.window.document.querySelectorAll('#answerButtons .choice').length,4);
 first.window.document.getElementById('mode').value='bank';
 first.window.document.getElementById('level').value='A1';
-click(first,'startQuiz');
+startNew(first);
 assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / '+bankData.bank.filter(x=>x.level==='A1').length,'All within a selected level includes every word');
 first.window.document.getElementById('level').value='ALL';
-click(first,'startQuiz');
+startNew(first);
 assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / '+bankData.bank.length,'All levels includes the complete word bank');
-selector.value='25';click(first,'startQuiz');
+selector.value='25';startNew(first);
 assert.equal(first.window.document.getElementById('quizCounter').textContent,'1 / 25','Custom short lengths remain available');
 first.window.document.querySelector('#quiz .ww-page-nav-back').click();
 assert.equal(first.window.document.querySelector('.section.active').id,'study','Global Back button returns quiz to setup');
 assert.equal(first.window.document.querySelector('#study .ww-page-nav-label').textContent,'Practice','Single Back updates heading');
-selector.value='10';click(first,'startQuiz');
+selector.value='10';startNew(first);
 first.window.document.querySelector('#answerButtons .choice').click();click(first,'submitAnswer');
 assert.equal(progress(first).answered,1,'Answers save immediately');
 assert.equal(JSON.parse(first.window.localStorage.getItem(KEY+':guest')).answered,1);
