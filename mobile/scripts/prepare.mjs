@@ -16,7 +16,7 @@ html=html.replace(/<meta[^>]*name="viewport"[^>]*>/g,'');
 html=replace(html,'</head>','<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}.mobile-note{font-size:.85rem;margin:6px 0}.mobile-status{color:var(--muted)}</style><script>window.WortWegNative={bundledSpeech:true};</script></head>');
 // Native assets load locally; neither network navigation nor the website's SW is needed.
 html=replace(html,"if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});",'');
-html=replace(html,'<script type="module" src="./cloud.js?v=14"></script>','<script src="./native.js"></script>');
+html=replace(html,'<script type="module" src="./cloud.js?v=15"></script>','<script src="./native.js"></script>');
 html=replace(html,'<script src="./audio.js"></script>','<script src="./vendor/mespeak/mespeak.js"></script><script src="./audio.js"></script>');
 html=html.replace(/<link[^>]+rel="manifest"[^>]*>/g,'');
 await writeFile(new URL('index.html',out),html);
