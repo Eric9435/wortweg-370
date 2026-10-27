@@ -95,4 +95,32 @@ assert.equal(c.window.document.getElementById('quizResume').hidden,true,'Differe
 c.window.WortWeg.switchProfile('user-a');
 assert.equal(c.window.document.getElementById('quizResume').hidden,false,'Return to original account restores its checkpoint');
 c.window.close();
-console.log('PASS: offline quiz resume, exact question/choice, no duplicate scores, Continue/New confirmation, account isolation');
+// Performance regression: an A2 All quiz should never rewrite a huge 932-word
+// manifest on every tap. Only a tiny cursor tracks position/answer state.
+const long=launch();
+long.window.document.getElementById('mode').value='bank';
+long.window.document.getElementById('level').value='A2';
+long.window.document.getElementById('quizLength').value='all';
+click(long,'startQuiz');
+const longManifest=long.window.localStorage.getItem('wortweg370-quiz-session-v1:guest');
+const longData=JSON.parse(longManifest);
+assert.ok(longData.keys.length>100,'Long-quiz optimization is exercised');
+long.window.document.querySelector('#answerButtons button').click();
+const firstCursor=JSON.parse(long.window.localStorage.getItem('wortweg370-quiz-cursor-v1:guest'));
+assert.equal(firstCursor.chosen,0,'Option choice is saved in the lightweight cursor');
+assert.equal(long.window.localStorage.getItem('wortweg370-quiz-session-v1:guest'),longManifest,'Selecting a choice does not rewrite the full word order');
+click(long,'submitAnswer');
+const totalSaved=long.window.WortWeg.getProgress().answered;
+click(long,'submitAnswer');
+const movedCursor=JSON.parse(long.window.localStorage.getItem('wortweg370-quiz-cursor-v1:guest'));
+assert.equal(movedCursor.i,1,'Cursor saves the next question immediately');
+assert.equal(long.window.localStorage.getItem('wortweg370-quiz-session-v1:guest'),longManifest,'Checking and advancing do not rewrite the word manifest');
+assert.ok(JSON.stringify(movedCursor).length<JSON.stringify(longData).length/2,'Cursor is much smaller than saved word bank manifest');
+const longState=state(long);long.window.close();
+const resumedLong=launch(longState);
+click(resumedLong,'continueQuiz');
+assert.equal(resumedLong.window.document.getElementById('quizCounter').textContent,'2 / '+longData.keys.length,'Full A2 quiz resumes from exact position after reload');
+assert.equal(resumedLong.window.WortWeg.getProgress().answered,totalSaved,'Resume does not count answers twice');
+resumedLong.window.close();
+assert(fs.readFileSync('extra-progress-sync.js','utf8').includes("['quizCursor'"),'Cloud sync includes long-quiz cursor');
+console.log('PASS: offline quiz resume, Continue/New, long All-question cursor performance and account isolation');
