@@ -21,10 +21,15 @@ const writeCloud=async(_,records)=>{if(offline)throw Error('offline');writes++;c
 localStorage.setItem('wortweg370-flashcards-v1-userA',JSON.stringify({'b:1':{repetitions:2}}));
 localStorage.setItem('wortweg370-grammar-v1-userA',JSON.stringify({a1:{mastered:true}}));
 localStorage.setItem('wortweg370-flashcards-v1-guest',JSON.stringify({'b:guest':{repetitions:7}}));
+localStorage.setItem('wortweg370-quiz-session-v1:userA',JSON.stringify({v:1,updatedAt:100,id:'resume-a',keys:['b:1','b:2'],i:1,score:1,wrong:[],label:'A1 · Word Bank',kind:'new',chosen:-1,locked:false,opts:[]}));
+localStorage.setItem('wortweg370-quiz-session-v1:guest',JSON.stringify({v:1,id:'private-guest',keys:['b:3'],i:0,score:0}));
 const sync=createExtraProgressSync({readCloud,writeCloud});
 (async()=>{
  sync.start('userA');await sync.sync();
  assert.equal(writes,1);
+ assert.equal(cloud.extraProgress.records.quizSession.id,'resume-a','Active Google profile uploads unfinished quiz');
+ assert.equal(cloud.extraProgress.records.quizSession.i,1);
+ assert.notEqual(cloud.extraProgress.records.quizSession.id,'private-guest','Guest quiz session stays local');
  let result=JSON.parse(localStorage.getItem('wortweg370-flashcards-v1-userA'));
  assert.equal(result['b:1'].repetitions,2);assert.equal(result['b:2'].repetitions,4);
  assert.equal(JSON.parse(localStorage.getItem('wortweg370-special-vocabulary-v1:userA')).learned.k1,true);
@@ -37,10 +42,13 @@ const sync=createExtraProgressSync({readCloud,writeCloud});
  await sync.sync();
  result=JSON.parse(localStorage.getItem('wortweg370-flashcards-v1-userA'));
  assert.equal(result['b:1'].repetitions,2);assert.equal(result['b:2'].repetitions,4);
+ assert.equal(JSON.parse(localStorage.getItem('wortweg370-quiz-session-v1:userA')).i,1,'Second device downloads exact quiz checkpoint');
  // An offline update is retained and uploaded after reconnection.
  result['b:3']={repetitions:6};localStorage.setItem('wortweg370-flashcards-v1-userA',JSON.stringify(result));
+ let checkpoint=JSON.parse(localStorage.getItem('wortweg370-quiz-session-v1:userA'));checkpoint.i=2;checkpoint.updatedAt=200;
+ localStorage.setItem('wortweg370-quiz-session-v1:userA',JSON.stringify(checkpoint));
  offline=true;await sync.sync();assert.equal(JSON.parse(localStorage.getItem('wortweg370-flashcards-v1-userA'))['b:3'].repetitions,6);
- offline=false;window.dispatchEvent(new context.Event('online'));await new Promise(resolve=>setTimeout(resolve,1050));assert.equal(cloud.extraProgress.records.flashcards['b:3'].repetitions,6,'Returning online automatically uploads offline study history without a manual button');
+ offline=false;window.dispatchEvent(new context.Event('online'));await new Promise(resolve=>setTimeout(resolve,1050));assert.equal(cloud.extraProgress.records.flashcards['b:3'].repetitions,6,'Returning online automatically uploads offline study history without a manual button');assert.equal(cloud.extraProgress.records.quizSession.i,2,'Returning online uploads unfinished quiz checkpoint');
  sync.stop();localStorage.getItem=original;
  console.log('Cloud learning sync tests passed');
 })().catch(error=>{sync.stop();console.error(error);process.exitCode=1});
