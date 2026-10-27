@@ -137,17 +137,26 @@ function nav(name){document.querySelectorAll('.section').forEach(e=>e.classList.
 document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.nav)));
 let quiz=null;
 const SESSION_KEY='wortweg370-quiz-session-v1:';
+const SESSION_CURSOR_KEY='wortweg370-quiz-cursor-v1:';
 const sessionKey=()=>SESSION_KEY+profile;
+const sessionCursorKey=()=>SESSION_CURSOR_KEY+profile;
+let sessionMetadataStoredFor='';
 function pendingSession(){
  try{
-  const s=JSON.parse(localStorage.getItem(sessionKey())||'null');
-  return s&&s.v===1&&!s.finished&&Array.isArray(s.keys)&&s.keys.length>0&&s.keys.length<=BANK.length+CURATED.length
+  const stored=JSON.parse(localStorage.getItem(sessionKey())||'null');
+  if(!stored||stored.v!==1||stored.finished||!Array.isArray(stored.keys))return null;
+  const cursor=JSON.parse(localStorage.getItem(sessionCursorKey())||'null');
+  // Large quizzes keep a one-time vocabulary manifest and a tiny live cursor;
+  // both are account scoped and can sync separately when coming back online.
+  const s=cursor?.id===stored.id&&!cursor.finished&&Number(cursor.updatedAt)>=Number(stored.updatedAt)
+   ?{...stored,...cursor,keys:stored.keys}:stored;
+  return s.keys.length>0&&s.keys.length<=BANK.length+CURATED.length
    &&Number.isInteger(s.i)&&s.i>=0&&s.i<s.keys.length&&Number.isFinite(s.score)&&typeof s.label==='string'
    &&s.keys.every(k=>typeof k==='string'&&k.length<250)?s:null;
  }catch{return null;}
 }
-function refreshQuizResume(){
- const s=pendingSession(),card=$('quizResume');
+function refreshQuizResume(active){
+ const s=active?.list?.length?{label:active.label,i:active.i,keys:active.keys||active.list}:pendingSession(),card=$('quizResume');
  card.hidden=!s;
  if(s){
   $('resumeSummary').textContent=s.label+' · Question '+(s.i+1).toLocaleString()+' of '+s.keys.length.toLocaleString();
@@ -161,12 +170,35 @@ function saveQuizSession(){
   keys:quiz.keys||quiz.list.map(key),i:quiz.i,score:quiz.score,
   wrong:quiz.wrong.map(key),label:quiz.label,kind:quiz.kind,
   locked:!!quiz.locked,chosen:quiz.chosen,opts:quiz.opts};
- try{localStorage.setItem(sessionKey(),JSON.stringify(payload));}catch{toast('Quiz storage is unavailable. Free device space to keep your place.');}
- refreshQuizResume();
- window.dispatchEvent(new Event('wortweg:study-changed'));
+ try{
+  if(payload.keys.length>100){
+   // Save the large word order exactly ONCE. On every answer only write
+   // the small cursor (~200 bytes), not the entire 900–11,000 ID manifest.
+   if(sessionMetadataStoredFor!==quiz.id){
+    const manifest={...payload,i:0,score:0,wrong:[],locked:false,chosen:-1,opts:[]};
+    localStorage.setItem(sessionKey(),JSON.stringify(manifest));
+    sessionMetadataStoredFor=quiz.id;
+   }
+   const {keys,...cursor}=payload;
+   localStorage.setItem(sessionCursorKey(),JSON.stringify(cursor));
+  }else{
+   localStorage.setItem(sessionKey(),JSON.stringify(payload));
+  }
+ }catch{toast('Quiz storage is unavailable. Free device space to keep your place.');}
+ refreshQuizResume(quiz);
+ // Debounce cloud notification: each selected answer still saves immediately
+ // offline, while rapid taps don't cause repeated Firebase serialization.
+ clearTimeout(saveQuizSession.notify);
+ saveQuizSession.notify=setTimeout(()=>window.dispatchEvent(new Event('wortweg:study-changed')),350);
 }
 function clearQuizSession(){
- try{localStorage.setItem(sessionKey(),JSON.stringify({v:1,finished:true,updatedAt:Date.now()}));}catch{}
+ clearTimeout(saveQuizSession.notify);
+ try{
+  const finished={v:1,finished:true,updatedAt:Date.now()};
+  localStorage.setItem(sessionKey(),JSON.stringify(finished));
+  localStorage.setItem(sessionCursorKey(),JSON.stringify({...finished,id:quiz?.id}));
+  sessionMetadataStoredFor='';
+ }catch{}
  refreshQuizResume();
  window.dispatchEvent(new Event('wortweg:study-changed'));
 }
@@ -177,6 +209,7 @@ function continueQuiz(){
  quiz={id:s.id||String(s.updatedAt),list,keys:s.keys,i:s.i,score:s.score,
   wrong:(s.wrong||[]).map(lookupItem).filter(Boolean),label:s.label,kind:s.kind||'new',
   locked:!!s.locked,chosen:Number.isInteger(s.chosen)?s.chosen:-1,opts:Array.isArray(s.opts)?s.opts:[]};
+ sessionMetadataStoredFor=s.keys.length>100?quiz.id:'';
  nav('quiz');$('quizLabel').textContent=quiz.label.toUpperCase();
  showQuestion(true);
 }
@@ -238,6 +271,7 @@ function startQuiz(pool,label,kind='new',confirmed=false){
  const list=kind==='review'?shuffle(pool).slice(0,count):pick(pool,count);
  quiz={id:String(Date.now())+'-'+Math.random().toString(36).slice(2,8),list,
   keys:list.map(key),i:0,score:0,wrong:[],label,kind,locked:false,chosen:-1,opts:[]};
+ sessionMetadataStoredFor='';
  nav('quiz');$('quizLabel').textContent=label.toUpperCase();showQuestion();
 }
 function optionsFor(w){
@@ -300,7 +334,7 @@ function showSummary(){const mastered=Object.values(progress.items).filter(s=>s.
 window.WortWeg={
  getProgress:()=>structuredClone(progress),
  setProgress:p=>{if(!p||typeof p!=='object'||!Number.isFinite(p.answered)||!Number.isFinite(p.correct)||!p.items||!p.seen||!Array.isArray(p.history))return;progress=structuredClone(p);save();showReview();showSummary();},
- switchProfile:id=>{profile=String(id||'guest');try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard')},
+ switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard')},
  navigate:nav
 };
 updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
