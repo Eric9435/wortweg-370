@@ -113,7 +113,7 @@ export function createExtraProgressSync({readCloud,writeCloud,onStatus=()=>{}}){
    if(again&&uid){again=false;queue();}
   }
  }
- function queue(){if(!uid)return;try{localStorage.setItem(pendingKey(uid),'1');}catch{}clearTimeout(debounce);debounce=setTimeout(sync,850);}
+ function queue(){if(!uid)return;try{localStorage.setItem(pendingKey(uid),'1');}catch{}clearTimeout(debounce);debounce=setTimeout(sync,document.body?.dataset?.page==='quiz'?5000:850);}
  function start(userId){
   stop();
   if(!eligible(userId))return;
@@ -126,6 +126,7 @@ export function createExtraProgressSync({readCloud,writeCloud,onStatus=()=>{}}){
  window.addEventListener('online',queue);
  window.addEventListener('focus',queue);
  window.addEventListener('pageshow',queue);
+ window.addEventListener('wortweg:page-changed',event=>{if(event.detail?.page!=='quiz')queue();});
  window.addEventListener('storage',event=>{if(uid&&event.key&&stores.some(([,key])=>key(uid)===event.key))queue();});
  window.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')queue();});
  for(const event of ['wortweg:changed','wortweg:flashcards-changed','wortweg:grammar-changed','wortweg:live-progress-changed','wortweg:study-changed']){
