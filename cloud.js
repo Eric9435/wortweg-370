@@ -56,7 +56,7 @@ function queueCore(){
  if(!active||!ready||applying)return;
  const uid=active.uid;coreRevision++;
  try{localStorage.setItem(pendingKey(uid),'1')}catch{}
- clearTimeout(syncTimer);syncTimer=setTimeout(flushCore,850);
+ clearTimeout(syncTimer);syncTimer=setTimeout(flushCore,document.body?.dataset?.page==='quiz'?5000:850);
 }
 async function flushCore(){
  if(!active||!ready||busy)return;
@@ -120,4 +120,5 @@ onAuthStateChanged(auth,async user=>{
  if(localStorage.getItem(pendingKey(user.uid))==='1')queueCore();
 });
 window.addEventListener('wortweg:changed',queueCore);
+window.addEventListener('wortweg:page-changed',event=>{if(event.detail?.page!=='quiz'&&active&&ready&&localStorage.getItem(pendingKey(active.uid))==='1')queueCore()});
 window.addEventListener('online',()=>{if(active&&ready){if(localStorage.getItem(pendingKey(active.uid))==='1')queueCore();extra.sync()}});
