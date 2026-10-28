@@ -3,16 +3,16 @@ const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/st
 const html=fs.readFileSync('index.html','utf8');
 const cloud=fs.readFileSync('cloud.js','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
-assert.match(html,/return progressDatabase\('get',p\)\.then/);
-assert.match(html,/\+\+progressRevision;return recoverIndexedProgress\(\)/);
-assert.match(html,/window\.WortWeg\.storageReady=recoverIndexedProgress\(\)/);
+assert.match(html,/Promise\.allSettled\(\[progressDatabase\('get',p\),progressCache\('get',p\)\]\)/);
+assert.match(html,/\+\+progressRevision;return restoreOfflineState\(\)/);
+assert.match(html,/window\.WortWeg\.storageReady=restoreOfflineState\(\)/);
 assert.match(cloud,/await window\.WortWeg\.storageReady/);
 assert.match(cloud,/await window\.WortWeg\.switchProfile\(user.uid\)/);
 assert.match(cloud,/if\(uploadNeeded\|\|hasPending\(user.uid\)\)queueCore\(\)/);
 assert.match(sw,/const CACHE='wortweg370-v\d+'/,'PWA cache must use a versioned namespace');
 const start=html.indexOf('function progressDatabase('),end=html.indexOf('function saveProgressBackup(',start);
 assert.ok(start>0&&end>start,'backup transaction implementation exists');
-const dbSource=html.slice(start,end);
+const dbSource=html.slice(start,html.indexOf('let emergencyCacheWriteQueue=',start));
 const values=new Map();let installed=false;
 const db={
  objectStoreNames:{contains:()=>installed},

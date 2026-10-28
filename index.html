@@ -123,7 +123,7 @@ const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMon
 const seed=()=>({answered:0,correct:0,history:[],items:{},seen:{}});
 
 const progressWriteStampKey=p=>'wortweg370-progress-written-v1:'+p;
-let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false, storageLocalError='none', quizCheckpointFailed=false;
+let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false, storageLocalError='none', quizCheckpointFailed=false, coreProgressFailed=false;
 function validProgress(p){return !!(p&&typeof p==='object'&&Number.isFinite(p.answered)&&Number.isFinite(p.correct)&&p.items&&typeof p.items==='object'&&p.seen&&typeof p.seen==='object'&&Array.isArray(p.history));}
 function quotaError(e){return !!(e&&(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22||e.code===1014));}
 function tryLocalSave(k,value){
@@ -151,6 +151,7 @@ function progressDatabase(mode,p,data){
    if(!opening.result.objectStoreNames.contains('profiles'))opening.result.createObjectStore('profiles');
   };
   opening.onerror=()=>reject(opening.error||new Error('IndexedDB open failed'));
+  opening.onblocked=()=>reject(new Error('IndexedDB open blocked by another tab'));
   opening.onsuccess=()=>{
    const db=opening.result;let result;
    try{
@@ -164,6 +165,26 @@ function progressDatabase(mode,p,data){
   };
  });
 }
+let emergencyCacheWriteQueue=Promise.resolve();
+function progressCache(mode,p,record){
+ return (async()=>{
+  if(!('caches' in window))throw new Error('CacheStorage unavailable');
+  const cache=await caches.open('wortweg370-emergency-progress-v1');
+  const request=new Request(new URL('./__offline_progress__/'+encodeURIComponent(p),location.href).href);
+  if(mode==='get'){
+   const response=await cache.match(request);
+   if(!response)return null;
+   const value=await response.json();
+   return value&&Number.isFinite(value.savedAt)?value:null;
+  }
+  const response=new Response(JSON.stringify(record),{headers:{'Content-Type':'application/json'}});
+  // Safari can finish overlapping CacheStorage writes out of order.
+  // Serialize emergency snapshots so an older quiz answer cannot overwrite a newer one.
+  emergencyCacheWriteQueue=emergencyCacheWriteQueue.catch(()=>{}).then(()=>cache.put(request,response));
+  await emergencyCacheWriteQueue;
+  return true;
+ })();
+}
 function saveProgressBackup(p,snapshot,time){
  progressBackupQueue=progressBackupQueue.catch(()=>{}).then(()=>progressDatabase('put',p,{data:snapshot,savedAt:time}));
  return progressBackupQueue;
@@ -171,7 +192,7 @@ function saveProgressBackup(p,snapshot,time){
 function storageWarning(failure){
  const idbCode=String(failure?.name||failure?.message||'Unavailable').slice(0,80);
  const localCode=storageLocalError;
- const errorInfo='localStorage: '+localCode+' | IndexedDB/checkpoint: '+idbCode;
+ const errorInfo='localStorage: '+localCode+' | backup/checkpoint: '+idbCode;
  if(storageNotice){
   const details=storageNotice.querySelector('#wortweg-storage-details');
   if(details)details.textContent=errorInfo;
@@ -193,7 +214,7 @@ function storageWarning(failure){
  exportButton.type='button';exportButton.textContent='Export progress';
  exportButton.style.cssText='padding:9px 14px;border:0;border-radius:9px;background:white;color:#17365d;font-weight:700';
  exportButton.addEventListener('click',()=>{
-  const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress},null,2)],{type:'application/json'});
+  const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress,quizSession:pendingSession()},null,2)],{type:'application/json'});
   const url=URL.createObjectURL(file),a=document.createElement('a');
   a.href=url;a.download='WortWeg-progress-'+profile+'.json';document.body.append(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),60000);
@@ -218,13 +239,18 @@ function storageWarning(failure){
  }
 }
 function clearStorageWarning(){if(storageNotice){storageNotice.remove();storageNotice=null;}}
+function clearWarningIfSafe(){if(!quizCheckpointFailed&&!coreProgressFailed)clearStorageWarning();}
 function recoverIndexedProgress(p=profile){
  const revision=progressRevision;
- return progressDatabase('get',p).then(record=>{
-  if(profile!==p||progressRevision!==revision||!record||!validProgress(record.data))return;
+ return Promise.allSettled([progressDatabase('get',p),progressCache('get',p)]).then(results=>{
+  if(profile!==p||progressRevision!==revision)return;
+  const candidates=results.filter(r=>r.status==='fulfilled').map(r=>r.value)
+   .filter(r=>r&&validProgress(r.data)&&Number.isFinite(r.savedAt));
+  if(!candidates.length)return;
+  const record=candidates.reduce((a,b)=>a.savedAt>=b.savedAt?a:b);
   let lastLocal=0;
   try{lastLocal=Number(localStorage.getItem(progressWriteStampKey(p)))||0;}catch{}
-  if(record.savedAt<=lastLocal)return;
+  if(record.savedAt<=lastLocal||record.data.answered<progress.answered)return;
   progress=structuredClone(record.data);
   const restored=tryLocalSave(storageKey(),JSON.stringify(progress));
   if(restored)tryLocalSave(progressWriteStampKey(p),String(record.savedAt));
@@ -236,14 +262,23 @@ function recoverIndexedProgress(p=profile){
 let progress;try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()};if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];
 function save(){
  const p=profile, snapshot=structuredClone(progress), savedAt=Date.now(), written=tryLocalSave(storageKey(),JSON.stringify(snapshot));
- if(written&&!quizCheckpointFailed)clearStorageWarning();
  ++progressRevision;
- if(written)tryLocalSave(progressWriteStampKey(p),String(savedAt));
+ if(written){
+  tryLocalSave(progressWriteStampKey(p),String(savedAt));
+  coreProgressFailed=false;clearWarningIfSafe();
+ }
  saveProgressBackup(p,snapshot,savedAt).then(()=>{
+  coreProgressFailed=false;
   if(!written&&!reportedBackupUse){reportedBackupUse=true;toast('Progress saved using backup storage.');}
-  if(!quizCheckpointFailed)clearStorageWarning();
+  clearWarningIfSafe();
  }).catch(error=>{
-  if(!written)storageWarning(error);
+  if(written)return;
+  progressCache('put',p,{data:snapshot,savedAt}).then(()=>{
+   coreProgressFailed=false;clearWarningIfSafe();
+   if(!reportedBackupUse){reportedBackupUse=true;toast('Progress saved in emergency offline backup.');}
+  }).catch(cacheError=>{
+   coreProgressFailed=true;storageWarning(cacheError||error);
+  });
  });
  refreshStats();window.dispatchEvent(new Event('wortweg:changed'));
 }
@@ -265,19 +300,43 @@ const SESSION_CURSOR_KEY='wortweg370-quiz-cursor-v1:';
 const sessionKey=()=>SESSION_KEY+profile;
 const sessionCursorKey=()=>SESSION_CURSOR_KEY+profile;
 let sessionMetadataStoredFor='';
+const quizSessionFallback=new Map();
+let quizBackupQueue=Promise.resolve();
+function persistQuizSessionBackup(p,payload){
+ quizSessionFallback.set(p,payload);
+ quizBackupQueue=quizBackupQueue.catch(()=>{}).then(async()=>{
+  const record={data:payload,savedAt:payload.updatedAt};
+  try{await progressDatabase('put','quiz-session:'+p,record)}
+  catch{await progressCache('put','quiz-session:'+p,record)}
+ });
+ return quizBackupQueue;
+}
+function recoverQuizSession(p=profile){
+ return Promise.allSettled([progressDatabase('get','quiz-session:'+p),progressCache('get','quiz-session:'+p)]).then(results=>{
+  if(profile!==p)return;
+  const records=results.filter(r=>r.status==='fulfilled').map(r=>r.value)
+   .filter(r=>r&&r.data?.v===1&&Number.isFinite(r.savedAt));
+  if(!records.length)return;
+  const record=records.reduce((a,b)=>a.savedAt>=b.savedAt?a:b);
+  const existing=quizSessionFallback.get(p);
+  if(!existing||record.savedAt>Number(existing.updatedAt||0))quizSessionFallback.set(p,record.data);
+  if(!quiz)refreshQuizResume();
+ }).catch(()=>{});
+}
+function restoreOfflineState(){return Promise.all([recoverIndexedProgress(),recoverQuizSession()]);}
 function pendingSession(){
- try{
-  const stored=JSON.parse(localStorage.getItem(sessionKey())||'null');
-  if(!stored||stored.v!==1||stored.finished||!Array.isArray(stored.keys))return null;
-  const cursor=JSON.parse(localStorage.getItem(sessionCursorKey())||'null');
-  // Large quizzes keep a one-time vocabulary manifest and a tiny live cursor;
-  // both are account scoped and can sync separately when coming back online.
-  const s=cursor?.id===stored.id&&!cursor.finished&&Number(cursor.updatedAt)>=Number(stored.updatedAt)
+ let stored=null,cursor=null;
+ try{stored=JSON.parse(localStorage.getItem(sessionKey())||'null')}catch{}
+ try{cursor=JSON.parse(localStorage.getItem(sessionCursorKey())||'null')}catch{}
+ const local=stored?.v===1&&stored.finished?stored:
+  stored?.v===1&&Array.isArray(stored.keys)&&cursor?.id===stored.id&&!cursor.finished&&Number(cursor.updatedAt)>=Number(stored.updatedAt)
    ?{...stored,...cursor,keys:stored.keys}:stored;
-  return s.keys.length>0&&s.keys.length<=BANK.length+CURATED.length
-   &&Number.isInteger(s.i)&&s.i>=0&&s.i<s.keys.length&&Number.isFinite(s.score)&&typeof s.label==='string'
-   &&s.keys.every(k=>typeof k==='string'&&k.length<250)?s:null;
- }catch{return null;}
+ const fallback=quizSessionFallback.get(profile);
+ const s=fallback?.v===1&&Number(fallback.updatedAt)>=Number(local?.updatedAt||0)?fallback:local;
+ if(!s||s.v!==1||s.finished||!Array.isArray(s.keys))return null;
+ return s.keys.length>0&&s.keys.length<=BANK.length+CURATED.length
+  &&Number.isInteger(s.i)&&s.i>=0&&s.i<s.keys.length&&Number.isFinite(s.score)&&typeof s.label==='string'
+  &&s.keys.every(k=>typeof k==='string'&&k.length<250)?s:null;
 }
 function refreshQuizResume(active){
  const s=active?.list?.length?{label:active.label,i:active.i,keys:active.keys||active.list}:pendingSession(),card=$('quizResume');
@@ -308,8 +367,16 @@ function saveQuizSession(){
   }else{
    localStorage.setItem(sessionKey(),JSON.stringify(payload));
   }
-  quizCheckpointFailed=false;
- }catch(error){quizCheckpointFailed=true;storageLocalError=String(error?.name||'QuizCheckpointWriteFailed').slice(0,80);toast('Quiz position could not be saved. Please export your progress and check Safari storage.');storageWarning(error);}
+  quizCheckpointFailed=false;clearWarningIfSafe();
+ }catch(error){
+  quizCheckpointFailed=true;
+  storageLocalError=String(error?.name||'QuizCheckpointWriteFailed').slice(0,80);
+  persistQuizSessionBackup(profile,payload).then(()=>{
+   quizCheckpointFailed=false;clearWarningIfSafe();
+  }).catch(backupError=>{
+   quizCheckpointFailed=true;storageWarning(backupError||error);
+  });
+ }
  refreshQuizResume(quiz);
  // Debounce cloud notification: each selected answer still saves immediately
  // offline, while rapid taps don't cause repeated Firebase serialization.
@@ -318,12 +385,18 @@ function saveQuizSession(){
 }
 function clearQuizSession(){
  clearTimeout(saveQuizSession.notify);
+ const finished={v:1,finished:true,updatedAt:Date.now()};
+ const hadFallback=quizSessionFallback.has(profile);
+ let written=false;
  try{
-  const finished={v:1,finished:true,updatedAt:Date.now()};
   localStorage.setItem(sessionKey(),JSON.stringify(finished));
   localStorage.setItem(sessionCursorKey(),JSON.stringify({...finished,id:quiz?.id}));
-  sessionMetadataStoredFor='';
+  written=true;sessionMetadataStoredFor='';
  }catch{}
+ quizSessionFallback.set(profile,finished);
+ // Persist the finish marker if we previously needed an emergency checkpoint,
+ // otherwise an older backup could resurrect a completed quiz.
+ if(hadFallback||!written)persistQuizSessionBackup(profile,finished).then(()=>{quizCheckpointFailed=false;clearWarningIfSafe()}).catch(error=>{if(!written){quizCheckpointFailed=true;storageWarning(error)}});
  refreshQuizResume();
  window.dispatchEvent(new Event('wortweg:study-changed'));
 }
@@ -459,9 +532,9 @@ function showSummary(){const mastered=Object.values(progress.items).filter(s=>s.
 window.WortWeg={
  getProgress:()=>structuredClone(progress),
  setProgress:p=>{if(!p||typeof p!=='object'||!Number.isFinite(p.answered)||!Number.isFinite(p.correct)||!p.items||!p.seen||!Array.isArray(p.history))return;progress=structuredClone(p);save();showReview();showSummary();},
- switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard');++progressRevision;return recoverIndexedProgress()},
+ switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard');++progressRevision;return restoreOfflineState()},
  navigate:nav
 };
-updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');window.WortWeg.storageReady=recoverIndexedProgress();if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
+updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');window.WortWeg.storageReady=restoreOfflineState();if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();
 </script><script src="./bank-browser.js"></script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js?v=15"></script></body></html>

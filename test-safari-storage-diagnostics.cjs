@@ -2,12 +2,12 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync('index.html','utf8'),sw=fs.readFileSync('sw.js','utf8');
 assert.match(html,/localStorage: /);
-assert.match(html,/IndexedDB\/checkpoint: /);
+assert.match(html,/backup\/checkpoint: /);
 assert.match(html,/Export progress/);
 assert.match(html,/Retry saving/);
 assert.match(html,/quizCheckpointFailed=false/);
-assert.match(html,/if\(!quizCheckpointFailed\)clearStorageWarning\(\)/);
-assert.match(sw,/wortweg370-v69/);
+assert.match(html,/clearWarningIfSafe\(\)/);
+assert.match(sw,/wortweg370-v70/);
 const start=html.indexOf('function quotaError('),end=html.indexOf('function progressDatabase(',start);
 assert.ok(start>0&&end>start);
 const body="let storageLocalError='none';\n"+html.slice(start,end)+"\nthis.tryLocalSave=tryLocalSave;this.errorName=()=>storageLocalError;";
