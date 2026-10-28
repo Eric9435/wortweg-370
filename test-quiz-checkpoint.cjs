@@ -41,7 +41,7 @@ const indexedDB={
 };
 function launch(){
  const window={indexedDB};
- vm.runInNewContext(js,{window,Promise,Error,Date,Number,String,Array},{filename:'quiz-checkpoint.js'});
+ vm.runInNewContext(js,{window,indexedDB,Promise,Error,Date,Number,String,Array},{filename:'quiz-checkpoint.js'});
  return window.WortWegQuizCheckpoint;
 }
 function quiz(id,i){return {v:1,id,updatedAt:100+i,finished:false,keys:['b:1','b:2','b:3'],i,score:i,wrong:[],label:'Practice',kind:'new',locked:false,chosen:-1,opts:[]};}
