@@ -123,11 +123,12 @@ const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMon
 const seed=()=>({answered:0,correct:0,history:[],items:{},seen:{}});
 
 const progressWriteStampKey=p=>'wortweg370-progress-written-v1:'+p;
-let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false;
+let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false, lastLocalSaveError=null;
 function validProgress(p){return !!(p&&typeof p==='object'&&Number.isFinite(p.answered)&&Number.isFinite(p.correct)&&p.items&&typeof p.items==='object'&&p.seen&&typeof p.seen==='object'&&Array.isArray(p.history));}
 function quotaError(e){return !!(e&&(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22||e.code===1014));}
 function tryLocalSave(k,value){
- try{localStorage.setItem(k,value);return true;}catch(e){
+ try{localStorage.setItem(k,value);lastLocalSaveError=null;return true;}catch(e){
+  lastLocalSaveError=e;
   // Preserve all learning records. Only a re-downloadable lessons cache
   // can be evicted when Safari has exhausted localStorage.
   if(!quotaError(e))return false;
@@ -135,6 +136,7 @@ function tryLocalSave(k,value){
    if(k!=='wortweg370-live-pack-v1'&&localStorage.getItem('wortweg370-live-pack-v1')!==null){
     localStorage.removeItem('wortweg370-live-pack-v1');
     localStorage.setItem(k,value);
+    lastLocalSaveError=null;
     return true;
    }
   }catch{}
@@ -162,37 +164,78 @@ function progressDatabase(mode,p,data){
   };
  });
 }
+
+/* Emergency progress backup is separate from both localStorage and IndexedDB.
+   Uses an app-private CacheStorage entry only; never removes quiz records. */
+function progressCache(mode,p,record){
+ return (async()=>{
+  if(!('caches' in window))throw new Error('CacheStorage unavailable');
+  const cache=await caches.open('wortweg370-emergency-progress-v1');
+  const request=new Request(new URL('./__offline_progress__/'+encodeURIComponent(p),location.href).href);
+  if(mode==='get'){
+   const response=await cache.match(request);
+   if(!response)return null;
+   const value=await response.json();
+   return value&&validProgress(value.data)&&Number.isFinite(value.savedAt)?value:null;
+  }
+  const response=new Response(JSON.stringify(record),{headers:{'Content-Type':'application/json'}});
+  await cache.put(request,response);
+  return true;
+ })();
+}
 function saveProgressBackup(p,snapshot,time){
  progressBackupQueue=progressBackupQueue.catch(()=>{}).then(()=>progressDatabase('put',p,{data:snapshot,savedAt:time}));
  return progressBackupQueue;
 }
-function storageWarning(){
- if(storageNotice)return;
+function storageWarning(error){
+ const local=String(lastLocalSaveError?.name||'LocalStorageError');
+ const secondary=String(error?.name||'OfflineBackupError');
+ const diagnostic=(local+' / '+secondary).slice(0,110);
+ if(storageNotice){
+  const reason=storageNotice.querySelector('[data-storage-reason]');
+  if(reason)reason.textContent='Storage diagnosis: '+diagnostic;
+  return;
+ }
  const el=document.createElement('div');
  el.id='wortweg-storage-recovery';
  el.setAttribute('role','alert');
  el.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:2147483640;padding:14px 16px;background:#17365d;color:white;border:2px solid #ffce83;border-radius:14px;box-shadow:0 5px 20px #0005;font:15px/1.45 system-ui,sans-serif';
  const msg=document.createElement('div');
  msg.textContent='Your learning progress could not be saved on this device. Keep this tab open and export your progress now.';
+ const reason=document.createElement('div');
+ reason.dataset.storageReason='true';
+ reason.textContent='Storage diagnosis: '+diagnostic;
+ reason.style.cssText='margin-top:7px;font-size:12px;opacity:.85;overflow-wrap:anywhere';
+ const actions=document.createElement('div');
+ actions.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-top:10px';
  const exportButton=document.createElement('button');
  exportButton.type='button';exportButton.textContent='Export progress';
- exportButton.style.cssText='margin-top:10px;padding:9px 14px;border:0;border-radius:9px;background:white;color:#17365d;font-weight:700';
+ exportButton.style.cssText='padding:9px 14px;border:0;border-radius:9px;background:white;color:#17365d;font-weight:700';
  exportButton.addEventListener('click',()=>{
   const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress},null,2)],{type:'application/json'});
   const url=URL.createObjectURL(file),a=document.createElement('a');
   a.href=url;a.download='WortWeg-progress-'+profile+'.json';document.body.append(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),60000);
  });
- el.append(msg,exportButton);document.body.append(el);storageNotice=el;
+ const retryButton=document.createElement('button');
+ retryButton.type='button';retryButton.textContent='Retry save';
+ retryButton.style.cssText='padding:9px 14px;border:1px solid white;border-radius:9px;background:transparent;color:white;font-weight:700';
+ retryButton.addEventListener('click',()=>save());
+ actions.append(exportButton,retryButton);
+ el.append(msg,reason,actions);document.body.append(el);storageNotice=el;
 }
 function clearStorageWarning(){if(storageNotice){storageNotice.remove();storageNotice=null;}}
 function recoverIndexedProgress(p=profile){
  const revision=progressRevision;
- return progressDatabase('get',p).then(record=>{
-  if(profile!==p||progressRevision!==revision||!record||!validProgress(record.data))return;
+ return Promise.allSettled([progressDatabase('get',p),progressCache('get',p)]).then(results=>{
+  if(profile!==p||progressRevision!==revision)return;
+  const candidates=results.filter(r=>r.status==='fulfilled').map(r=>r.value)
+   .filter(r=>r&&validProgress(r.data)&&Number.isFinite(r.savedAt));
+  if(!candidates.length)return;
+  const record=candidates.reduce((a,b)=>a.savedAt>=b.savedAt?a:b);
   let lastLocal=0;
   try{lastLocal=Number(localStorage.getItem(progressWriteStampKey(p)))||0;}catch{}
-  if(record.savedAt<=lastLocal)return;
+  if(record.savedAt<=lastLocal||record.data.answered<progress.answered)return;
   progress=structuredClone(record.data);
   const restored=tryLocalSave(storageKey(),JSON.stringify(progress));
   if(restored)tryLocalSave(progressWriteStampKey(p),String(record.savedAt));
@@ -205,12 +248,21 @@ let progress;try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()
 function save(){
  const p=profile, snapshot=structuredClone(progress), savedAt=Date.now(), written=tryLocalSave(storageKey(),JSON.stringify(snapshot));
  ++progressRevision;
- if(written)tryLocalSave(progressWriteStampKey(p),String(savedAt));
+ if(written){
+  tryLocalSave(progressWriteStampKey(p),String(savedAt));
+  clearStorageWarning();
+ }
  saveProgressBackup(p,snapshot,savedAt).then(()=>{
   if(!written&&!reportedBackupUse){reportedBackupUse=true;toast('Progress saved using backup storage.');}
   clearStorageWarning();
- }).catch(()=>{
-  if(!written)storageWarning();
+ }).catch(error=>{
+  if(written)return; // Local progress is durable even if secondary backup failed.
+  progressCache('put',p,{data:snapshot,savedAt}).then(()=>{
+   clearStorageWarning();
+   if(!reportedBackupUse){reportedBackupUse=true;toast('Progress saved in emergency offline backup.');}
+  }).catch(cacheError=>{
+   storageWarning(cacheError||error); // Only warn when every durable browser store failed.
+  });
  });
  refreshStats();window.dispatchEvent(new Event('wortweg:changed'));
 }
@@ -428,6 +480,7 @@ window.WortWeg={
  switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard');++progressRevision;return recoverIndexedProgress()},
  navigate:nav
 };
-updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');window.WortWeg.storageReady=recoverIndexedProgress();if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
+updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');window.WortWeg.storageReady=recoverIndexedProgress();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&storageNotice)save();});if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();
 </script><script src="./bank-browser.js"></script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js?v=15"></script></body></html>
