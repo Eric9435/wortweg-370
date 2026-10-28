@@ -123,11 +123,12 @@ const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMon
 const seed=()=>({answered:0,correct:0,history:[],items:{},seen:{}});
 
 const progressWriteStampKey=p=>'wortweg370-progress-written-v1:'+p;
-let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false;
+let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false, storageLocalError='none', quizCheckpointFailed=false;
 function validProgress(p){return !!(p&&typeof p==='object'&&Number.isFinite(p.answered)&&Number.isFinite(p.correct)&&p.items&&typeof p.items==='object'&&p.seen&&typeof p.seen==='object'&&Array.isArray(p.history));}
 function quotaError(e){return !!(e&&(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22||e.code===1014));}
 function tryLocalSave(k,value){
- try{localStorage.setItem(k,value);return true;}catch(e){
+ try{localStorage.setItem(k,value);storageLocalError='none';return true;}catch(e){
+  storageLocalError=String(e?.name||'StorageWriteError').slice(0,80);
   // Preserve all learning records. Only a re-downloadable lessons cache
   // can be evicted when Safari has exhausted localStorage.
   if(!quotaError(e))return false;
@@ -135,6 +136,7 @@ function tryLocalSave(k,value){
    if(k!=='wortweg370-live-pack-v1'&&localStorage.getItem('wortweg370-live-pack-v1')!==null){
     localStorage.removeItem('wortweg370-live-pack-v1');
     localStorage.setItem(k,value);
+    storageLocalError='none';
     return true;
    }
   }catch{}
@@ -166,24 +168,54 @@ function saveProgressBackup(p,snapshot,time){
  progressBackupQueue=progressBackupQueue.catch(()=>{}).then(()=>progressDatabase('put',p,{data:snapshot,savedAt:time}));
  return progressBackupQueue;
 }
-function storageWarning(){
- if(storageNotice)return;
+function storageWarning(failure){
+ const idbCode=String(failure?.name||failure?.message||'Unavailable').slice(0,80);
+ const localCode=storageLocalError;
+ const errorInfo='localStorage: '+localCode+' | IndexedDB/checkpoint: '+idbCode;
+ if(storageNotice){
+  const details=storageNotice.querySelector('#wortweg-storage-details');
+  if(details)details.textContent=errorInfo;
+  return;
+ }
  const el=document.createElement('div');
  el.id='wortweg-storage-recovery';
  el.setAttribute('role','alert');
- el.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:2147483640;padding:14px 16px;background:#17365d;color:white;border:2px solid #ffce83;border-radius:14px;box-shadow:0 5px 20px #0005;font:15px/1.45 system-ui,sans-serif';
+ el.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:2147483640;padding:14px 16px;background:#17365d;color:white;border:2px solid #ffce83;border-radius:14px;box-shadow:0 5px 20px #0005;font:15px/1.45 system-ui,sans-serif;max-height:52dvh;overflow:auto';
  const msg=document.createElement('div');
- msg.textContent='Your learning progress could not be saved on this device. Keep this tab open and export your progress now.';
+ msg.textContent='Your quiz progress or position may not have been saved. Export your progress now before closing this tab.';
+ const details=document.createElement('div');
+ details.id='wortweg-storage-details';
+ details.style.cssText='font:12px/1.35 system-ui,sans-serif;opacity:.87;margin-top:7px;overflow-wrap:anywhere';
+ details.textContent=errorInfo;
+ const actions=document.createElement('div');
+ actions.style.cssText='display:flex;gap:8px;flex-wrap:wrap;margin-top:10px';
  const exportButton=document.createElement('button');
  exportButton.type='button';exportButton.textContent='Export progress';
- exportButton.style.cssText='margin-top:10px;padding:9px 14px;border:0;border-radius:9px;background:white;color:#17365d;font-weight:700';
+ exportButton.style.cssText='padding:9px 14px;border:0;border-radius:9px;background:white;color:#17365d;font-weight:700';
  exportButton.addEventListener('click',()=>{
   const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress},null,2)],{type:'application/json'});
   const url=URL.createObjectURL(file),a=document.createElement('a');
   a.href=url;a.download='WortWeg-progress-'+profile+'.json';document.body.append(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),60000);
  });
- el.append(msg,exportButton);document.body.append(el);storageNotice=el;
+ const retryButton=document.createElement('button');
+ retryButton.type='button';retryButton.textContent='Retry saving';
+ retryButton.style.cssText='padding:9px 14px;border:1px solid #e7eef8;border-radius:9px;background:#244e7b;color:white;font-weight:700';
+ retryButton.addEventListener('click',()=>{
+  retryButton.disabled=true;
+  try{if(quiz)saveQuizSession();save();}finally{setTimeout(()=>{retryButton.disabled=false},1200)}
+ });
+ actions.append(exportButton,retryButton);
+ el.append(msg,details,actions);document.body.append(el);storageNotice=el;
+ if(navigator.storage?.estimate){
+  navigator.storage.estimate().then(info=>{
+   if(storageNotice!==el)return;
+   if(Number.isFinite(info.usage)&&Number.isFinite(info.quota)){
+    const used=Math.round(info.usage/1048576),total=Math.round(info.quota/1048576);
+    details.textContent=errorInfo+' | estimated site storage: '+used+'/'+total+' MB';
+   }
+  }).catch(()=>{});
+ }
 }
 function clearStorageWarning(){if(storageNotice){storageNotice.remove();storageNotice=null;}}
 function recoverIndexedProgress(p=profile){
@@ -204,13 +236,14 @@ function recoverIndexedProgress(p=profile){
 let progress;try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()};if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];
 function save(){
  const p=profile, snapshot=structuredClone(progress), savedAt=Date.now(), written=tryLocalSave(storageKey(),JSON.stringify(snapshot));
+ if(written&&!quizCheckpointFailed)clearStorageWarning();
  ++progressRevision;
  if(written)tryLocalSave(progressWriteStampKey(p),String(savedAt));
  saveProgressBackup(p,snapshot,savedAt).then(()=>{
   if(!written&&!reportedBackupUse){reportedBackupUse=true;toast('Progress saved using backup storage.');}
-  clearStorageWarning();
- }).catch(()=>{
-  if(!written)storageWarning();
+  if(!quizCheckpointFailed)clearStorageWarning();
+ }).catch(error=>{
+  if(!written)storageWarning(error);
  });
  refreshStats();window.dispatchEvent(new Event('wortweg:changed'));
 }
@@ -275,7 +308,8 @@ function saveQuizSession(){
   }else{
    localStorage.setItem(sessionKey(),JSON.stringify(payload));
   }
- }catch{toast('Quiz position could not be saved. Please export your progress and check Safari storage.');storageWarning();}
+  quizCheckpointFailed=false;
+ }catch(error){quizCheckpointFailed=true;storageLocalError=String(error?.name||'QuizCheckpointWriteFailed').slice(0,80);toast('Quiz position could not be saved. Please export your progress and check Safari storage.');storageWarning(error);}
  refreshQuizResume(quiz);
  // Debounce cloud notification: each selected answer still saves immediately
  // offline, while rapid taps don't cause repeated Firebase serialization.

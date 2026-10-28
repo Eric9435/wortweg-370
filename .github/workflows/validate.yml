@@ -19,6 +19,7 @@ jobs:
           node --check settings.js
           node test-offline-account.cjs
           node test-safari-storage-recovery.cjs
+          node test-safari-storage-diagnostics.cjs
           node --check live-content.js
           node --check ios-polish.js
           node --check whiteboard.js
