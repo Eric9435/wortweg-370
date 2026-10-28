@@ -151,6 +151,7 @@ function progressDatabase(mode,p,data){
    if(!opening.result.objectStoreNames.contains('profiles'))opening.result.createObjectStore('profiles');
   };
   opening.onerror=()=>reject(opening.error||new Error('IndexedDB open failed'));
+  opening.onblocked=()=>reject(new Error('IndexedDB open blocked by another tab'));
   opening.onsuccess=()=>{
    const db=opening.result;let result;
    try{
@@ -167,6 +168,7 @@ function progressDatabase(mode,p,data){
 
 /* Emergency progress backup is separate from both localStorage and IndexedDB.
    Uses an app-private CacheStorage entry only; never removes quiz records. */
+let emergencyCacheWriteQueue=Promise.resolve();
 function progressCache(mode,p,record){
  return (async()=>{
   if(!('caches' in window))throw new Error('CacheStorage unavailable');
@@ -179,7 +181,10 @@ function progressCache(mode,p,record){
    return value&&Number.isFinite(value.savedAt)?value:null;
   }
   const response=new Response(JSON.stringify(record),{headers:{'Content-Type':'application/json'}});
-  await cache.put(request,response);
+  // Safari can finish overlapping CacheStorage writes out of order.
+  // Serialize emergency snapshots so an older quiz answer cannot overwrite a newer one.
+  emergencyCacheWriteQueue=emergencyCacheWriteQueue.catch(()=>{}).then(()=>cache.put(request,response));
+  await emergencyCacheWriteQueue;
   return true;
  })();
 }
