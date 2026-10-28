@@ -5,10 +5,11 @@ const initial=JSON.parse(fs.readFileSync('content/v1/pack.json','utf8'));
 const script=fs.readFileSync('live-content.js','utf8');
 const initialVersion=initial.version, initialLessons=initial.lessons.length;
 const html='<!doctype html><html><head></head><body><main><section class="section active" id="dashboard"><div class="ww-menu-options"></div></section><section id="settings" class="section"><div class="settings-grid"></div></section></main></body></html>';
-function setup(cache,networkPack){
+function setup(cache,networkPack,embeddedPack){
  const dom=new JSDOM(html,{url:'https://localhost/index.html',runScripts:'outside-only'});
  const w=dom.window;
  w.scrollTo=()=>{};
+ if(embeddedPack)w.WortWegBundledPack=embeddedPack;
  if(cache)w.localStorage.setItem('wortweg370-live-pack-v1',JSON.stringify(cache));
  let online=networkPack;
  let requests=[];
@@ -27,6 +28,12 @@ async function wait(){await new Promise(r=>setTimeout(r,25))}
  assert.equal(initial.schema,1);
  assert.ok(initial.lessons.length>=4);
  assert.ok(initial.lessons.reduce((sum,l)=>sum+l.words.length,0)>=48);
+ // Simulate a brand-new Android install with no storage, no network, and no fetchable JSON.
+ const embedded=setup(null,null,initial);
+ await wait();
+ assert.equal(embedded.w.WortWegLive.getPack()?.version,initialVersion,'Embedded APK lessons must load without network or localStorage');
+ assert.ok(!embedded.requests.some(url=>url.startsWith('./')),'Embedded lessons do not rely on localhost fetch');
+ embedded.dom.window.close();
  const {dom,w,setOnline,requests}=setup(null,initial);
  await wait();
  const api=w.WortWegLive;

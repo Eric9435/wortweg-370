@@ -64,7 +64,9 @@ async function fetchPack(url,timeout=8500){
  }finally{if(timer)clearTimeout(timer)}
 }
 async function bundled(){
- try{const p=await fetchPack(BUNDLED,5000);adopt(p,'bundled');return true}catch{
+ try{const embedded=window.WortWegBundledPack;
+  const p=valid(embedded)?embedded:await fetchPack(BUNDLED,5000);
+  adopt(p,'bundled');return true}catch{
   if(!pack)status('Bundled lessons unavailable. Try again online.');
   return false;
  }

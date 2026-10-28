@@ -13,6 +13,11 @@ function replace(source,before,after) {
 }
 let html=await readFile(new URL('index.html',root),'utf8');
 html=html.replace(/<meta[^>]*name="viewport"[^>]*>/g,'');
+// In Android's offline WebView, a file-backed fetch may fail even when the
+// JSON is shipped in the APK. Embed only the trusted local starter content.
+// Escape '<' so lesson data cannot close the script tag.
+const offlinePack=JSON.stringify(JSON.parse(await readFile(new URL('content/v1/pack.json',root),'utf8'))).replace(/</g,'\\u003c');
+html=replace(html,'</head>',`<script>window.WortWegBundledPack=${offlinePack};</script></head>`);
 html=replace(html,'</head>','<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}.mobile-note{font-size:.85rem;margin:6px 0}.mobile-status{color:var(--muted)}</style><script>window.WortWegNative={bundledSpeech:true};</script></head>');
 // Native assets load locally; neither network navigation nor the website's SW is needed.
 html=replace(html,"if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});",'');
