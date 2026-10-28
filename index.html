@@ -194,7 +194,11 @@ function storageWarning(failure){
  exportButton.type='button';exportButton.textContent='Export progress';
  exportButton.style.cssText='padding:9px 14px;border:0;border-radius:9px;background:white;color:#17365d;font-weight:700';
  exportButton.addEventListener('click',()=>{
-  const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress},null,2)],{type:'application/json'});
+  const checkpoint=quiz?.list?.length?{v:1,id:quiz.id,updatedAt:Date.now(),
+   keys:quiz.keys||quiz.list.map(key),i:quiz.i,score:quiz.score,wrong:quiz.wrong.map(key),
+   label:quiz.label,kind:quiz.kind,locked:!!quiz.locked,chosen:quiz.chosen,opts:quiz.opts}
+   :pendingSession();
+  const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress,quizSession:checkpoint},null,2)],{type:'application/json'});
   const url=URL.createObjectURL(file),a=document.createElement('a');
   a.href=url;a.download='WortWeg-progress-'+profile+'.json';document.body.append(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),60000);
