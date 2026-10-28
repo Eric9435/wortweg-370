@@ -9,7 +9,7 @@ assert.match(html,/window\.WortWeg\.storageReady=recoverIndexedProgress\(\)/);
 assert.match(cloud,/await window\.WortWeg\.storageReady/);
 assert.match(cloud,/await window\.WortWeg\.switchProfile\(user.uid\)/);
 assert.match(cloud,/if\(uploadNeeded\|\|hasPending\(user.uid\)\)queueCore\(\)/);
-assert.match(sw,/wortweg370-v68/);
+assert.match(sw,/const CACHE='wortweg370-v\d+'/,'PWA cache must use a versioned namespace');
 const start=html.indexOf('function progressDatabase('),end=html.indexOf('function saveProgressBackup(',start);
 assert.ok(start>0&&end>start,'backup transaction implementation exists');
 const dbSource=html.slice(start,end);
