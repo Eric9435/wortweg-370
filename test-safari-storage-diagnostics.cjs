@@ -2,7 +2,7 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync('index.html','utf8'),sw=fs.readFileSync('sw.js','utf8');
 assert.match(html,/localStorage: /);
-assert.match(html,/IndexedDB\/checkpoint: /);
+assert.match(html,/backup\/checkpoint: /);
 assert.match(html,/Export progress/);
 assert.match(html,/Retry saving/);
 assert.match(html,/quizCheckpointFailed=false/);
