@@ -176,7 +176,7 @@ function progressCache(mode,p,record){
    const response=await cache.match(request);
    if(!response)return null;
    const value=await response.json();
-   return value&&validProgress(value.data)&&Number.isFinite(value.savedAt)?value:null;
+   return value&&Number.isFinite(value.savedAt)?value:null;
   }
   const response=new Response(JSON.stringify(record),{headers:{'Content-Type':'application/json'}});
   await cache.put(request,response);
@@ -187,11 +187,13 @@ function saveProgressBackup(p,snapshot,time){
  progressBackupQueue=progressBackupQueue.catch(()=>{}).then(()=>progressDatabase('put',p,{data:snapshot,savedAt:time}));
  return progressBackupQueue;
 }
-function storageWarning(error){
+function storageWarning(error,kind='progress'){
  const local=String(lastLocalSaveError?.name||'LocalStorageError');
  const secondary=String(error?.name||'OfflineBackupError');
  const diagnostic=(local+' / '+secondary).slice(0,110);
  if(storageNotice){
+  const heading=storageNotice.querySelector('[data-storage-heading]');
+  if(heading)heading.textContent=kind==='quiz'?'Your quiz resume position could not be saved. Export progress and keep this tab open.':'Your learning progress could not be saved on this device. Keep this tab open and export your progress now.';
   const reason=storageNotice.querySelector('[data-storage-reason]');
   if(reason)reason.textContent='Storage diagnosis: '+diagnostic;
   return;
@@ -201,7 +203,8 @@ function storageWarning(error){
  el.setAttribute('role','alert');
  el.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);z-index:2147483640;padding:14px 16px;background:#17365d;color:white;border:2px solid #ffce83;border-radius:14px;box-shadow:0 5px 20px #0005;font:15px/1.45 system-ui,sans-serif';
  const msg=document.createElement('div');
- msg.textContent='Your learning progress could not be saved on this device. Keep this tab open and export your progress now.';
+ msg.dataset.storageHeading='true';
+ msg.textContent=kind==='quiz'?'Your quiz resume position could not be saved. Export progress and keep this tab open.':'Your learning progress could not be saved on this device. Keep this tab open and export your progress now.';
  const reason=document.createElement('div');
  reason.dataset.storageReason='true';
  reason.textContent='Storage diagnosis: '+diagnostic;
@@ -212,7 +215,7 @@ function storageWarning(error){
  exportButton.type='button';exportButton.textContent='Export progress';
  exportButton.style.cssText='padding:9px 14px;border:0;border-radius:9px;background:white;color:#17365d;font-weight:700';
  exportButton.addEventListener('click',()=>{
-  const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress},null,2)],{type:'application/json'});
+  const file=new Blob([JSON.stringify({app:'WortWeg 370',profile,exportedAt:new Date().toISOString(),progress,quizSession:pendingSession()},null,2)],{type:'application/json'});
   const url=URL.createObjectURL(file),a=document.createElement('a');
   a.href=url;a.download='WortWeg-progress-'+profile+'.json';document.body.append(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),60000);
@@ -284,19 +287,46 @@ const SESSION_CURSOR_KEY='wortweg370-quiz-cursor-v1:';
 const sessionKey=()=>SESSION_KEY+profile;
 const sessionCursorKey=()=>SESSION_CURSOR_KEY+profile;
 let sessionMetadataStoredFor='';
+const quizSessionFallback=new Map();
+let quizBackupQueue=Promise.resolve();
+function persistQuizSessionBackup(p,payload){
+ quizSessionFallback.set(p,payload);
+ quizBackupQueue=quizBackupQueue.catch(()=>{}).then(async()=>{
+  const record={data:payload,savedAt:payload.updatedAt};
+  try{await progressDatabase('put','quiz-session:'+p,record)}
+  catch{await progressCache('put','quiz-session:'+p,record)}
+ });
+ quizBackupQueue.catch(error=>{
+  if(profile===p)storageWarning(error,'quiz');
+ });
+ return quizBackupQueue;
+}
+function recoverQuizSession(p=profile){
+ return Promise.allSettled([progressDatabase('get','quiz-session:'+p),progressCache('get','quiz-session:'+p)]).then(results=>{
+  if(profile!==p)return;
+  const records=results.filter(r=>r.status==='fulfilled').map(r=>r.value)
+   .filter(r=>r&&r.data?.v===1&&Number.isFinite(r.savedAt));
+  if(!records.length)return;
+  const record=records.reduce((a,b)=>a.savedAt>=b.savedAt?a:b);
+  const existing=quizSessionFallback.get(p);
+  if(!existing||record.savedAt>Number(existing.updatedAt||0))quizSessionFallback.set(p,record.data);
+  if(!quiz)refreshQuizResume();
+ }).catch(()=>{});
+}
+function restoreOfflineState(){return Promise.all([recoverIndexedProgress(),recoverQuizSession()]);}
 function pendingSession(){
- try{
-  const stored=JSON.parse(localStorage.getItem(sessionKey())||'null');
-  if(!stored||stored.v!==1||stored.finished||!Array.isArray(stored.keys))return null;
-  const cursor=JSON.parse(localStorage.getItem(sessionCursorKey())||'null');
-  // Large quizzes keep a one-time vocabulary manifest and a tiny live cursor;
-  // both are account scoped and can sync separately when coming back online.
-  const s=cursor?.id===stored.id&&!cursor.finished&&Number(cursor.updatedAt)>=Number(stored.updatedAt)
+ let stored=null,cursor=null;
+ try{stored=JSON.parse(localStorage.getItem(sessionKey())||'null')}catch{}
+ try{cursor=JSON.parse(localStorage.getItem(sessionCursorKey())||'null')}catch{}
+ const local=stored?.v===1&&stored.finished?stored:
+  stored?.v===1&&Array.isArray(stored.keys)&&cursor?.id===stored.id&&!cursor.finished&&Number(cursor.updatedAt)>=Number(stored.updatedAt)
    ?{...stored,...cursor,keys:stored.keys}:stored;
-  return s.keys.length>0&&s.keys.length<=BANK.length+CURATED.length
-   &&Number.isInteger(s.i)&&s.i>=0&&s.i<s.keys.length&&Number.isFinite(s.score)&&typeof s.label==='string'
-   &&s.keys.every(k=>typeof k==='string'&&k.length<250)?s:null;
- }catch{return null;}
+ const fallback=quizSessionFallback.get(profile);
+ const s=fallback?.v===1&&Number(fallback.updatedAt)>=Number(local?.updatedAt||0)?fallback:local;
+ if(!s||s.v!==1||s.finished||!Array.isArray(s.keys))return null;
+ return s.keys.length>0&&s.keys.length<=BANK.length+CURATED.length
+  &&Number.isInteger(s.i)&&s.i>=0&&s.i<s.keys.length&&Number.isFinite(s.score)&&typeof s.label==='string'
+  &&s.keys.every(k=>typeof k==='string'&&k.length<250)?s:null;
 }
 function refreshQuizResume(active){
  const s=active?.list?.length?{label:active.label,i:active.i,keys:active.keys||active.list}:pendingSession(),card=$('quizResume');
@@ -327,7 +357,10 @@ function saveQuizSession(){
   }else{
    localStorage.setItem(sessionKey(),JSON.stringify(payload));
   }
- }catch{toast('Quiz position could not be saved. Please export your progress and check Safari storage.');storageWarning();}
+ }catch{
+  // The quiz cursor can be blocked by Safari even when the answers are backed up.
+  persistQuizSessionBackup(profile,payload);
+ }
  refreshQuizResume(quiz);
  // Debounce cloud notification: each selected answer still saves immediately
  // offline, while rapid taps don't cause repeated Firebase serialization.
@@ -336,12 +369,18 @@ function saveQuizSession(){
 }
 function clearQuizSession(){
  clearTimeout(saveQuizSession.notify);
+ const finished={v:1,finished:true,updatedAt:Date.now()};
+ const hadFallback=quizSessionFallback.has(profile);
+ let written=false;
  try{
-  const finished={v:1,finished:true,updatedAt:Date.now()};
   localStorage.setItem(sessionKey(),JSON.stringify(finished));
   localStorage.setItem(sessionCursorKey(),JSON.stringify({...finished,id:quiz?.id}));
-  sessionMetadataStoredFor='';
+  written=true;sessionMetadataStoredFor='';
  }catch{}
+ quizSessionFallback.set(profile,finished);
+ // Persist the finish marker if we previously needed an emergency checkpoint,
+ // otherwise an older backup could resurrect a completed quiz.
+ if(hadFallback||!written)persistQuizSessionBackup(profile,finished);
  refreshQuizResume();
  window.dispatchEvent(new Event('wortweg:study-changed'));
 }
@@ -477,10 +516,10 @@ function showSummary(){const mastered=Object.values(progress.items).filter(s=>s.
 window.WortWeg={
  getProgress:()=>structuredClone(progress),
  setProgress:p=>{if(!p||typeof p!=='object'||!Number.isFinite(p.answered)||!Number.isFinite(p.correct)||!p.items||!p.seen||!Array.isArray(p.history))return;progress=structuredClone(p);save();showReview();showSummary();},
- switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard');++progressRevision;return recoverIndexedProgress()},
+ switchProfile:id=>{profile=String(id||'guest');sessionMetadataStoredFor='';clearTimeout(saveQuizSession.notify);try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()}if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];quiz=null;refreshQuizResume();refreshStats();showReview();showSummary();nav('dashboard');++progressRevision;return restoreOfflineState()},
  navigate:nav
 };
-updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');window.WortWeg.storageReady=recoverIndexedProgress();
+updateQuizOptions();refreshQuizResume();refreshStats();nav('dashboard');window.WortWeg.storageReady=restoreOfflineState();
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&storageNotice)save();});if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
 })();
 </script><script src="./bank-browser.js"></script><script src="./audio.js"></script><script src="./settings.js"></script><script type="module" src="./cloud.js?v=15"></script></body></html>
