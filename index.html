@@ -123,7 +123,7 @@ const today=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMon
 const seed=()=>({answered:0,correct:0,history:[],items:{},seen:{}});
 
 const progressWriteStampKey=p=>'wortweg370-progress-written-v1:'+p;
-let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false, storageLocalError='none';
+let progressRevision=0, progressBackupQueue=Promise.resolve(), storageNotice=null, reportedBackupUse=false, storageLocalError='none', quizCheckpointFailed=false;
 function validProgress(p){return !!(p&&typeof p==='object'&&Number.isFinite(p.answered)&&Number.isFinite(p.correct)&&p.items&&typeof p.items==='object'&&p.seen&&typeof p.seen==='object'&&Array.isArray(p.history));}
 function quotaError(e){return !!(e&&(e.name==='QuotaExceededError'||e.name==='NS_ERROR_DOM_QUOTA_REACHED'||e.code===22||e.code===1014));}
 function tryLocalSave(k,value){
@@ -203,7 +203,7 @@ function storageWarning(failure){
  retryButton.style.cssText='padding:9px 14px;border:1px solid #e7eef8;border-radius:9px;background:#244e7b;color:white;font-weight:700';
  retryButton.addEventListener('click',()=>{
   retryButton.disabled=true;
-  try{save();if(quiz)saveQuizSession();}finally{setTimeout(()=>{retryButton.disabled=false},1200)}
+  try{if(quiz)saveQuizSession();save();}finally{setTimeout(()=>{retryButton.disabled=false},1200)}
  });
  actions.append(exportButton,retryButton);
  el.append(msg,details,actions);document.body.append(el);storageNotice=el;
@@ -236,12 +236,12 @@ function recoverIndexedProgress(p=profile){
 let progress;try{progress=JSON.parse(localStorage.getItem(storageKey()))||seed()}catch(e){progress=seed()};if(!progress.items)progress.items={};if(!progress.seen)progress.seen={};if(!progress.history)progress.history=[];
 function save(){
  const p=profile, snapshot=structuredClone(progress), savedAt=Date.now(), written=tryLocalSave(storageKey(),JSON.stringify(snapshot));
- if(written)clearStorageWarning();
+ if(written&&!quizCheckpointFailed)clearStorageWarning();
  ++progressRevision;
  if(written)tryLocalSave(progressWriteStampKey(p),String(savedAt));
  saveProgressBackup(p,snapshot,savedAt).then(()=>{
   if(!written&&!reportedBackupUse){reportedBackupUse=true;toast('Progress saved using backup storage.');}
-  clearStorageWarning();
+  if(!quizCheckpointFailed)clearStorageWarning();
  }).catch(error=>{
   if(!written)storageWarning(error);
  });
@@ -308,7 +308,8 @@ function saveQuizSession(){
   }else{
    localStorage.setItem(sessionKey(),JSON.stringify(payload));
   }
- }catch(error){storageLocalError=String(error?.name||'QuizCheckpointWriteFailed').slice(0,80);toast('Quiz position could not be saved. Please export your progress and check Safari storage.');storageWarning(error);}
+  quizCheckpointFailed=false;
+ }catch(error){quizCheckpointFailed=true;storageLocalError=String(error?.name||'QuizCheckpointWriteFailed').slice(0,80);toast('Quiz position could not be saved. Please export your progress and check Safari storage.');storageWarning(error);}
  refreshQuizResume(quiz);
  // Debounce cloud notification: each selected answer still saves immediately
  // offline, while rapid taps don't cause repeated Firebase serialization.
