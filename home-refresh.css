@@ -39,3 +39,20 @@ body.ww-game-interface #dashboard .ww-home-view-toggle{display:none!important}
    Real Learning tools tiles live inside .ww-home-focus-grid and are unaffected. */
 body.ww-game-interface #dashboard #ww-home-focus > button.ww-home-focus-tile{display:none!important}
 body.ww-game-interface #dashboard #ww-home-focus > button.ww-cl-home-launch{display:none!important}
+
+/* Dialog is an independent top-level Home destination; avoid duplicate grid cards. */
+body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-link{
+ display:inline-flex;align-items:center;justify-content:center;gap:9px;
+ width:max-content;max-width:100%;min-height:43px;padding:9px 15px;margin:14px 0 2px;
+ border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));
+ border-radius:13px;background:var(--panel);color:var(--txt);
+ text-decoration:none;box-shadow:0 3px 13px rgb(18 58 100 / 8%);
+ font-size:13px;transition:background .16s ease,transform .16s ease;
+}
+body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-link strong{font-size:14px;font-weight:830;color:var(--txt)}
+body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-link small{font-size:12px;color:var(--muted)}
+body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-link:hover{background:color-mix(in srgb,var(--accent) 9%,var(--panel))}
+body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-link:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-symbol{display:grid;place-items:center;width:23px;height:23px;border-radius:8px;background:color-mix(in srgb,var(--accent) 15%,var(--panel));color:var(--accent)}
+body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-arrow{font-size:20px;color:var(--accent)}
+@media(max-width:650px){body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-link{margin:10px 0 0;padding:10px 12px;min-height:42px}}
