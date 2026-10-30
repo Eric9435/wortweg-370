@@ -187,6 +187,14 @@
   window.dispatchEvent(new CustomEvent('wortweg:flashcards-changed',{detail:{key:w.key,remembered}}));
   moveCard(1);
  }
+ // Avoid any 3D motion while a Myanmar translation is visible or is about
+ // to be revealed. German/English-only faces retain the paper-turn effect.
+ function isMyanmarView(index,revealed){
+  if((document.documentElement.lang||'').toLowerCase().startsWith('my'))return true;
+  const word=session[index];
+  if(!word||!String(word.my||'').trim())return false;
+  return settings.direction==='de'?revealed:!revealed;
+ }
  // Pointer Events work in current Android WebViews and iOS Safari. Restrict
  // gestures to the card: vertical scrolling and every existing button stay usable.
  function attachSwipe(card){
@@ -209,8 +217,11 @@
    gesture.dx=dx;gesture.dy=dy;
    if(!gesture.dragged){
     if(Math.abs(dx)<10||Math.abs(dx)<Math.abs(dy)*1.2)return;
-    gesture.dragged=true;card.classList.add('ww-flash-dragging');
+    gesture.dragged=true;
+    if(!isMyanmarView(position,flipped))card.classList.add('ww-flash-dragging');
    }
+   // Track the swipe without deforming text when Myanmar is being read.
+   if(isMyanmarView(position,flipped))return;
    const offset=Math.sign(dx)*Math.min(Math.abs(dx)*0.8,145);
    card.style.transformOrigin=dx<0?'left center':'right center';
    card.style.transform='translate3d('+offset+'px,0,0) rotateY('+(offset/5.5)+'deg)';
@@ -285,11 +296,15 @@
   if(transitioning)return;
   const next=position+step;
   if(next<0||next>session.length)return;
-  animateChange(()=>{position=next;flipped=false;renderCard();},step,fromTransform);
+  const update=()=>{position=next;flipped=false;renderCard();};
+  if(isMyanmarView(position,flipped)||isMyanmarView(next,false)){update();return;}
+  animateChange(update,step,fromTransform);
  }
  function flipCard(){
   if(transitioning||position>=session.length)return;
-  animateChange(()=>{flipped=!flipped;renderCard();},flipped?-1:1,'',true);
+  const update=()=>{flipped=!flipped;renderCard();};
+  if(isMyanmarView(position,flipped)||isMyanmarView(position,!flipped)){update();return;}
+  animateChange(update,flipped?-1:1,'',true);
  }
  function renderCard(){
   if(sessionProfile!==profile())return renderSetup();
