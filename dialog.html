@@ -3,29 +3,33 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0c223a">
-<meta name="description" content="WortWeg A1 Dialog: real-life German conversations and every word from your A1 vocabulary sources.">
-<title>A1 Dialog · WortWeg 370</title>
+<meta name="description" content="WortWeg A1 and A2 Dialog: professional bilingual speaking practice from the original German Word Bank.">
+<title>A1–A2 Dialog · WortWeg 370</title>
 <link rel="stylesheet" href="./dialog.css">
 </head><body>
 <div class="dialog-app" id="dialogApp">
 <header class="dialog-header">
   <div class="dialog-headline"><a class="back-home" href="./index.html" aria-label="Back to WortWeg Home">‹ <span>Home</span></a>
-    <div><div class="eyebrow">WORTWEG 370 / SPEAKING</div><h1>A1 Dialog</h1><p>Real conversations, built around your A1 words.</p></div>
+    <div><div class="eyebrow">WORTWEG 370 / SPEAKING</div><h1><span id="dialogCurrentLevel">A1</span> Dialog</h1><p id="dialogSubtitle">Real conversations, built around your A1 words.</p></div>
   </div>
-  <div class="dialog-summary"><strong id="dialogCompleted">0</strong><span>dialogues completed</span></div>
+  <div class="dialog-summary"><strong id="dialogCompleted">0</strong><span id="dialogCompletedLabel">A1 dialogues completed</span></div>
 </header>
 <main>
-  <section class="dialog-intro" aria-label="Your A1 sources">
-    <div><span class="intro-label">YOUR A1 WORD SOURCES</span><strong id="dialogWordCount">Loading…</strong><small>Original Word Bank + A1 noun expansion, never an unrelated vocabulary list</small></div>
+  <nav class="dialog-levels" aria-label="Choose German dialogue level">
+    <button type="button" data-level="A1" aria-pressed="true"><span>A1</span><small>Beginner conversations</small></button>
+    <button type="button" data-level="A2" aria-pressed="false"><span>A2</span><small>Everyday communication</small></button>
+  </nav>
+  <section class="dialog-intro" aria-label="Your WortWeg A1 and A2 sources">
+    <div><span class="intro-label">YOUR <span id="dialogSourceLevel">A1</span> WORD SOURCES</span><strong id="dialogWordCount">Loading…</strong><small>Original Word Bank + curated A2 entry + noun expansion · exact source records</small></div>
     <div class="intro-stat"><strong id="dialogSituationCount">—</strong><span>real-life situations</span></div>
     <div class="intro-stat"><strong id="dialogCoverage">—</strong><span>word dialogues</span></div>
   </section>
   <nav class="dialog-tabs" aria-label="Dialog sections">
     <button type="button" data-mode="situations" aria-pressed="true">Everyday Dialogues</button>
-    <button type="button" data-mode="words" aria-pressed="false">All A1 Words</button>
+    <button type="button" id="dialogWordsTab" data-mode="words" aria-pressed="false">All A1 Words</button>
   </nav>
   <section class="dialog-toolbar" aria-label="Filter dialogues">
-    <label class="search-wrap"><span class="visually-hidden">Search dialogues and A1 vocabulary</span><span aria-hidden="true">⌕</span><input id="dialogSearch" type="search" autocomplete="off" placeholder="Search German, English, or situation"></label>
+    <label class="search-wrap"><span class="visually-hidden">Search dialogues and A1/A2 vocabulary</span><span aria-hidden="true">⌕</span><input id="dialogSearch" type="search" autocomplete="off" placeholder="Search German, English, or situation"></label>
     <label class="toggle"><input id="dialogIncomplete" type="checkbox"><span>Not completed</span></label>
   </section>
   <div class="dialog-layout">
@@ -34,7 +38,7 @@
       <div id="dialogList" class="dialog-list" role="list"></div>
     </aside>
     <section class="dialog-reader" id="dialogReader" aria-live="polite">
-      <div id="dialogEmpty" class="dialog-empty">Loading your A1 Dialog menu…</div>
+      <div id="dialogEmpty" class="dialog-empty">Loading your Dialog levels…</div>
       <div id="dialogContent" hidden>
         <div class="reader-heading"><div><span id="dialogLabel" class="reader-kicker"></span><h2 id="dialogTitle"></h2><p id="dialogDescription"></p></div>
           <button class="icon-btn" id="dialogSpeakAll" type="button" title="Play the entire German dialogue">▶ <span>Play all</span></button>
@@ -43,10 +47,11 @@
           <label class="toggle"><input id="dialogShowEnglish" type="checkbox" checked><span>English translation</span></label>
           <label class="toggle"><input id="dialogShowMyanmar" type="checkbox"><span>Word meaning (Myanmar)</span></label>
           <label class="toggle"><input id="dialogSlow" type="checkbox"><span>Slow speech</span></label>
+          <label class="toggle"><input id="dialogRoleplay" type="checkbox"><span>Role-play (hide B)</span></label>
           <button type="button" class="secondary-btn" id="dialogStop">Stop audio</button>
         </div>
         <div id="dialogTurns" class="dialog-turns"></div>
-        <div class="vocab-heading"><h3>Words from your A1 list</h3><small id="dialogMatchedCount"></small></div>
+        <div class="vocab-heading"><h3 id="dialogVocabTitle">Words from your A1 list</h3><small id="dialogMatchedCount"></small></div>
         <div id="dialogVocab" class="dialog-vocab"></div>
         <div class="reader-footer">
           <button type="button" id="dialogPrevious" class="secondary-btn">← Previous</button>
@@ -56,9 +61,10 @@
       </div>
     </section>
   </div>
-  <p class="privacy-hint">Dialog progress is saved separately on this device. It does not change your vocabulary quiz scores. A1 labels come from WortWeg's own learning database, not an official Goethe vocabulary inventory.</p>
+  <p class="privacy-hint">Dialog progress is saved separately on this device. It does not change your vocabulary quiz scores. A1 and A2 labels come from WortWeg's own learning database, not an official Goethe vocabulary inventory.</p>
 </main></div>
 <script src="./noun-expansion.js"></script>
 <script defer src="./dialog-situations.js"></script>
+<script defer src="./dialog-situations-a2.js"></script>
 <script defer src="./dialog.js"></script>
 </body></html>

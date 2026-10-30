@@ -120,6 +120,7 @@ jobs:
         run: |
           node --check dialog.js
           node --check dialog-situations.js
+          node --check dialog-situations-a2.js
           node test-dialog.cjs
       - name: Verify flashcard ratings appear in Seen Words
         run: node test-flashcard-seen.cjs
