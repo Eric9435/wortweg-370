@@ -1375,5 +1375,650 @@ window.WortWegB2Situations=[
     "We should also consider what cannot be changed through our work."
    ]
   ]
+ ],
+ [
+  "ai-recruitment",
+  "Debating AI in hiring decisions",
+  "Technology and ethics",
+  [
+   "HR Manager",
+   "Data Scientist"
+  ],
+  [
+   [
+    "Wir überlegen, Bewerbungen künftig durch ein automatisiertes System vorsortieren zu lassen.",
+    "We're considering using an automated system to pre-screen applications in future."
+   ],
+   [
+    "Das könnte Zeit sparen, birgt aber auch das Risiko systematischer Benachteiligung.",
+    "That could save time, but it also carries a risk of systematic discrimination."
+   ],
+   [
+    "Wie ließe sich verhindern, dass das Modell bestehende Vorurteile übernimmt?",
+    "How could we prevent the model from reproducing existing biases?"
+   ],
+   [
+    "Wir müssten die Datengrundlage prüfen und die Ergebnisse regelmäßig auf Ungleichbehandlung untersuchen.",
+    "We would need to audit the underlying data and regularly check the results for unequal treatment."
+   ],
+   [
+    "Würde eine menschliche Entscheidung am Ende ausreichen, um diese Risiken zu begrenzen?",
+    "Would a human decision at the end be enough to limit those risks?"
+   ],
+   [
+    "Nicht unbedingt, wenn die Vorauswahl bereits geeignete Personen ausgeschlossen hat.",
+    "Not necessarily if the pre-screening has already excluded suitable candidates."
+   ],
+   [
+    "Dann sollten wir zunächst einen kleinen Test durchführen und transparente Kriterien vereinbaren.",
+    "Then we should first run a small trial and agree on transparent criteria."
+   ],
+   [
+    "Einverstanden, solange die Entscheidung nachvollziehbar bleibt und Bewerber informiert werden.",
+    "Agreed, as long as decisions remain explainable and applicants are informed."
+   ]
+  ]
+ ],
+ [
+  "data-privacy",
+  "Discussing data protection in a mobile app",
+  "Technology and privacy",
+  [
+   "Developer",
+   "Product Owner"
+  ],
+  [
+   [
+    "Unsere neue Anwendung erfasst mehr Nutzungsdaten, als ursprünglich vorgesehen war.",
+    "Our new application collects more usage data than originally planned."
+   ],
+   [
+    "Welche Daten sind für die Funktionen tatsächlich erforderlich?",
+    "Which data are genuinely necessary for the features?"
+   ],
+   [
+    "Ein Teil hilft uns bei der Fehleranalyse, andere Angaben dienen lediglich der Statistik.",
+    "Some data help us analyse errors; other information is only used for statistics."
+   ],
+   [
+    "Dann sollten wir klar zwischen notwendigen und freiwilligen Daten unterscheiden.",
+    "Then we should clearly distinguish between necessary and optional data."
+   ],
+   [
+    "Außerdem könnten wir bestimmte Auswertungen direkt auf dem Gerät durchführen.",
+    "We could also carry out certain analyses directly on the device."
+   ],
+   [
+    "Würde das die technische Umsetzung wesentlich erschweren?",
+    "Would that make implementation significantly more difficult?"
+   ],
+   [
+    "Teilweise, allerdings ließen sich so unnötige Übertragungen vermeiden.",
+    "Partly, but it would allow us to avoid unnecessary transfers."
+   ],
+   [
+    "Gut. Wir dokumentieren zunächst den Zweck jeder Datenkategorie, bevor wir weiterentwickeln.",
+    "Good. Let's first document the purpose of each data category before proceeding."
+   ]
+  ]
+ ],
+ [
+  "cyber-incident",
+  "Responding to a cybersecurity incident",
+  "IT security",
+  [
+   "Security Analyst",
+   "Operations Lead"
+  ],
+  [
+   [
+    "Unsere Überwachung hat ungewöhnliche Anmeldeversuche bei mehreren Konten festgestellt.",
+    "Our monitoring detected unusual login attempts across several accounts."
+   ],
+   [
+    "Gibt es bereits Hinweise darauf, dass tatsächlich Daten abgeflossen sind?",
+    "Is there already evidence that data have actually been leaked?"
+   ],
+   [
+    "Dafür haben wir bislang keine Bestätigung. Die Untersuchung läuft noch.",
+    "We don't have confirmation of that yet. The investigation is ongoing."
+   ],
+   [
+    "Welche unmittelbaren Maßnahmen halten Sie für erforderlich?",
+    "What immediate measures do you consider necessary?"
+   ],
+   [
+    "Wir sollten betroffene Zugänge absichern, Protokolle sichern und den Vorfall dokumentieren.",
+    "We should secure affected access, preserve logs, and document the incident."
+   ],
+   [
+    "Müssen wir dabei auch mit rechtlichen Meldepflichten rechnen?",
+    "Do we also need to consider legal reporting obligations?"
+   ],
+   [
+    "Das muss anhand des Sachverhalts und der einschlägigen Regeln geprüft werden.",
+    "That has to be assessed based on the facts and the relevant rules."
+   ],
+   [
+    "Bitte informieren Sie die zuständigen Stellen und vermeiden Sie voreilige Aussagen über die Ursache.",
+    "Please inform the responsible parties and avoid premature statements about the cause."
+   ]
+  ]
+ ],
+ [
+  "digital-learning",
+  "Questioning the effectiveness of learning apps",
+  "Education technology",
+  [
+   "Teacher",
+   "Researcher"
+  ],
+  [
+   [
+    "Viele Lernende verwenden täglich Apps, trotzdem sind ihre Fortschritte sehr unterschiedlich.",
+    "Many learners use apps daily, yet their progress varies considerably."
+   ],
+   [
+    "Die Nutzungsdauer allein sagt wenig darüber aus, ob sie das Gelernte anwenden können.",
+    "Time spent alone says little about whether they can apply what they've learned."
+   ],
+   [
+    "Wie könnten wir den tatsächlichen Lernerfolg verlässlicher beurteilen?",
+    "How could we assess real learning success more reliably?"
+   ],
+   [
+    "Durch Aufgaben, bei denen die Lernenden Inhalte ohne zusätzliche Hinweise abrufen müssen.",
+    "Through tasks that require learners to retrieve material without additional prompts."
+   ],
+   [
+    "Wäre es sinnvoll, auch längere Gespräche statt nur einzelne Wörter zu prüfen?",
+    "Would it make sense to assess longer conversations rather than just individual words?"
+   ],
+   [
+    "Auf jeden Fall, sofern die Bewertung nachvollziehbar und fair gestaltet ist.",
+    "Definitely, provided assessment is transparent and fair."
+   ],
+   [
+    "Dann sollten wir die App um kommunikative Aufgaben und gezielte Rückmeldungen ergänzen.",
+    "Then we should add communicative tasks and targeted feedback to the app."
+   ],
+   [
+    "Ja, und den Erfolg später mit geeigneten Vergleichsgruppen untersuchen.",
+    "Yes, and later study effectiveness using suitable comparison groups."
+   ]
+  ]
+ ],
+ [
+  "remote-monitoring",
+  "Evaluating remote monitoring in industry",
+  "Industrial technology",
+  [
+   "Plant Manager",
+   "Engineer"
+  ],
+  [
+   [
+    "Die neue Plattform soll technische Anlagen rund um die Uhr aus der Ferne überwachen.",
+    "The new platform is intended to monitor technical installations remotely around the clock."
+   ],
+   [
+    "Welche Vorteile erwarten Sie gegenüber unseren bisherigen Inspektionsrunden?",
+    "What benefits do you expect compared with our existing inspection rounds?"
+   ],
+   [
+    "Wir könnten Veränderungen früher erkennen und Wartungsarbeiten gezielter planen.",
+    "We could detect changes earlier and plan maintenance more precisely."
+   ],
+   [
+    "Allerdings müssen wir vermeiden, dass Fehlalarme zu unnötigen Einsätzen führen.",
+    "However, we must avoid false alarms causing unnecessary interventions."
+   ],
+   [
+    "Deshalb sollten wir Grenzwerte mit realen Betriebsdaten überprüfen, bevor wir das System breit einsetzen.",
+    "That's why we should validate thresholds with real operating data before rolling the system out widely."
+   ],
+   [
+    "Wie stellen wir sicher, dass bei einer Verbindungsstörung weiterhin sicher gearbeitet wird?",
+    "How do we ensure safe operation during a connection failure?"
+   ],
+   [
+    "Die lokalen Schutzfunktionen müssen unabhängig vom Überwachungssystem funktionieren.",
+    "Local protective functions must operate independently of the monitoring system."
+   ],
+   [
+    "Gut, dann dokumentieren wir diese Anforderungen ausdrücklich im Sicherheitskonzept.",
+    "Good. Then we'll explicitly document these requirements in the safety plan."
+   ]
+  ]
+ ],
+ [
+  "ai-transparency",
+  "Explaining an automated recommendation",
+  "Artificial intelligence",
+  [
+   "Client",
+   "Product Specialist"
+  ],
+  [
+   [
+    "Ihre Plattform empfiehlt mir eine bestimmte Lösung, aber ich verstehe die Gründe nicht.",
+    "Your platform recommends a particular solution, but I don't understand why."
+   ],
+   [
+    "Das System berücksichtigt mehrere Merkmale, die aus Ihren Angaben abgeleitet werden.",
+    "The system takes into account several characteristics derived from your information."
+   ],
+   [
+    "Können Sie erklären, welche Faktoren den größten Einfluss auf die Empfehlung hatten?",
+    "Can you explain which factors had the biggest influence on the recommendation?"
+   ],
+   [
+    "Wir können wichtige Einflussgrößen anzeigen, allerdings nicht jede interne Berechnung einzeln erklären.",
+    "We can display important influencing factors, although we can't explain every internal calculation individually."
+   ],
+   [
+    "Dann möchte ich zumindest wissen, wie zuverlässig die Empfehlung unter anderen Bedingungen wäre.",
+    "Then I'd at least like to know how reliable the recommendation would be under different conditions."
+   ],
+   [
+    "Dafür müssten wir die Grenzen des Modells und mögliche Unsicherheiten offenlegen.",
+    "For that we'd have to disclose the model's limitations and possible uncertainties."
+   ],
+   [
+    "Das wäre mir wichtig, bevor ich eine Entscheidung mit finanziellen Folgen treffe.",
+    "That would be important to me before making a decision with financial consequences."
+   ],
+   [
+    "Ich stimme zu. Eine Empfehlung sollte eine überprüfbare Entscheidung unterstützen, nicht ersetzen.",
+    "I agree. A recommendation should support a verifiable decision, not replace it."
+   ]
+  ]
+ ],
+ [
+  "social-media",
+  "Discussing the influence of social media",
+  "Media and society",
+  [
+   "Journalist",
+   "Student"
+  ],
+  [
+   [
+    "Soziale Netzwerke beeinflussen zunehmend, welche Nachrichten Menschen überhaupt wahrnehmen.",
+    "Social networks increasingly influence which news people see at all."
+   ],
+   [
+    "Besonders problematisch finde ich, dass emotionale Beiträge oft mehr Aufmerksamkeit bekommen.",
+    "I find it particularly problematic that emotional posts often attract more attention."
+   ],
+   [
+    "Liegt die Verantwortung dafür eher bei den Plattformen oder bei den Nutzern?",
+    "Does responsibility for this lie more with the platforms or with users?"
+   ],
+   [
+    "Meiner Meinung nach tragen beide Seiten Verantwortung, allerdings in unterschiedlichem Ausmaß.",
+    "In my opinion both sides bear responsibility, though to different degrees."
+   ],
+   [
+    "Welche Maßnahmen könnten die Qualität öffentlicher Diskussionen verbessern?",
+    "What measures could improve the quality of public discussions?"
+   ],
+   [
+    "Mehr Transparenz bei Empfehlungen und bessere Medienbildung wären ein Anfang.",
+    "Greater transparency in recommendations and better media literacy would be a start."
+   ],
+   [
+    "Dabei darf man jedoch die Meinungsfreiheit nicht aus dem Blick verlieren.",
+    "However, we must not lose sight of freedom of expression."
+   ],
+   [
+    "Richtig. Es geht darum, Verantwortung und offene Debatten miteinander zu vereinbaren.",
+    "Exactly. It's about reconciling responsibility with open debate."
+   ]
+  ]
+ ],
+ [
+  "fact-checking",
+  "Checking a disputed news claim",
+  "Media literacy",
+  [
+   "Editor",
+   "Reporter"
+  ],
+  [
+   [
+    "Der Artikel behauptet, dass die neue Maßnahme bereits nach wenigen Wochen erfolgreich gewesen sei.",
+    "The article claims that the new measure was successful after only a few weeks."
+   ],
+   [
+    "Die Behauptung stammt aus einer Pressemitteilung, die wir noch nicht unabhängig geprüft haben.",
+    "The claim comes from a press release that we haven't independently verified."
+   ],
+   [
+    "Gibt es belastbare Zahlen, die diesen Erfolg tatsächlich belegen?",
+    "Are there reliable figures that actually support this success?"
+   ],
+   [
+    "Bisher liegen nur vorläufige Ergebnisse ohne geeignete Vergleichsgruppe vor.",
+    "So far, only preliminary results without an appropriate comparison group are available."
+   ],
+   [
+    "Dann sollten wir ausdrücklich zwischen Aussagen und überprüften Fakten unterscheiden.",
+    "Then we should explicitly distinguish claims from verified facts."
+   ],
+   [
+    "Einverstanden. Ich werde weitere Quellen kontaktieren und die Einschränkungen deutlich machen.",
+    "Agreed. I'll contact additional sources and make the limitations clear."
+   ],
+   [
+    "Können Sie außerdem prüfen, ob die Maßnahme möglicherweise unerwünschte Folgen hatte?",
+    "Can you also check whether the measure may have had unintended consequences?"
+   ],
+   [
+    "Ja, sonst entsteht ein zu einseitiges Bild der tatsächlichen Situation.",
+    "Yes; otherwise, too one-sided a picture of the actual situation emerges."
+   ]
+  ]
+ ],
+ [
+  "online-scam",
+  "Handling a suspected online scam",
+  "Consumer safety",
+  [
+   "Customer",
+   "Consumer Adviser"
+  ],
+  [
+   [
+    "Ich habe online etwas bestellt, doch der Händler reagiert seit der Zahlung nicht mehr.",
+    "I ordered something online, but the seller hasn't responded since payment."
+   ],
+   [
+    "Haben Sie eine Bestellbestätigung und Angaben zum Zahlungsvorgang gespeichert?",
+    "Have you kept the order confirmation and payment details?"
+   ],
+   [
+    "Ja, und inzwischen habe ich Hinweise gefunden, dass die Webseite möglicherweise unseriös ist.",
+    "Yes, and I've since found indications that the website may be untrustworthy."
+   ],
+   [
+    "Dann sollten Sie weitere Zahlungen vermeiden und zunächst alle Nachweise sichern.",
+    "Then you should avoid further payments and first preserve all evidence."
+   ],
+   [
+    "An wen kann ich mich wenden, um meine Möglichkeiten prüfen zu lassen?",
+    "Who can I contact to have my options assessed?"
+   ],
+   [
+    "Das hängt unter anderem von der Zahlungsart ab. Ihre Bank kann erste Informationen geben.",
+    "That depends partly on the payment method. Your bank can provide initial information."
+   ],
+   [
+    "Sollte ich das verwendete Passwort vorsorglich ebenfalls ändern?",
+    "Should I also change the password I used as a precaution?"
+   ],
+   [
+    "Ja, insbesondere wenn Sie es auch für andere Konten verwenden.",
+    "Yes, especially if you use it for other accounts."
+   ]
+  ]
+ ],
+ [
+  "rail-policy",
+  "Debating improvements to rail travel",
+  "Transportation policy",
+  [
+   "Passenger Representative",
+   "Transport Official"
+  ],
+  [
+   [
+    "Die ständigen Verspätungen erschweren vielen Menschen die Planung ihres Arbeitswegs.",
+    "Constant delays make it difficult for many people to plan their commutes."
+   ],
+   [
+    "Wir investieren bereits in die Infrastruktur, allerdings sind solche Projekte langfristig.",
+    "We're already investing in infrastructure, but such projects are long-term."
+   ],
+   [
+    "Was könnte kurzfristig getan werden, um zumindest die Informationen zu verbessern?",
+    "What could be done in the short term to at least improve information?"
+   ],
+   [
+    "Wir könnten Änderungen früher bekannt geben und alternative Verbindungen deutlicher anzeigen.",
+    "We could announce changes earlier and display alternative connections more clearly."
+   ],
+   [
+    "Das wäre hilfreich, ersetzt aber keine zuverlässigen Fahrpläne.",
+    "That would help, but it doesn't replace reliable timetables."
+   ],
+   [
+    "Da haben Sie recht. Wir müssen sowohl Kommunikation als auch Betriebsabläufe verbessern.",
+    "You're right. We need to improve both communication and operations."
+   ],
+   [
+    "Wie wird überprüft, ob die angekündigten Maßnahmen tatsächlich Wirkung zeigen?",
+    "How will it be checked whether the announced measures really make a difference?"
+   ],
+   [
+    "Anhand messbarer Kennzahlen, die wir in regelmäßigen Abständen veröffentlichen wollen.",
+    "Using measurable indicators, which we intend to publish regularly."
+   ]
+  ]
+ ],
+ [
+  "city-transport",
+  "Balancing cars, bicycles and pedestrians",
+  "Urban mobility",
+  [
+   "Planner",
+   "Resident"
+  ],
+  [
+   [
+    "Unsere Stadt plant, auf dieser Straße eine Autospur in einen Radweg umzuwandeln.",
+    "Our city plans to turn a car lane on this street into a cycle lane."
+   ],
+   [
+    "Ich unterstütze sichere Radwege, befürchte aber zusätzlichen Verkehr in den Nebenstraßen.",
+    "I support safe cycle lanes, but I'm concerned about increased traffic on side streets."
+   ],
+   [
+    "Diese Auswirkungen müssen wir mit Verkehrsdaten abschätzen und nach dem Umbau überprüfen.",
+    "We need to estimate those effects using traffic data and review them after the redesign."
+   ],
+   [
+    "Werden auch die Bedürfnisse von Lieferdiensten und Menschen mit Behinderungen berücksichtigt?",
+    "Will the needs of delivery services and people with disabilities also be considered?"
+   ],
+   [
+    "Ja, wir prüfen unterschiedliche Varianten und laden Betroffene zur Beteiligung ein.",
+    "Yes, we're examining different options and inviting affected groups to participate."
+   ],
+   [
+    "Es wäre gut, wenn die Ergebnisse dieser Gespräche öffentlich zugänglich wären.",
+    "It would be good if the results of those discussions were publicly available."
+   ],
+   [
+    "Das planen wir. Transparenz hilft, mögliche Zielkonflikte verständlich zu machen.",
+    "That's our plan. Transparency helps make potential conflicts between goals understandable."
+   ],
+   [
+    "Dann beteilige ich mich gern, sofern auch kritische Fragen ernst genommen werden.",
+    "Then I'd be happy to participate, provided critical questions are taken seriously."
+   ]
+  ]
+ ],
+ [
+  "flight-disruption",
+  "Negotiating after a flight cancellation",
+  "Travel disruption",
+  [
+   "Passenger",
+   "Airline Agent"
+  ],
+  [
+   [
+    "Mein Flug wurde kurzfristig gestrichen, und ich muss morgen an einer Konferenz teilnehmen.",
+    "My flight was cancelled at short notice, and I have to attend a conference tomorrow."
+   ],
+   [
+    "Das tut mir leid. Ich prüfe, welche alternativen Verbindungen verfügbar sind.",
+    "I'm sorry. I'll check what alternative connections are available."
+   ],
+   [
+    "Gibt es eine Möglichkeit, noch heute über einen anderen Flughafen zu fliegen?",
+    "Is there a way to fly via another airport today?"
+   ],
+   [
+    "Möglicherweise. Allerdings müsste ich zunächst die freien Plätze überprüfen.",
+    "Possibly. But I'd first need to check available seats."
+   ],
+   [
+    "Welche Informationen brauche ich, um zwischen Umbuchung und Erstattung zu entscheiden?",
+    "What information do I need to decide between rebooking and a refund?"
+   ],
+   [
+    "Ich kann Ihnen die verfügbaren Optionen und die dazugehörigen Bedingungen erläutern.",
+    "I can explain the available options and their conditions."
+   ],
+   [
+    "Bitte geben Sie mir die Angaben schriftlich, damit ich sie vergleichen kann.",
+    "Please give me the details in writing so I can compare them."
+   ],
+   [
+    "Natürlich. Ich fasse die Möglichkeiten zusammen, bevor Sie eine Auswahl treffen.",
+    "Of course. I'll summarise the options before you make a choice."
+   ]
+  ]
+ ],
+ [
+  "travel-culture",
+  "Discussing cultural expectations abroad",
+  "Intercultural communication",
+  [
+   "Traveller",
+   "Local Guide"
+  ],
+  [
+   [
+    "Vor meiner Reise möchte ich besser verstehen, welche Verhaltensweisen vor Ort als höflich gelten.",
+    "Before my trip, I'd like to better understand what behaviour is considered polite locally."
+   ],
+   [
+    "Das ist sinnvoll, allerdings unterscheiden sich Gewohnheiten auch innerhalb eines Landes.",
+    "That's sensible, although customs vary even within a country."
+   ],
+   [
+    "Wie kann ich respektvoll nachfragen, ohne unbeabsichtigt jemanden zu beleidigen?",
+    "How can I ask respectfully without unintentionally offending someone?"
+   ],
+   [
+    "Am besten erklären Sie offen, dass Sie noch lernen, und hören aufmerksam zu.",
+    "It's best to explain openly that you're still learning and listen attentively."
+   ],
+   [
+    "Ich möchte vermeiden, Menschen aufgrund einzelner Erfahrungen zu verallgemeinern.",
+    "I'd like to avoid generalising about people based on individual experiences."
+   ],
+   [
+    "Genau. Eigene Beobachtungen sind wichtig, sollten aber nicht zu Vorurteilen führen.",
+    "Exactly. Personal observations matter, but shouldn't lead to prejudice."
+   ],
+   [
+    "Würden Sie empfehlen, einige grundlegende Ausdrücke in der Landessprache zu lernen?",
+    "Would you recommend learning some basic phrases in the local language?"
+   ],
+   [
+    "Unbedingt. Schon einfache höfliche Formulierungen können Begegnungen erleichtern.",
+    "Absolutely. Even simple polite expressions can make interactions easier."
+   ]
+  ]
+ ],
+ [
+  "museum-ethics",
+  "Debating how museums present history",
+  "Culture and heritage",
+  [
+   "Curator",
+   "Visitor"
+  ],
+  [
+   [
+    "Die Ausstellung zeigt zahlreiche historische Gegenstände, erwähnt ihre Herkunft jedoch nur am Rande.",
+    "The exhibition shows many historical objects, but barely mentions their origins."
+   ],
+   [
+    "Wir arbeiten daran, die Entstehungs- und Erwerbsgeschichte genauer darzustellen.",
+    "We're working on presenting the creation and acquisition history in more detail."
+   ],
+   [
+    "Sollten nicht auch die Perspektiven der Herkunftsgemeinschaften stärker berücksichtigt werden?",
+    "Shouldn't the perspectives of communities of origin be included more strongly as well?"
+   ],
+   [
+    "Ja, denn ohne diese Stimmen bleibt die Darstellung möglicherweise unvollständig.",
+    "Yes, because without those voices, the presentation may remain incomplete."
+   ],
+   [
+    "Wie könnte das Museum eine solche Zusammenarbeit konkret gestalten?",
+    "How could the museum organise such cooperation in practice?"
+   ],
+   [
+    "Zum Beispiel durch gemeinsame Forschung, mehrsprachige Texte und beratende Gruppen.",
+    "For example, through joint research, multilingual texts, and advisory groups."
+   ],
+   [
+    "Wichtig wäre, dass die Beteiligung nicht nur symbolisch bleibt.",
+    "It would be important that participation isn't merely symbolic."
+   ],
+   [
+    "Da stimme ich zu. Deshalb brauchen wir langfristige Beziehungen und klare Vereinbarungen.",
+    "I agree. That's why we need long-term relationships and clear agreements."
+   ]
+  ]
+ ],
+ [
+  "tourism-impact",
+  "Discussing the impact of mass tourism",
+  "Travel and sustainability",
+  [
+   "Resident",
+   "Tourism Officer"
+  ],
+  [
+   [
+    "In der Altstadt ist die Zahl der Besucher stark gestiegen, was viele Anwohner belastet.",
+    "Visitor numbers in the old town have risen sharply, which is putting pressure on many residents."
+   ],
+   [
+    "Gleichzeitig sind zahlreiche Betriebe wirtschaftlich vom Tourismus abhängig.",
+    "At the same time, many businesses depend economically on tourism."
+   ],
+   [
+    "Wie ließe sich ein Gleichgewicht zwischen diesen Interessen herstellen?",
+    "How could a balance be found between these interests?"
+   ],
+   [
+    "Wir könnten Besucherströme besser verteilen und sensible Bereiche gezielt entlasten.",
+    "We could spread visitor flows more evenly and ease pressure on sensitive areas."
+   ],
+   [
+    "Das wäre ein Anfang, aber auch die steigenden Wohnkosten sollten berücksichtigt werden.",
+    "That would be a start, but rising housing costs should also be considered."
+   ],
+   [
+    "Das Problem ist komplex und erfordert die Zusammenarbeit mehrerer Bereiche.",
+    "The problem is complex and requires cooperation between several sectors."
+   ],
+   [
+    "Werden die Bewohner an den Entscheidungen beteiligt oder lediglich informiert?",
+    "Are residents involved in decisions, or merely informed?"
+   ],
+   [
+    "Sie sollen Vorschläge einbringen können, bevor endgültige Maßnahmen beschlossen werden.",
+    "They should be able to contribute proposals before final measures are decided."
+   ]
+  ]
  ]
 ];
