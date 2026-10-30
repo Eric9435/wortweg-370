@@ -141,7 +141,9 @@ jobs:
       - name: Verify premium iPhone-style Home, grammar card and mobile layout
         run: node test-premium-home.cjs
       - name: Verify Seen Words table and CEFR progress
-        run: node test-seen-words.cjs
+        run: |
+          node test-seen-words.cjs
+          node test-home-noun-dashboard.cjs
       - name: Verify all 370 Topics have word lists and functional quizzes
         run: |
           node test-topic-lessons.cjs

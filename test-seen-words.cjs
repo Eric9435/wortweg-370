@@ -51,7 +51,7 @@ assert.equal(w.document.querySelectorAll('#ww-seen-home .ww-donut-legend-row').l
 assert.ok($('ww-seen-home').textContent.includes('2 entries'),'Legend shows real A1 entry count');
 assert.ok($('ww-seen-home').textContent.includes('50.0%'),'A1 occupies half of the four-entry Word Bank');
 assert.ok($('ww-seen-home').textContent.includes('2 explored · 0 left'),'Legend distinguishes level totals from explored entries');
-assert.ok($('ww-seen-home').textContent.includes('Word Bank total'),'The outer ring explicitly excludes the other sources');
+assert.ok($('ww-seen-home').textContent.includes('CEFR vocabulary total'),'The outer ring includes the current CEFR catalogue');
 assert.ok($('ww-seen-home').textContent.includes('5 left to learn'));
 assert.ok($('ww-seen-home').textContent.includes('7 words'),'Milestone clamps to current total in small fixture');
 assert.equal($('ww-seen-home').querySelector('.ww-home-milestone-track').getAttribute('aria-valuenow'),'29','Milestone uses currently learned count');
