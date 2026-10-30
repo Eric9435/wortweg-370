@@ -2020,5 +2020,736 @@ window.WortWegB2Situations=[
     "They should be able to contribute proposals before final measures are decided."
    ]
   ]
+ ],
+ [
+  "energy-transition",
+  "Discussing the energy transition",
+  "Energy policy",
+  [
+   "Engineer",
+   "Policy Adviser"
+  ],
+  [
+   [
+    "Der Ausbau erneuerbarer Energien schreitet voran, dennoch bleibt die Netzstabilität eine Herausforderung.",
+    "The expansion of renewable energy is progressing, yet grid stability remains a challenge."
+   ],
+   [
+    "Welche technischen Maßnahmen halten Sie für besonders wichtig?",
+    "Which technical measures do you consider particularly important?"
+   ],
+   [
+    "Neben neuen Leitungen brauchen wir flexible Speicher und eine bessere Steuerung der Nachfrage.",
+    "Alongside new lines, we need flexible storage and better management of demand."
+   ],
+   [
+    "Können solche Lösungen den Netzausbau vollständig ersetzen?",
+    "Can such solutions completely replace grid expansion?"
+   ],
+   [
+    "Nein, sie können ihn ergänzen, aber nicht in jeder Situation überflüssig machen.",
+    "No, they can complement it, but not make it unnecessary in every situation."
+   ],
+   [
+    "Wie könnte man die Kosten gerecht zwischen verschiedenen Beteiligten verteilen?",
+    "How could costs be distributed fairly among different stakeholders?"
+   ],
+   [
+    "Dafür müssten technische Auswirkungen und soziale Folgen gemeinsam bewertet werden.",
+    "For that, technical effects and social consequences would have to be assessed together."
+   ],
+   [
+    "Dann sollten wir bei der Planung sowohl Versorgungssicherheit als auch Bezahlbarkeit berücksichtigen.",
+    "Then planning should take both security of supply and affordability into account."
+   ]
+  ]
+ ],
+ [
+  "grid-investment",
+  "Comparing electricity-grid investments",
+  "Infrastructure decisions",
+  [
+   "Planner",
+   "Economist"
+  ],
+  [
+   [
+    "Wir müssen entscheiden, ob die bestehende Leitung verstärkt oder eine neue Verbindung gebaut wird.",
+    "We need to decide whether to reinforce the existing line or build a new connection."
+   ],
+   [
+    "Welche Kriterien sollten neben den Baukosten in die Entscheidung einfließen?",
+    "Which criteria should be included in the decision beyond construction costs?"
+   ],
+   [
+    "Vor allem die langfristige Belastbarkeit, mögliche Engpässe und die Auswirkungen auf Anwohner.",
+    "Above all, long-term capacity, potential bottlenecks, and effects on residents."
+   ],
+   [
+    "Wie gehen wir mit Unsicherheiten bei der zukünftigen Stromnachfrage um?",
+    "How do we deal with uncertainty about future electricity demand?"
+   ],
+   [
+    "Wir sollten mehrere Szenarien untersuchen, statt uns auf eine einzige Prognose zu verlassen.",
+    "We should examine several scenarios instead of relying on a single forecast."
+   ],
+   [
+    "Könnte eine schrittweise Umsetzung die finanziellen Risiken verringern?",
+    "Could gradual implementation reduce financial risks?"
+   ],
+   [
+    "Unter bestimmten Bedingungen ja, allerdings könnten dadurch spätere Anpassungen teurer werden.",
+    "Under certain conditions, yes, but it could make later adjustments more expensive."
+   ],
+   [
+    "Dann müssen wir die Vor- und Nachteile der Varianten transparent gegenüberstellen.",
+    "Then we need to compare the advantages and disadvantages of the options transparently."
+   ]
+  ]
+ ],
+ [
+  "climate-adaptation",
+  "Planning for extreme weather",
+  "Climate adaptation",
+  [
+   "Local Official",
+   "Resident"
+  ],
+  [
+   [
+    "In den vergangenen Jahren waren die Sommer deutlich heißer, und manche Plätze bieten kaum Schatten.",
+    "In recent years summers have been much hotter, and some squares offer hardly any shade."
+   ],
+   [
+    "Besonders ältere Menschen und Kinder leiden unter diesen Bedingungen.",
+    "Older people and children are particularly affected by these conditions."
+   ],
+   [
+    "Wir möchten zusätzliche Bäume pflanzen und öffentliche Gebäude besser vor Hitze schützen.",
+    "We'd like to plant additional trees and better protect public buildings from heat."
+   ],
+   [
+    "Wie stellen Sie sicher, dass auch ärmere Viertel von den Maßnahmen profitieren?",
+    "How will you ensure that poorer neighbourhoods also benefit from the measures?"
+   ],
+   [
+    "Wir planen die Standorte anhand der tatsächlichen Belastung und der sozialen Situation.",
+    "We're planning the locations based on actual exposure and social conditions."
+   ],
+   [
+    "Werden die Bewohner bei der Gestaltung der Grünflächen mitentscheiden können?",
+    "Will residents be able to have a say in designing the green spaces?"
+   ],
+   [
+    "Ja, wir werden öffentliche Workshops anbieten und Rückmeldungen dokumentieren.",
+    "Yes, we'll offer public workshops and document feedback."
+   ],
+   [
+    "Das begrüße ich, sofern die Vorschläge anschließend auch berücksichtigt werden.",
+    "I welcome that, provided the proposals are subsequently taken into account."
+   ]
+  ]
+ ],
+ [
+  "circular-economy",
+  "Discussing repair versus replacement",
+  "Circular economy",
+  [
+   "Consumer",
+   "Repair Technician"
+  ],
+  [
+   [
+    "Mein Gerät ist erst vier Jahre alt, aber eine Reparatur soll fast so viel kosten wie ein neues.",
+    "My device is only four years old, but a repair is supposed to cost almost as much as a new one."
+   ],
+   [
+    "Das liegt teilweise daran, dass bestimmte Ersatzteile schwer erhältlich sind.",
+    "That's partly because certain replacement parts are difficult to obtain."
+   ],
+   [
+    "Aus ökologischer Sicht wäre es trotzdem sinnvoll, das Gerät länger zu nutzen.",
+    "From an environmental standpoint, it would still make sense to use the device longer."
+   ],
+   [
+    "Das stimmt, allerdings muss die Reparatur auch wirtschaftlich vertretbar sein.",
+    "That's true, but the repair also has to be economically reasonable."
+   ],
+   [
+    "Könnten Hersteller die Situation durch eine bessere Ersatzteilversorgung verbessern?",
+    "Could manufacturers improve the situation by supplying spare parts more effectively?"
+   ],
+   [
+    "Ja, außerdem wären verständliche Reparaturanleitungen und ein modularer Aufbau hilfreich.",
+    "Yes, clear repair instructions and a modular design would also help."
+   ],
+   [
+    "Dann sollte man beim Kauf vielleicht stärker auf Reparierbarkeit achten.",
+    "Then perhaps repairability should be considered more carefully when buying."
+   ],
+   [
+    "Genau. Ein niedriger Anschaffungspreis allein sagt wenig über die Gesamtkosten aus.",
+    "Exactly. A low purchase price alone says little about total cost."
+   ]
+  ]
+ ],
+ [
+  "sustainable-diet",
+  "Discussing food choices without judgement",
+  "Food and sustainability",
+  [
+   "Friend A",
+   "Friend B"
+  ],
+  [
+   [
+    "Ich versuche, mich nachhaltiger zu ernähren, finde widersprüchliche Empfehlungen aber verwirrend.",
+    "I'm trying to eat more sustainably, but I find conflicting advice confusing."
+   ],
+   [
+    "Viele Faktoren spielen eine Rolle, etwa Herkunft, Produktion und Lebensmittelverschwendung.",
+    "Many factors play a role, such as origin, production, and food waste."
+   ],
+   [
+    "Sollte man deshalb grundsätzlich auf alle importierten Lebensmittel verzichten?",
+    "Should one therefore give up all imported food as a matter of principle?"
+   ],
+   [
+    "So einfach ist es nicht, denn Transport ist nur ein Teil der gesamten Umweltbilanz.",
+    "It's not that simple, because transport is only part of the overall environmental impact."
+   ],
+   [
+    "Was könnte ich denn im Alltag ändern, ohne meine Ernährung komplett umzustellen?",
+    "What could I change in everyday life without completely overhauling my diet?"
+   ],
+   [
+    "Zum Beispiel Mahlzeiten planen und verderbliche Lebensmittel rechtzeitig verwenden.",
+    "For example, plan meals and use perishable food in time."
+   ],
+   [
+    "Das klingt machbar. Ich möchte lieber langfristig etwas verändern als kurzzeitig perfekt sein.",
+    "That sounds manageable. I'd rather make lasting changes than be perfect briefly."
+   ],
+   [
+    "Das sehe ich auch so. Realistische Gewohnheiten sind meistens leichter beizubehalten.",
+    "I agree. Realistic habits are usually easier to maintain."
+   ]
+  ]
+ ],
+ [
+  "economic-inequality",
+  "Discussing equal access to education",
+  "Social policy",
+  [
+   "Journalist",
+   "Education Expert"
+  ],
+  [
+   [
+    "Bildungschancen hängen noch immer stark davon ab, welche Unterstützung Familien bieten können.",
+    "Educational opportunities still depend heavily on the support families can provide."
+   ],
+   [
+    "Das zeigt sich unter anderem bei Nachhilfe, digitalen Geräten und Wohnbedingungen.",
+    "That's evident, for example, in tutoring, digital devices, and housing conditions."
+   ],
+   [
+    "Welche Maßnahmen könnten diese Unterschiede tatsächlich verringern?",
+    "What measures could genuinely reduce these differences?"
+   ],
+   [
+    "Wichtig wären gute öffentliche Angebote und gezielte Unterstützung dort, wo sie gebraucht wird.",
+    "Good public services and targeted support where needed would be important."
+   ],
+   [
+    "Manche befürchten allerdings, dass solche Programme zu teuer werden.",
+    "Some people worry, however, that such programmes will become too expensive."
+   ],
+   [
+    "Deshalb sollten wir ihre Kosten und langfristigen Wirkungen sorgfältig untersuchen.",
+    "That's why we should carefully examine their costs and long-term effects."
+   ],
+   [
+    "Wie kann verhindert werden, dass Unterstützung an den Bedürftigsten vorbeigeht?",
+    "How can we prevent support from missing those most in need?"
+   ],
+   [
+    "Durch einfache Zugangswege, nachvollziehbare Kriterien und regelmäßige Überprüfung.",
+    "Through accessible procedures, transparent criteria, and regular evaluation."
+   ]
+  ]
+ ],
+ [
+  "integration",
+  "Discussing integration and language learning",
+  "Migration and society",
+  [
+   "Community Adviser",
+   "Newcomer"
+  ],
+  [
+   [
+    "Seit meinem Umzug versuche ich, Kontakte zu knüpfen, fühle mich aber manchmal ausgeschlossen.",
+    "Since moving, I've been trying to build connections, but sometimes I feel excluded."
+   ],
+   [
+    "Das kann belastend sein. In welchen Situationen erleben Sie diese Schwierigkeiten besonders?",
+    "That can be difficult. In which situations do you experience these difficulties most?"
+   ],
+   [
+    "Oft bei längeren Gesprächen, weil ich zwar vieles verstehe, aber nicht schnell genug antworten kann.",
+    "Often in longer conversations, because I understand a lot but can't answer quickly enough."
+   ],
+   [
+    "Könnten regelmäßige Gesprächsgruppen eine Möglichkeit sein, das Sprechen ohne Druck zu üben?",
+    "Could regular conversation groups be a way to practise speaking without pressure?"
+   ],
+   [
+    "Ja, besonders wenn Menschen dort geduldig zuhören und unterschiedliche Erfahrungen respektieren.",
+    "Yes, especially if people there listen patiently and respect different experiences."
+   ],
+   [
+    "Wir arbeiten mit einigen Initiativen zusammen, die offene Treffen anbieten.",
+    "We work with several initiatives that offer open meetings."
+   ],
+   [
+    "Ich würde mich gern beteiligen und vielleicht später selbst andere unterstützen.",
+    "I'd like to participate and perhaps later support others myself."
+   ],
+   [
+    "Das wäre schön. Gegenseitiger Austausch ist oft ebenso wichtig wie ein Sprachkurs.",
+    "That would be great. Mutual exchange is often just as important as a language course."
+   ]
+  ]
+ ],
+ [
+  "intercultural-conflict",
+  "Handling a cross-cultural misunderstanding",
+  "Intercultural communication",
+  [
+   "Team Member",
+   "Colleague"
+  ],
+  [
+   [
+    "In unserem Meeting hat eine Bemerkung offenbar mehrere Personen verletzt.",
+    "A remark in our meeting apparently upset several people."
+   ],
+   [
+    "Ich glaube, sie war nicht böse gemeint, aber ihre Wirkung war trotzdem problematisch.",
+    "I don't think it was intended maliciously, but its impact was still problematic."
+   ],
+   [
+    "Wie sprechen wir das an, ohne die betroffene Person öffentlich bloßzustellen?",
+    "How do we address this without embarrassing the person publicly?"
+   ],
+   [
+    "Vielleicht zunächst in einem persönlichen Gespräch, in dem wir die Wirkung erklären.",
+    "Perhaps first in a private conversation in which we explain the impact."
+   ],
+   [
+    "Mir ist wichtig, dass wir dabei auch die Perspektive der anderen Person anhören.",
+    "It's important to me that we also hear the other person's perspective."
+   ],
+   [
+    "Natürlich, allerdings sollte die Verantwortung nicht einfach auf die Betroffenen abgewälzt werden.",
+    "Of course, but responsibility shouldn't simply be shifted onto those affected."
+   ],
+   [
+    "Wir könnten danach gemeinsam Regeln für respektvolle Kommunikation entwickeln.",
+    "We could then jointly develop rules for respectful communication."
+   ],
+   [
+    "Das erscheint sinnvoll, sofern die Regeln im Alltag tatsächlich eingehalten werden.",
+    "That seems sensible, provided the rules are actually followed in everyday life."
+   ]
+  ]
+ ],
+ [
+  "cost-of-living",
+  "Debating rising living costs",
+  "Economics and households",
+  [
+   "Student",
+   "Economist"
+  ],
+  [
+   [
+    "Trotz sorgfältiger Planung steigen meine monatlichen Ausgaben deutlich an.",
+    "Despite careful planning, my monthly expenses are increasing considerably."
+   ],
+   [
+    "Welche Bereiche belasten Ihr Budget am stärksten?",
+    "Which areas put the greatest pressure on your budget?"
+   ],
+   [
+    "Vor allem Miete und Lebensmittel, während mein Einkommen weitgehend gleich geblieben ist.",
+    "Mainly rent and groceries, while my income has stayed largely unchanged."
+   ],
+   [
+    "Das erleben viele Haushalte. Allerdings unterscheiden sich die Auswirkungen je nach Lebenssituation.",
+    "Many households experience that, though the effects differ depending on circumstances."
+   ],
+   [
+    "Welche Möglichkeiten haben Menschen, deren Ausgaben sich kaum reduzieren lassen?",
+    "What options do people have when they can hardly reduce expenses?"
+   ],
+   [
+    "Kurzfristig helfen Vergleiche und mögliche Unterstützungsangebote, langfristig sind strukturelle Lösungen entscheidend.",
+    "Comparisons and possible support programmes help in the short term; structural solutions are crucial in the long term."
+   ],
+   [
+    "Das zeigt, dass individuelles Sparen allein nicht jedes Problem lösen kann.",
+    "That shows that individual saving cannot solve every problem on its own."
+   ],
+   [
+    "Genau. Es lohnt sich, persönliche und gesellschaftliche Ursachen auseinanderzuhalten.",
+    "Exactly. It's worth distinguishing personal and societal causes."
+   ]
+  ]
+ ],
+ [
+  "ethical-investment",
+  "Weighing financial and ethical considerations",
+  "Finance and responsibility",
+  [
+   "Investor",
+   "Adviser"
+  ],
+  [
+   [
+    "Ich möchte mein Geld langfristig anlegen, dabei aber auch ethische Kriterien berücksichtigen.",
+    "I'd like to invest my money for the long term while also considering ethical criteria."
+   ],
+   [
+    "Welche Kriterien sind Ihnen besonders wichtig, und wie hoch darf das Risiko sein?",
+    "Which criteria matter most to you, and how much risk can you accept?"
+   ],
+   [
+    "Mir sind transparente Geschäftspraktiken und ein verantwortungsvoller Umgang mit Ressourcen wichtig.",
+    "Transparent business practices and responsible resource management matter to me."
+   ],
+   [
+    "Dann sollten wir prüfen, wie die jeweiligen Angebote diese Kriterien tatsächlich umsetzen.",
+    "Then we should examine how the various products actually apply these criteria."
+   ],
+   [
+    "Manche Anbieter werben sehr allgemein mit Nachhaltigkeit. Wie kann ich solche Aussagen überprüfen?",
+    "Some providers advertise sustainability in very general terms. How can I verify those claims?"
+   ],
+   [
+    "Achten Sie auf konkrete Angaben, nachvollziehbare Methoden und die Kosten der Produkte.",
+    "Look for specific information, transparent methods, and product costs."
+   ],
+   [
+    "Ich möchte auf keinen Fall annehmen, dass ein ethisches Etikett automatisch geringe Risiken bedeutet.",
+    "I certainly don't want to assume that an ethical label automatically means low risk."
+   ],
+   [
+    "Das ist richtig. Nachhaltigkeitsziele und finanzielle Risiken müssen getrennt bewertet werden.",
+    "That's right. Sustainability goals and financial risks need to be assessed separately."
+   ]
+  ]
+ ],
+ [
+  "startup-finance",
+  "Reviewing a startup's business model",
+  "Entrepreneurship",
+  [
+   "Founder",
+   "Adviser"
+  ],
+  [
+   [
+    "Unser Unternehmen bietet technische Reparaturen an, doch die Einnahmen schwanken stark.",
+    "Our company offers technical repairs, but revenue fluctuates greatly."
+   ],
+   [
+    "Wie unterscheiden Sie wiederkehrende Kosten von Kosten, die nur bei einzelnen Aufträgen entstehen?",
+    "How do you distinguish recurring costs from costs that arise only on individual jobs?"
+   ],
+   [
+    "Bisher haben wir hauptsächlich Material und Arbeitszeit pro Auftrag erfasst.",
+    "So far we've mainly recorded materials and labour time per job."
+   ],
+   [
+    "Dann fehlen möglicherweise Ausgaben für Werkzeuge, Werbung und Verwaltung.",
+    "Then you may be missing expenses for tools, advertising, and administration."
+   ],
+   [
+    "Wie können wir prüfen, ob unsere Preise langfristig ausreichen?",
+    "How can we check whether our prices are sufficient in the long term?"
+   ],
+   [
+    "Erstellen Sie verschiedene Szenarien für Auslastung, Kosten und mögliche Ausfälle.",
+    "Prepare different scenarios for utilisation, costs, and potential cancellations."
+   ],
+   [
+    "Das würde helfen, bevor wir weitere Geräte oder Räume finanzieren.",
+    "That would help before we finance additional equipment or premises."
+   ],
+   [
+    "Genau. Wachstum ist nur sinnvoll, wenn die Finanzierung nachvollziehbar geplant ist.",
+    "Exactly. Growth only makes sense if financing is planned transparently."
+   ]
+  ]
+ ],
+ [
+  "business-complaint",
+  "Responding to a dissatisfied customer",
+  "Customer relations",
+  [
+   "Client",
+   "Service Manager"
+  ],
+  [
+   [
+    "Ich hatte erwartet, dass die Reparatur innerhalb von drei Tagen abgeschlossen sein würde.",
+    "I expected the repair to be completed within three days."
+   ],
+   [
+    "Ich verstehe Ihren Ärger. Wir hätten Sie früher über die Verzögerung informieren müssen.",
+    "I understand your frustration. We should have informed you about the delay earlier."
+   ],
+   [
+    "Die fehlenden Informationen haben meine eigene Planung erheblich beeinträchtigt.",
+    "The lack of information significantly affected my own planning."
+   ],
+   [
+    "Das bedauere ich. Darf ich erklären, weshalb zusätzliche Prüfungen notwendig waren?",
+    "I'm sorry about that. May I explain why additional checks were necessary?"
+   ],
+   [
+    "Gern, solange Sie mir anschließend einen realistischen neuen Termin nennen können.",
+    "Certainly, provided you can then give me a realistic new date."
+   ],
+   [
+    "Wir überprüfen den aktuellen Stand und bestätigen schriftlich, was tatsächlich machbar ist.",
+    "We'll review the current status and confirm in writing what is realistically possible."
+   ],
+   [
+    "Ich möchte außerdem wissen, wie Sie vergleichbare Probleme künftig vermeiden wollen.",
+    "I'd also like to know how you intend to avoid similar problems in future."
+   ],
+   [
+    "Wir werden unsere Informationswege überarbeiten und Zwischenstände verbindlicher kommunizieren.",
+    "We'll revise how we communicate and provide more reliable progress updates."
+   ]
+  ]
+ ],
+ [
+  "concert-interpretation",
+  "Discussing different musical interpretations",
+  "Arts and culture",
+  [
+   "Pianist",
+   "Music Teacher"
+  ],
+  [
+   [
+    "Bei der letzten Aufführung wurde das langsame Thema deutlich freier gestaltet als in der Aufnahme.",
+    "In the last performance, the slow theme was interpreted much more freely than in the recording."
+   ],
+   [
+    "Mich hat vor allem interessiert, wie sich dadurch die Spannung im ganzen Satz verändert hat.",
+    "I was particularly interested in how that changed the tension throughout the movement."
+   ],
+   [
+    "Manche Zuhörer empfinden solche Freiheiten allerdings als übertrieben.",
+    "Some listeners, however, find such liberties exaggerated."
+   ],
+   [
+    "Das kann ich verstehen. Entscheidend ist für mich, ob die Gestaltung musikalisch überzeugend bleibt.",
+    "I can understand that. For me the key is whether the interpretation remains musically convincing."
+   ],
+   [
+    "Welche Rolle spielt dabei Ihrer Meinung nach die historische Aufführungspraxis?",
+    "What role do you think historically informed performance plays in this?"
+   ],
+   [
+    "Sie liefert wichtige Hinweise, sollte aber nicht jede persönliche Entscheidung vollständig bestimmen.",
+    "It provides important guidance, but shouldn't dictate every personal decision."
+   ],
+   [
+    "Dann wäre es sinnvoll, verschiedene Interpretationen bewusst miteinander zu vergleichen.",
+    "Then it would make sense to compare different interpretations deliberately."
+   ],
+   [
+    "Genau. So lernen wir, eigene Urteile zu begründen, statt nur Vorlieben zu wiederholen.",
+    "Exactly. That's how we learn to justify our judgements rather than merely repeat preferences."
+   ]
+  ]
+ ],
+ [
+  "arts-funding",
+  "Debating public support for the arts",
+  "Culture and policy",
+  [
+   "Artist",
+   "City Representative"
+  ],
+  [
+   [
+    "Unser Musikprojekt erreicht viele Jugendliche, trotzdem ist seine Finanzierung unsicher.",
+    "Our music project reaches many young people, yet its funding is uncertain."
+   ],
+   [
+    "Öffentliche Mittel sind begrenzt, deshalb müssen wir unterschiedliche Angebote vergleichen.",
+    "Public funds are limited, so we have to compare different programmes."
+   ],
+   [
+    "Wie bewerten Sie dabei Leistungen, die sich nicht unmittelbar in Geld ausdrücken lassen?",
+    "How do you assess benefits that can't be expressed directly in monetary terms?"
+   ],
+   [
+    "Wir betrachten unter anderem Teilhabe, Reichweite und langfristige Bildungsziele.",
+    "We consider participation, reach, and long-term educational goals, among other things."
+   ],
+   [
+    "Mir ist wichtig, dass kleine Initiativen nicht allein wegen fehlender Verwaltungskapazität benachteiligt werden.",
+    "It's important to me that small initiatives aren't disadvantaged solely because they lack administrative capacity."
+   ],
+   [
+    "Das ist ein berechtigter Punkt. Wir prüfen einfachere Antragsverfahren.",
+    "That's a fair point. We're examining simpler application procedures."
+   ],
+   [
+    "Wäre ein gemeinsames Gespräch mit den beteiligten Einrichtungen möglich?",
+    "Would a joint meeting with the participating organisations be possible?"
+   ],
+   [
+    "Ja, wir planen eine offene Runde, um die Kriterien transparenter zu gestalten.",
+    "Yes, we're planning an open discussion to make the criteria more transparent."
+   ]
+  ]
+ ],
+ [
+  "b2-opinion",
+  "Practising a structured B2 opinion",
+  "Exam argumentation",
+  [
+   "Examiner",
+   "Candidate"
+  ],
+  [
+   [
+    "Bitte nehmen Sie zu der Aussage Stellung, dass digitale Kommunikation persönliche Treffen ersetzen könne.",
+    "Please respond to the claim that digital communication can replace in-person meetings."
+   ],
+   [
+    "Meiner Ansicht nach erleichtert sie den Austausch, kann persönliche Begegnungen jedoch nicht vollständig ersetzen.",
+    "In my view, it facilitates communication, but cannot completely replace personal encounters."
+   ],
+   [
+    "Welche Argumente sprechen dafür, digitale Kontakte stärker zu nutzen?",
+    "What arguments support making greater use of digital contact?"
+   ],
+   [
+    "Man spart Zeit und kann mit Menschen zusammenarbeiten, die weit entfernt wohnen.",
+    "It saves time and allows people who live far apart to work together."
+   ],
+   [
+    "Welche Grenzen sehen Sie trotz dieser Vorteile?",
+    "What limitations do you see despite these benefits?"
+   ],
+   [
+    "Missverständnisse lassen sich schwerer erkennen, und zwischenmenschliches Vertrauen entsteht manchmal langsamer.",
+    "Misunderstandings are harder to detect, and interpersonal trust sometimes develops more slowly."
+   ],
+   [
+    "Wie würden Sie Ihre Position abschließend zusammenfassen?",
+    "How would you summarise your position in conclusion?"
+   ],
+   [
+    "Ich halte eine bewusste Kombination für sinnvoll, bei der das jeweilige Ziel die Kommunikationsform bestimmt.",
+    "I think a thoughtful combination makes sense, with the purpose determining the form of communication."
+   ]
+  ]
+ ],
+ [
+  "b2-complaint",
+  "Practising diplomatic complaint language",
+  "Exam and formal speaking",
+  [
+   "Examiner",
+   "Candidate"
+  ],
+  [
+   [
+    "Stellen Sie sich vor, Ihre Weiterbildung wurde kurzfristig abgesagt. Wie würden Sie reagieren?",
+    "Imagine your training course was cancelled at short notice. How would you respond?"
+   ],
+   [
+    "Zunächst würde ich sachlich nach den Gründen und den angebotenen Alternativen fragen.",
+    "First I'd ask objectively about the reasons and the alternatives offered."
+   ],
+   [
+    "Was würden Sie sagen, wenn die neue Lösung für Sie nicht akzeptabel wäre?",
+    "What would you say if the new solution wasn't acceptable to you?"
+   ],
+   [
+    "Ich würde erklären, weshalb der Ersatztermin mit meinen beruflichen Verpflichtungen kollidiert.",
+    "I'd explain why the replacement date conflicts with my professional commitments."
+   ],
+   [
+    "Wie könnten Sie eine Einigung erzielen, ohne unhöflich zu werden?",
+    "How could you reach an agreement without being impolite?"
+   ],
+   [
+    "Ich könnte einen anderen Termin vorschlagen und um eine schriftliche Bestätigung bitten.",
+    "I could suggest another date and request written confirmation."
+   ],
+   [
+    "Und falls keine gemeinsame Lösung gefunden wird?",
+    "And if no joint solution is found?"
+   ],
+   [
+    "Dann würde ich mich über die vorgesehenen Beschwerdewege informieren und diese gegebenenfalls nutzen.",
+    "Then I'd find out about the available complaint procedures and use them if necessary."
+   ]
+  ]
+ ],
+ [
+  "b2-compromise",
+  "Negotiating a compromise in a discussion",
+  "Advanced speaking task",
+  [
+   "Partner A",
+   "Partner B"
+  ],
+  [
+   [
+    "Wir müssen eine Veranstaltung planen, sind uns aber über den Veranstaltungsort uneinig.",
+    "We need to plan an event, but we disagree about the venue."
+   ],
+   [
+    "Ich bevorzuge den großen Saal, weil wir dort mehr Besucher empfangen könnten.",
+    "I prefer the large hall because we could welcome more visitors there."
+   ],
+   [
+    "Der Saal ist allerdings teuer und liegt relativ weit vom Bahnhof entfernt.",
+    "The hall is expensive, though, and relatively far from the station."
+   ],
+   [
+    "Das stimmt. Andererseits wäre der kleinere Raum möglicherweise schnell ausgebucht.",
+    "That's true. On the other hand, the smaller room might sell out quickly."
+   ],
+   [
+    "Könnten wir die Nachfrage vor der endgültigen Buchung zunächst unverbindlich abfragen?",
+    "Could we sound out demand before making a final booking?"
+   ],
+   [
+    "Das wäre ein guter Kompromiss, solange wir dabei keine Plätze versprechen.",
+    "That would be a good compromise, provided we don't promise places."
+   ],
+   [
+    "Dann legen wir eine Frist fest und vergleichen anschließend die tatsächlichen Rückmeldungen.",
+    "Then let's set a deadline and compare the actual responses afterward."
+   ],
+   [
+    "Einverstanden. So treffen wir eine Entscheidung, die sich besser begründen lässt.",
+    "Agreed. That way we'll make a better-justified decision."
+   ]
+  ]
  ]
 ];
