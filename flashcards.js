@@ -182,6 +182,57 @@
   window.dispatchEvent(new CustomEvent('wortweg:flashcards-changed',{detail:{key:w.key,remembered}}));
   position++;flipped=false;renderCard();
  }
+ // Pointer Events work in current Android WebViews and iOS Safari. Restrict
+ // gestures to the card: vertical scrolling and every existing button stay usable.
+ function attachSwipe(card){
+  let gesture=null,ignoreClick=false;
+  const reset=()=>{
+   card.classList.remove('ww-flash-dragging');
+   card.style.removeProperty('transform');
+   card.style.removeProperty('opacity');
+  };
+  card.addEventListener('pointerdown',event=>{
+   if(event.isPrimary===false||(event.pointerType==='mouse'&&event.button!==0))return;
+   ignoreClick=false;
+   gesture={id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,dy:0,dragged:false};
+   try{card.setPointerCapture?.(event.pointerId);}catch{}
+  });
+  card.addEventListener('pointermove',event=>{
+   if(!gesture||event.pointerId!==gesture.id)return;
+   const dx=event.clientX-gesture.x,dy=event.clientY-gesture.y;
+   gesture.dx=dx;gesture.dy=dy;
+   if(!gesture.dragged){
+    if(Math.abs(dx)<10||Math.abs(dx)<Math.abs(dy)*1.2)return;
+    gesture.dragged=true;card.classList.add('ww-flash-dragging');
+   }
+   const offset=Math.sign(dx)*Math.min(Math.abs(dx)*0.8,145);
+   card.style.transform='translate3d('+offset+'px,0,0) rotate('+(offset/28)+'deg)';
+   card.style.opacity=String(1-Math.min(Math.abs(offset)/450,0.25));
+  });
+  function finish(event,cancelled=false){
+   if(!gesture||event.pointerId!==gesture.id)return;
+   const {dx,dy,dragged}=gesture;
+   gesture=null;
+   reset();
+   // A drag must never trigger the card's normal click-to-flip action.
+   if(dragged)ignoreClick=true;
+   if(cancelled||!dragged||Math.abs(dx)<60||Math.abs(dx)<=Math.abs(dy)*1.25)return;
+   moveCard(dx<0?1:-1);
+  }
+  card.addEventListener('pointerup',event=>finish(event));
+  card.addEventListener('pointercancel',event=>finish(event,true));
+  card.addEventListener('lostpointercapture',event=>finish(event,true));
+  card.addEventListener('click',event=>{
+   if(!ignoreClick)return;
+   ignoreClick=false;event.preventDefault();event.stopImmediatePropagation();
+  },true);
+  card.addEventListener('keydown',()=>{ignoreClick=false;});
+ }
+ function moveCard(step){
+  const next=position+step;
+  if(next<0||next>session.length)return;
+  position=next;flipped=false;renderCard();
+ }
  function renderCard(){
   if(sessionProfile!==profile())return renderSetup();
   shell('Flashcard review');
@@ -208,7 +259,8 @@
   face.append(make('span','ww-flash-face-caption',flipped?'ANSWER':back?'RECALL THE MEANING':'RECALL THE GERMAN'),
    make('strong','ww-flash-word',primary),make('p','ww-flash-translation',extra));
   face.append(make('small','ww-flash-flip-hint',flipped?'Tap to see the front again':'Tap card to flip'));
-  flip.append(face);panel.append(flip);
+  flip.append(face);attachSwipe(flip);panel.append(flip);
+  panel.append(make('p','ww-flash-swipe-hint','← Swipe left: next card · Swipe right: previous card →'));
   const audio=button('🔊 Listen in German',()=>say(w.de),'ww-flash-audio');
   panel.append(audio);
   const actions=make('div','ww-flash-actions');
@@ -220,8 +272,8 @@
   }
   panel.append(actions);
   const nav=make('div','ww-flash-navigation');
-  const prev=button('← Previous',()=>{position=Math.max(0,position-1);flipped=false;renderCard();},'ww-flash-secondary');prev.disabled=position===0;
-  const skip=button('Skip →',()=>{position++;flipped=false;renderCard();},'ww-flash-secondary');
+  const prev=button('← Previous',()=>moveCard(-1),'ww-flash-secondary');prev.disabled=position===0;
+  const skip=button('Skip →',()=>moveCard(1),'ww-flash-secondary');
   nav.append(prev,skip);panel.append(nav);
   root.append(panel);
  }

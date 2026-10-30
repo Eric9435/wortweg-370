@@ -43,6 +43,41 @@ set('Session size','all');
 set('Front of card','en');
 $('#ww-flashcards .ww-flash-primary').click();
 assert.ok($('.ww-flash-study-top').textContent.includes('1 / 6'),'All six entries selectable in one session');
+// Swipe the card itself without removing or replacing the existing buttons.
+const gesture=(dx,dy=0,cancel=false)=>{
+ const card=$('.ww-flash-card');
+ for(const [name,x,y] of [
+  ['pointerdown',200,200],
+  ['pointermove',200+dx,200+dy],
+  [cancel?'pointercancel':'pointerup',200+dx,200+dy]
+ ]){
+  const e=new w.Event(name,{bubbles:true,cancelable:true});
+  Object.defineProperties(e,{pointerId:{value:1},pointerType:{value:'touch'},
+   isPrimary:{value:true},clientX:{value:x},clientY:{value:y}});
+  card.dispatchEvent(e);
+ }
+};
+assert.ok($('.ww-flash-swipe-hint').textContent.includes('Swipe left'),'Visible swipe guidance');
+assert.match(fs.readFileSync('flashcards.css','utf8'),/touch-action:pan-y/,'Vertical page scroll remains available');
+gesture(-100);
+assert.ok($('.ww-flash-study-top').textContent.includes('2 / 6'),'Swipe left goes forward');
+assert.equal(w.WortWegFlashcards.getSummary().reviewed,0,'Swiping does not save a rating');
+gesture(100);
+assert.ok($('.ww-flash-study-top').textContent.includes('1 / 6'),'Swipe right returns to previous card');
+gesture(20,110);
+assert.ok($('.ww-flash-study-top').textContent.includes('1 / 6'),'Vertical scrolling does not change card');
+gesture(-25,3);
+assert.ok($('.ww-flash-study-top').textContent.includes('1 / 6'),'Short movement is not a swipe');
+gesture(-110,0,true);
+assert.ok($('.ww-flash-study-top').textContent.includes('1 / 6'),'Cancelled gestures do not advance');
+gesture(105);
+assert.ok($('.ww-flash-study-top').textContent.includes('1 / 6'),'First card cannot go backward');
+const navButtons=$('.ww-flash-navigation').querySelectorAll('button');
+assert.equal(navButtons.length,2,'Previous and Skip buttons are still displayed');
+navButtons[1].click();
+assert.ok($('.ww-flash-study-top').textContent.includes('2 / 6'),'Skip button still advances');
+$('.ww-flash-navigation button').click();
+assert.ok($('.ww-flash-study-top').textContent.includes('1 / 6'),'Previous button still returns');
 const word=$('.ww-flash-word').textContent;
 assert.ok(word,'Reverse card displays translation on front');
 $('.ww-flash-card').click();
