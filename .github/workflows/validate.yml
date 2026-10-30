@@ -10,6 +10,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: One-off independent general C1 noun coverage audit
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),vm=require('node:vm');
+          const html=fs.readFileSync('index.html','utf8');
+          const m=html.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/);
+          if(!m)throw Error('Missing HTML bank');
+          const source=JSON.parse(m[1]);
+          const x={window:{}};vm.createContext(x);
+          vm.runInContext(fs.readFileSync('noun-expansion.js','utf8'),x);
+          const pack=x.window.WortWegNounExpansion.entries;
+          const entries=[...source.bank,...source.curated,...pack];
+          const terms=new Set(entries.map(w=>String(w.de||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('de')));
+          const samples={"Core C1 academic":"die Evidenz;die Relevanz;die Signifikanz;die Forschungsleistung;die Forschungsmethode;die Erhebungsmethode;die Analysemethode;die Auswertungsmethode;die Fallstudie;die Längsschnittstudie;die Querschnittstudie;die Datenbasis;die Datenlage;die Nachweislage;die Handlungsempfehlung;die Handlungsmöglichkeit;die Handlungsoption;die Handlungsalternative;die Schlussbetrachtung;die Gesamtschau;die Betrachtungsweise;die Herleitung;die Ableitung;die Beweisführung;die Problemstellung;die Bedeutung;die These;die Gegenthese;die Schlüsselfrage;die Schlüsselaussage;die Kernfrage;die Anwendbarkeit","German society":"die Daseinsvorsorge;die Grundsicherung;die Sozialleistung;die Sozialversicherung;die Sozialhilfe;die Altersvorsorge;die Rentenversicherung;die Grundversorgung;die Versorgungssicherheit;die Versorgungslücke;die Daseinsberechtigung;die Existenzgrundlage;die Existenzsicherung;die Lebenshaltungskosten;die Lebenswelt;die Lebensplanung;die Lebenszufriedenheit;die Menschenwürde;die Menschenrechtsverletzung;die Staatsbürgerschaft;die Einbürgerung;die Ausweisung;die Abschiebung;die Flucht;die Fluchtursache;die Flüchtlingspolitik;die Integrationspolitik;die Asylpolitik;die Selbstverwirklichung;die Verdrängung","Argumentation":"der Gegenstand;der Gegenbeweis;der Sachstand;der Sachbezug;der Kontext;der Ursprung;der Anhaltspunkt;der Anknüpfungspunkt;der Gegenvorschlag;der Vorschlag;der Ansatzpunkt;der Zeitrahmen;der Leitfaden;der Entwurf;der Überblick;der Ausblick;der Vorlauf;der Nachlauf;der Vorstoß;der Rückzug;der Eingriff;der Übergriff;der Überhang;der Überfluss;der Misserfolg;der Erfolg;der Verzicht;der Wunsch;der Wille;der Zugewinn","Education and work":"das Bildungswesen;das Bildungssystem;das Schulsystem;das Hochschulwesen;das Hochschulsystem;das Bildungsangebot;das Ausbildungsangebot;das Berufsbild;das Ausbildungsziel;das Qualifikationsziel;das Lernverhalten;das Lernpotenzial;das Lernergebnis;das Lerntempo;das Leistungsvermögen;das Berufskolleg;das Weiterbildungsangebot;das Förderangebot;das Unterstützungsangebot;das Förderinstrument;das Fördermittel;das Stipendienprogramm;das Prüfungsamt;das Studienkolleg;das Studienangebot;das Wahlpflichtfach;das Pflichtfach;das Lehrangebot","Core neuters":"das Gegenargument;das Hauptargument;das Kernargument;das Motiv;das Grundprinzip;das Teilresultat;das Resultat;das Manko;das Gegenbeispiel;das Musterbeispiel;das Vorbild;das Abbild;das Zerrbild;das Hauptziel;das Leitziel;das Leistungsvermögen;das Erfahrungswissen;das Sachwissen;das Allgemeinwissen;das Weltwissen;das Fachwissen;das Urteilsvermögen;das Einfühlungsvermögen;das Verantwortungsbewusstsein;das Problembewusstsein;das Wohlergehen"};
+          const report={},missingTotal=[];
+          for(const [category,words] of Object.entries(samples)){
+           const items=[...new Set(words.split(';').map(t=>t.trim()))];
+           const missing=items.filter(t=>!terms.has(t.toLocaleLowerCase('de')));
+           report[category]={checked:items.length,known:items.length-missing.length,missing};
+           missingTotal.push(...missing);
+          }
+          const oldCovered=['die Bedeutung','die Konsequenz','die Vorgehensweise','die Problemstellung',
+            'die Zielstellung','die Feststellung','die Erkenntnisgewinnung',
+            'die Zuwanderung','die Einwanderung','die Auswanderung','die Beteiligung',
+            'die Stellungnahme','die Haltung','die Überzeugung','die Auseinandersetzung',
+            'die Herstellung','die Einnahme','die Ausgabe','die Ressource',
+            'die Wettbewerbsfähigkeit','die Lebensbedingung',
+            'der Vorteil','der Nachteil','der Bedarf','der Bestand','der Nutzen',
+            'der Rückgang','der Anstieg','der Zuwachs','der Begriff','der Verlauf',
+            'der Rahmen','der Aspekt','der Hintergrund','das Defizit','das Mittel','das Wachstum','das Umfeld'];
+          const regressions=oldCovered.filter(t=>!terms.has(t.toLocaleLowerCase('de')));
+          console.log('REMAINING_NOUN_AUDIT='+JSON.stringify({
+           originalBank:source.bank.length,expansion:pack.length,
+           sampleTotal:Object.values(report).reduce((n,r)=>n+r.checked,0),
+           sampleMissing:missingTotal.length,categories:report,regressions
+          }));
+          NODE
       - name: Check JavaScript, manifest, and account persistence hooks
         run: |
           node --check sw.js
