@@ -22,6 +22,18 @@
     list.push({key,de:w.de,en:w.en||'',my:w.my||w.mm||'',level:lesson.level||'—',source:'live'});
    }
   }
+  // Offer supplementary standalone nouns in regular flashcard practice too.
+  // Keep existing word keys and skip nouns already represented in the old bank.
+  const represented=new Set(list.filter(w=>/^(der|die|das)\s+/iu.test(w.de||''))
+   .map(w=>String(w.de).trim().replace(/\s+/g,' ').toLocaleLowerCase('de')));
+  for(const w of window.WortWegNounExpansion?.entries||[]){
+   if(typeof w.de!=='string')continue;
+   const normalized=w.de.trim().replace(/\s+/g,' ').toLocaleLowerCase('de');
+   if(represented.has(normalized))continue;
+   represented.add(normalized);
+   list.push({key:'n:'+w.id,de:w.de,en:w.en||'',my:w.my||'',
+    level:w.level||'—',source:'expansion'});
+  }
   return list;
  }
  const make=(tag,cls,label)=>{
@@ -131,7 +143,7 @@
   pane.append(metrics);
   const fields=make('div','ww-flash-fields');
   const change=(name,value)=>{settings[name]=value;renderSetup();};
-  selectControl(fields,'Source',settings.source,[['all','All vocabulary'],['bank','Word Bank (A1–C2)'],['curated','Topic 1 curated'],['live','New lessons']],v=>change('source',v));
+  selectControl(fields,'Source',settings.source,[['all','All vocabulary'],['bank','Word Bank (A1–C2)'],['curated','Topic 1 curated'],['live','New lessons'],['expansion','Noun expansion']],v=>change('source',v));
   selectControl(fields,'Level',settings.level,[['all','All levels'],...levels.map(s=>[s,s]),['Topic 1','Topic 1']],v=>change('level',v));
   selectControl(fields,'Cards to study',settings.status,[['all','All cards'],['new','Not yet reviewed'],['due','Due for review'],['missed','Previously missed'],['learned','Not due yet']],v=>change('status',v));
   selectControl(fields,'Front of card',settings.direction,[['de','German → English + Myanmar'],['en','English + Myanmar → German']],v=>change('direction',v));
@@ -319,7 +331,7 @@
   const panel=make('div','ww-flash-study');
   const top=make('div','ww-flash-study-top');
   top.append(make('span','',(position+1)+' / '+session.length),
-   make('span','',w.level+' · '+(w.source==='bank'?'Word Bank':w.source==='live'?'New lessons':'Topic 1')));
+   make('span','',w.level+' · '+(w.source==='bank'?'Word Bank':w.source==='live'?'New lessons':w.source==='expansion'?'Noun expansion':'Topic 1')));
   panel.append(top);
   const progress=make('div','ww-flash-progress');
   const fill=make('span');fill.style.width=100*position/session.length+'%';progress.append(fill);panel.append(progress);
