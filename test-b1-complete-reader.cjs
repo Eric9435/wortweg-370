@@ -31,7 +31,7 @@ const link=menu.querySelector('a[data-level="B1"]');
 assert.ok(link,'B1 selector exists');
 assert.equal(link.getAttribute('href'),'./b1-complete-reader.html');
 assert.ok(link.classList.contains('ready'));
-assert.equal(menu.querySelectorAll('.level.ready').length,3,'A1, A2 and B1 readers available');
+assert.equal(menu.querySelectorAll('.level.ready').length,4,'A1, A2, B1 and B2 readers available');
 const html=read('b1-complete-reader.html');
 assert.match(html,/<script src="\.\/b1-reading-chapters\.js"><\/script>/);
 assert.match(html,/src="\.\/noun-expansion\.js"/);
