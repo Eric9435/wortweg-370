@@ -4,9 +4,11 @@ German–English–Myanmar vocabulary practice with multiple-choice quizzes, pro
 
 [Open the web app](https://eric9435.github.io/wortweg-370/) · [Android releases](https://github.com/Eric9435/wortweg-370/releases)
 
-## A1–A2 Dialog Studio
+## A1–B1 Dialog Studio
 
-The standalone **Dialog** menu is independent of Vocabulary, Reading, Grammar and quizzes. Select **A1** (46 everyday conversations, 874 source-linked word drills) or **A2** (59 authored real-life conversations, 1,176 source-linked word drills). Counts include original Word Bank records, the additional curated A2 record and noun-expansion records, including any overlapping headwords; they are not counts of unique words or official CEFR inventories. Each level includes full German/English turns, local German speech, a slower playback option, role-play response masking, optional Myanmar word meanings, and independently saved completion progress. The original A1 completion storage remains intact. No quiz marks or cloud-account study progress are overwritten.\n\n## Features
+The standalone **Dialog** menu is independent of Vocabulary, Reading, Grammar and quizzes. Select **A1** (46 everyday conversations, 874 source-linked word drills) **A2** (59 authored real-life conversations, 1,176 source-linked word drills) or **B1** (63 original six-turn conversations, at least 1,307 source-linked word drills). Counts include original Word Bank records, the additional curated records and noun-expansion records, including any overlapping headwords; they are not counts of unique words or official CEFR inventories. Each level includes full German/English turns, local German speech, a slower playback option, role-play response masking, optional Myanmar word meanings, and independently saved completion progress. The original A1 completion storage remains intact. No quiz marks or cloud-account study progress are overwritten.
+
+## Features
 
 - A 370-topic roadmap and an A1–C2 vocabulary bank with 10,876 entries.
 - The full Word Bank is browsable with page navigation (100, 250, or 500 entries per page), page jumping, and an **All words · continuous scroll** mode that loads more entries on demand; searches apply to the complete bank, never just the first 70.
