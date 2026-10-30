@@ -1719,5 +1719,349 @@ window.WortWegC1Situations=[
     "I agree. That limitation should be clearer in our publication."
    ]
   ]
+ ],
+ [
+  "leadership-crisis",
+  "Managing communication during a project crisis",
+  "Executive communication",
+  [
+   "Projektleiterin",
+   "Abteilungschef"
+  ],
+  [
+   [
+    "Das Projekt gerät unter Druck, weil mehrere zugesagte Leistungen nicht termingerecht vorliegen.",
+    "The project is under pressure because several promised deliverables haven't arrived on time."
+   ],
+   [
+    "Bevor wir reagieren, sollten wir klären, welche Verzögerungen tatsächlich den kritischen Pfad betreffen.",
+    "Before reacting, we should clarify which delays actually affect the critical path."
+   ],
+   [
+    "Einige Teams fordern zusätzliche Ressourcen, andere schlagen eine Reduzierung des Umfangs vor.",
+    "Some teams are calling for additional resources, while others propose reducing scope."
+   ],
+   [
+    "Beide Optionen haben Folgen, die wir dem Auftraggeber offen darlegen müssen.",
+    "Both options have consequences that we must explain openly to the client."
+   ],
+   [
+    "Wie vermeiden wir, dass diese Transparenz als Eingeständnis mangelnder Kontrolle interpretiert wird?",
+    "How do we avoid transparency being interpreted as an admission of lost control?"
+   ],
+   [
+    "Indem wir konkrete Ursachen, überprüfbare Gegenmaßnahmen und realistische Termine nennen.",
+    "By identifying concrete causes, verifiable corrective action, and realistic deadlines."
+   ],
+   [
+    "Dann sollte der Bericht klar zwischen gesicherten Informationen und noch offenen Annahmen unterscheiden.",
+    "Then the report should clearly distinguish confirmed information from assumptions that remain open."
+   ],
+   [
+    "Genau. Glaubwürdigkeit entsteht dadurch, dass Zusagen nachvollziehbar und anschließend eingehalten werden.",
+    "Exactly. Credibility comes from commitments being transparent and subsequently fulfilled."
+   ]
+  ]
+ ],
+ [
+  "long-term-automation",
+  "Examining automation and employment transitions",
+  "Technology and labour",
+  [
+   "Industrievertreterin",
+   "Gewerkschafter"
+  ],
+  [
+   [
+    "Mit der neuen Anlage können wir bestimmte Abläufe weitgehend automatisieren.",
+    "With the new installation, we can largely automate certain processes."
+   ],
+   [
+    "Dadurch entstehen Produktivitätsgewinne, aber auch Unsicherheit über die Zukunft einzelner Tätigkeiten.",
+    "That creates productivity gains but also uncertainty about the future of some jobs."
+   ],
+   [
+    "Wir möchten vermeiden, dass die Beschäftigten die Veränderung ausschließlich als Bedrohung wahrnehmen.",
+    "We want to avoid employees perceiving the change solely as a threat."
+   ],
+   [
+    "Dann müssen Weiterbildung und Mitgestaltung frühzeitig verbindlich geregelt werden.",
+    "Then training and participation must be agreed early and in a binding way."
+   ],
+   [
+    "Wie können wir einschätzen, welche Kompetenzen tatsächlich künftig benötigt werden?",
+    "How can we estimate which skills will actually be needed in the future?"
+   ],
+   [
+    "Durch eine systematische Analyse der neuen Aufgaben und Gespräche mit den betroffenen Teams.",
+    "Through a systematic analysis of the new tasks and discussions with the teams affected."
+   ],
+   [
+    "Dabei sollten wir nicht nur technische Qualifikationen, sondern auch organisatorische Fähigkeiten berücksichtigen.",
+    "We should consider not only technical qualifications but organisational skills too."
+   ],
+   [
+    "Einverstanden. Der Erfolg der Automatisierung hängt auch davon ab, wie wir den Übergang gestalten.",
+    "Agreed. The success of automation also depends on how we manage the transition."
+   ]
+  ]
+ ],
+ [
+  "research-funding",
+  "Defending long-term research funding",
+  "Scientific policy",
+  [
+   "Wissenschaftlerin",
+   "Finanzpolitiker"
+  ],
+  [
+   [
+    "Einige Forschungsprojekte liefern erst nach vielen Jahren praktische Ergebnisse.",
+    "Some research projects only produce practical results after many years."
+   ],
+   [
+    "Daher fällt es schwer, ihre Förderung anhand kurzfristiger Kennzahlen zu begründen.",
+    "That makes it difficult to justify funding based on short-term metrics."
+   ],
+   [
+    "Allerdings entstehen grundlegende wissenschaftliche Durchbrüche selten nach einem festen Zeitplan.",
+    "However, fundamental scientific breakthroughs rarely occur according to a fixed timetable."
+   ],
+   [
+    "Wie könnte der Staat trotzdem verantwortungsvoll mit begrenzten Mitteln umgehen?",
+    "How could the state still manage limited resources responsibly?"
+   ],
+   [
+    "Durch nachvollziehbare Qualitätskriterien, Zwischenbewertungen und eine Vielfalt von Förderansätzen.",
+    "Through transparent quality criteria, interim assessments, and a diversity of funding approaches."
+   ],
+   [
+    "Wäre es nicht sinnvoll, Projekte bei ausbleibendem Erfolg konsequenter zu beenden?",
+    "Wouldn't it make sense to stop projects more consistently when they show no success?"
+   ],
+   [
+    "Teilweise ja, sofern wissenschaftliche Unsicherheit nicht vorschnell mit schlechter Qualität gleichgesetzt wird.",
+    "Sometimes yes, provided scientific uncertainty isn't hastily equated with poor quality."
+   ],
+   [
+    "Dann müssen wir zwischen berechtigter Rechenschaft und ergebnisoffener Forschung sorgfältig abwägen.",
+    "Then we must carefully balance legitimate accountability and open-ended research."
+   ]
+  ]
+ ],
+ [
+  "academic-collaboration",
+  "Managing authorship expectations in research",
+  "Research collaboration",
+  [
+   "Forschungsleiter",
+   "Teammitglied"
+  ],
+  [
+   [
+    "Bei der gemeinsamen Veröffentlichung ist unklar geblieben, wie die Beiträge der Beteiligten gewürdigt werden.",
+    "In the joint publication, it has remained unclear how the participants' contributions will be recognised."
+   ],
+   [
+    "Die unterschiedlichen Erwartungen sollten wir klären, bevor der Text eingereicht wird.",
+    "We should clarify differing expectations before the manuscript is submitted."
+   ],
+   [
+    "Wie können wir unterscheiden, welche Beiträge eine Autorschaft rechtfertigen und welche anders anerkannt werden?",
+    "How can we distinguish contributions that warrant authorship from those that should be acknowledged differently?"
+   ],
+   [
+    "Wir sollten die einschlägigen Richtlinien unserer Einrichtung heranziehen und Beiträge transparent dokumentieren.",
+    "We should consult our institution's relevant guidelines and document contributions transparently."
+   ],
+   [
+    "Mir ist wichtig, dass auch die Arbeit jüngerer Forschender angemessen berücksichtigt wird.",
+    "It's important to me that the work of junior researchers is also properly recognised."
+   ],
+   [
+    "Das ist berechtigt. Entscheidend darf nicht allein die formale Position im Team sein.",
+    "That's fair. Formal position in the team shouldn't be the sole deciding factor."
+   ],
+   [
+    "Könnten wir dazu eine gemeinsame Übersicht erstellen und offene Fragen besprechen?",
+    "Could we draw up a shared overview and discuss outstanding questions?"
+   ],
+   [
+    "Ja. Eine frühzeitige Klärung verhindert spätere Konflikte und stärkt die Zusammenarbeit.",
+    "Yes. Early clarification prevents later conflicts and strengthens cooperation."
+   ]
+  ]
+ ],
+ [
+  "ethics-ai-art",
+  "Debating AI-generated material in the arts",
+  "Artistic ethics",
+  [
+   "Komponistin",
+   "Technologieentwickler"
+  ],
+  [
+   [
+    "KI-Werkzeuge können neue musikalische Ideen liefern, doch ihre Trainingsgrundlagen bleiben oft undurchsichtig.",
+    "AI tools can generate new musical ideas, but their training foundations often remain opaque."
+   ],
+   [
+    "Das stimmt, obwohl solche Werkzeuge auch Menschen ohne traditionelle Ausbildung kreative Zugänge eröffnen.",
+    "That's true, although such tools also open creative opportunities for people without traditional training."
+   ],
+   [
+    "Die Frage ist, ob diese Zugänge auf Kosten derjenigen entstehen, deren Werke verwendet wurden.",
+    "The question is whether these opportunities come at the expense of those whose works were used."
+   ],
+   [
+    "Dann müssen wir Herkunft und Berechtigungen des Materials konsequenter berücksichtigen.",
+    "Then we need to take the origin and licensing of material more seriously."
+   ],
+   [
+    "Außerdem sollten wir genauer unterscheiden, ob ein Werkzeug unterstützt oder eigenständige kreative Entscheidungen ersetzt.",
+    "We should also distinguish more carefully whether a tool assists or replaces independent creative decisions."
+   ],
+   [
+    "Diese Grenze ist in der Praxis allerdings nicht immer eindeutig zu ziehen.",
+    "That distinction is not always clear in practice, however."
+   ],
+   [
+    "Umso wichtiger sind Transparenz, faire Vergütung und eine offene Debatte über Verantwortung.",
+    "That makes transparency, fair remuneration, and open debate about responsibility all the more important."
+   ],
+   [
+    "Einverstanden. Technischer Fortschritt sollte die Bedingungen kreativer Arbeit nicht einfach ignorieren.",
+    "Agreed. Technical progress shouldn't simply ignore the conditions of creative work."
+   ]
+  ]
+ ],
+ [
+  "language-policy",
+  "Discussing multilingual access in public services",
+  "Language and inclusion",
+  [
+   "Beraterin",
+   "Verwaltungsleiter"
+  ],
+  [
+   [
+    "Immer mehr Bürger verstehen die Informationen unserer Behörde nur teilweise.",
+    "More and more citizens understand our authority's information only partially."
+   ],
+   [
+    "Wir bieten bereits vereinfachte deutsche Texte an, stoßen dabei jedoch an Grenzen.",
+    "We already offer simplified German texts but face limitations."
+   ],
+   [
+    "Wäre es sinnvoll, wichtige Hinweise zusätzlich in mehreren Sprachen bereitzustellen?",
+    "Would it make sense to provide key notices in several languages as well?"
+   ],
+   [
+    "Das könnte den Zugang erleichtern, setzt aber zuverlässige Übersetzungen und regelmäßige Aktualisierungen voraus.",
+    "That could improve access but requires reliable translations and regular updates."
+   ],
+   [
+    "Wie vermeiden wir, dass widersprüchliche Sprachfassungen zu neuen Problemen führen?",
+    "How do we prevent conflicting language versions from creating new problems?"
+   ],
+   [
+    "Durch klare redaktionelle Zuständigkeiten und fachliche Prüfung besonders wichtiger Inhalte.",
+    "Through clear editorial responsibilities and expert review of particularly important information."
+   ],
+   [
+    "Dann sollten wir zunächst die Verfahren identifizieren, bei denen Missverständnisse besonders schwerwiegende Folgen haben.",
+    "Then we should first identify procedures where misunderstandings could have particularly serious consequences."
+   ],
+   [
+    "Genau. Verständliche Verwaltungskommunikation ist eine Voraussetzung für wirksame Teilhabe.",
+    "Exactly. Clear administrative communication is a prerequisite for effective participation."
+   ]
+  ]
+ ],
+ [
+  "c1-nuance",
+  "Practising concessions and qualifications in argumentation",
+  "C1 speaking techniques",
+  [
+   "Prüfer",
+   "Kandidatin"
+  ],
+  [
+   [
+    "Ist Ihrer Auffassung nach die Digitalisierung grundsätzlich ein Gewinn für das Bildungssystem?",
+    "In your view, is digitisation fundamentally beneficial to education?"
+   ],
+   [
+    "Ich würde diese Aussage nur eingeschränkt bejahen, da der Nutzen stark von der Umsetzung abhängt.",
+    "I would agree only with reservations, since the benefits depend heavily on implementation."
+   ],
+   [
+    "Welche Voraussetzungen müssten erfüllt sein, damit der positive Effekt tatsächlich eintritt?",
+    "What conditions would need to be met for the positive effects actually to occur?"
+   ],
+   [
+    "Neben geeigneter Infrastruktur benötigen Lehrkräfte Zeit, Unterstützung und nachvollziehbare Lernziele.",
+    "Alongside suitable infrastructure, teachers need time, support, and clear learning objectives."
+   ],
+   [
+    "Könnten Sie einen Einwand gegen Ihre eigene Position formulieren?",
+    "Could you formulate an objection to your own position?"
+   ],
+   [
+    "Man könnte argumentieren, dass selbst unvollkommene digitale Angebote zunächst zusätzlichen Zugang ermöglichen.",
+    "One could argue that even imperfect digital services initially create additional access."
+   ],
+   [
+    "Wie würden Sie diesen Einwand in Ihre abschließende Bewertung einordnen?",
+    "How would you incorporate that objection into your final assessment?"
+   ],
+   [
+    "Ich erkenne den möglichen Vorteil an, halte eine laufende Qualitätskontrolle jedoch für unverzichtbar.",
+    "I acknowledge the potential benefit but consider ongoing quality assurance indispensable."
+   ]
+  ]
+ ],
+ [
+  "c1-synthesis-policy",
+  "Synthesising complex policy trade-offs",
+  "C1 oral examination",
+  [
+   "Prüferin",
+   "Teilnehmer"
+  ],
+  [
+   [
+    "Welche Rolle sollte künstliche Intelligenz Ihrer Ansicht nach in öffentlichen Entscheidungen übernehmen?",
+    "What role should artificial intelligence play in public decisions, in your view?"
+   ],
+   [
+    "Sie kann Informationen strukturieren und Verfahren unterstützen, sollte aber politische Verantwortung nicht ersetzen.",
+    "It can organise information and support procedures but shouldn't replace political responsibility."
+   ],
+   [
+    "Einige halten menschliche Entscheidungen allerdings ebenfalls für fehleranfällig und voreingenommen.",
+    "Some argue that human decisions are also fallible and biased."
+   ],
+   [
+    "Das stimmt. Daraus folgt jedoch nicht, dass automatisierte Systeme ohne unabhängige Kontrolle auskommen.",
+    "That's true. But it doesn't follow that automated systems can operate without independent oversight."
+   ],
+   [
+    "Welche konkreten Mechanismen würden Sie empfehlen, um beide Risiken zu begrenzen?",
+    "What specific mechanisms would you recommend to limit both risks?"
+   ],
+   [
+    "Transparente Kriterien, überprüfbare Ergebnisse, Einspruchsmöglichkeiten und klare Zuständigkeiten.",
+    "Transparent criteria, auditable outcomes, appeals mechanisms, and clear accountability."
+   ],
+   [
+    "Können Sie die konkurrierenden Positionen abschließend zu einer gemeinsamen Perspektive verbinden?",
+    "Can you reconcile the competing positions into a shared perspective in conclusion?"
+   ],
+   [
+    "Ich plädiere für unterstützende Technik innerhalb demokratisch verantworteter, korrigierbarer Entscheidungsverfahren.",
+    "I advocate supportive technology within democratically accountable and correctable decision-making processes."
+   ]
+  ]
  ]
 ];
