@@ -1,6 +1,6 @@
-/* WortWeg 370 — independent A1/A2 Dialog Studio.
+/* WortWeg 370 — independent A1/A2/B1 Dialog Studio.
    Original WortWeg word-bank levels are the only source of study headwords.
-   Keep existing A1 completion IDs/storage unchanged; isolate A2 completions. */
+   Keep existing A1 completion IDs/storage unchanged; isolate A2 and B1 completions. */
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 const storageKey=level=>'ww-'+level.toLowerCase()+'-dialog-progress-v1';
@@ -110,18 +110,18 @@ async function init(){const empty=$('dialogEmpty');try{
  const original=JSON.parse(node.textContent);
  const originalBank=Array.isArray(original.bank)?original.bank:[];
  const expanded=Array.isArray(window.WortWegNounExpansion?.entries)?window.WortWegNounExpansion.entries:[];
- for(const level of ['A1','A2']){
+ for(const level of ['A1','A2','B1']){
   const bank=originalBank.filter(w=>w.level===level);
-  const curated=level==='A2'?(original.curated||[]).filter(w=>w.level===level):[];
+  const curated=level==='A1'?[]:(original.curated||[]).filter(w=>w.level===level);
   const nouns=expanded.filter(w=>w.level===level);
-  state.words=[...bank.map((w,i)=>({...w,key:'b:'+String(w.id??i),source:'Word Bank'})),...curated.map((w,i)=>({...w,key:'c:'+String(w.id??i),source:'Curated A2 List'})),...nouns.map((w,i)=>({...w,key:'n:'+String(w.id??i),source:'Noun Expansion'}))];
-  const source=level==='A1'?window.WortWegA1Situations:window.WortWegA2Situations;
+  state.words=[...bank.map((w,i)=>({...w,key:'b:'+String(w.id??i),source:'Word Bank'})),...curated.map((w,i)=>({...w,key:'c:'+String(w.id??i),source:'Curated '+level+' List'})),...nouns.map((w,i)=>({...w,key:'n:'+String(w.id??i),source:'Noun Expansion'}))];
+  const source={A1:window.WortWegA1Situations,A2:window.WortWegA2Situations,B1:window.WortWegB1Situations}[level];
   if(!Array.isArray(source)||!source.length)throw Error(level+' authored dialogues could not load');
   const scenes=source.map(row=>{const scene={id:'scene:'+row[0],title:row[1],desc:row[2],speakers:row[3],turns:row[4]};scene.words=findInScene(scene);return scene;});
   state.collections[level]={words:state.words,scenes,entries:state.words.map(wordScene),bankCount:bank.length,curatedCount:curated.length,nounCount:nouns.length};
  }
  const requestLevel=new URL(window.location.href).searchParams.get('level');
- setLevel(requestLevel==='A2'?'A2':'A1');
+ setLevel(['A1','A2','B1'].includes(requestLevel)?requestLevel:'A1');
  }catch(err){empty.textContent='Could not load your WortWeg Word Bank: '+err.message+'. Please open WortWeg Home online once, then reopen Dialog.';}}
 document.querySelectorAll('.dialog-levels button').forEach(btn=>btn.addEventListener('click',()=>{
  setLevel(btn.dataset.level);

@@ -10,7 +10,7 @@ const clickExisting=(selector)=>{const target=$(selector);if(target){target.clic
 const actions=[
  {id:'learn',icon:'↗',title:'Learn vocabulary',caption:'Continue learning',run:()=>clickExisting('.ww-menu-primary')||clickExisting('[data-nav="topics"]')},
  {id:'complete-reading',icon:'▤',title:'Complete Reading',caption:'A1–C2 levels · German & English',run:()=>{window.location.href='./complete-reading.html';return true;}},
- {id:'dialog',icon:'◉',title:'Dialog',caption:'A1–A2 conversations · source-based practice',run:()=>{window.location.href='./dialog.html';return true;}},
+ {id:'dialog',icon:'◉',title:'Dialog',caption:'A1–B1 conversations · source-based practice',run:()=>{window.location.href='./dialog.html';return true;}},
  {id:'write',icon:'✎',title:'Writing',caption:'Memorize by typing',run:()=>{if(window.WortWegWriting?.open){window.WortWegWriting.open();return true;}return clickExisting('#ww-writing-launch');}},
  {id:'flashcards',icon:'▣',title:'Flashcards',caption:'Flip all vocabulary words',run:()=>{if(window.WortWegFlashcards?.open){window.WortWegFlashcards.open();return true;}return clickExisting('#ww-flashcards-launch');}},
  {id:'articles',icon:'Aa',title:'Der · Die · Das Quiz',caption:'Test every noun article',run:()=>{if(window.WortWegArticlesQuiz?.open){window.WortWegArticlesQuiz.open();return true;}return clickExisting('#ww-articles-launch');}},
@@ -35,8 +35,8 @@ const grid=make('div','ww-home-focus-grid');for(const a of actions.slice(1).filt
 }zone.append(grid);
 const dialogLink=make('a','ww-home-dialog-link');
 dialogLink.href='./dialog.html';
-dialogLink.setAttribute('aria-label','Open standalone A1 and A2 German conversations');
-dialogLink.append(make('span','ww-home-dialog-symbol','◉'),make('strong','','Dialog'),make('small','','A1 · A2 Conversations'),make('span','ww-home-dialog-arrow','›'));
+dialogLink.setAttribute('aria-label','Open standalone A1, A2 and B1 German conversations');
+dialogLink.append(make('span','ww-home-dialog-symbol','◉'),make('strong','','Dialog'),make('small','','A1 · A2 · B1'),make('span','ww-home-dialog-arrow','›'));
 top.append(dialogLink);
 top.after(zone);
 menu.classList.add('ww-home-modern');
