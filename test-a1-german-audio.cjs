@@ -90,7 +90,7 @@ assert.equal(w.document.querySelectorAll('#storyContent .english-col').length,12
  'English translations survive all speech controls');
 assert.equal(w.document.querySelectorAll('#storyContent .german-col').length,12,
  'German paragraphs survive all speech controls');
-assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v87/,'Audio version is offline cached');
+assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v88/,'Audio version is offline cached');
 assert.match(fs.readFileSync('sw.js','utf8'),/a1-complete-reader\.html/);
 dom.window.close();
 const noVoice=new JSDOM(html,{url:'https://example.test/a1-complete-reader.html',runScripts:'outside-only'});
