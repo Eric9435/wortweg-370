@@ -43,10 +43,41 @@ assert.equal(original.bank.length,10876,'Original 10,876-entry bank not modified
 const toLemma=text=>String(text||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('de');
 const baseArticleForms=new Set([...original.bank,...original.curated].map(w=>toLemma(w.de)).filter(x=>/^(der|die|das)\s+/u.test(x)));
 const trulyNew=nouns.filter(w=>!baseArticleForms.has(toLemma(w.de)));
+
+const mandatory=[
+ 'die Bedeutung','die Konsequenz','die Vorgehensweise','die Problemstellung',
+ 'die Zielstellung','die Feststellung','die Erkenntnisgewinnung',
+ 'die Zuwanderung','die Einwanderung','die Auswanderung','die Beteiligung',
+ 'die Stellungnahme','die Haltung','die Überzeugung','die Auseinandersetzung',
+ 'die Herstellung','die Einnahme','die Ausgabe','die Ressource',
+ 'die Wettbewerbsfähigkeit','die Lebensbedingung',
+ 'der Vorteil','der Nachteil','der Bedarf','der Bestand','der Nutzen',
+ 'der Rückgang','der Anstieg','der Zuwachs','der Begriff','der Verlauf',
+ 'der Rahmen','der Aspekt','der Hintergrund',
+ 'das Defizit','das Mittel','das Wachstum','das Umfeld'
+];
+const completeInventory=new Set([...original.bank,...original.curated,...nouns]
+ .map(w=>toLemma(w.de)));
+for(const word of mandatory)assert.ok(completeInventory.has(toLemma(word)),
+ 'Core general-academic noun missing from dictionary: '+word);
+const baseByLemma=new Map();
+for(const w of [...original.bank,...original.curated]){
+ const m=/^(der|die|das)\s+(.+)$/iu.exec(toLemma(w.de));
+ if(!m)continue;
+ const lemma=m[2];
+ const s=baseByLemma.get(lemma)||new Set();s.add(m[1]);baseByLemma.set(lemma,s);
+}
+for(const w of nouns){
+ const m=/^(der|die|das)\s+(.+)$/iu.exec(toLemma(w.de));
+ const historical=baseByLemma.get(m[2]);
+ assert.ok(!historical||historical.has(m[1]),
+  'Expansion article conflicts with original bank for '+w.de);
+}
+
 assert.ok(trulyNew.length>=900,'Significant number of new standalone nouns after deduplicating against the original bank');
 console.log('NOUN_EXPANSION_RESULT='+JSON.stringify({
  curated:nouns.length,newAfterOriginalDedup:trulyNew.length,
- existingAlreadyCovered:nouns.length-trulyNew.length,articleDistribution:byArticle,
+ existingAlreadyCovered:nouns.length-trulyNew.length,articleDistribution:byArticle,mandatoryGeneralNouns:mandatory.length,
  originalBank:original.bank.length
 }));
 const fixture={bank:[
@@ -97,6 +128,6 @@ for(const file of ['noun-expansion.js']){
  assert.ok(fs.readFileSync('ios-polish.js','utf8').includes(file),'Web loader includes '+file);
 }
 assert.match(fs.readFileSync('ios-polish.js','utf8'),/nouns\.onload=load/,'Noun pack loads before quiz and flashcards');
-assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v75/);
+assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v76/);
 dom.window.close();
 console.log('PASS: verified article-only noun expansion, bank deduplication, all-words quiz, flashcards, mobile/offline, and original data safety.');
