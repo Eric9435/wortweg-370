@@ -1172,5 +1172,566 @@ window.WortWegC2Situations=[
     "Exactly. Its quality lies in the coherence of its musical argument."
    ]
   ]
+ ],
+ [
+  "economic-narratives",
+  "Disentangling inflation and household welfare",
+  "Economic analysis",
+  [
+   "Ökonomin",
+   "Journalist"
+  ],
+  [
+   [
+    "Die Regierung verweist auf sinkende Inflationsraten, während viele Haushalte weiterhin über steigende Ausgaben klagen.",
+    "The government points to falling inflation rates while many households still complain about rising expenses."
+   ],
+   [
+    "Das ist kein Widerspruch, denn eine sinkende Inflationsrate bedeutet nicht automatisch sinkende Preise.",
+    "That's not a contradiction, because a lower inflation rate doesn't automatically mean lower prices."
+   ],
+   [
+    "Wie lässt sich das erklären, ohne die Erfahrungen der Betroffenen als bloße Wahrnehmung abzutun?",
+    "How can that be explained without dismissing people's experiences as mere perception?"
+   ],
+   [
+    "Indem wir zwischen Preisniveau, Einkommensentwicklung und der Zusammensetzung individueller Warenkörbe unterscheiden.",
+    "By distinguishing the price level, income trends, and the composition of individual consumption baskets."
+   ],
+   [
+    "Dann wäre auch die durchschnittliche Kaufkraft allein eine unzureichende Größe.",
+    "Then average purchasing power alone would also be an insufficient measure."
+   ],
+   [
+    "Genau, da sie unterschiedliche Belastungen verschiedener Haushalte verschleiern kann.",
+    "Exactly, since it can obscure the different burdens faced by households."
+   ],
+   [
+    "Welche Maßnahmen ließen sich aus einer solchen differenzierten Analyse ableiten?",
+    "What policies could follow from such a differentiated analysis?"
+   ],
+   [
+    "Das hängt von den Ursachen ab; pauschale Entlastung kann andere Verteilungswirkungen haben als gezielte Unterstützung.",
+    "That depends on the causes; broad relief can have different distributional effects from targeted support."
+   ],
+   [
+    "Politisch bleibt allerdings die Schwierigkeit, diese Unterschiede verständlich zu vermitteln.",
+    "Politically, however, the challenge of explaining these differences clearly remains."
+   ],
+   [
+    "Gerade deshalb sollten öffentliche Aussagen präzise sein, statt mit einer Kennzahl die gesamte Lage zu beschreiben.",
+    "That is precisely why public statements should be precise rather than using one indicator to describe the entire situation."
+   ]
+  ]
+ ],
+ [
+  "fair-taxation",
+  "Reconciling competing principles of taxation",
+  "Public finance",
+  [
+   "Steuerexpertin",
+   "Abgeordneter"
+  ],
+  [
+   [
+    "Einige fordern ein einfacheres Steuersystem, andere eine stärkere Differenzierung nach Leistungsfähigkeit.",
+    "Some advocate a simpler tax system, while others call for greater differentiation according to ability to pay."
+   ],
+   [
+    "Die Ziele stehen nicht zwangsläufig im Widerspruch, können sich aber bei der Umsetzung gegenseitig begrenzen.",
+    "The goals aren't necessarily incompatible, but can constrain each other in implementation."
+   ],
+   [
+    "Wodurch wird ein Steuersystem Ihrer Ansicht nach tatsächlich gerecht?",
+    "What, in your view, makes a tax system genuinely fair?"
+   ],
+   [
+    "Das hängt davon ab, welche Vorstellungen von Gleichbehandlung und Verteilungsgerechtigkeit zugrunde liegen.",
+    "That depends on the underlying concepts of equal treatment and distributive justice."
+   ],
+   [
+    "Wäre es nicht möglich, diese Grundsatzfrage durch rein empirische Analysen zu entscheiden?",
+    "Couldn't that fundamental question be settled through purely empirical analysis?"
+   ],
+   [
+    "Empirische Daten zeigen Folgen verschiedener Regeln, entscheiden aber nicht allein über deren normative Bewertung.",
+    "Empirical data show the consequences of different rules, but don't determine their normative assessment on their own."
+   ],
+   [
+    "Dann müssten politische Verantwortliche ihre Wertannahmen offenlegen, statt sie als Sachzwang auszugeben.",
+    "Then policymakers would have to disclose their value assumptions instead of presenting them as practical necessities."
+   ],
+   [
+    "Genau. Zugleich sollten die erwarteten wirtschaftlichen Wirkungen überprüfbar bleiben.",
+    "Exactly. At the same time, expected economic effects should remain verifiable."
+   ],
+   [
+    "Eine transparente Reform müsste folglich sowohl Ziele als auch Unsicherheiten benennen.",
+    "A transparent reform would therefore need to state both its aims and its uncertainties."
+   ],
+   [
+    "Und erklären, weshalb die gewählte Abwägung gegenüber realistischen Alternativen vorzugswürdig erscheint.",
+    "And explain why the chosen balance is preferable to realistic alternatives."
+   ]
+  ]
+ ],
+ [
+  "strategic-negotiation",
+  "Negotiating long-term contract risk",
+  "Professional negotiation",
+  [
+   "Auftraggeberin",
+   "Dienstleister"
+  ],
+  [
+   [
+    "Ihr Angebot überzeugt fachlich, verschiebt jedoch nahezu sämtliche unvorhersehbaren Risiken auf unsere Seite.",
+    "Your proposal is technically persuasive but shifts almost all unforeseen risks onto our side."
+   ],
+   [
+    "Die Regelung soll gewährleisten, dass wir Leistungen unter klar definierten Bedingungen kalkulieren können.",
+    "The arrangement is intended to let us cost services under clearly defined conditions."
+   ],
+   [
+    "Eine klare Kalkulation setzt allerdings nicht voraus, dass jede Unsicherheit einseitig verteilt wird.",
+    "Clear costing doesn't require every uncertainty to be allocated to one party."
+   ],
+   [
+    "Welche alternative Aufteilung würden Sie für ausgewogen halten?",
+    "What alternative allocation would you regard as balanced?"
+   ],
+   [
+    "Risiken sollten möglichst dort getragen werden, wo sie tatsächlich beeinflusst oder begrenzt werden können.",
+    "Risks should ideally be borne by whoever can actually influence or limit them."
+   ],
+   [
+    "Dann müssten wir zwischen technischen, organisatorischen und externen Ursachen unterscheiden.",
+    "Then we'd need to distinguish technical, organisational, and external causes."
+   ],
+   [
+    "Genau; außerdem sollte das Verfahren bei Änderungen nachvollziehbar und frühzeitig greifen.",
+    "Exactly; moreover, the change procedure should operate transparently and at an early stage."
+   ],
+   [
+    "Ich könnte mir abgestufte Mitteilungspflichten und eine gemeinsame Bewertung außergewöhnlicher Ereignisse vorstellen.",
+    "I could envisage graduated notification obligations and joint assessment of exceptional events."
+   ],
+   [
+    "Das wäre verhandelbar, sofern Termine und Kostenfolgen nicht nachträglich beliebig festgelegt werden.",
+    "That would be negotiable, provided deadlines and cost consequences aren't arbitrarily decided afterward."
+   ],
+   [
+    "Dann halten wir die Prinzipien schriftlich fest und erarbeiten daraus konkrete Vertragsklauseln.",
+    "Then let's put the principles in writing and develop specific contractual clauses from them."
+   ]
+  ]
+ ],
+ [
+  "reputational-crisis",
+  "Handling an organisational reputational crisis",
+  "Crisis communication",
+  [
+   "Vorstand",
+   "Kommunikationsberaterin"
+  ],
+  [
+   [
+    "Unsere erste Stellungnahme hat den Eindruck erweckt, wir wollten die Verantwortung für den Vorfall abschieben.",
+    "Our initial statement created the impression that we wanted to shift responsibility for the incident."
+   ],
+   [
+    "Die Formulierung war zu defensiv und vermied gerade die Fragen, die Betroffene am dringendsten stellen.",
+    "The wording was too defensive and avoided precisely the questions most urgently raised by those affected."
+   ],
+   [
+    "Wäre eine sofortige Entschuldigung nicht riskant, solange der Sachverhalt noch untersucht wird?",
+    "Wouldn't an immediate apology be risky while the facts are still being investigated?"
+   ],
+   [
+    "Wir können Bedauern über die Auswirkungen ausdrücken, ohne ungeprüfte Tatsachen zu behaupten.",
+    "We can express regret for the impact without asserting unverified facts."
+   ],
+   [
+    "Mir scheint wichtig, dass wir damit keine rein symbolische Geste setzen.",
+    "It seems important to me that we don't make a purely symbolic gesture."
+   ],
+   [
+    "Dann müssen wir zugleich konkrete Maßnahmen, Zuständigkeiten und überprüfbare Termine benennen.",
+    "Then we must also identify concrete measures, responsibilities, and verifiable timelines."
+   ],
+   [
+    "Wie reagieren wir auf Fragen, die wir gegenwärtig nicht beantworten können?",
+    "How should we respond to questions we cannot currently answer?"
+   ],
+   [
+    "Indem wir diese Grenzen offen erklären und verbindlich darlegen, wann neue Informationen folgen.",
+    "By explaining those limits openly and making a clear commitment about when new information will follow."
+   ],
+   [
+    "Das verlangt allerdings eine Veränderung unserer internen Kommunikationskultur.",
+    "That will require a change in our internal communication culture, though."
+   ],
+   [
+    "Genau. Glaubwürdige Krisenkommunikation lässt sich nicht von verantwortlichem Handeln trennen.",
+    "Exactly. Credible crisis communication cannot be separated from responsible action."
+   ]
+  ]
+ ],
+ [
+  "cultural-appropriation",
+  "Critically evaluating cultural exchange in music",
+  "Music and cultural ethics",
+  [
+   "Komponistin",
+   "Ethnologe"
+  ],
+  [
+   [
+    "Mein neues Werk greift musikalische Motive aus einer Tradition auf, der ich selbst nicht angehöre.",
+    "My new work draws on musical motifs from a tradition I do not belong to."
+   ],
+   [
+    "Das kann ein fruchtbarer Austausch sein, wirft aber Fragen nach Kontext und Machtverhältnissen auf.",
+    "That can be a fruitful exchange, but it raises questions about context and power relations."
+   ],
+   [
+    "Wie vermeide ich, dass aus künstlerischer Inspiration eine bloße Aneignung ohne Anerkennung wird?",
+    "How do I avoid artistic inspiration turning into mere appropriation without acknowledgement?"
+   ],
+   [
+    "Indem Sie sich mit den Trägern der Tradition auseinandersetzen und deren unterschiedliche Perspektiven ernst nehmen.",
+    "By engaging with the tradition's practitioners and taking their differing perspectives seriously."
+   ],
+   [
+    "Würde eine formale Quellenangabe ausreichen, um diesen Anspruch zu erfüllen?",
+    "Would a formal acknowledgement of sources be enough to meet that requirement?"
+   ],
+   [
+    "Nicht unbedingt. Entscheidend sind auch Beteiligung, Deutungshoheit und mögliche wirtschaftliche Folgen.",
+    "Not necessarily. Participation, authority over interpretation, and possible economic consequences matter too."
+   ],
+   [
+    "Gleichzeitig erscheint mir problematisch, kulturelle Grenzen als grundsätzlich undurchlässig zu behandeln.",
+    "At the same time, it seems problematic to treat cultural boundaries as inherently impermeable."
+   ],
+   [
+    "Das müssen wir auch nicht; es geht um verantwortliche Beziehungen, nicht um Verbote jeder Begegnung.",
+    "We don't have to; it's about responsible relationships, not banning all encounters."
+   ],
+   [
+    "Dann wäre der Maßstab weniger die Herkunft des Künstlers als die konkrete Gestaltung des Austauschs.",
+    "Then the standard would be less the artist's origin than how the exchange is actually conducted."
+   ],
+   [
+    "Genau, sofern berechtigte Kritik nicht dadurch entwertet wird, dass man jede Debatte auf Absichten reduziert.",
+    "Exactly, provided legitimate criticism isn't dismissed by reducing every debate to intentions."
+   ]
+  ]
+ ],
+ [
+  "aesthetic-judgment",
+  "Defending an aesthetic judgement without absolutism",
+  "Music philosophy",
+  [
+   "Musikkritikerin",
+   "Pianist"
+  ],
+  [
+   [
+    "Sie bezeichnen diese Interpretation als überzeugend, obwohl sie in mehreren Details vom Notentext abweicht.",
+    "You describe this interpretation as convincing, although it departs from the score in several respects."
+   ],
+   [
+    "Mein Urteil bezieht sich auf die innere Kohärenz, nicht auf buchstabengetreue Übereinstimmung.",
+    "My judgement concerns internal coherence rather than literal conformity."
+   ],
+   [
+    "Kann ein solches Kriterium nicht jede beliebige Entscheidung nachträglich rechtfertigen?",
+    "Couldn't such a criterion justify any arbitrary decision after the fact?"
+   ],
+   [
+    "Nur wenn man darauf verzichtet, konkrete musikalische Beziehungen und Konsequenzen nachzuweisen.",
+    "Only if one abandons the requirement to demonstrate specific musical relationships and consequences."
+   ],
+   [
+    "Welche Rolle spielen historische Quellen in Ihrer Bewertung?",
+    "What role do historical sources play in your assessment?"
+   ],
+   [
+    "Sie begrenzen willkürliche Deutungen und erweitern zugleich unser Verständnis möglicher Aufführungspraxen.",
+    "They limit arbitrary readings while expanding our understanding of possible performance practices."
+   ],
+   [
+    "Dann wäre weder historische Treue noch subjektiver Ausdruck allein ein hinreichender Maßstab.",
+    "Then neither historical fidelity nor subjective expression alone would be a sufficient standard."
+   ],
+   [
+    "Genau; überzeugende Kritik muss verschiedene Kriterien begründet zueinander in Beziehung setzen.",
+    "Exactly; convincing criticism must relate different criteria to one another in a reasoned way."
+   ],
+   [
+    "Ist damit ein gemeinsames Urteil überhaupt möglich, wenn Hörer unterschiedliche Prioritäten setzen?",
+    "Is a shared judgement possible at all if listeners have different priorities?"
+   ],
+   [
+    "Nicht immer, doch die Qualität der Argumente lässt sich auch ohne vollständige Einigkeit prüfen.",
+    "Not always, but the quality of the arguments can be assessed without complete agreement."
+   ]
+  ]
+ ],
+ [
+  "education-inequality",
+  "Questioning meritocracy in educational selection",
+  "Educational sociology",
+  [
+   "Bildungsforscherin",
+   "Universitätsleiter"
+  ],
+  [
+   [
+    "Unser Auswahlverfahren orientiert sich an Leistung, sollte also grundsätzlich fair sein.",
+    "Our admissions process is based on achievement, so it should be fair in principle."
+   ],
+   [
+    "Das setzt voraus, dass die gemessenen Leistungen unter vergleichbaren Bedingungen zustande kommen.",
+    "That presupposes the measured achievements arose under comparable circumstances."
+   ],
+   [
+    "Würden kontextbezogene Bewertungen nicht wiederum die Vergleichbarkeit der Bewerbungen beeinträchtigen?",
+    "Wouldn't contextual assessments in turn undermine the comparability of applications?"
+   ],
+   [
+    "Sie verändern die Art des Vergleichs, können aber zuvor verdeckte Ungleichheiten sichtbar machen.",
+    "They change the nature of comparison but can reveal inequalities previously hidden."
+   ],
+   [
+    "Wie verhindern wir, dass der Kontext zu willkürlichen Einzelfallentscheidungen führt?",
+    "How do we prevent context resulting in arbitrary case-by-case decisions?"
+   ],
+   [
+    "Durch transparente Kriterien, dokumentierte Ermessensspielräume und die Prüfung tatsächlicher Ergebnisse.",
+    "Through transparent criteria, documented discretion, and examination of actual outcomes."
+   ],
+   [
+    "Das verlangt von einer Universität allerdings erhebliche zusätzliche Ressourcen.",
+    "That does, however, demand significant additional resources from a university."
+   ],
+   [
+    "Dann sollte man die Belastung offen gegen die Kosten systematischer Benachteiligung abwägen.",
+    "Then the burden should be openly weighed against the costs of systemic disadvantage."
+   ],
+   [
+    "Sie verstehen Chancengleichheit also nicht als identische Behandlung aller Bewerber?",
+    "So you don't understand equal opportunity as identical treatment of all applicants?"
+   ],
+   [
+    "Genau. Gleiche Verfahren und faire Möglichkeiten sind nicht notwendigerweise dasselbe.",
+    "Exactly. Identical procedures and fair opportunities are not necessarily the same thing."
+   ]
+  ]
+ ],
+ [
+  "migration-discourse",
+  "Challenging simplistic narratives of integration",
+  "Intercultural policy",
+  [
+   "Sozialwissenschaftlerin",
+   "Moderator"
+  ],
+  [
+   [
+    "Die Debatte behandelt Integration häufig als eine Pflicht, die ausschließlich Zugewanderte zu erfüllen hätten.",
+    "The debate often treats integration as a duty that immigrants alone must fulfil."
+   ],
+   [
+    "Gleichzeitig müssen Menschen, die neu ankommen, grundlegende Regeln und die Sprache erlernen können.",
+    "At the same time, newcomers need to be able to learn basic rules and the language."
+   ],
+   [
+    "Dagegen ist nichts einzuwenden, solange wir gesellschaftliche Teilhabe nicht auf individuelle Anpassung reduzieren.",
+    "There's no objection to that, provided we don't reduce social participation to individual adaptation."
+   ],
+   [
+    "Welche Rolle spielen Institutionen und Mehrheitsgesellschaft bei diesem Prozess?",
+    "What role do institutions and the wider society play in this process?"
+   ],
+   [
+    "Sie bestimmen mit, ob Zugänge tatsächlich offenstehen oder strukturelle Hindernisse bestehen bleiben.",
+    "They help determine whether opportunities are genuinely available or structural barriers persist."
+   ],
+   [
+    "Wäre es aber nicht paternalistisch, Menschen nur als Opfer solcher Hindernisse zu betrachten?",
+    "But wouldn't it be paternalistic to view people solely as victims of those obstacles?"
+   ],
+   [
+    "Durchaus. Deshalb sollten wir Eigeninitiative und institutionelle Verantwortung zugleich ernst nehmen.",
+    "Certainly. That's why we should take both individual agency and institutional responsibility seriously."
+   ],
+   [
+    "Wie ließe sich diese Balance in der öffentlichen Kommunikation überzeugend darstellen?",
+    "How could that balance be expressed convincingly in public communication?"
+   ],
+   [
+    "Indem wir konkrete Erfahrungen und überprüfbare Bedingungen statt pauschaler Zuschreibungen diskutieren.",
+    "By discussing concrete experiences and verifiable conditions rather than sweeping attributions."
+   ],
+   [
+    "Dann wäre Integration weniger eine einseitige Forderung als ein gemeinsam gestalteter gesellschaftlicher Prozess.",
+    "Then integration would be less a one-sided demand and more a jointly shaped social process."
+   ]
+  ]
+ ],
+ [
+  "climate-justice",
+  "Balancing climate responsibility across generations",
+  "Ethics and environment",
+  [
+   "Philosoph",
+   "Politikerin"
+  ],
+  [
+   [
+    "Unsere heutige Entscheidung beeinflusst Menschen, die an der Debatte noch gar nicht teilnehmen können.",
+    "Today's decision affects people who cannot yet take part in the debate."
+   ],
+   [
+    "Das erschwert die demokratische Abwägung, weil zukünftige Interessen nicht unmittelbar vertreten sind.",
+    "That complicates democratic deliberation because future interests aren't directly represented."
+   ],
+   [
+    "Sollten wir deshalb gegenwärtigen Bedürfnissen grundsätzlich weniger Gewicht geben?",
+    "Should we therefore give less weight to present needs as a matter of principle?"
+   ],
+   [
+    "Nein. Entscheidend ist, welche Belastungen wir vermeiden können, ohne heutige Grundbedürfnisse zu gefährden.",
+    "No. What matters is which burdens we can avoid without jeopardising basic needs today."
+   ],
+   [
+    "Wie kann eine solche Abwägung gelingen, wenn die langfristigen Folgen unsicher sind?",
+    "How can such balancing work when the long-term consequences are uncertain?"
+   ],
+   [
+    "Durch transparente Szenarien, Vorsorgeprinzipien und die Möglichkeit, Maßnahmen später anzupassen.",
+    "Through transparent scenarios, precautionary principles, and the ability to adjust policies later."
+   ],
+   [
+    "Manche fürchten jedoch, dass unbestimmte Zukunftsrisiken jede gegenwärtige Investition rechtfertigen könnten.",
+    "Some fear that vague future risks could be used to justify any investment today."
+   ],
+   [
+    "Deshalb brauchen wir verhältnismäßige Kriterien und eine nachvollziehbare Bewertung alternativer Wege.",
+    "That's why we need proportionality criteria and transparent assessment of alternative approaches."
+   ],
+   [
+    "Die Zukunftsperspektive sollte also heutige Politik korrigieren, aber nicht die demokratische Diskussion ersetzen.",
+    "So a future-oriented perspective should inform current policy, not replace democratic deliberation."
+   ],
+   [
+    "Genau. Generationengerechtigkeit verlangt begründete Verantwortung, keine unbegrenzte Blankovollmacht.",
+    "Exactly. Intergenerational justice calls for justified responsibility, not unlimited authorisation."
+   ]
+  ]
+ ],
+ [
+  "urban-heritage",
+  "Reconciling heritage preservation and housing needs",
+  "Urban development",
+  [
+   "Denkmalpflegerin",
+   "Stadtentwickler"
+  ],
+  [
+   [
+    "Das historische Gebäude prägt das Viertel, ist jedoch in seinem jetzigen Zustand kaum wirtschaftlich nutzbar.",
+    "The historic building shapes the district, but is barely economically viable in its current condition."
+   ],
+   [
+    "Ein Abriss würde möglicherweise neue Wohnungen ermöglichen, zugleich aber unwiederbringliche Bausubstanz zerstören.",
+    "Demolition might enable new housing but would also destroy irreplaceable architectural fabric."
+   ],
+   [
+    "Wie ließe sich der Erhalt begründen, ohne die dringende Wohnungsnachfrage zu ignorieren?",
+    "How could preservation be justified without ignoring the urgent demand for housing?"
+   ],
+   [
+    "Wir sollten zunächst prüfen, welche Nutzungen durch eine sensible Umgestaltung tatsächlich möglich wären.",
+    "We should first examine which uses a sensitive conversion could realistically enable."
+   ],
+   [
+    "Allerdings ist auch eine Umnutzung nicht zwangsläufig bezahlbar oder sozial gerecht.",
+    "However, conversion isn't necessarily affordable or socially just either."
+   ],
+   [
+    "Dann müssen wir Kosten, kulturellen Wert und die Auswirkungen auf unterschiedliche Bewohner transparent vergleichen.",
+    "Then we need to compare costs, cultural value, and the impacts on different residents transparently."
+   ],
+   [
+    "Wer entscheidet letztlich, welche Form von Erinnerung oder Nutzung Vorrang erhält?",
+    "Who ultimately decides which form of remembrance or use takes priority?"
+   ],
+   [
+    "Das ist eine öffentliche Wertentscheidung, die fachliche Erkenntnisse benötigt, aber nicht in ihnen aufgeht.",
+    "It's a public value judgement that requires expertise but cannot be reduced to it."
+   ],
+   [
+    "Dann sollten Anwohner und potenzielle Nutzer frühzeitig an der Diskussion beteiligt werden.",
+    "Then residents and potential users should be involved in the discussion early."
+   ],
+   [
+    "Einverstanden. Ein glaubwürdiges Verfahren muss mehr leisten als eine fertige Entscheidung nachträglich zu erläutern.",
+    "Agreed. A credible process must do more than explain a completed decision afterward."
+   ]
+  ]
+ ],
+ [
+  "international-diplomacy",
+  "Negotiating cooperation amid conflicting interests",
+  "International relations",
+  [
+   "Diplomatin",
+   "Delegierter"
+  ],
+  [
+   [
+    "Unsere Regierungen betonen gemeinsame Ziele, verfolgen bei der Umsetzung jedoch offenkundig unterschiedliche Prioritäten.",
+    "Our governments emphasise shared goals but clearly pursue different priorities in implementation."
+   ],
+   [
+    "Das bedeutet nicht zwangsläufig, dass eine gemeinsame Vereinbarung ausgeschlossen wäre.",
+    "That doesn't necessarily mean a shared agreement is impossible."
+   ],
+   [
+    "Welche Mindestbedingungen wären erforderlich, damit beide Seiten einen Kompromiss glaubwürdig vertreten können?",
+    "What minimum conditions would allow both sides to present a compromise credibly?"
+   ],
+   [
+    "Zunächst müssten wir zwischen unverzichtbaren Grundsätzen und verhandelbaren Einzelheiten unterscheiden.",
+    "First we'd need to distinguish indispensable principles from negotiable details."
+   ],
+   [
+    "Allerdings befürchten einige Beteiligte, dass bereits Zugeständnisse als Schwäche ausgelegt werden.",
+    "Some participants fear that concessions themselves will be interpreted as weakness."
+   ],
+   [
+    "Dann ist entscheidend, wie wir den gegenseitigen Nutzen und überprüfbare Verpflichtungen kommunizieren.",
+    "Then what matters is how we communicate mutual benefits and verifiable commitments."
+   ],
+   [
+    "Wie könnten wir sicherstellen, dass die Einigung über bloße Absichtserklärungen hinausgeht?",
+    "How could we ensure the agreement goes beyond mere statements of intent?"
+   ],
+   [
+    "Durch messbare Zwischenziele, transparente Überprüfung und ein Verfahren zur Bearbeitung von Streitigkeiten.",
+    "Through measurable milestones, transparent monitoring, and a mechanism for resolving disputes."
+   ],
+   [
+    "Damit wäre die Vereinbarung nicht von vollständigem Vertrauen, sondern von nachvollziehbaren Regeln abhängig.",
+    "Then the agreement would depend not on complete trust but on transparent rules."
+   ],
+   [
+    "Genau. Tragfähige Zusammenarbeit entsteht oft gerade dadurch, dass unterschiedliche Interessen ausdrücklich anerkannt werden.",
+    "Exactly. Durable cooperation often emerges precisely because differing interests are acknowledged openly."
+   ]
+  ]
  ]
 ];
