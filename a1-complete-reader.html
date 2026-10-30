@@ -15,6 +15,15 @@ section.panel{display:none}section.panel.active{display:block}.chapter{backgroun
 .german-col{background:#f1f7ff;border:1px solid #d0e2f4}
 .english-col{background:#f7fafc;border:1px solid #dce7ee}
 .story-lang{font-size:11px;font-weight:800;letter-spacing:.1em;color:#245a7e;margin-bottom:12px;text-transform:uppercase}
+.speech-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin:0 0 15px}
+.speech-play,.speech-stop{font:inherit;border-radius:9px;border:1px solid #1b6187;padding:9px 11px;cursor:pointer;font-size:13px;font-weight:700;touch-action:manipulation;min-height:40px}
+.speech-play{background:#176087;color:#fff}
+.speech-stop{background:#fff;color:#1b5071}
+.speech-play:disabled,.speech-stop:disabled{opacity:.48;cursor:not-allowed}
+.speech-rate{padding:9px 6px;background:#fff;border:1px solid #b5cddf;color:#27465a;border-radius:9px;min-height:40px;font:inherit;font-size:13px}
+.speech-play:focus-visible,.speech-stop:focus-visible,.speech-rate:focus-visible{outline:3px solid #f2bd53;outline-offset:2px}
+.speech-status{display:block;min-height:18px;font-size:12px;line-height:1.5;color:#315e78;margin:0 0 12px}
+.chapter.speech-active .german-col{border-color:#2e82af;box-shadow:0 0 0 2px rgba(46,130,175,.13)}
 .chapter p.german,.chapter p.english{margin:0;white-space:pre-line;overflow-wrap:anywhere}
 .chapter p.german{font-size:18px;line-height:1.85;color:#172a3a}
 .chapter p.english{font-size:16px;line-height:1.85;color:#27435a}
@@ -78,6 +87,95 @@ let reviewed={};try{reviewed=JSON.parse(localStorage.getItem(storageKey)||'{}')|
 const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(reviewed))}catch{}};
 function element(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!=null)node.textContent=text;return node;}
 function escapeHtml(text){return String(text).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));}
+// Native device speech uses German (de-DE) and is driven exclusively by each
+// chapter's Play button. It does not alter German text, translations, or progress.
+const speechSynth=window.speechSynthesis;
+const canReadGerman=Boolean(speechSynth&&typeof window.SpeechSynthesisUtterance==='function');
+let activeChapter=-1,playback='idle',speechRun=0,chunkIndex=0,speechChunks=[],activeUtterance=null;
+function germanVoice(){
+ const voices=speechSynth?.getVoices?.()||[];
+ return voices.find(v=>/^de[-_]de$/i.test(v.lang)&&v.localService)
+   ||voices.find(v=>/^de[-_]de$/i.test(v.lang))
+   ||voices.find(v=>/^de(?:[-_]|$)/i.test(v.lang))
+   ||null;
+}
+function sentencesForSpeech(text){
+ const sentences=String(text).match(/[^.!?]+[.!?]+[”"»]?|[^.!?]+$/gu)||[text];
+ const parts=[];let group='';
+ for(const part of sentences.map(x=>x.trim()).filter(Boolean)){
+  if(group&&(group.length+part.length+1>180)){parts.push(group);group='';}
+  group=group?group+' '+part:part;
+ }
+ if(group)parts.push(group);
+ return parts;
+}
+function updateSpeechButtons(){
+ document.querySelectorAll('#storyContent article.chapter').forEach((el,i)=>{
+  const current=i===activeChapter;
+  el.classList.toggle('speech-active',current);
+  const play=el.querySelector('.speech-play'),stop=el.querySelector('.speech-stop'),status=el.querySelector('.speech-status');
+  play.disabled=!canReadGerman;
+  play.textContent=current&&playback==='paused'?'▶ Resume':current&&playback!=='idle'?'⏸ Pause':'▶ Read German';
+  stop.disabled=!current;
+  const state=current?(playback==='paused'?'Paused':playback==='starting'?'Starting German audio…':'Reading German…'):
+    canReadGerman?'':'German voice playback is not supported in this browser.';
+  status.textContent=state;
+ });
+}
+function stopGermanAudio(){
+ speechRun+=1;
+ activeChapter=-1;activeUtterance=null;playback='idle';chunkIndex=0;speechChunks=[];
+ try{speechSynth?.cancel?.()}catch{}
+ updateSpeechButtons();
+}
+function speakNextPart(token){
+ if(token!==speechRun||activeChapter<0)return;
+ if(chunkIndex>=speechChunks.length){stopGermanAudio();return;}
+ const utterance=new window.SpeechSynthesisUtterance(speechChunks[chunkIndex]);
+ activeUtterance=utterance;
+ utterance.lang='de-DE';
+ utterance.voice=germanVoice();
+ utterance.rate=Number(document.querySelectorAll('#storyContent .speech-rate')[activeChapter]?.value)||.85;
+ utterance.pitch=1;
+ utterance.onstart=()=>{if(token===speechRun){playback='playing';updateSpeechButtons();}};
+ utterance.onend=()=>{
+  if(token!==speechRun)return;
+  chunkIndex+=1;
+  speakNextPart(token);
+ };
+ utterance.onerror=event=>{
+  if(token!==speechRun)return;
+  if(event?.error==='canceled'||event?.error==='interrupted')return;
+  const failed=activeChapter;
+  stopGermanAudio();
+  const info=document.querySelectorAll('#storyContent .speech-status')[failed];
+  if(info)info.textContent='German audio could not start. Check your device speech settings.';
+ };
+ try{speechSynth.speak(utterance);}
+ catch{
+  const failed=activeChapter;
+  stopGermanAudio();
+  const info=document.querySelectorAll('#storyContent .speech-status')[failed];
+  if(info)info.textContent='German audio is unavailable on this device.';
+ }
+}
+function playGermanChapter(index){
+ if(!canReadGerman)return;
+ if(index===activeChapter){
+  try{
+   if(playback==='paused'){speechSynth.resume();playback='playing';}
+   else{speechSynth.pause();playback='paused';}
+   updateSpeechButtons();
+  }catch{stopGermanAudio();}
+  return;
+ }
+ stopGermanAudio();
+ activeChapter=index;playback='starting';
+ speechChunks=sentencesForSpeech(chapters[index].de);chunkIndex=0;
+ const token=++speechRun;
+ updateSpeechButtons();
+ speakNextPart(token);
+}
 function initStory(){
  const wrap=$('storyContent');
  chapters.forEach((ch,i)=>{
@@ -86,15 +184,36 @@ function initStory(){
   const columns=element('div','story-duo');
   const german=element('div','story-col german-col');
   german.setAttribute('lang','de');
-  german.append(element('div','story-lang','Deutsch · A1'),element('p','german',ch.de));
+  german.append(element('div','story-lang','Deutsch · A1'));
+  const audio=element('div','speech-controls');
+  const playButton=element('button','speech-play','▶ Read German');playButton.type='button';
+  playButton.setAttribute('aria-label','Read chapter '+(i+1)+' aloud in German');
+  playButton.onclick=()=>playGermanChapter(i);
+  const stopButton=element('button','speech-stop','■ Stop');stopButton.type='button';
+  stopButton.setAttribute('aria-label','Stop chapter '+(i+1)+' German audio');
+  stopButton.disabled=true;
+  stopButton.onclick=stopGermanAudio;
+  const speed=element('select','speech-rate');
+  speed.setAttribute('aria-label','German reading speed for chapter '+(i+1));
+  for(const [value,label] of [['0.7','Slow · 0.7×'],['0.85','Normal · 0.85×'],['1','1×'],['1.2','Fast · 1.2×']]){
+   const choice=element('option','',label);choice.value=value;speed.append(choice);
+  }
+  speed.value='0.85';
+  audio.append(playButton,stopButton,speed);
+  const speechStatus=element('span','speech-status','');
+  speechStatus.setAttribute('role','status');
+  speechStatus.setAttribute('aria-live','polite');
+  german.append(audio,speechStatus,element('p','german',ch.de));
   const english=element('div','story-col english-col');
   english.setAttribute('lang','en');
   english.append(element('div','story-lang','English · full translation'),element('p','english',ch.translation));
   columns.append(german,english);
   block.append(columns);wrap.append(block);
  });
+ updateSpeechButtons();
 }
 function setTab(name){
+ if(name!=='story')stopGermanAudio();
  document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.panel===name)));
  document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===name));
  if(name==='all')renderAll();if(name==='recall')renderRecall();
@@ -161,6 +280,7 @@ $('toggleEnglish').addEventListener('click',()=>{
  $('toggleEnglish').textContent=hidden?'Show English translations':'Hide English translations';
  $('toggleEnglish').setAttribute('aria-pressed',String(hidden));
 });
+window.addEventListener('pagehide',stopGermanAudio);
 document.querySelectorAll('.tab').forEach(x=>x.onclick=()=>setTab(x.dataset.panel));
 $('search').addEventListener('input',renderAll);
 $('onlyUnseen').addEventListener('change',renderAll);
