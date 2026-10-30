@@ -74,7 +74,16 @@ function gesture(dx,dy=0,cancel=false){
  assert.equal(animations.length,0,'Vertical scrolling cannot trigger a page turn');
  gesture(-110,0,true);
  assert.equal(animations.length,0,'Cancelled gesture cannot turn a page');
- $('.ww-flash-card').click();
+ // A real tap begins with pointerdown, which clears click suppression left by
+ // the cancelled swipe; a raw .click() alone is not a realistic touch gesture.
+ const tapping=$('.ww-flash-card');
+ for(const type of ['pointerdown','pointerup']){
+  const event=new w.Event(type,{bubbles:true,cancelable:true});
+  Object.defineProperties(event,{pointerId:{value:2},pointerType:{value:'touch'},
+   isPrimary:{value:true},clientX:{value:200},clientY:{value:200}});
+  tapping.dispatchEvent(event);
+ }
+ tapping.click();
  assert.equal(animations.length,1,'Tap starts a separate reveal animation');
  assert.match(animations[0].frames[1].transform,/rotateY\(-78deg\)/);
  await finish();
