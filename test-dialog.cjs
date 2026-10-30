@@ -15,9 +15,9 @@ const w=dom.window;w.WortWegNounExpansion={entries:nouns};
 w.fetch=async url=>{assert.equal(url,'./index.html');return {ok:true,text:async()=>index}};
 w.eval(situations);w.eval(source);
 const $=id=>w.document.getElementById(id);
-const tick=()=>new Promise(resolve=>setTimeout(resolve,90));
+const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCount===874)return;await new Promise(resolve=>setTimeout(resolve,50));}throw Error('Dialog A1 source initialization timed out');};
 (async()=>{
- await tick();
+ await ready();
  const api=w.WortWegDialog.getState();
  assert.equal(api.wordCount,874,'Every original A1 source record is loaded');
  assert.equal(api.wordDialogCount,874,'One word-anchored dialogue per source item');
