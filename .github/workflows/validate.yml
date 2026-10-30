@@ -114,6 +114,11 @@ jobs:
         run: node test-a1-complete-reader.cjs
       - name: Verify German speech playback on each A1 chapter
         run: node test-a1-german-audio.cjs
+      - name: Verify standalone A1 Dialog and full vocabulary coverage
+        run: |
+          node --check dialog.js
+          node --check dialog-situations.js
+          node test-dialog.cjs
       - name: Verify flashcard ratings appear in Seen Words
         run: node test-flashcard-seen.cjs
       - name: Verify dynamic lessons, offline cache, and secure account separation
