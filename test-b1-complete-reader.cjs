@@ -86,7 +86,7 @@ setTimeout(()=>{
    assert.ok(offline.includes(file),'Offline PWA ships '+file);
    assert.ok(native.includes(file),'Android build ships '+file);
   }
-  assert.ok(offline.includes("'b1-complete-reader.html','complete-reading-level.html'"),'B1 route has correct offline navigation fallback');
+  assert.ok(offline.includes("'b1-complete-reader.html','b2-complete-reader.html','complete-reading-level.html'"),'B1 route has correct offline navigation fallback');
   dom.window.close();
   console.log('B1_READING='+JSON.stringify({chapters:16,bank:bank.length,curated:curated.length,nouns:nouns.length,total}));
   console.log('PASS: B1 full bilingual reading, word coverage, German TTS, review persistence, menu and offline assets.');
