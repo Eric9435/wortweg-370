@@ -1,13 +1,19 @@
-/* WortWeg 370 — independent A1/A2/B1 Dialog Studio.
+/* WortWeg 370 — independent A1/A2/B1/B2 Dialog Studio.
    Original WortWeg word-bank levels are the only source of study headwords.
-   Keep existing A1 completion IDs/storage unchanged; isolate A2 and B1 completions. */
+   Keep existing A1 completion IDs/storage unchanged; isolate all higher-level completions. */
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 const storageKey=level=>'ww-'+level.toLowerCase()+'-dialog-progress-v1';
 const loadDone=level=>{try{const done=JSON.parse(localStorage.getItem(storageKey(level))||'{}');return done&&typeof done==='object'&&!Array.isArray(done)?done:{};}catch{return {};}};
-const state={level:'A1',mode:'situations',collections:{},scenes:[],words:[],entries:[],filtered:[],selected:null,limit:120,done:loadDone('A1'),playing:false};
+const state={level:'A1',mode:'situations',collections:{},scenes:[],words:[],entries:[],filtered:[],selected:null,limit:120,done:loadDone('A1'),playing:false,challengeIndex:0};
 const save=()=>{try{localStorage.setItem(storageKey(state.level),JSON.stringify(state.done));}catch{}};
 const make=(tag,cl,text)=>{const e=document.createElement(tag);if(cl)e.className=cl;if(text!==undefined)e.textContent=text;return e;};
+const b2Challenges=[
+ ['Fassen Sie die wichtigsten Standpunkte des Gesprächs mit eigenen Worten zusammen.','Summarise the main positions in the conversation in your own words.'],
+ ['Formulieren Sie ein nachvollziehbares Gegenargument und berücksichtigen Sie eine andere Perspektive.','Formulate a well-reasoned counterargument and consider another perspective.'],
+ ['Schlagen Sie eine realistische Lösung oder einen Kompromiss vor und begründen Sie Ihre Wahl.','Suggest a realistic solution or compromise and explain your choice.'],
+ ['Ziehen Sie ein differenziertes Fazit und nennen Sie eine mögliche Einschränkung.','Draw a nuanced conclusion and mention a possible limitation.']
+];
 const norm=v=>String(v||'').trim().toLocaleLowerCase('de');
 const escaped=v=>[...String(v)].map(c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('');
 const wordForm=de=>String(de||'').replace(/^(der|die|das|ein|eine)\s+/i,'').trim();
@@ -52,13 +58,24 @@ function renderList(){const root=$('dialogList');root.replaceChildren();$('dialo
  btn.append(make('span','dialog-item-number',String(index+1).padStart(2,'0')));
  const copy=make('span','dialog-item-copy');copy.append(make('strong','',s.title),make('small','',s.desc));btn.append(copy);
  if(state.done[s.id])btn.append(make('span','dialog-done','✓'));
- btn.addEventListener('click',()=>{stopSpeech();state.selected=s;renderList();renderReader();});fragment.append(btn);});
+ btn.addEventListener('click',()=>{stopSpeech();state.selected=s;state.challengeIndex=0;renderList();renderReader();});fragment.append(btn);});
  root.append(fragment);
  if(state.filtered.length>state.limit){const more=make('button','dialog-item','Show more ('+(state.filtered.length-state.limit)+' remaining)');more.type='button';more.addEventListener('click',()=>{state.limit+=120;renderList();});root.append(more);}
 }
+function renderChallenge(){
+ const panel=$('dialogB2Challenge'),scene=state.selected;
+ if(!panel)return;
+ panel.hidden=!(state.level==='B2'&&state.mode==='situations'&&scene);
+ if(panel.hidden)return;
+ const prompt=b2Challenges[state.challengeIndex%b2Challenges.length];
+ $('dialogChallengeNum').textContent=String(state.challengeIndex%b2Challenges.length+1)+' / '+b2Challenges.length;
+ $('dialogChallengeDe').textContent=prompt[0];
+ $('dialogChallengeEn').textContent=$('dialogShowEnglish').checked?prompt[1]:'';
+ $('dialogChallengeEn').hidden=!$('dialogShowEnglish').checked;
+}
 function renderReader(){const scene=state.selected,content=$('dialogContent'),empty=$('dialogEmpty');
- if(!scene){content.hidden=true;empty.hidden=false;empty.textContent='No dialogue selected. Try another search.';return;}
- content.hidden=false;empty.hidden=true;$('dialogTitle').textContent=scene.title;$('dialogDescription').textContent=scene.desc;
+ if(!scene){content.hidden=true;empty.hidden=false;empty.textContent='No dialogue selected. Try another search.';renderChallenge();return;}
+ content.hidden=false;empty.hidden=true;$('dialogTitle').textContent=scene.title;$('dialogDescription').textContent=scene.desc;renderChallenge();
  $('dialogLabel').textContent=state.level+(state.mode==='situations'?' · Everyday conversation':' · Source word dialogue');
  const matched=scene.entry?[scene.entry]:scene.words||[];
  const turns=$('dialogTurns');turns.replaceChildren();
@@ -82,11 +99,11 @@ function renderReader(){const scene=state.selected,content=$('dialogContent'),em
  $('dialogMark').textContent=state.done[scene.id]?'Completed ✓ — Undo':'Mark dialogue complete';$('dialogMark').setAttribute('aria-pressed',String(!!state.done[scene.id]));
 }
 function step(dir){const i=state.filtered.findIndex(s=>s.id===state.selected?.id);const next=state.filtered[i+dir];if(!next)return;
- stopSpeech();state.selected=next;if(i+dir>=state.limit)state.limit=i+dir+1;renderList();renderReader();}
+ stopSpeech();state.selected=next;state.challengeIndex=0;if(i+dir>=state.limit)state.limit=i+dir+1;renderList();renderReader();}
 function setLevel(level){
  if(!state.collections[level])return;
  stopSpeech();
- state.level=level;state.mode='situations';state.selected=null;state.done=loadDone(level);
+ state.level=level;state.mode='situations';state.selected=null;state.done=loadDone(level);state.challengeIndex=0;
  const c=state.collections[level];state.words=c.words;state.scenes=c.scenes;state.entries=c.entries;
  $('dialogCurrentLevel').textContent=level;
  $('dialogSubtitle').textContent='German conversations and practice from your actual '+level+' word list.';
@@ -110,18 +127,18 @@ async function init(){const empty=$('dialogEmpty');try{
  const original=JSON.parse(node.textContent);
  const originalBank=Array.isArray(original.bank)?original.bank:[];
  const expanded=Array.isArray(window.WortWegNounExpansion?.entries)?window.WortWegNounExpansion.entries:[];
- for(const level of ['A1','A2','B1']){
+ for(const level of ['A1','A2','B1','B2']){
   const bank=originalBank.filter(w=>w.level===level);
   const curated=level==='A1'?[]:(original.curated||[]).filter(w=>w.level===level);
   const nouns=expanded.filter(w=>w.level===level);
   state.words=[...bank.map((w,i)=>({...w,key:'b:'+String(w.id??i),source:'Word Bank'})),...curated.map((w,i)=>({...w,key:'c:'+String(w.id??i),source:'Curated '+level+' List'})),...nouns.map((w,i)=>({...w,key:'n:'+String(w.id??i),source:'Noun Expansion'}))];
-  const source={A1:window.WortWegA1Situations,A2:window.WortWegA2Situations,B1:window.WortWegB1Situations}[level];
+  const source={A1:window.WortWegA1Situations,A2:window.WortWegA2Situations,B1:window.WortWegB1Situations,B2:window.WortWegB2Situations}[level];
   if(!Array.isArray(source)||!source.length)throw Error(level+' authored dialogues could not load');
   const scenes=source.map(row=>{const scene={id:'scene:'+row[0],title:row[1],desc:row[2],speakers:row[3],turns:row[4]};scene.words=findInScene(scene);return scene;});
   state.collections[level]={words:state.words,scenes,entries:state.words.map(wordScene),bankCount:bank.length,curatedCount:curated.length,nounCount:nouns.length};
  }
  const requestLevel=new URL(window.location.href).searchParams.get('level');
- setLevel(['A1','A2','B1'].includes(requestLevel)?requestLevel:'A1');
+ setLevel(['A1','A2','B1','B2'].includes(requestLevel)?requestLevel:'A1');
  }catch(err){empty.textContent='Could not load your WortWeg Word Bank: '+err.message+'. Please open WortWeg Home online once, then reopen Dialog.';}}
 document.querySelectorAll('.dialog-levels button').forEach(btn=>btn.addEventListener('click',()=>{
  setLevel(btn.dataset.level);
@@ -133,6 +150,8 @@ document.querySelectorAll('.dialog-tabs button').forEach(btn=>btn.addEventListen
 $('dialogSearch').addEventListener('input',filter);$('dialogIncomplete').addEventListener('change',filter);
 $('dialogShowEnglish').addEventListener('change',renderReader);$('dialogShowMyanmar').addEventListener('change',renderReader);
 $('dialogRoleplay').addEventListener('change',renderReader);
+ $('dialogChallengeNext').addEventListener('click',()=>{state.challengeIndex=(state.challengeIndex+1)%b2Challenges.length;renderChallenge();});
+ $('dialogChallengeSpeak').addEventListener('click',()=>{stopSpeech();speak(b2Challenges[state.challengeIndex%b2Challenges.length][0]);});
 $('dialogSpeakAll').addEventListener('click',playAll);$('dialogStop').addEventListener('click',stopSpeech);
 $('dialogMark').addEventListener('click',()=>{if(!state.selected)return;const id=state.selected.id;
  if(state.done[id])delete state.done[id];else state.done[id]=true;save();refreshCount();

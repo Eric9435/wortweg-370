@@ -4,9 +4,9 @@ German–English–Myanmar vocabulary practice with multiple-choice quizzes, pro
 
 [Open the web app](https://eric9435.github.io/wortweg-370/) · [Android releases](https://github.com/Eric9435/wortweg-370/releases)
 
-## A1–B1 Dialog Studio
+## A1–B2 Dialog Studio
 
-The standalone **Dialog** menu is independent of Vocabulary, Reading, Grammar and quizzes. Select **A1** (46 everyday conversations, 874 source-linked word drills) **A2** (59 authored real-life conversations, 1,176 source-linked word drills) or **B1** (63 original six-turn conversations, at least 1,307 source-linked word drills). Counts include original Word Bank records, the additional curated records and noun-expansion records, including any overlapping headwords; they are not counts of unique words or official CEFR inventories. Each level includes full German/English turns, local German speech, a slower playback option, role-play response masking, optional Myanmar word meanings, and independently saved completion progress. The original A1 completion storage remains intact. No quiz marks or cloud-account study progress are overwritten.
+The standalone **Dialog** menu is independent of Vocabulary, Reading, Grammar and quizzes. Select **A1** (46 everyday conversations, 874 source-linked word drills) **A2** (59 authored real-life conversations, 1,176 source-linked word drills) or **B1** (63 original six-turn conversations, at least 1,307 source-linked word drills), or **B2** (64 original eight-turn conversations and all B2 source-record drills: 2,117 Word Bank entries, 667 expanded nouns, plus any curated B2 entries). Counts include original Word Bank records, the additional curated records and noun-expansion records, including any overlapping headwords; they are not counts of unique words or official CEFR inventories. The B2 course additionally includes four reusable argumentation prompts for summaries, counterarguments, compromise, and a balanced conclusion. Each level includes full German/English turns, local German speech, a slower playback option, role-play response masking, optional Myanmar word meanings, and independently saved completion progress. The original A1 completion storage remains intact. No quiz marks or cloud-account study progress are overwritten.
 
 ## Features
 
