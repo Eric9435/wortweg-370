@@ -687,5 +687,693 @@ window.WortWegB2Situations=[
     "Good. Please send the draft to the committee before the next meeting."
    ]
   ]
+ ],
+ [
+  "rent-dispute",
+  "Disputing a rental service-charge statement",
+  "Housing and tenants",
+  [
+   "Tenant",
+   "Property Manager"
+  ],
+  [
+   [
+    "Ich habe die Nebenkostenabrechnung erhalten und einige Positionen erscheinen mir ungewöhnlich hoch.",
+    "I've received the service-charge statement, and some items seem unusually high."
+   ],
+   [
+    "Welche Kosten möchten Sie genauer nachvollziehen?",
+    "Which charges would you like to understand more precisely?"
+   ],
+   [
+    "Vor allem die Heizkosten, da ich im vergangenen Winter häufig nicht zu Hause war.",
+    "Mainly the heating costs, since I was often away last winter."
+   ],
+   [
+    "Die Abrechnung berücksichtigt sowohl den Verbrauch als auch bestimmte gemeinschaftliche Kosten.",
+    "The statement accounts for consumption as well as certain shared costs."
+   ],
+   [
+    "Könnten Sie mir die zugrunde liegenden Belege zur Einsicht bereitstellen?",
+    "Could you make the supporting documents available for inspection?"
+   ],
+   [
+    "Wir können einen Termin vereinbaren, bei dem Sie die Unterlagen einsehen können.",
+    "We can arrange an appointment for you to inspect the documents."
+   ],
+   [
+    "Vielen Dank. Ich möchte die Beträge prüfen, bevor ich eine endgültige Antwort gebe.",
+    "Thank you. I'd like to review the amounts before responding definitively."
+   ],
+   [
+    "Das ist verständlich. Wir teilen Ihnen mit, wann die Unterlagen verfügbar sind.",
+    "That's understandable. We'll let you know when the documents are available."
+   ]
+  ]
+ ],
+ [
+  "repair-rights",
+  "Escalating an unresolved repair request",
+  "Housing maintenance",
+  [
+   "Resident",
+   "Landlord"
+  ],
+  [
+   [
+    "Seit mehreren Wochen fällt die Heizung regelmäßig aus, obwohl ich den Mangel gemeldet habe.",
+    "The heating has been failing regularly for several weeks, although I've reported the defect."
+   ],
+   [
+    "Wir haben bereits einen Handwerker beauftragt, allerdings ist noch kein Termin bestätigt.",
+    "We've already engaged a technician, but no appointment has been confirmed yet."
+   ],
+   [
+    "Die Situation beeinträchtigt die Nutzung der Wohnung erheblich.",
+    "The situation is significantly affecting my use of the apartment."
+   ],
+   [
+    "Das verstehe ich. Wir versuchen, die Reparatur zu beschleunigen.",
+    "I understand. We're trying to speed up the repair."
+   ],
+   [
+    "Könnten Sie mir bitte schriftlich mitteilen, welche Maßnahmen konkret geplant sind?",
+    "Could you please inform me in writing what measures are actually planned?"
+   ],
+   [
+    "Ich werde den Betrieb erneut kontaktieren und Ihnen anschließend eine Rückmeldung schicken.",
+    "I'll contact the company again and then send you an update."
+   ],
+   [
+    "Außerdem möchte ich klären lassen, welche Möglichkeiten mir bis zur Reparatur offenstehen.",
+    "I'd also like clarification about what options are available until the repair."
+   ],
+   [
+    "Dafür sollten wir die Vertragsbedingungen und die geltenden Regeln prüfen.",
+    "For that, we should review the contract terms and applicable rules."
+   ]
+  ]
+ ],
+ [
+  "housing-search",
+  "Comparing apartments beyond the rent",
+  "Apartment search",
+  [
+   "Maya",
+   "Jonas"
+  ],
+  [
+   [
+    "Ich habe zwei Wohnungen besichtigt, kann mich aber immer noch nicht entscheiden.",
+    "I've viewed two apartments, but I still can't decide."
+   ],
+   [
+    "Welche Unterschiede spielen für dich die größte Rolle?",
+    "Which differences matter most to you?"
+   ],
+   [
+    "Die erste ist günstiger, liegt jedoch weit von der Universität entfernt.",
+    "The first is cheaper but is far from the university."
+   ],
+   [
+    "Bei der zweiten würdest du vermutlich täglich viel Fahrzeit sparen.",
+    "With the second, you'd probably save a lot of travel time each day."
+   ],
+   [
+    "Allerdings sind die zusätzlichen Kosten und die Kaution dort höher.",
+    "However, the additional costs and deposit are higher there."
+   ],
+   [
+    "Dann solltest du nicht nur die Monatsmiete, sondern die gesamten Ausgaben vergleichen.",
+    "Then you should compare total expenses, not just the monthly rent."
+   ],
+   [
+    "Vielleicht erstelle ich eine Tabelle, in der ich auch die Fahrtkosten berücksichtige.",
+    "Perhaps I'll make a table that includes travel costs too."
+   ],
+   [
+    "Das wäre sinnvoll. Überlege außerdem, wie wichtig dir Ruhe und Platz sind.",
+    "That makes sense. Also consider how important peace and space are to you."
+   ]
+  ]
+ ],
+ [
+  "neighbour-mediation",
+  "Mediating a dispute between neighbors",
+  "Community conflict",
+  [
+   "Mediator",
+   "Resident"
+  ],
+  [
+   [
+    "Mehrere Bewohner beschweren sich über den Lärm aus Ihrer Wohnung.",
+    "Several residents are complaining about noise from your apartment."
+   ],
+   [
+    "Ich verstehe die Beschwerden, allerdings arbeiten wir manchmal bis spät am Abend.",
+    "I understand the complaints; however, we sometimes work until late in the evening."
+   ],
+   [
+    "Könnten bestimmte Tätigkeiten auf den Tag verlegt werden, um die Situation zu entspannen?",
+    "Could certain activities be moved to daytime to ease the situation?"
+   ],
+   [
+    "Das wäre bei einigen Aufgaben möglich, bei anderen leider nicht.",
+    "That would be possible for some tasks, but unfortunately not for others."
+   ],
+   [
+    "Welche Regelung wäre aus Ihrer Sicht für beide Seiten akzeptabel?",
+    "What arrangement would be acceptable to both sides from your point of view?"
+   ],
+   [
+    "Wir könnten die lauten Arbeiten begrenzen und die Nachbarn vorher informieren.",
+    "We could limit noisy work and inform the neighbours beforehand."
+   ],
+   [
+    "Ich schlage vor, die Vereinbarung schriftlich festzuhalten und nach zwei Wochen zu überprüfen.",
+    "I suggest putting the agreement in writing and reviewing it after two weeks."
+   ],
+   [
+    "Damit wäre ich einverstanden, solange auch unsere Bedürfnisse berücksichtigt werden.",
+    "I'd agree to that, as long as our needs are also taken into account."
+   ]
+  ]
+ ],
+ [
+  "bureaucracy",
+  "Clarifying missing documents for an application",
+  "Administrative procedure",
+  [
+   "Applicant",
+   "Caseworker"
+  ],
+  [
+   [
+    "Ich habe erfahren, dass mein Antrag noch nicht vollständig bearbeitet werden kann.",
+    "I've learned that my application cannot yet be fully processed."
+   ],
+   [
+    "Es fehlen derzeit zwei Unterlagen, die wir zur Prüfung benötigen.",
+    "At present, two documents are missing that we need for the assessment."
+   ],
+   [
+    "Könnten Sie mir genau erläutern, welche Nachweise eingereicht werden müssen?",
+    "Could you explain precisely which supporting documents must be submitted?"
+   ],
+   [
+    "Sie benötigen eine aktuelle Bescheinigung und eine Kopie des unterschriebenen Vertrags.",
+    "You need a current certificate and a copy of the signed contract."
+   ],
+   [
+    "Die Bescheinigung habe ich bereits beantragt, aber die Ausstellung dauert noch.",
+    "I've already applied for the certificate, but issuance is taking some time."
+   ],
+   [
+    "Bitte informieren Sie uns darüber und prüfen Sie, ob die Frist verlängert werden kann.",
+    "Please inform us about that and check whether the deadline can be extended."
+   ],
+   [
+    "Kann ich die übrigen Dokumente schon einreichen, damit sich nichts weiter verzögert?",
+    "May I submit the remaining documents now to avoid further delays?"
+   ],
+   [
+    "Ja, reichen Sie sie bitte ein und geben Sie Ihre Vorgangsnummer an.",
+    "Yes, please submit them and include your reference number."
+   ]
+  ]
+ ],
+ [
+  "official-complaint",
+  "Writing a formal complaint",
+  "Formal correspondence",
+  [
+   "Citizen",
+   "Adviser"
+  ],
+  [
+   [
+    "Ich möchte mich über eine Entscheidung beschweren, weiß aber nicht, wie ich sachlich bleiben soll.",
+    "I'd like to complain about a decision, but I don't know how to remain objective."
+   ],
+   [
+    "Beschreiben Sie zunächst den Sachverhalt und nennen Sie die Entscheidung, um die es geht.",
+    "First describe the facts and identify the decision in question."
+   ],
+   [
+    "Sollte ich auch erklären, weshalb ich die Begründung für unzureichend halte?",
+    "Should I also explain why I consider the reasoning insufficient?"
+   ],
+   [
+    "Ja, konzentrieren Sie sich jedoch auf überprüfbare Angaben und konkrete Fragen.",
+    "Yes, but focus on verifiable information and specific questions."
+   ],
+   [
+    "Ich möchte vermeiden, dass mein Schreiben wie ein persönlicher Vorwurf wirkt.",
+    "I'd like to avoid making my letter sound like a personal accusation."
+   ],
+   [
+    "Dann verwenden Sie neutrale Formulierungen und bitten Sie um eine erneute Prüfung.",
+    "Then use neutral wording and request a further review."
+   ],
+   [
+    "Gibt es eine Frist, auf die ich besonders achten muss?",
+    "Is there a deadline I need to pay particular attention to?"
+   ],
+   [
+    "Prüfen Sie den Bescheid und die dort genannten Hinweise zum weiteren Vorgehen.",
+    "Check the notice and its instructions about how to proceed."
+   ]
+  ]
+ ],
+ [
+  "residence-advice",
+  "Preparing for a residence-related appointment",
+  "Residence administration",
+  [
+   "Student",
+   "Adviser"
+  ],
+  [
+   [
+    "Ich habe einen Termin bei der Behörde und möchte sicherstellen, dass meine Unterlagen vollständig sind.",
+    "I have an appointment with the authority and want to ensure that my documents are complete."
+   ],
+   [
+    "Haben Sie die aktuelle Checkliste für Ihren konkreten Antrag überprüft?",
+    "Have you checked the current checklist for your particular application?"
+   ],
+   [
+    "Ja, allerdings bin ich unsicher, ob ein bestimmter Finanzierungsnachweis ausreicht.",
+    "Yes, but I'm unsure whether a particular proof of funding is sufficient."
+   ],
+   [
+    "Die Anforderungen können sich je nach Verfahren unterscheiden. Fragen Sie deshalb direkt bei der zuständigen Stelle nach.",
+    "Requirements may differ depending on the procedure, so ask the responsible office directly."
+   ],
+   [
+    "Sollte ich die Antwort schriftlich aufbewahren, falls später Fragen entstehen?",
+    "Should I keep the response in writing in case questions arise later?"
+   ],
+   [
+    "Das wäre sinnvoll. Halten Sie außerdem Ihre Vorgangsnummer bereit.",
+    "That would be sensible. Also keep your case number at hand."
+   ],
+   [
+    "Vielen Dank. Ich möchte gut vorbereitet sein, ohne unnötige Dokumente mitzunehmen.",
+    "Thank you. I want to be well prepared without bringing unnecessary documents."
+   ],
+   [
+    "Dann ordnen Sie die Unterlagen nach Kategorien und nehmen Sie die Einladung mit.",
+    "Then organise your documents by category and bring the invitation."
+   ]
+  ]
+ ],
+ [
+  "consumer-warranty",
+  "Discussing a faulty product and warranty",
+  "Consumer protection",
+  [
+   "Customer",
+   "Shop Assistant"
+  ],
+  [
+   [
+    "Das Gerät funktioniert trotz mehrfacher Reparaturversuche weiterhin nicht zuverlässig.",
+    "The device still doesn't work reliably despite several repair attempts."
+   ],
+   [
+    "Haben Sie die bisherigen Reparaturberichte und den Kaufbeleg dabei?",
+    "Do you have the previous repair reports and proof of purchase with you?"
+   ],
+   [
+    "Ja. Ich möchte verstehen, welche Möglichkeiten ich nun habe.",
+    "Yes. I'd like to understand what options I have now."
+   ],
+   [
+    "Wir sollten zunächst den Kaufzeitpunkt und den bisherigen Verlauf überprüfen.",
+    "We should first review the purchase date and what has happened so far."
+   ],
+   [
+    "Ich wäre mit einer erneuten Reparatur nur einverstanden, wenn eine dauerhafte Lösung realistisch ist.",
+    "I'd only agree to another repair if a lasting solution is realistic."
+   ],
+   [
+    "Das ist nachvollziehbar. Ich kann den Fall an unsere zuständige Abteilung weitergeben.",
+    "That's understandable. I can forward the case to the responsible department."
+   ],
+   [
+    "Könnten Sie mir bitte die nächsten Schritte und die voraussichtliche Bearbeitungszeit bestätigen?",
+    "Could you please confirm the next steps and estimated processing time?"
+   ],
+   [
+    "Ja, Sie erhalten eine schriftliche Zusammenfassung unseres Gesprächs.",
+    "Yes, you'll receive a written summary of our conversation."
+   ]
+  ]
+ ],
+ [
+  "medical-consent",
+  "Discussing informed consent for treatment",
+  "Health decisions",
+  [
+   "Doctor",
+   "Patient"
+  ],
+  [
+   [
+    "Bevor wir eine Entscheidung treffen, möchte ich die möglichen Behandlungen mit Ihnen besprechen.",
+    "Before making a decision, I'd like to discuss the possible treatments with you."
+   ],
+   [
+    "Mir ist besonders wichtig zu verstehen, welche Vorteile und Risiken die Verfahren haben.",
+    "It's especially important to me to understand the benefits and risks of the procedures."
+   ],
+   [
+    "Die erste Möglichkeit ist weniger aufwendig, kann aber je nach Befund unterschiedlich wirksam sein.",
+    "The first option is less involved, but its effectiveness can vary depending on the findings."
+   ],
+   [
+    "Welche Faktoren würden Sie bei meiner persönlichen Situation berücksichtigen?",
+    "Which factors would you take into account in my particular situation?"
+   ],
+   [
+    "Wir betrachten Ihre Beschwerden, die Untersuchungsergebnisse und Ihre eigenen Präferenzen.",
+    "We consider your symptoms, examination results, and personal preferences."
+   ],
+   [
+    "Darf ich die Informationen mitnehmen, bevor ich mich endgültig entscheide?",
+    "May I take the information away before making a final decision?"
+   ],
+   [
+    "Selbstverständlich. Notieren Sie offene Fragen und besprechen Sie sie beim nächsten Termin.",
+    "Of course. Write down any open questions and discuss them at your next appointment."
+   ],
+   [
+    "Vielen Dank. Ich möchte die Entscheidung gut informiert und ohne Zeitdruck treffen.",
+    "Thank you. I'd like to make an informed decision without being rushed."
+   ]
+  ]
+ ],
+ [
+  "medical-diagnostic",
+  "Explaining a complicated medical history",
+  "Doctor's appointment",
+  [
+   "Doctor",
+   "Patient"
+  ],
+  [
+   [
+    "Ihre Beschwerden haben offenbar mehrere mögliche Ursachen. Können Sie den zeitlichen Verlauf genauer beschreiben?",
+    "Your symptoms seem to have several possible causes. Can you describe their timeline more precisely?"
+   ],
+   [
+    "Zunächst traten sie nur gelegentlich auf, inzwischen beeinträchtigen sie meinen Alltag deutlich.",
+    "At first they occurred only occasionally; now they significantly affect my daily life."
+   ],
+   [
+    "Gab es Veränderungen bei Ihrer Arbeit, Ihren Medikamenten oder Ihrer körperlichen Belastung?",
+    "Were there changes in your work, medication, or physical activity?"
+   ],
+   [
+    "Ich arbeite derzeit länger am Schreibtisch, nehme aber keine neuen Medikamente.",
+    "I'm currently spending longer at my desk, but I'm not taking any new medication."
+   ],
+   [
+    "Wir sollten die verschiedenen Möglichkeiten sorgfältig prüfen, statt vorschnell eine Ursache anzunehmen.",
+    "We should examine the different possibilities carefully rather than assuming a cause too quickly."
+   ],
+   [
+    "Welche Untersuchungen wären dafür aus Ihrer Sicht sinnvoll?",
+    "Which examinations would make sense in your view?"
+   ],
+   [
+    "Das hängt von der körperlichen Untersuchung ab. Anschließend besprechen wir die nächsten Schritte.",
+    "That depends on the physical examination. We'll then discuss the next steps."
+   ],
+   [
+    "Gut, ich werde meine bisherigen Beobachtungen bis dahin schriftlich festhalten.",
+    "Good, I'll write down my observations up to that point."
+   ]
+  ]
+ ],
+ [
+  "health-system",
+  "Discussing access to healthcare",
+  "Public services",
+  [
+   "Community Member",
+   "Policy Analyst"
+  ],
+  [
+   [
+    "In unserer Region müssen Patienten teilweise mehrere Wochen auf einen Facharzttermin warten.",
+    "In our region patients sometimes have to wait several weeks for a specialist appointment."
+   ],
+   [
+    "Das Problem hängt unter anderem von der regionalen Verteilung medizinischer Angebote ab.",
+    "The problem is partly related to how medical services are distributed regionally."
+   ],
+   [
+    "Wäre es ausreichend, einfach mehr digitale Sprechstunden anzubieten?",
+    "Would simply offering more digital consultations be enough?"
+   ],
+   [
+    "Nicht unbedingt. Manche Untersuchungen erfordern weiterhin einen persönlichen Termin.",
+    "Not necessarily. Some examinations still require an in-person appointment."
+   ],
+   [
+    "Wie könnte man die Versorgung insbesondere auf dem Land verbessern?",
+    "How could healthcare be improved, especially in rural areas?"
+   ],
+   [
+    "Denkbar wären bessere Koordination, zusätzliche Anreize und ergänzende digitale Angebote.",
+    "Better coordination, additional incentives, and complementary digital services would be conceivable."
+   ],
+   [
+    "Allerdings müssten wir auch prüfen, welche Maßnahmen tatsächlich wirksam sind.",
+    "However, we'd also need to examine which measures are actually effective."
+   ],
+   [
+    "Genau. Ohne verlässliche Daten lässt sich der Erfolg kaum beurteilen.",
+    "Exactly. Without reliable data, success is difficult to assess."
+   ]
+  ]
+ ],
+ [
+  "work-balance",
+  "Examining burnout prevention at work",
+  "Health and employment",
+  [
+   "Employee",
+   "Manager"
+  ],
+  [
+   [
+    "In unserem Team berichten mehrere Kollegen von einer dauerhaft zu hohen Arbeitsbelastung.",
+    "Several colleagues in our team report a persistently excessive workload."
+   ],
+   [
+    "Wir haben viel zu tun, aber ich möchte nicht, dass die Gesundheit darunter leidet.",
+    "We have a lot to do, but I don't want health to suffer as a result."
+   ],
+   [
+    "Meiner Ansicht nach liegt das Problem weniger an einzelnen Tagen als an fehlenden Prioritäten.",
+    "In my view, the problem isn't so much individual days as a lack of priorities."
+   ],
+   [
+    "Welche Veränderungen wären kurzfristig möglich, ohne wichtige Aufgaben zu vernachlässigen?",
+    "What changes would be possible in the short term without neglecting important tasks?"
+   ],
+   [
+    "Wir könnten Besprechungen reduzieren und dringende Aufgaben klarer voneinander abgrenzen.",
+    "We could reduce meetings and distinguish urgent tasks more clearly."
+   ],
+   [
+    "Das erscheint machbar. Langfristig müssen wir allerdings auch die Personalplanung überprüfen.",
+    "That seems feasible. In the long term, though, we'll also need to review staffing."
+   ],
+   [
+    "Könnten wir die Beschäftigten an der Entwicklung der Maßnahmen beteiligen?",
+    "Could we involve employees in developing the measures?"
+   ],
+   [
+    "Unbedingt. Nur so erkennen wir, ob die Vorschläge im Alltag funktionieren.",
+    "Absolutely. That's the only way to see whether the proposals work in practice."
+   ]
+  ]
+ ],
+ [
+  "mental-health",
+  "Talking sensitively about stress",
+  "Wellbeing and support",
+  [
+   "Friend",
+   "Friend"
+  ],
+  [
+   [
+    "In letzter Zeit wirkst du sehr erschöpft. Möchtest du erzählen, was dich beschäftigt?",
+    "You've seemed very exhausted lately. Would you like to talk about what's bothering you?"
+   ],
+   [
+    "Danke, dass du fragst. Ich habe das Gefühl, ständig hinter meinen Aufgaben zurückzubleiben.",
+    "Thanks for asking. I feel like I'm constantly falling behind on my tasks."
+   ],
+   [
+    "Das klingt belastend. Gibt es jemanden, mit dem du auch an der Universität darüber sprechen könntest?",
+    "That sounds stressful. Is there also someone at university you could talk to about it?"
+   ],
+   [
+    "Vielleicht. Ich weiß nur noch nicht, welche Beratungsangebote es gibt.",
+    "Maybe. I just don't know what counselling services are available."
+   ],
+   [
+    "Wir könnten gemeinsam nach einer passenden Anlaufstelle suchen, wenn du möchtest.",
+    "We could look for a suitable support service together if you'd like."
+   ],
+   [
+    "Das wäre hilfreich. Allein fällt es mir schwer, den ersten Schritt zu machen.",
+    "That would help. I find it difficult to take the first step alone."
+   ],
+   [
+    "Du musst nicht alles sofort lösen. Wir können zunächst die Möglichkeiten anschauen.",
+    "You don't have to solve everything immediately. We can start by looking at the options."
+   ],
+   [
+    "Danke. Es tut gut, darüber sprechen zu können, ohne bewertet zu werden.",
+    "Thank you. It's good to be able to talk about it without being judged."
+   ]
+  ]
+ ],
+ [
+  "health-insurance",
+  "Clarifying an insurance reimbursement",
+  "Health insurance",
+  [
+   "Insured Person",
+   "Service Agent"
+  ],
+  [
+   [
+    "Ich habe eine Rechnung eingereicht, aber noch keine Rückmeldung zur Erstattung erhalten.",
+    "I submitted an invoice but haven't received a response about reimbursement yet."
+   ],
+   [
+    "Wann haben Sie die Unterlagen eingereicht, und über welchen Weg?",
+    "When and how did you submit the documents?"
+   ],
+   [
+    "Vor ungefähr drei Wochen über das Onlineportal. Eine Eingangsbestätigung liegt mir vor.",
+    "About three weeks ago through the online portal. I have confirmation of receipt."
+   ],
+   [
+    "Dann können wir zunächst prüfen, welchen Bearbeitungsstand Ihr Antrag hat.",
+    "Then we can first check the processing status of your request."
+   ],
+   [
+    "Mir ist wichtig zu wissen, ob noch weitere Nachweise fehlen.",
+    "It's important for me to know whether any further documents are missing."
+   ],
+   [
+    "Das können wir anhand Ihres Vorgangs prüfen, ohne eine Erstattung vorwegzunehmen.",
+    "We can check that against your case without prejudging reimbursement."
+   ],
+   [
+    "Könnten Sie mir die nächsten Schritte anschließend schriftlich bestätigen?",
+    "Could you then confirm the next steps to me in writing?"
+   ],
+   [
+    "Ja, soweit die Informationen bereits vorliegen, senden wir Ihnen eine Zusammenfassung.",
+    "Yes, insofar as the information is already available, we'll send you a summary."
+   ]
+  ]
+ ],
+ [
+  "public-access",
+  "Advocating for accessibility",
+  "Inclusion and public spaces",
+  [
+   "Resident",
+   "Transport Official"
+  ],
+  [
+   [
+    "Mehrere Menschen mit eingeschränkter Mobilität können diese Haltestelle kaum selbstständig nutzen.",
+    "Several people with reduced mobility can barely use this stop independently."
+   ],
+   [
+    "Uns sind einige Probleme bekannt, doch die Umgestaltung ist technisch aufwendig.",
+    "We're aware of some problems, but redesigning it is technically complex."
+   ],
+   [
+    "Trotzdem sollte Barrierefreiheit nicht nur als freiwillige Zusatzleistung betrachtet werden.",
+    "Nevertheless, accessibility shouldn't be regarded as merely an optional extra."
+   ],
+   [
+    "Da stimme ich Ihnen grundsätzlich zu. Welche Hindernisse sind besonders dringend?",
+    "I agree with you in principle. Which obstacles are most urgent?"
+   ],
+   [
+    "Vor allem der fehlende Aufzug und die unzureichenden Informationen bei Störungen.",
+    "Above all, the missing lift and inadequate information during disruptions."
+   ],
+   [
+    "Wir könnten kurzfristige Verbesserungen prüfen, während die größere Baumaßnahme geplant wird.",
+    "We could examine short-term improvements while the larger construction project is being planned."
+   ],
+   [
+    "Wäre es möglich, Betroffene direkt an der Planung zu beteiligen?",
+    "Would it be possible to involve those affected directly in the planning?"
+   ],
+   [
+    "Das wäre sinnvoll, damit die Maßnahmen den tatsächlichen Bedürfnissen entsprechen.",
+    "That would be sensible so that measures meet actual needs."
+   ]
+  ]
+ ],
+ [
+  "volunteer-impact",
+  "Evaluating a volunteer project",
+  "Civic engagement",
+  [
+   "Coordinator",
+   "Volunteer"
+  ],
+  [
+   [
+    "Unser Projekt wird gut angenommen, aber bisher haben wir seinen langfristigen Nutzen kaum gemessen.",
+    "Our project is well received, but so far we've hardly measured its long-term benefit."
+   ],
+   [
+    "Vielleicht könnten wir die Teilnehmenden nach einigen Monaten erneut befragen.",
+    "Perhaps we could survey participants again after a few months."
+   ],
+   [
+    "Das wäre ein Anfang. Allerdings sollten wir darauf achten, niemanden durch Fragebögen zu überlasten.",
+    "That would be a start. However, we should avoid overwhelming anyone with questionnaires."
+   ],
+   [
+    "Wir könnten kurze freiwillige Gespräche anbieten und die Antworten anonym auswerten.",
+    "We could offer short voluntary interviews and analyse the answers anonymously."
+   ],
+   [
+    "Welche Fragen würden uns wirklich zeigen, ob das Angebot hilfreich war?",
+    "Which questions would really show us whether the service was helpful?"
+   ],
+   [
+    "Zum Beispiel, ob die Teilnehmenden ihre eigenen Ziele besser erreichen konnten.",
+    "For example, whether participants were better able to achieve their own goals."
+   ],
+   [
+    "Gut, dann entwickeln wir gemeinsam einige klare und überprüfbare Kriterien.",
+    "Good, then let's develop a few clear, verifiable criteria together."
+   ],
+   [
+    "Dabei sollten wir auch berücksichtigen, was sich durch unsere Arbeit nicht verändern lässt.",
+    "We should also consider what cannot be changed through our work."
+   ]
+  ]
  ]
 ];
