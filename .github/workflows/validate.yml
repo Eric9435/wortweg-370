@@ -10,6 +10,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: One-off noun and article inventory (diagnostic only)
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs');
+          const html=fs.readFileSync('index.html','utf8');
+          const match=html.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/);
+          if(!match)throw Error('Missing bank data');
+          const data=JSON.parse(match[1]);
+          const bank=data.bank, curated=data.curated;
+          const count={der:0,die:0,das:0,articleLabelled:0,noArticle:0};
+          const types={},levels={},noArticleSamples=[],articleSamples=[];
+          const regex=/^(der|die|das)\s+(.+)$/iu;
+          const tagged=new Set();
+          for(const w of bank){
+            const de=String(w.de||'').trim();
+            const m=de.match(regex);
+            const type=String(w.type||'(none)');
+            types[type]=(types[type]||0)+1;
+            levels[String(w.level||'(none)')]=(levels[String(w.level||'(none)')]||0)+1;
+            if(m){
+              count[m[1].toLowerCase()]++;count.articleLabelled++;
+              tagged.add([m[1].toLowerCase(),m[2].trim().toLocaleLowerCase('de'),String(w.en||'').toLocaleLowerCase()].join('|'));
+              if(articleSamples.length<15)articleSamples.push({id:w.id,de,type});
+            }else{
+              count.noArticle++;
+              if(noArticleSamples.length<28)noArticleSamples.push({id:w.id,de,type,en:w.en});
+            }
+          }
+          const curatedCount=curated.filter(w=>regex.test(String(w.de||''))).length;
+          console.log('AUDIT_RESULT='+JSON.stringify({bank:bank.length,curated:curated.length,curatedArticles:curatedCount,
+            count,uniqueArticleLabelled:tagged.size,types,levels,articleSamples,noArticleSamples}));
+          NODE
       - name: Check JavaScript, manifest, and account persistence hooks
         run: |
           node --check sw.js
