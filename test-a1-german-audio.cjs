@@ -23,8 +23,9 @@ const synth={
 };
 Object.defineProperty(w,'speechSynthesis',{configurable:true,value:synth});
 w.SpeechSynthesisUtterance=class{constructor(text){this.text=text;}};
-const index=fs.readFileSync('index.html','utf8');
-w.fetch=async()=>({ok:true,text:async()=>index});
+// The separate full-word inventory is tested by test-a1-complete-reader.cjs.
+// This speech-only test keeps its asynchronous fetch pending until DOM cleanup.
+w.fetch=()=>new Promise(()=>{});
 w.eval(extract[1]);
 const all=selector=>[...w.document.querySelectorAll(selector)];
 const play=all('.speech-play');
