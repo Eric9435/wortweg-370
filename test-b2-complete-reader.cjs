@@ -89,7 +89,7 @@ setTimeout(()=>{
   }
   assert.ok(offline.includes("'b2-complete-reader.html','complete-reading-level.html'"),'B2 route has correct offline navigation fallback');
   dom.window.close();
-  console.log('B2_READING='+JSON.stringify({chapters:16,bank:bank.length,curated:curated.length,nouns:nouns.length,total}));
+  console.log('B2_READING='+JSON.stringify({chapters:19,bank:bank.length,curated:curated.length,nouns:nouns.length,total}));
   console.log('PASS: B2 full bilingual reading, word coverage, German TTS, review persistence, menu and offline assets.');
  }catch(e){dom.window.close();console.error(e);process.exitCode=1;}
 },40);
