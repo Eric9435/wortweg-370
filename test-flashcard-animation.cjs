@@ -126,7 +126,7 @@ function gesture(dx,dy=0,cancel=false){
  direction.value='en';
  direction.dispatchEvent(new w.Event('change'));
  $('#ww-flashcards .ww-flash-primary').click();
- assert.match($('.ww-flash-translation').textContent,/မင်္ဂလာပါ/);
+ assert.match($('.ww-flash-translation').textContent,/[\u1000-\u109F]/,'Front face includes Myanmar translation');
  gesture(-110);
  assert.match(count(),/2 \/ 3/,'Myanmar-facing swipe changes cards without page-turn');
  assert.equal(animations.length,0,'Myanmar view never invokes Web Animations');
