@@ -10,6 +10,66 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: One-off C1 noun corpus audit
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),vm=require('node:vm');
+          const html=fs.readFileSync('index.html','utf8');
+          const src=JSON.parse(html.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/)[1]);
+          const ctx={window:{}};vm.createContext(ctx);vm.runInContext(fs.readFileSync('noun-expansion.js','utf8'),ctx);
+          const extra=ctx.window.WortWegNounExpansion.entries;
+          const base=[...src.bank,...src.curated];
+          const extract=w=>{
+            const m=/^(der|die|das)\s+(.+)$/iu.exec(String(w.de||'').trim().replace(/\s+/g,' '));
+            return m?{article:m[1].toLowerCase(),lemma:m[2].trim().toLocaleLowerCase('de'),de:w.de,
+              level:w.level||'Topic 1',type:w.type||'curated',en:w.en||''}:null;
+          };
+          const head=base.map(extract).filter(Boolean);
+          const B=new Map(),E=new Map();
+          for(const w of head){if(!B.has(w.lemma))B.set(w.lemma,[]);B.get(w.lemma).push(w);}
+          for(const w of extra.map(extract)){if(!E.has(w.lemma))E.set(w.lemma,[]);E.get(w.lemma).push(w);}
+          const conflicts=[],redundant=[],noBase=[],inconsistentBase=[];
+          let c1New=0, c1Duplicate=0, newTotal=0;
+          const topic={},article={},level={};
+          for(const w of extra){
+            const e=extract(w),matches=B.get(e.lemma)||[];
+            const other=matches.filter(x=>x.article!==e.article);
+            if(other.length)conflicts.push({expansion:e.de,original:other.slice(0,4).map(x=>({de:x.de,id:x.id,en:x.en,level:x.level,type:x.type}))});
+            if(matches.some(x=>x.article===e.article)){
+              redundant.push({de:e.de,original:matches.slice(0,2).map(x=>x.de),level:w.level,topic:w.topic});if(w.level==='C1')c1Duplicate++;
+            }else{newTotal++;if(w.level==='C1')c1New++;}
+            const k=w.topic;topic[k]=(topic[k]||0)+1;
+            article[e.article]=(article[e.article]||0)+1;
+            level[w.level]=(level[w.level]||0)+1;
+          }
+          for(const [k,rows] of B){
+            if(new Set(rows.map(x=>x.article)).size>1)inconsistentBase.push({lemma:k,alternates:rows.map(x=>x.de).slice(0,7)});
+          }
+          const suffix={};
+          for(const w of extra){
+            const e=extract(w),name=e.lemma;
+            for(const s of ['ung','heit','keit','schaft','tion','tät','ei','chen','lein']){
+              if(!name.endsWith(s))continue;
+              const key=s+'_'+e.article;suffix[key]=(suffix[key]||0)+1;
+            }
+          }
+          const sourceLevels={};
+          for(const w of src.bank){
+            const typ=String(w.type||'');
+            const lev=String(w.level||'');
+            sourceLevels[lev]??={};
+            sourceLevels[lev][typ]=(sourceLevels[lev][typ]||0)+1;
+          }
+          console.log('C1_AUDIT='+JSON.stringify({
+            originalTotal:src.bank.length,baseArticleEntries:head.length,baseUniqueLemmas:B.size,
+            expansionTotal:extra.length,uniqueExpansion:E.size,level,article,topic,
+            genuinelyNew:newTotal,c1New,c1Duplicate,
+            duplicatesCount:redundant.length,duplicateSample:redundant.slice(0,16),
+            contradictions:conflicts.length,contradictionExamples:conflicts.slice(0,60),
+            originalConflicts:inconsistentBase.length,baseContradictions:inconsistentBase.slice(0,35),
+            suffix,originalTypesByLevel:sourceLevels
+          }));
+          NODE
       - name: Check JavaScript, manifest, and account persistence hooks
         run: |
           node --check sw.js
