@@ -1733,5 +1733,311 @@ window.WortWegC2Situations=[
     "Exactly. Durable cooperation often emerges precisely because differing interests are acknowledged openly."
    ]
   ]
+ ],
+ [
+  "c2-oral-thesis",
+  "Defending a precise thesis under sustained questioning",
+  "C2 oral examination",
+  [
+   "Prüferin",
+   "Kandidat"
+  ],
+  [
+   [
+    "Sie behaupten, dass technologische Lösungen gesellschaftliche Konflikte häufig nur verlagern. Ist das nicht übertrieben?",
+    "You claim that technological solutions often merely displace social conflicts. Isn't that an exaggeration?"
+   ],
+   [
+    "Als generelle Behauptung wäre es zu stark; ich beziehe mich auf Fälle, in denen institutionelle Ursachen unangetastet bleiben.",
+    "As a general claim it would be too strong; I'm referring to cases where institutional causes remain untouched."
+   ],
+   [
+    "Können Sie diesen Geltungsbereich anhand eines konkreten Beispiels plausibel machen?",
+    "Can you make that scope plausible using a concrete example?"
+   ],
+   [
+    "Eine vollständig digitale Verwaltung kann Verfahren beschleunigen und zugleich Menschen ohne geeigneten Zugang benachteiligen.",
+    "Fully digital administration can accelerate procedures while disadvantaging people without adequate access."
+   ],
+   [
+    "Würde daraus nicht vielmehr folgen, dass wir die Technologie besser gestalten sollten?",
+    "Wouldn't that simply imply that we should design the technology better?"
+   ],
+   [
+    "Durchaus. Gerade deshalb spreche ich von einer Verlagerung des Problems und nicht von der Nutzlosigkeit digitaler Angebote.",
+    "Certainly. That's precisely why I speak of shifting the problem, not of digital services being useless."
+   ],
+   [
+    "Welche Einwände gegen Ihre Sichtweise erscheinen Ihnen am gewichtigsten?",
+    "Which objections to your view strike you as the strongest?"
+   ],
+   [
+    "Dass technische Verbesserungen auch institutionellen Wandel anstoßen können, was eine strikt getrennte Betrachtung erschwert.",
+    "That technical improvements can also trigger institutional change, making a strict separation difficult."
+   ],
+   [
+    "Wie würden Sie Ihre These im Lichte dieses Einwands abschließend formulieren?",
+    "How would you formulate your thesis in light of that objection?"
+   ],
+   [
+    "Technologie kann Probleme lösen, sofern ihre sozialen Voraussetzungen und Nebenfolgen ausdrücklich mitgestaltet werden.",
+    "Technology can solve problems provided its social preconditions and side effects are deliberately addressed."
+   ]
+  ]
+ ],
+ [
+  "c2-oral-synthesis",
+  "Synthesising incompatible-seeming positions",
+  "C2 oral examination",
+  [
+   "Diskussionsleitung",
+   "Teilnehmerin"
+  ],
+  [
+   [
+    "Ein Standpunkt fordert umfassende Transparenz, der andere warnt vor Informationsüberlastung. Welchen halten Sie für überzeugender?",
+    "One position demands comprehensive transparency, the other warns of information overload. Which do you find more persuasive?"
+   ],
+   [
+    "Die Positionen widersprechen sich nur scheinbar, solange Transparenz nicht mit ungefilterter Datenmenge gleichgesetzt wird.",
+    "The positions conflict only superficially, as long as transparency isn't equated with an unfiltered mass of data."
+   ],
+   [
+    "Worin bestünde dann eine anspruchsvolle Form von Transparenz?",
+    "What would a sophisticated form of transparency consist of, then?"
+   ],
+   [
+    "Darin, wesentliche Grundlagen zugänglich zu machen und zugleich verständlich einzuordnen, was sie aussagen.",
+    "In making essential foundations accessible while explaining understandably what they actually show."
+   ],
+   [
+    "Wer entscheidet allerdings, welche Informationen als wesentlich gelten dürfen?",
+    "But who decides which information may be deemed essential?"
+   ],
+   [
+    "Gerade diese Auswahl sollte begründet, überprüfbar und grundsätzlich anfechtbar sein.",
+    "That selection itself should be justified, verifiable, and open to challenge in principle."
+   ],
+   [
+    "Damit verlagert sich das Problem doch nur auf die Gestaltung der Auswahlverfahren.",
+    "Doesn't that simply shift the problem to how selection processes are designed?"
+   ],
+   [
+    "Teilweise, aber das ist ein institutionell bearbeitbares Problem statt eines unauflösbaren begrifflichen Gegensatzes.",
+    "Partly, but that's an institutionally manageable problem rather than an irresolvable conceptual opposition."
+   ],
+   [
+    "Können Sie daraus ein prägnantes Schlussurteil ableiten, ohne die Spannungen zu beschönigen?",
+    "Can you draw a concise final judgement without glossing over the tensions?"
+   ],
+   [
+    "Gute Transparenz verbindet Zugang, Verständlichkeit und verantwortbare Auswahl, ohne einen dieser Ansprüche zu verabsolutieren.",
+    "Good transparency combines access, intelligibility, and defensible selection without treating any one of those demands as absolute."
+   ]
+  ]
+ ],
+ [
+  "c2-debate-refutation",
+  "Refuting a misleading argument without misrepresenting it",
+  "C2 argumentation",
+  [
+   "Moderator",
+   "Diskutantin"
+  ],
+  [
+   [
+    "Ihr Gegenüber behauptet, mehr Regeln würden Innovation zwangsläufig verhindern. Wie reagieren Sie darauf?",
+    "Your counterpart claims that more regulation inevitably prevents innovation. How do you respond?"
+   ],
+   [
+    "Zunächst würde ich fragen, welche Regeln gemeint sind und nach welchem Innovationsbegriff geurteilt wird.",
+    "I'd first ask which rules are meant and what concept of innovation is being used."
+   ],
+   [
+    "Ist diese Nachfrage nicht nur ein Versuch, sich vor einer klaren Antwort zu drücken?",
+    "Isn't that merely an attempt to evade a clear answer?"
+   ],
+   [
+    "Nein, denn die behauptete Zwangsläufigkeit setzt voraus, dass sehr unterschiedliche Maßnahmen dieselbe Wirkung haben.",
+    "No, because the claimed inevitability presupposes that very different measures have the same effect."
+   ],
+   [
+    "Können Sie dennoch anerkennen, dass Bürokratie gerade kleinere Unternehmen belasten kann?",
+    "Can you nevertheless acknowledge that bureaucracy can particularly burden smaller companies?"
+   ],
+   [
+    "Selbstverständlich; unnötige Pflichten können Ressourcen binden und Markteintritte erschweren.",
+    "Of course; unnecessary obligations can tie up resources and impede market entry."
+   ],
+   [
+    "Weshalb folgt daraus nicht, dass wir Regeln grundsätzlich reduzieren sollten?",
+    "Why doesn't it follow that we should reduce regulation as a general rule?"
+   ],
+   [
+    "Weil manche Regeln Vertrauen, Wettbewerb und Rechtssicherheit erst ermöglichen und damit Innovation fördern können.",
+    "Because some rules enable trust, competition, and legal certainty and can thereby support innovation."
+   ],
+   [
+    "Wie lautet Ihre Position, wenn Sie diese Überlegungen auf einen Satz verdichten müssten?",
+    "What is your position if you had to condense these considerations into one sentence?"
+   ],
+   [
+    "Nicht die Anzahl der Regeln, sondern ihre Zielgenauigkeit und überprüfbare Wirkung sind entscheidend.",
+    "What matters isn't the number of rules but their precision and demonstrable effects."
+   ]
+  ]
+ ],
+ [
+  "c2-formal-mediation",
+  "Mediating a breakdown in formal negotiations",
+  "Diplomatic communication",
+  [
+   "Mediatorin",
+   "Verhandlungsführer"
+  ],
+  [
+   [
+    "Die Gespräche sind festgefahren, weil beide Seiten die jüngsten Vorschläge als unzulässige Vorbedingungen betrachten.",
+    "Talks have stalled because both sides regard the latest proposals as unacceptable preconditions."
+   ],
+   [
+    "Unter diesen Umständen erscheint jede weitere Zugeständnisforderung als einseitiger Gesichtsverlust.",
+    "Under these circumstances, every further demand for concessions appears to entail a one-sided loss of face."
+   ],
+   [
+    "Wären Sie bereit, zunächst die zugrunde liegenden Interessen statt der öffentlich vertretenen Positionen zu erläutern?",
+    "Would you be willing first to explain the underlying interests rather than the publicly stated positions?"
+   ],
+   [
+    "Das könnte hilfreich sein, sofern unsere Vertraulichkeit und die grundlegenden Zusagen gewahrt bleiben.",
+    "That could help, provided our confidentiality and fundamental commitments are respected."
+   ],
+   [
+    "Dann könnten wir unverbindliche Sondierungen von verbindlichen Entscheidungen ausdrücklich trennen.",
+    "Then we could explicitly separate exploratory discussions from binding decisions."
+   ],
+   [
+    "Wie ließe sich verhindern, dass solche Gespräche später als bereits erteilte Zustimmung dargestellt werden?",
+    "How could we prevent such talks later being portrayed as consent already given?"
+   ],
+   [
+    "Durch gemeinsame Protokolle, die den vorläufigen Charakter und offene Vorbehalte klar kennzeichnen.",
+    "Through jointly agreed records that clearly mark the provisional nature and outstanding reservations."
+   ],
+   [
+    "Damit hätten beide Seiten die Möglichkeit, Lösungsräume auszuloten, ohne ihre Position sofort aufzugeben.",
+    "That would let both sides explore possible solutions without immediately abandoning their positions."
+   ],
+   [
+    "Könnten Sie sich auf dieser Grundlage einen neuen Verhandlungsrahmen vorstellen?",
+    "Could you envisage a new negotiating framework on that basis?"
+   ],
+   [
+    "Ja, sofern er ausdrücklich ergebnisoffen bleibt und überprüfbare Gesprächsregeln enthält.",
+    "Yes, provided it remains genuinely open-ended and includes verifiable rules for discussion."
+   ]
+  ]
+ ],
+ [
+  "c2-critical-reading",
+  "Interpreting unstated assumptions in a sophisticated text",
+  "C2 text analysis",
+  [
+   "Dozentin",
+   "Student"
+  ],
+  [
+   [
+    "Im Essay wird betont, dass Effizienz kein neutraler Maßstab sei. Welche unausgesprochene Annahme erkennen Sie darin?",
+    "The essay emphasises that efficiency is not a neutral standard. What unstated assumption do you identify?"
+   ],
+   [
+    "Dass jede Effizienzbewertung bereits eine Entscheidung darüber voraussetzt, welche Ziele und Kosten berücksichtigt werden.",
+    "That every efficiency assessment presupposes a decision about which goals and costs count."
+   ],
+   [
+    "Könnte die Aussage nicht ebenso gut bedeuten, dass objektive Vergleiche grundsätzlich unmöglich sind?",
+    "Couldn't the statement equally mean that objective comparisons are fundamentally impossible?"
+   ],
+   [
+    "Diese Deutung ginge meines Erachtens über den Text hinaus, der vielmehr die Offenlegung von Kriterien fordert.",
+    "In my view that reading would go beyond the text, which instead demands disclosure of criteria."
+   ],
+   [
+    "Welche sprachlichen Mittel unterstützen Ihre Interpretation?",
+    "Which linguistic devices support your interpretation?"
+   ],
+   [
+    "Vor allem die einschränkenden Konjunktionen und der Gegensatz zwischen Messbarkeit und normativer Rechtfertigung.",
+    "Above all, the qualifying conjunctions and the contrast between measurability and normative justification."
+   ],
+   [
+    "Wie würden Sie einem Leser antworten, der das Argument für bloße Relativierung hält?",
+    "How would you respond to a reader who regards the argument as mere relativism?"
+   ],
+   [
+    "Ich würde zwischen der Überprüfung von Daten und der Begründung ihrer gesellschaftlichen Bedeutung unterscheiden.",
+    "I'd distinguish between verifying data and justifying their societal significance."
+   ],
+   [
+    "Lässt sich aus dieser Differenz eine präzise Zusammenfassung des Textgedankens gewinnen?",
+    "Can that distinction yield a precise summary of the text's central idea?"
+   ],
+   [
+    "Ja: Zahlen können korrekt sein, während die Kriterien ihrer politischen Verwendung dennoch begründungsbedürftig bleiben.",
+    "Yes: figures can be accurate while the criteria governing their political use still require justification."
+   ]
+  ]
+ ],
+ [
+  "c2-speech-register",
+  "Adjusting register in an expert-level diplomatic exchange",
+  "Stylistic precision",
+  [
+   "Sprachberaterin",
+   "Projektleiter"
+  ],
+  [
+   [
+    "Mein Entwurf ist zwar sachlich, klingt gegenüber den Verhandlungspartnern aber möglicherweise unnötig konfrontativ.",
+    "My draft is factual, but may sound unnecessarily confrontational to the negotiating partners."
+   ],
+   [
+    "Welche Formulierung halten Sie in diesem Zusammenhang für besonders problematisch?",
+    "Which wording do you consider particularly problematic in this context?"
+   ],
+   [
+    "Ich schreibe, die vorgelegten Zahlen seien offensichtlich unhaltbar und müssten umgehend korrigiert werden.",
+    "I write that the figures presented are plainly indefensible and must be corrected immediately."
+   ],
+   [
+    "Damit unterstellen Sie beinahe böse Absicht, obwohl möglicherweise nur die Berechnungsmethode ungeklärt ist.",
+    "That almost implies bad faith even though perhaps only the method of calculation is unclear."
+   ],
+   [
+    "Wie könnte ich die Kritik schärfer begründen, ohne den Gesprächsraum unnötig zu verengen?",
+    "How could I substantiate the criticism more forcefully without unnecessarily narrowing the room for dialogue?"
+   ],
+   [
+    "Beziehen Sie sich auf konkrete Abweichungen und bitten Sie um eine nachvollziehbare Erläuterung der Annahmen.",
+    "Refer to specific discrepancies and request a clear explanation of the assumptions."
+   ],
+   [
+    "Dann wäre die Aussage nicht schwächer, sondern in ihrem Anspruch präziser.",
+    "Then the statement would be not weaker but more precise in what it claims."
+   ],
+   [
+    "Genau. Diplomatischer Stil bedeutet nicht, auf kritische Substanz zu verzichten.",
+    "Exactly. Diplomatic style doesn't mean giving up substantive criticism."
+   ],
+   [
+    "Sollte ich außerdem schon eine mögliche gemeinsame Prüfung als nächsten Schritt anregen?",
+    "Should I also propose a possible joint review as a next step?"
+   ],
+   [
+    "Das wäre konstruktiv, sofern der Vorschlag keine bereits ungeprüft akzeptierte Interpretation voraussetzt.",
+    "That would be constructive, provided it doesn't presuppose an interpretation not yet examined."
+   ]
+  ]
  ]
 ];
