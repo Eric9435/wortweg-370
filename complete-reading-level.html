@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#102d48"><title>WortWeg · Reading Level Preview</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f2f6fa;color:#17334a;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}header{background:#102d48;color:#fff;padding:24px max(18px,calc((100% - 940px)/2))}a{color:#1d6586}header a{color:#deedf8;text-decoration:none;font-size:14px}header h1{margin:15px 0 5px;font-size:clamp(25px,4vw,38px)}header p{color:#cfdfeb;line-height:1.6}
+main{max-width:940px;margin:0 auto;padding:20px 17px 70px}.notice{background:#e9f3f8;border:1px solid #bedae9;border-radius:16px;padding:20px;line-height:1.7}
+h2{margin:10px 0}.meta{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.pill{background:white;border:1px solid #d6e3ec;border-radius:11px;padding:12px;font-size:14px}
+input{width:100%;padding:13px 15px;border:1px solid #bdd1df;border-radius:11px;font-size:16px}
+.results{background:white;padding:17px;border:1px solid #d7e4ed;border-radius:16px;margin-top:14px}.entries{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:15px}
+.item{background:#f9fbfd;border:1px solid #e1eaf0;border-radius:10px;padding:10px;min-width:0}.item strong{display:block;font-size:15px;overflow-wrap:anywhere}.item span{color:#5b7082;font-size:13px}
+.pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin:18px 0}.pagination button{background:#135879;color:#fff;border:0;border-radius:10px;padding:10px 14px;cursor:pointer}.pagination button:disabled{opacity:.35}
+@media(max-width:600px){.entries{grid-template-columns:1fr}}
+</style></head><body><header><a href="./complete-reading.html">‹ Complete Reading · All Levels</a><h1 id="levelTitle">German Vocabulary</h1><p>Level-specific word practice · exact vocabulary from your WortWeg library</p></header>
+<main><section class="notice"><strong>Reading chapters for this level are in preparation.</strong> The existing WortWeg words and English meanings are available here now. A1 and A2 already have full German–English passages and narration. <a href="./complete-reading.html">Choose a completed reader</a>.</section>
+<div class="meta"><span class="pill" id="bankCount">Loading source bank…</span><span class="pill" id="nounCount">Loading noun expansion…</span></div>
+<label for="search"><strong>Search vocabulary at this level</strong></label><input id="search" type="search" placeholder="Search German or English">
+<section class="results"><h2>WortWeg Vocabulary <small id="shown"></small></h2><div class="entries" id="entries" aria-live="polite"></div><nav class="pagination"><button id="previous" type="button">← Previous</button><span id="page">1</span><button id="next" type="button">Next →</button></nav></section></main>
+<script src="./noun-expansion.js"></script><script>
+(()=>{'use strict';const level=new URLSearchParams(location.search).get('level')||'B1';
+const allowed=['B1','B2','C1','C2'];if(!allowed.includes(level)){location.replace('./complete-reading.html');return;}
+document.title='WortWeg '+level+' · Vocabulary Preview';document.getElementById('levelTitle').textContent=level+' Reading · Vocabulary Preview';
+const $=id=>document.getElementById(id);let all=[],page=0;const pageSize=80;
+function filtered(){const q=$('search').value.trim().toLocaleLowerCase('de');return q?all.filter(w=>(w.de+' '+w.en).toLocaleLowerCase('de').includes(q)):all;}
+function render(){const list=filtered(),pages=Math.max(1,Math.ceil(list.length/pageSize));page=Math.max(0,Math.min(page,pages-1));
+ $('entries').replaceChildren();const shown=list.slice(page*pageSize,(page+1)*pageSize);
+ for(const w of shown){const el=document.createElement('div');el.className='item';const de=document.createElement('strong'),en=document.createElement('span');de.lang='de';de.textContent=w.de;en.lang='en';en.textContent=w.en||'—';el.append(de,en);$('entries').append(el);}
+ $('shown').textContent='('+list.length.toLocaleString('en-US')+' entries)';$('page').textContent=(page+1)+' / '+pages;
+ $('previous').disabled=page===0;$('next').disabled=page===pages-1;
+}
+$('search').addEventListener('input',()=>{page=0;render()});$('previous').onclick=()=>{page--;render()};$('next').onclick=()=>{page++;render()};
+fetch('./index.html').then(x=>{if(!x.ok)throw Error('Word Bank unavailable');return x.text()}).then(html=>{
+ const root=new DOMParser().parseFromString(html,'text/html'),node=root.getElementById('data');if(!node)throw Error('Word Bank data missing');
+ const bank=JSON.parse(node.textContent).bank.filter(w=>w.level===level);
+ const nouns=(window.WortWegNounExpansion?.entries||[]).filter(w=>w.level===level);
+ all=[...bank,...nouns];$('bankCount').textContent=bank.length.toLocaleString('en-US')+' Word Bank entries';
+ $('nounCount').textContent=nouns.length.toLocaleString('en-US')+' supplementary nouns';render();
+}).catch(err=>{$('entries').textContent='Unable to load vocabulary: '+err.message;});
+})();
+</script></body></html>
