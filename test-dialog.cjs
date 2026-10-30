@@ -177,8 +177,8 @@ const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCo
  assert.equal(w.WortWegDialog.getState().wordDialogCount,expectedB2);
  assert.equal($('dialogB2Challenge').hidden,true,'Challenge hidden for isolated vocabulary drills');
  assert.ok($('dialogTurns').textContent.includes($('dialogTitle').textContent),'Exact B2 headword is in its drill');
- $('dialogSearch').value='Querschnittstudie';$('dialogSearch').dispatchEvent(new w.Event('input'));
- assert.ok(Number($('dialogListCount').textContent.split(' ')[0])>0,'B2 source search finds academic words');
+ $('dialogSearch').value=nounsB2[0].de;$('dialogSearch').dispatchEvent(new w.Event('input'));
+ assert.ok(Number($('dialogListCount').textContent.split(' ')[0])>0,'B2 source search finds an actual B2 noun from the original inventory');
  $('dialogSearch').value='';$('dialogSearch').dispatchEvent(new w.Event('input'));
  assert.ok($('dialogList').querySelectorAll('button.dialog-item').length<=121,'B2 word list uses bounded pagination');
  w.WortWegDialog.setLevel('A1');assert.equal(w.WortWegDialog.getState().completed,1,'A1 progress preserved');
