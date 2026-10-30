@@ -11,8 +11,8 @@ const nouns=allNouns.filter(w=>w.level==='A1'),nounsA2=allNouns.filter(w=>w.leve
 const bankA2=data.bank.filter(w=>w.level==='A2'),curatedA2=data.curated.filter(w=>w.level==='A2');
 const bankB1=data.bank.filter(w=>w.level==='B1'),curatedB1=data.curated.filter(w=>w.level==='B1');
 const bankB2=data.bank.filter(w=>w.level==='B2'),curatedB2=data.curated.filter(w=>w.level==='B2');
-const situations=fs.readFileSync('dialog-situations.js','utf8'),situationsA2=fs.readFileSync('dialog-situations-a2.js','utf8'),situationsB1=fs.readFileSync('dialog-situations-b1.js','utf8'),situationsB2=fs.readFileSync('dialog-situations-b2.js','utf8'),source=fs.readFileSync('dialog.js','utf8');
-new vm.Script(situations);new vm.Script(situationsA2);new vm.Script(situationsB1);new vm.Script(situationsB2);new vm.Script(source);
+const situations=fs.readFileSync('dialog-situations.js','utf8'),situationsA2=fs.readFileSync('dialog-situations-a2.js','utf8'),situationsB1=fs.readFileSync('dialog-situations-b1.js','utf8'),situationsB2=fs.readFileSync('dialog-situations-b2.js','utf8'),situationsC1=fs.readFileSync('dialog-situations-c1.js','utf8'),source=fs.readFileSync('dialog.js','utf8');
+new vm.Script(situations);new vm.Script(situationsA2);new vm.Script(situationsB1);new vm.Script(situationsB2);new vm.Script(situationsC1);new vm.Script(source);
 assert.equal(bank.length,642);assert.equal(nouns.length,232);
 assert.equal(bankA2.length,932);assert.equal(curatedA2.length,1);assert.equal(nounsA2.length,243);
 assert.equal(bankB1.length,931);assert.equal(nounsB1.length,376);
@@ -20,7 +20,7 @@ assert.equal(bankB2.length,2117);assert.equal(nounsB2.length,667);
 const dom=new JSDOM(html,{url:'https://localhost/dialog.html',runScripts:'outside-only'});
 const w=dom.window;w.WortWegNounExpansion={entries:allNouns};
 w.fetch=async url=>{assert.equal(url,'./index.html');return {ok:true,text:async()=>index}};
-w.eval(situations);w.eval(situationsA2);w.eval(situationsB1);w.eval(situationsB2);w.eval(source);
+w.eval(situations);w.eval(situationsA2);w.eval(situationsB1);w.eval(situationsB2);w.eval(situationsC1);w.eval(source);
 const $=id=>w.document.getElementById(id);
 const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCount===874)return;await new Promise(resolve=>setTimeout(resolve,50));}throw Error('Dialog A1 source initialization timed out');};
 (async()=>{
@@ -56,7 +56,7 @@ const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCo
   assert.ok(fs.readFileSync('mobile/scripts/prepare.mjs','utf8').includes(path),'Native bundle includes '+path);
  }
  assert.ok(fs.readFileSync('home-refresh.js','utf8').includes("title:'Dialog'"),'Separate Dialog Home tile');
- assert.ok(w.document.querySelectorAll('.dialog-levels button').length===4,'A1 and A2 are separate level windows');
+ assert.ok(w.document.querySelectorAll('.dialog-levels button').length===5,'A1 and A2 are separate level windows');
  assert.equal(w.WortWegDialog.getState().level,'A1','A1 remains the first/default level');
  w.WortWegDialog.setLevel('A2');
  const a2=w.WortWegDialog.getState();
