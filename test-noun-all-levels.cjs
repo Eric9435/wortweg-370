@@ -13,7 +13,7 @@ const expansion=sandbox.window.WortWegNounExpansion.entries;
 const source=fs.readFileSync('noun-expansion.js','utf8');
 const rawField=source.match(/const raw=("(?:\\.|[^"\\])*");/);
 assert.ok(rawField,'Raw noun rows must be available for quality audit');
-const rawRows=JSON.parse(rawField[1]).split('\\n');
+const rawRows=JSON.parse(rawField[1]).split('\n');
 assert.equal(rawRows.length,expansion.length,'No duplicate noun lines hidden by runtime de-duplication');
 const levels=['A1','A2','B1','B2','C1','C2'];
 const byLevel=Object.fromEntries(levels.map(level=>[level,{pack:0,new:0,article:{der:0,die:0,das:0}}]));
