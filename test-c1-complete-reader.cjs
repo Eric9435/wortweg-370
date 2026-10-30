@@ -32,7 +32,7 @@ const link=menu.querySelector('a[data-level="C1"]');
 assert.ok(link,'C1 selector exists');
 assert.equal(link.getAttribute('href'),'./c1-complete-reader.html');
 assert.ok(link.classList.contains('ready'));
-assert.equal(menu.querySelectorAll('.level.ready').length,5,'A1, A2, B1, B2 and C1 readers available');
+assert.equal(menu.querySelectorAll('.level.ready').length,6,'A1, A2, B1, B2, C1 and C2 readers available');
 const html=read('c1-complete-reader.html');
 assert.match(html,/<script src="\.\/c1-reading-part-01\.js"><\/script>/);
 assert.match(html,/src="\.\/noun-expansion\.js"/);
@@ -87,7 +87,7 @@ setTimeout(()=>{
    assert.ok(offline.includes(file),'Offline PWA ships '+file);
    assert.ok(native.includes(file),'Android build ships '+file);
   }
-  assert.ok(offline.includes("'c1-complete-reader.html','complete-reading-level.html'"),'C1 route has correct offline navigation fallback');
+  assert.ok(offline.includes("'c1-complete-reader.html','c2-complete-reader.html','complete-reading-level.html'"),'C1 route has correct offline navigation fallback');
   dom.window.close();
   console.log('C1_READING='+JSON.stringify({chapters:20,bank:bank.length,curated:curated.length,nouns:nouns.length,total}));
   console.log('PASS: C1 full bilingual reading, word coverage, German TTS, review persistence, menu and offline assets.');
