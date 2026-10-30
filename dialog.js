@@ -91,7 +91,7 @@ function setLevel(level){
  $('dialogCurrentLevel').textContent=level;
  $('dialogSubtitle').textContent='German conversations and practice from your actual '+level+' word list.';
  $('dialogSourceLevel').textContent=level;
- $('dialogWordCount').textContent=c.bankCount+' + '+c.nounCount+' source records';
+ $('dialogWordCount').textContent=[c.bankCount,...(c.curatedCount?[c.curatedCount]:[]),c.nounCount].join(' + ')+' source records';
  $('dialogSituationCount').textContent=String(c.scenes.length);
  $('dialogCoverage').textContent=String(c.entries.length);
  $('dialogWordsTab').textContent='All '+level+' Words';
@@ -112,12 +112,13 @@ async function init(){const empty=$('dialogEmpty');try{
  const expanded=Array.isArray(window.WortWegNounExpansion?.entries)?window.WortWegNounExpansion.entries:[];
  for(const level of ['A1','A2']){
   const bank=originalBank.filter(w=>w.level===level);
+  const curated=level==='A2'?(original.curated||[]).filter(w=>w.level===level):[];
   const nouns=expanded.filter(w=>w.level===level);
-  state.words=[...bank.map((w,i)=>({...w,key:'b:'+String(w.id??i),source:'Word Bank'})),...nouns.map((w,i)=>({...w,key:'n:'+String(w.id??i),source:'Noun Expansion'}))];
+  state.words=[...bank.map((w,i)=>({...w,key:'b:'+String(w.id??i),source:'Word Bank'})),...curated.map((w,i)=>({...w,key:'c:'+String(w.id??i),source:'Curated A2 List'})),...nouns.map((w,i)=>({...w,key:'n:'+String(w.id??i),source:'Noun Expansion'}))];
   const source=level==='A1'?window.WortWegA1Situations:window.WortWegA2Situations;
   if(!Array.isArray(source)||!source.length)throw Error(level+' authored dialogues could not load');
   const scenes=source.map(row=>{const scene={id:'scene:'+row[0],title:row[1],desc:row[2],speakers:row[3],turns:row[4]};scene.words=findInScene(scene);return scene;});
-  state.collections[level]={words:state.words,scenes,entries:state.words.map(wordScene),bankCount:bank.length,nounCount:nouns.length};
+  state.collections[level]={words:state.words,scenes,entries:state.words.map(wordScene),bankCount:bank.length,curatedCount:curated.length,nounCount:nouns.length};
  }
  const requestLevel=new URL(window.location.href).searchParams.get('level');
  setLevel(requestLevel==='A2'?'A2':'A1');

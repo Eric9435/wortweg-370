@@ -8,11 +8,11 @@ const sandbox={window:{},Event:class{constructor(type){this.type=type}}};
 vm.createContext(sandbox);vm.runInContext(nounSource,sandbox);
 const allNouns=sandbox.window.WortWegNounExpansion.entries;
 const nouns=allNouns.filter(w=>w.level==='A1'),nounsA2=allNouns.filter(w=>w.level==='A2');
-const bankA2=data.bank.filter(w=>w.level==='A2');
+const bankA2=data.bank.filter(w=>w.level==='A2'),curatedA2=data.curated.filter(w=>w.level==='A2');
 const situations=fs.readFileSync('dialog-situations.js','utf8'),situationsA2=fs.readFileSync('dialog-situations-a2.js','utf8'),source=fs.readFileSync('dialog.js','utf8');
 new vm.Script(situations);new vm.Script(situationsA2);new vm.Script(source);
 assert.equal(bank.length,642);assert.equal(nouns.length,232);
-assert.equal(bankA2.length,932);assert.equal(nounsA2.length,243);
+assert.equal(bankA2.length,932);assert.equal(curatedA2.length,1);assert.equal(nounsA2.length,243);
 const dom=new JSDOM(html,{url:'https://localhost/dialog.html',runScripts:'outside-only'});
 const w=dom.window;w.WortWegNounExpansion={entries:allNouns};
 w.fetch=async url=>{assert.equal(url,'./index.html');return {ok:true,text:async()=>index}};
@@ -56,10 +56,10 @@ const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCo
  assert.equal(w.WortWegDialog.getState().level,'A1','A1 remains the first/default level');
  w.WortWegDialog.setLevel('A2');
  const a2=w.WortWegDialog.getState();
- assert.equal(a2.level,'A2');assert.equal(a2.wordCount,1175,'All A2 Word Bank and expansion records load');
- assert.equal(a2.wordDialogCount,1175,'Each exact A2 headword has its own practice dialogue');
+ assert.equal(a2.level,'A2');assert.equal(a2.wordCount,1176,'All A2 Word Bank and expansion records load');
+ assert.equal(a2.wordDialogCount,1176,'Each exact A2 headword has its own practice dialogue');
  assert.equal(a2.situationCount,59,'All authored A2 real-life scenes load');
- assert.equal($('dialogWordCount').textContent,'932 + 243 source records');
+ assert.equal($('dialogWordCount').textContent,'932 + 1 + 243 source records');
  assert.match($('dialogTitle').textContent,/Finding a new apartment/);
  assert.equal($('dialogTurns').querySelectorAll('.turn-de').length,6);
  assert.equal($('dialogTurns').querySelectorAll('.turn-en').length,6,'Every German turn has an English translation');
@@ -74,7 +74,7 @@ const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCo
  assert.equal(w.localStorage.getItem('wortweg370-progress-v3'),priorQuiz,'A2 never changes vocabulary quiz progress');
  assert.equal(w.WortWegDialog.getState().completed,1,'A2 completion count isolated');
  w.document.querySelector('.dialog-tabs button[data-mode="words"]').click();
- assert.equal(w.WortWegDialog.getState().wordDialogCount,1175);
+ assert.equal(w.WortWegDialog.getState().wordDialogCount,1176);
  assert.ok($('dialogTitle').textContent.length>1);
  assert.ok($('dialogTurns').textContent.includes($('dialogTitle').textContent),'Exact A2 word is used in the German dialogue');
  assert.ok(!$('dialogTurns').textContent.includes('Auf Englisch heißt das'),'German lines do not insert English meanings');
@@ -97,5 +97,5 @@ const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCo
   for(const turn of scene[4])assert.ok(turn[0].length>12&&turn[1].length>10,'Full bilingual conversation: '+scene[1]);
  }
  assert.ok(!html.includes('id="data"'),'Dialog stays an independent view and reads the existing source');
- dom.window.close();console.log('PASS: A1/A2 Dialog, 46 A1 and 59 A2 authored scenes, all 874+1175 exact source word dialogues, bilingual roleplay, separate progress, and offline packaging.');
+ dom.window.close();console.log('PASS: A1/A2 Dialog, 46 A1 and 59 A2 authored scenes, all 874+1176 exact source word dialogues, bilingual roleplay, separate progress, and offline packaging.');
 })().catch(err=>{dom.window.close();console.error(err);process.exitCode=1;});
