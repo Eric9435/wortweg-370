@@ -31,6 +31,9 @@ body.ww-flash-open{overflow:hidden}
 .ww-flash-progress{width:100%;height:6px;border-radius:99px;background:var(--line,#e1eaf1);overflow:hidden;margin:15px 0 26px}
 .ww-flash-progress>span{display:block;height:100%;background:#1b7499;transition:width .2s ease}
 .ww-flash-card{width:100%;min-height:min(54vh,410px);display:flex;align-items:center;justify-content:center;text-align:center;padding:36px 22px;border-radius:26px;border:1px solid color-mix(in srgb,var(--accent,#1a548a) 25%,var(--line,#dbe2e8));background:var(--panel,#fff);color:var(--txt,#16334e);box-shadow:0 14px 40px rgb(18 61 107 / 8%);cursor:pointer}
+.ww-flash-root .ww-flash-card{touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;transition:transform .18s ease,opacity .18s ease;will-change:transform}
+.ww-flash-root .ww-flash-card.ww-flash-dragging{transition:none;cursor:grabbing}
+.ww-flash-swipe-hint{text-align:center;color:var(--muted,#647587);font-size:12px;line-height:1.5;margin:10px 0 0}
 .ww-flash-card:focus-visible,.ww-flash-root button:focus-visible,.ww-flash-root input:focus-visible,.ww-flash-root select:focus-visible{outline:3px solid #268ab5;outline-offset:3px}
 .ww-flash-face{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;width:100%}
 .ww-flash-face-caption{font-size:10px;font-weight:850;letter-spacing:.13em;color:var(--accent,#1a548a)}
@@ -49,4 +52,4 @@ body.ww-flash-open{overflow:hidden}
 .ww-flashcards-launch .ww-menu-arrow{margin-left:auto}
 html[data-mode=dark] .ww-flash-again{background:#512d32;color:#ffd4ce;border-color:#9b5c5e}
 @media(max-width:600px){.ww-flash-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.ww-flash-fields{grid-template-columns:1fr}.ww-flash-header{padding:13px 0}.ww-flash-card{min-height:46vh;padding:28px 14px;border-radius:20px}.ww-flash-word{font-size:clamp(28px,9vw,42px)}.ww-flash-actions{gap:8px}.ww-flash-again,.ww-flash-know{padding:13px 10px}}
-@media(prefers-reduced-motion:reduce){.ww-flash-progress>span{transition:none}}
+@media(prefers-reduced-motion:reduce){.ww-flash-progress>span,.ww-flash-root .ww-flash-card{transition:none}}
