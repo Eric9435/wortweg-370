@@ -110,6 +110,8 @@ jobs:
         run: node test-noun-expansion.cjs
       - name: Validate A1-C2 noun balance, original article conflicts and data integrity
         run: node test-noun-all-levels.cjs
+      - name: Verify complete A1 reader covers all Word Bank and noun entries
+        run: node test-a1-complete-reader.cjs
       - name: Verify flashcard ratings appear in Seen Words
         run: node test-flashcard-seen.cjs
       - name: Verify dynamic lessons, offline cache, and secure account separation
