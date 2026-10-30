@@ -7,7 +7,7 @@ const ctx={window:{}};
 vm.createContext(ctx);vm.runInContext(expansionSource,ctx);
 const pack=ctx.window.WortWegNounExpansion;
 const nouns=pack.entries;
-assert.ok(nouns.length>=1000,'Expanded pack has at least 1,000 curated entries');
+assert.ok(nouns.length>=2300,'The C1 academic noun expansion adds more than 1,200 curated entries');
 const byArticle={der:0,die:0,das:0};
 const keys=new Set(),wordArticles=new Map();
 for(const w of nouns){
@@ -16,6 +16,8 @@ for(const w of nouns){
  assert.ok(!m[2].includes(' '),'Expansion is standalone noun headwords, not adjective phrases: '+w.de);
  assert.ok(/^(A1|A2|B1|B2|C1|C2)$/.test(w.level),'Valid CEFR practice label');
  assert.ok(w.en,'Every noun has an English meaning');
+ assert.ok(!/[.!?]$/.test(w.de),'Headwords are not sentences');
+ assert.ok(w.level,'Every word has a level');
  assert.equal(w.type,'noun');
  assert.equal(w.source,'noun-expansion');
  assert.ok(w.topic,'Every noun belongs to a topic');
@@ -41,7 +43,7 @@ assert.equal(original.bank.length,10876,'Original 10,876-entry bank not modified
 const toLemma=text=>String(text||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('de');
 const baseArticleForms=new Set([...original.bank,...original.curated].map(w=>toLemma(w.de)).filter(x=>/^(der|die|das)\s+/u.test(x)));
 const trulyNew=nouns.filter(w=>!baseArticleForms.has(toLemma(w.de)));
-assert.ok(trulyNew.length>=250,'Meaningful number of new standalone nouns after deduplicating against Word Bank');
+assert.ok(trulyNew.length>=900,'Significant number of new standalone nouns after deduplicating against the original bank');
 console.log('NOUN_EXPANSION_RESULT='+JSON.stringify({
  curated:nouns.length,newAfterOriginalDedup:trulyNew.length,
  existingAlreadyCovered:nouns.length-trulyNew.length,articleDistribution:byArticle,
@@ -95,6 +97,6 @@ for(const file of ['noun-expansion.js']){
  assert.ok(fs.readFileSync('ios-polish.js','utf8').includes(file),'Web loader includes '+file);
 }
 assert.match(fs.readFileSync('ios-polish.js','utf8'),/nouns\.onload=load/,'Noun pack loads before quiz and flashcards');
-assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v74/);
+assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v75/);
 dom.window.close();
 console.log('PASS: verified article-only noun expansion, bank deduplication, all-words quiz, flashcards, mobile/offline, and original data safety.');
