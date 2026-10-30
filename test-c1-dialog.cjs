@@ -25,7 +25,7 @@ for(const s of scenes){
 const dom=new JSDOM(html,{url:'https://localhost/dialog.html?level=C1',runScripts:'outside-only'});
 const w=dom.window;w.WortWegNounExpansion={entries:allNouns};
 w.fetch=async()=>({ok:true,text:async()=>index});
-for(const p of ['dialog-situations.js','dialog-situations-a2.js','dialog-situations-b1.js','dialog-situations-b2.js','dialog-situations-c1.js'])w.eval(read(p));
+for(const p of ['dialog-situations.js','dialog-situations-a2.js','dialog-situations-b1.js','dialog-situations-b2.js','dialog-situations-c1.js','dialog-situations-c2.js'])w.eval(read(p));
 w.eval(engine);
 const $=id=>w.document.getElementById(id);
 async function test(){
@@ -37,7 +37,7 @@ async function test(){
  assert.equal(st.level,'C1','C1 deep link works');
  assert.equal(st.wordCount,total);assert.equal(st.wordDialogCount,total);assert.ok(total>=4915);
  assert.equal(st.situationCount,48);
- assert.equal(w.document.querySelectorAll('.dialog-levels button').length,5);
+ assert.equal(w.document.querySelectorAll('.dialog-levels button').length,6);
  assert.equal($('dialogTurns').querySelectorAll('.turn-de').length,8);
  assert.equal($('dialogTurns').querySelectorAll('.turn-en').length,8);
  assert.equal($('dialogB2Challenge').hidden,false);
@@ -67,7 +67,7 @@ async function test(){
  w.WortWegDialog.setLevel('C1');assert.equal(w.WortWegDialog.getState().completed,1);
  const sw=read('sw.js'),native=read('mobile/scripts/prepare.mjs');
  assert.ok(sw.includes("'./dialog-situations-c1.js'"));assert.ok(sw.includes("'dialog-situations-c1.js'"));
- assert.ok(native.includes("'dialog-situations-c1.js'"));assert.ok(sw.includes("wortweg370-v89"));
+ assert.ok(native.includes("'dialog-situations-c1.js'"));assert.ok(sw.includes("wortweg370-v90"));
  assert.ok(!html.includes('id="data"'));
  dom.window.close();
  console.log('C1_DIALOG='+JSON.stringify({scenes:48,turns:384,bank:bank.length,curated:curated.length,nouns:nouns.length,total}));
