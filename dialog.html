@@ -3,8 +3,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0c223a">
-<meta name="description" content="WortWeg A1, A2, B1, B2 and C1 Dialog: professional bilingual speaking practice from the original German Word Bank.">
-<title>A1–C1 Dialog · WortWeg 370</title>
+<meta name="description" content="WortWeg A1, A2, B1, B2, C1 and C2 Dialog: professional bilingual speaking practice from the original German Word Bank.">
+<title>A1–C2 Dialog · WortWeg 370</title>
 <link rel="stylesheet" href="./dialog.css">
 </head><body>
 <div class="dialog-app" id="dialogApp">
@@ -21,8 +21,9 @@
     <button type="button" data-level="B1" aria-pressed="false"><span>B1</span><small>Independent speaking</small></button>
     <button type="button" data-level="B2" aria-pressed="false"><span>B2</span><small>Advanced discussion</small></button>
     <button type="button" data-level="C1" aria-pressed="false"><span>C1</span><small>Professional discourse</small></button>
+    <button type="button" data-level="C2" aria-pressed="false"><span>C2</span><small>Mastery & nuance</small></button>
   </nav>
-  <section class="dialog-intro" aria-label="Your WortWeg A1, A2, B1, B2 and C1 sources">
+  <section class="dialog-intro" aria-label="Your WortWeg A1, A2, B1, B2, C1 and C2 sources">
     <div><span class="intro-label">YOUR <span id="dialogSourceLevel">A1</span> WORD SOURCES</span><strong id="dialogWordCount">Loading…</strong><small>Original Word Bank + curated entries + noun expansion · exact source records</small></div>
     <div class="intro-stat"><strong id="dialogSituationCount">—</strong><span>real-life situations</span></div>
     <div class="intro-stat"><strong id="dialogCoverage">—</strong><span>word dialogues</span></div>
@@ -32,7 +33,7 @@
     <button type="button" id="dialogWordsTab" data-mode="words" aria-pressed="false">All A1 Words</button>
   </nav>
   <section class="dialog-toolbar" aria-label="Filter dialogues">
-    <label class="search-wrap"><span class="visually-hidden">Search dialogues and A1–C1 vocabulary</span><span aria-hidden="true">⌕</span><input id="dialogSearch" type="search" autocomplete="off" placeholder="Search German, English, or situation"></label>
+    <label class="search-wrap"><span class="visually-hidden">Search dialogues and A1–C2 vocabulary</span><span aria-hidden="true">⌕</span><input id="dialogSearch" type="search" autocomplete="off" placeholder="Search German, English, or situation"></label>
     <label class="toggle"><input id="dialogIncomplete" type="checkbox"><span>Not completed</span></label>
   </section>
   <div class="dialog-layout">
@@ -69,7 +70,7 @@
       </div>
     </section>
   </div>
-  <p class="privacy-hint">Dialog progress is saved separately on this device. It does not change your vocabulary quiz scores. A1, A2, B1, B2 and C1 labels come from WortWeg's own learning database, not an official Goethe vocabulary inventory.</p>
+  <p class="privacy-hint">Dialog progress is saved separately on this device. It does not change your vocabulary quiz scores. A1, A2, B1, B2, C1 and C2 labels come from WortWeg's own learning database, not an official Goethe vocabulary inventory.</p>
 </main></div>
 <script src="./noun-expansion.js"></script>
 <script defer src="./dialog-situations.js"></script>
@@ -77,5 +78,6 @@
 <script defer src="./dialog-situations-b1.js"></script>
 <script defer src="./dialog-situations-b2.js"></script>
 <script defer src="./dialog-situations-c1.js"></script>
+<script defer src="./dialog-situations-c2.js"></script>
 <script defer src="./dialog.js"></script>
 </body></html>

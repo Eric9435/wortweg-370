@@ -1,4 +1,4 @@
-/* WortWeg 370 — independent A1/A2/B1/B2/C1 Dialog Studio.
+/* WortWeg 370 — independent A1–C2 Dialog Studio.
    Original WortWeg word-bank levels are the only source of study headwords.
    Keep existing A1 completion IDs/storage unchanged; isolate all higher-level completions. */
 (()=>{'use strict';
@@ -21,7 +21,15 @@ const c1Challenges=[
  ['Entwickeln Sie eine präzise Synthese, die den Einwänden gerecht wird, ohne Widersprüche zu verwischen.','Develop a precise synthesis that addresses the objections without obscuring contradictions.'],
  ['Formulieren Sie ein abgewogenes Fazit in formellem Deutsch und benennen Sie offene Forschungs- oder Handlungsfragen.','Deliver a balanced conclusion in formal German and identify open research or policy questions.']
 ];
-const challengesFor=()=>state.level==='C1'?c1Challenges:b2Challenges;
+const c2Challenges=[
+ ['Rekonstruieren Sie die Argumentationsstruktur und machen Sie die stillschweigenden Prämissen explizit.','Reconstruct the reasoning and make the implicit premises explicit.'],
+ ['Unterscheiden Sie sorgfältig zwischen empirischen Befunden, normativen Wertungen und rhetorischer Rahmung.','Distinguish carefully between empirical findings, normative judgements and rhetorical framing.'],
+ ['Entwickeln Sie die stärkstmögliche Gegenposition, ohne sie zu verzerren oder zu trivialisieren.','Develop the strongest possible opposing position without distorting or trivialising it.'],
+ ['Prüfen Sie, unter welchen Voraussetzungen die jeweiligen Schlussfolgerungen ihre Gültigkeit verlieren.','Examine under which conditions each conclusion would cease to be valid.'],
+ ['Führen Sie beide Positionen zu einer differenzierten Synthese zusammen und benennen Sie verbleibende Spannungen.','Bring both positions together in a nuanced synthesis and identify tensions that remain.'],
+ ['Formulieren Sie eine prägnante, stilistisch angemessene Schlussstellungnahme mit einer selbstkritischen Einschränkung.','Deliver a concise, stylistically appropriate closing position with a self-critical qualification.']
+];
+const challengesFor=()=>state.level==='C2'?c2Challenges:state.level==='C1'?c1Challenges:b2Challenges;
 const norm=v=>String(v||'').trim().toLocaleLowerCase('de');
 const escaped=v=>[...String(v)].map(c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('');
 const wordForm=de=>String(de||'').replace(/^(der|die|das|ein|eine)\s+/i,'').trim();
@@ -79,11 +87,11 @@ function renderList(){const root=$('dialogList');root.replaceChildren();$('dialo
 function renderChallenge(){
  const panel=$('dialogB2Challenge'),scene=state.selected;
  if(!panel)return;
- panel.hidden=!(['B2','C1'].includes(state.level)&&state.mode==='situations'&&scene);
+ panel.hidden=!(['B2','C1','C2'].includes(state.level)&&state.mode==='situations'&&scene);
  if(panel.hidden)return;
  const prompts=challengesFor(),prompt=prompts[state.challengeIndex%prompts.length];
- $('dialogChallengeLevel').textContent=state.level+' · '+(state.level==='C1'?'CRITICAL DISCOURSE':'ARGUMENTATION PRACTICE');
- $('dialogChallengeTitle').textContent=state.level==='C1'?'Analyse · Qualify · Synthesize':'Continue the discussion';
+ $('dialogChallengeLevel').textContent=state.level+' · '+(state.level==='C2'?'EXPERT DISCOURSE':state.level==='C1'?'CRITICAL DISCOURSE':'ARGUMENTATION PRACTICE');
+ $('dialogChallengeTitle').textContent=state.level==='C2'?'Interpret · Refute · Reconcile':state.level==='C1'?'Analyse · Qualify · Synthesize':'Continue the discussion';
  $('dialogChallengeNum').textContent=String(state.challengeIndex%prompts.length+1)+' / '+prompts.length;
  $('dialogChallengeDe').textContent=prompt[0];
  $('dialogChallengeEn').textContent=$('dialogShowEnglish').checked?prompt[1]:'';
@@ -143,18 +151,18 @@ async function init(){const empty=$('dialogEmpty');try{
  const original=JSON.parse(node.textContent);
  const originalBank=Array.isArray(original.bank)?original.bank:[];
  const expanded=Array.isArray(window.WortWegNounExpansion?.entries)?window.WortWegNounExpansion.entries:[];
- for(const level of ['A1','A2','B1','B2','C1']){
+ for(const level of ['A1','A2','B1','B2','C1','C2']){
   const bank=originalBank.filter(w=>w.level===level);
   const curated=level==='A1'?[]:(original.curated||[]).filter(w=>w.level===level);
   const nouns=expanded.filter(w=>w.level===level);
   state.words=[...bank.map((w,i)=>({...w,key:'b:'+String(w.id??i),source:'Word Bank'})),...curated.map((w,i)=>({...w,key:'c:'+String(w.id??i),source:'Curated '+level+' List'})),...nouns.map((w,i)=>({...w,key:'n:'+String(w.id??i),source:'Noun Expansion'}))];
-  const source={A1:window.WortWegA1Situations,A2:window.WortWegA2Situations,B1:window.WortWegB1Situations,B2:window.WortWegB2Situations,C1:window.WortWegC1Situations}[level];
+  const source={A1:window.WortWegA1Situations,A2:window.WortWegA2Situations,B1:window.WortWegB1Situations,B2:window.WortWegB2Situations,C1:window.WortWegC1Situations,C2:window.WortWegC2Situations}[level];
   if(!Array.isArray(source)||!source.length)throw Error(level+' authored dialogues could not load');
   const scenes=source.map(row=>{const scene={id:'scene:'+row[0],title:row[1],desc:row[2],speakers:row[3],turns:row[4]};scene.words=findInScene(scene);return scene;});
   state.collections[level]={words:state.words,scenes,entries:state.words.map(wordScene),bankCount:bank.length,curatedCount:curated.length,nounCount:nouns.length};
  }
  const requestLevel=new URL(window.location.href).searchParams.get('level');
- setLevel(['A1','A2','B1','B2','C1'].includes(requestLevel)?requestLevel:'A1');
+ setLevel(['A1','A2','B1','B2','C1','C2'].includes(requestLevel)?requestLevel:'A1');
  }catch(err){empty.textContent='Could not load your WortWeg Word Bank: '+err.message+'. Please open WortWeg Home online once, then reopen Dialog.';}}
 document.querySelectorAll('.dialog-levels button').forEach(btn=>btn.addEventListener('click',()=>{
  setLevel(btn.dataset.level);
