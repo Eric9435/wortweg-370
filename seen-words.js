@@ -14,6 +14,23 @@
  // We label totals as "study entries", rather than misleadingly claiming a
  // fully de-duplicated vocabulary dictionary across different lesson sources.
  const curated=data.curated.map(w=>({key:'c:'+w.de.toLocaleLowerCase(),word:w,group:'Topic 1',source:'Topic 1'}));
+ // The original Word Bank remains immutable. Count only new article + headword
+ // combinations so the additional noun catalogue does not inflate Home totals.
+ const articleHeadword=de=>{
+  const match=/^(der|die|das)\s+(.+)$/iu.exec(String(de||'').trim().replace(/\s+/g,' '));
+  return match?match[1].toLocaleLowerCase('de')+' '+match[2].toLocaleLowerCase('de'):null;
+ };
+ function expansionEntries(live){
+  const seen=new Set([...bank,...curated,...live].map(e=>articleHeadword(e.word.de)).filter(Boolean));
+  const added=[];
+  for(const word of window.WortWegNounExpansion?.entries||[]){
+   const headword=articleHeadword(word.de);
+   if(!headword||seen.has(headword))continue;
+   seen.add(headword);
+   added.push({key:'n:'+word.id,word,group:levels.includes(word.level)?word.level:'—',source:'Expanded nouns'});
+  }
+  return added;
+ }
  const n=v=>Number.isFinite(v)&&v>=0?Math.floor(v):0;
  const percent=(seen,total)=>total?Math.round(seen/total*100):0;
  const pretty=v=>Number(v).toLocaleString('en-US');
@@ -37,6 +54,15 @@
   try{
    const value=JSON.parse(localStorage.getItem('wortweg370-flashcards-v1-'+profile)||'{}');
    return value&&typeof value==='object'&&!Array.isArray(value)?value:{};
+  }catch{return {};}
+ }
+ function articleHistory(){
+  const uid=window.WortWegAccountSnapshot?.uid;
+  const profile=uid&&/^[\w-]{1,128}$/.test(uid)?uid:'guest';
+  try{
+   const value=JSON.parse(localStorage.getItem('wortweg370-articles-quiz-v1-'+profile)||'{}');
+   const records=value?.records;
+   return records&&typeof records==='object'&&!Array.isArray(records)?records:{};
   }catch{return {};}
  }
  function timestamp(value){
@@ -72,29 +98,39 @@
   const item=p.items[entry.key]||{},wrong=n(item.wrong);
   return {wrong,correctLast:wrong===0?(p.items[entry.key]?true:null):n(item.streak)>0,last:item.last||null};
  }
- function entryStatus(entry,p,flash){
+ function entryStatus(entry,p,flash,articles){
   const quiz=quizStatus(entry,p);
-  const r=flash[entry.key];
-  // Only rated cards are seen: opening, flipping and skipping do not count.
-  const card=r&&typeof r==='object'&&Number.isFinite(r.reps)&&r.reps>0?r:null;
-  if(!quiz&&!card)return null;
+  const raw=flash[entry.key],articleRaw=articles[entry.key];
+  const card=raw&&typeof raw==='object'&&Number.isFinite(raw.reps)&&raw.reps>0?raw:null;
+  const article=articleRaw&&typeof articleRaw==='object'&&n(articleRaw.attempts)>0?articleRaw:null;
+  if(!quiz&&!card&&!article)return null;
   const item=p.items[entry.key];
   const quizKnown=quiz?(item
    ?(Number(item.wrong)>0?Number(item.streak)>0:item.known!==false)
    :quiz.correctLast===true):false;
-  if(!card)return {...quiz,known:quizKnown,practice:'Quiz',flashcard:false};
-  const cardKnown=typeof card.lastKnown==='boolean'?card.lastKnown:n(card.intervalDays)>0;
-  const cardTime=timestamp(card.lastReviewed),quizTime=timestamp(quiz?.last);
-  // The most recent rated activity determines current mastery. Keep the entire
-  // mistake history, even if a later quiz or flashcard review is correct.
-  const newestCard=!quiz||(cardTime>0&&(!quizTime||cardTime>=quizTime));
-  const known=newestCard?cardKnown:quizKnown;
-  return {wrong:n(quiz?.wrong)+n(card.missed),known,correctLast:known,
-   answered:quiz?.answered,last:newestCard?card.lastReviewed:quiz?.last,
-   flashcard:true,practice:quiz?'Quiz + Flashcards':'Flashcards'};
+  let latest=quiz?{known:quizKnown,time:timestamp(quiz.last),last:quiz.last}:null;
+  if(card){
+   const known=typeof card.lastKnown==='boolean'?card.lastKnown:n(card.intervalDays)>0;
+   const time=timestamp(card.lastReviewed);
+   if(!latest||(time>0&&(!latest.time||time>=latest.time)))
+    latest={known,time,last:card.lastReviewed};
+  }
+  if(article){
+   const time=timestamp(article.lastAnswered);
+   if(!latest||(time>0&&(!latest.time||time>=latest.time)))
+    latest={known:article.lastCorrect===true,time,last:article.lastAnswered};
+  }
+  const known=latest.known;
+  const practice=[quiz?'Quiz':null,card?'Flashcards':null,article?'Der/Die/Das Quiz':null]
+   .filter(Boolean).join(' + ');
+  return {wrong:n(quiz?.wrong)+n(card?.missed)+n(article?.missed),
+   known,correctLast:known,answered:quiz?.answered,last:latest.last,
+   flashcard:!!card,articleQuiz:!!article,practice};
  }
  function snapshot(){
-  const p=current(),flash=flashHistory(),records=[...bank,...curated,...liveEntries()];
+  const p=current(),flash=flashHistory(),articles=articleHistory();
+  const live=liveEntries(),extra=expansionEntries(live);
+  const records=[...bank,...curated,...live,...extra];
   const rows=[];
   const totals=new Map();
   for(const group of [...levels,'Topic 1','New lessons']){
@@ -102,7 +138,7 @@
   }
   let seen=0;
   for(const e of records){
-   const status=entryStatus(e,p,flash),bucket=totals.get(e.group);
+   const status=entryStatus(e,p,flash,articles),bucket=totals.get(e.group);
    if(bucket)bucket.total++;
    if(!status)continue;
    seen++;
@@ -123,7 +159,7 @@
   const needsReview=rows.filter(row=>row.status.wrong>0&&row.status.known!==true).length;
   const flashcardSeen=rows.filter(row=>row.status.flashcard).length;
   return {rows,totals,total,seen,learned,needsReview,remaining:Math.max(0,total-seen),pct:percent(seen,total),
-   bankTotal:bank.length,curatedTotal:curated.length,liveTotal:records.length-bank.length-curated.length,flashcardSeen};
+   bankTotal:bank.length,curatedTotal:curated.length,liveTotal:live.length,expansionTotal:extra.length,flashcardSeen};
  }
  function progressBar(seen,total,label){
   const outer=document.createElement('div');outer.className='ww-seen-meter';
@@ -151,7 +187,7 @@
  page.id='seen';page.className='section ww-seen-page';
  page.innerHTML='<button type="button" class="ww-menu-back" id="ww-seen-back">‹  Main menu</button>'+
   '<div class="ww-seen-heading"><span class="ww-menu-eyebrow">YOUR VOCABULARY JOURNEY</span><h2>My seen words</h2>'+
-  '<p>Every entry you have answered in quizzes or rated in flashcards, including mistakes.</p></div>'+
+  '<p>Original Word Bank, additional nouns and lessons reviewed in quizzes or flashcards.</p></div>'+
   '<div id="ww-seen-page-overview" class="ww-seen-page-overview"></div>'+
   '<div id="ww-seen-levels" class="ww-seen-levels"></div>'+
   '<div class="ww-seen-history-header"><h3>Your word history</h3><p>Words you missed are marked red, even when you later answer them correctly.</p></div>'+
@@ -167,7 +203,7 @@
   '<tbody id="ww-seen-rows"></tbody></table></div>'+
   '<p id="ww-seen-empty" class="ww-seen-empty" hidden>No words here yet. Start a quiz or rate a flashcard.</p>'+
   '<button type="button" id="ww-seen-more" class="btn secondary ww-seen-more" hidden>Show 50 more words</button>'+
-  '<p class="ww-seen-footnote">Seen means answered in a quiz or rated in a flashcard, not necessarily mastered. Repeated reviews count once per study entry. Word Bank, Topic 1 and downloaded New Lessons are included. Flashcard and New Lessons histories currently remain on this device.</p>';
+  '<p class="ww-seen-footnote">Seen means answered in a quiz (including Der/Die/Das) or rated in flashcards, not necessarily mastered. Reviews count once per study entry. Original Word Bank, nonduplicated added nouns, Topic 1 and downloaded lessons are included. Supplemental histories currently remain on this device.</p>';
  root.append(page);
  const $local=id=>page.querySelector('#'+id);
  $local('ww-seen-back').addEventListener('click',()=>window.WortWeg.navigate('dashboard'));
@@ -175,7 +211,7 @@
  // the new menu option automatically uses the original navigation logic.
  const filters=['ww-seen-search','ww-seen-status','ww-seen-level','ww-seen-practice'];
  let cached=null,shown=50;
- function statsHeader(node,{total,seen,remaining,pct,bankTotal,curatedTotal,liveTotal}){
+ function statsHeader(node,{total,seen,remaining,pct,bankTotal,curatedTotal,liveTotal,expansionTotal}){
   node.replaceChildren();
   const row=text(node,'div','','ww-seen-overview-top');
   const copy=text(row,'div','','ww-seen-overview-copy');
@@ -184,7 +220,7 @@
   text(copy,'span',pretty(seen)+' of '+pretty(total)+' entries encountered · '+pct+'% explored','ww-seen-overview-sub');
   text(row,'strong',pct+'%','ww-seen-overview-percent');
   node.append(progressBar(seen,total,'Overall vocabulary exploration'));
-  text(node,'div',pretty(bankTotal)+' Word Bank + '+pretty(curatedTotal)+' Topic 1'+(liveTotal?' + '+pretty(liveTotal)+' New Lessons':''),'ww-seen-small-note');
+  text(node,'div',pretty(bankTotal)+' Word Bank + '+pretty(expansionTotal)+' added nouns + '+pretty(curatedTotal)+' Topic 1'+(liveTotal?' + '+pretty(liveTotal)+' New Lessons':''),'ww-seen-small-note');
  }
  function renderLevels(node,stat,compact=false){
   node.replaceChildren();
@@ -195,7 +231,7 @@
    if(name==='New lessons'&&!total)continue;
    const item=text(node,'div','','ww-seen-level-item');
    const lead=text(item,'div','','ww-seen-level-head');
-   text(lead,'strong',name==='Topic 1'?'Topic 1 · curated':name==='New lessons'?'New lessons':name+' Word Bank');
+   text(lead,'strong',name==='Topic 1'?'Topic 1 · curated':name==='New lessons'?'New lessons':name+' vocabulary');
    text(lead,'span',pretty(seen)+' / '+pretty(total)+' · '+pretty(Math.max(total-seen,0))+' left · '+percent(seen,total)+'%');
    item.append(progressBar(seen,total,name+' words seen'));
   }
@@ -204,9 +240,8 @@
  const mini=document.createElement('div');mini.id='ww-seen-home-levels';
  home.append(mini);
 
- // The outer donut describes the composition of the existing 10,876-entry
- // CEFR Word Bank (not six equal slices or sample numbers from a mockup).
- // The inner donut describes progress through *all* included study entries.
+ // The outer CEFR ring shows Word Bank entries plus unique supplemental nouns.
+ // The middle ring shows mastery across all available study entries.
  const levelColors=['#1b548a','#5a94cf','#1b9b96','#7ad9cb','#b5e7e9','#d8e1ed'];
  const SVG_NS='http://www.w3.org/2000/svg';
  const svgEl=(tag,attrs={})=>{
@@ -232,7 +267,7 @@
   const bankCount=levels.reduce((sum,level)=>sum+(stat.totals.get(level)?.total||0),0);
   const shell=text(document.createElement('div'),'div','','ww-donut-shell');
   const svg=svgEl('svg',{viewBox:'0 0 280 280',class:'ww-donut-svg',role:'img',
-   'aria-label':'Outer ring: CEFR Word Bank distribution A1 to C2. Middle ring: currently learned vocabulary. Innermost ring: grammar mastery.'});
+   'aria-label':'Outer ring: CEFR distribution of Word Bank and added nouns A1 to C2. Middle ring: learned vocabulary including article quiz. Innermost ring: grammar mastery.'});
   const title=svgEl('title');title.textContent='Vocabulary levels and overall learning progress';svg.append(title);
   let pos=0;
   for(const [i,level] of levels.entries()){
@@ -242,7 +277,7 @@
    // A full circle must use two arcs; the current catalogue always has six levels.
    const arc=svgEl('path',{d:arcPath(140,140,105,start+.2,end-.2),
     fill:'none',stroke:levelColors[i],'stroke-width':42});
-   const tooltip=svgEl('title');tooltip.textContent=level+': '+pretty(total)+' entries · '+precisePercent(total,bankCount)+' of Word Bank';
+   const tooltip=svgEl('title');tooltip.textContent=level+': '+pretty(total)+' entries · '+precisePercent(total,bankCount)+' of CEFR catalogue';
    arc.append(tooltip);svg.append(arc);
    if(delta>15){
     const mid=circlePoint(140,140,105,(start+end)/2);
@@ -283,7 +318,7 @@
  }
  function makeLegend(stat){
   const wrap=text(document.createElement('div'),'div','','ww-donut-legend');
-  text(wrap,'h3','WORD BANK BY CEFR LEVEL');
+  text(wrap,'h3','ALL CEFR VOCABULARY');
   const total=levels.reduce((sum,level)=>sum+(stat.totals.get(level)?.total||0),0);
   for(const [i,level] of levels.entries()){
    const values=stat.totals.get(level)||{total:0,seen:0};
@@ -297,8 +332,9 @@
    const help=text(row,'small',pretty(values.seen)+' explored · '+pretty(values.total-values.seen)+' left','ww-donut-legend-detail');
   }
   const bottom=text(wrap,'div','','ww-donut-legend-total');
-  text(bottom,'strong','Word Bank total');
+  text(bottom,'strong','CEFR vocabulary total');
   text(bottom,'strong',pretty(total));
+   text(wrap,'p',pretty(stat.bankTotal)+' Word Bank + '+pretty(stat.expansionTotal)+' added nouns (duplicates excluded)','ww-seen-small-note');
   const grammar=window.WortWegGrammar?.getSummary?.()||{mastered:0,total:200};
   const grammarDone=Math.max(0,Math.min(Number(grammar.total)||200,Number(grammar.mastered)||0));
   const grammarLine=text(wrap,'div','','ww-donut-grammar-summary');
@@ -358,10 +394,10 @@
   const a1Learned=stat.rows.filter(r=>r.group==='A1'&&r.status.known).length;
   const preview=document.createElement('div');preview.className='ww-seen-a1-preview';
   const line=text(preview,'div','','ww-seen-level-head');
-  text(line,'strong','A1 Word Bank');
+  text(line,'strong','A1 vocabulary');
   text(line,'span',pretty(a1Learned)+' / '+pretty(a1.total)+' learned · '+pretty(Math.max(a1.total-a1Learned,0))+' left');
-  preview.append(progressBar(a1Learned,a1.total,'A1 Word Bank learned'));
-  text(preview,'small',percent(a1Learned,a1.total)+'% of A1 Word Bank learned','ww-home-a1-caption');
+  preview.append(progressBar(a1Learned,a1.total,'A1 vocabulary learned'));
+  text(preview,'small',percent(a1Learned,a1.total)+'% of A1 vocabulary learned','ww-home-a1-caption');
   const achievements=text(home,'div','','ww-home-achievements');
   achievements.append(preview,makeMilestone(stat));
   const cta=document.createElement('button');cta.type='button';cta.className='ww-seen-home-cta';
@@ -403,7 +439,7 @@
    if(word.pron)text(wordCell,'small',word.pron,'ww-seen-pron');
    text(row,'td',word.en||'—');
    text(row,'td',word.my||word.mm||'—');
-   text(row,'td',entry.source==='Topic 1'?'Topic 1':entry.source==='New lessons'?'New · '+entry.level:(entry.group||'—'),'ww-seen-level');
+   text(row,'td',entry.source==='Topic 1'?'Topic 1':entry.source==='New lessons'?'New · '+entry.level:entry.source==='Expanded nouns'?'Noun · '+entry.group:(entry.group||'—'),'ww-seen-level');
    const statusCell=text(row,'td','','ww-seen-result');
    const badge=text(statusCell,'strong',status.known?'Learned':hasMistakes?'Review · missed '+pretty(status.wrong)+'×':status.correctLast===null?'Seen':'Not learned','ww-seen-status');
    if(hasMistakes)text(statusCell,'small',status.correctLast===true?'Answered correctly later':status.correctLast===false?'Review this word':'Mistake in history');
@@ -438,6 +474,8 @@
  },true);
  window.addEventListener('wortweg:changed',render);
  window.addEventListener('wortweg:flashcards-changed',render);
+ window.addEventListener('wortweg:articles-changed',render);
+ window.addEventListener('wortweg:noun-expansion-ready',render);
  window.addEventListener('wortweg:account',()=>setTimeout(render,0));
  window.addEventListener('wortweg:live-pack',render);
  window.addEventListener('wortweg:live-progress-changed',render);
