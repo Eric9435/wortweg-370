@@ -6,14 +6,17 @@ const bank=data.bank.filter(w=>w.level==='A1');
 const nounSource=fs.readFileSync('noun-expansion.js','utf8');
 const sandbox={window:{},Event:class{constructor(type){this.type=type}}};
 vm.createContext(sandbox);vm.runInContext(nounSource,sandbox);
-const nouns=sandbox.window.WortWegNounExpansion.entries.filter(w=>w.level==='A1');
-const situations=fs.readFileSync('dialog-situations.js','utf8'),source=fs.readFileSync('dialog.js','utf8');
-new vm.Script(situations);new vm.Script(source);
+const allNouns=sandbox.window.WortWegNounExpansion.entries;
+const nouns=allNouns.filter(w=>w.level==='A1'),nounsA2=allNouns.filter(w=>w.level==='A2');
+const bankA2=data.bank.filter(w=>w.level==='A2');
+const situations=fs.readFileSync('dialog-situations.js','utf8'),situationsA2=fs.readFileSync('dialog-situations-a2.js','utf8'),source=fs.readFileSync('dialog.js','utf8');
+new vm.Script(situations);new vm.Script(situationsA2);new vm.Script(source);
 assert.equal(bank.length,642);assert.equal(nouns.length,232);
+assert.equal(bankA2.length,932);assert.equal(nounsA2.length,243);
 const dom=new JSDOM(html,{url:'https://localhost/dialog.html',runScripts:'outside-only'});
-const w=dom.window;w.WortWegNounExpansion={entries:nouns};
+const w=dom.window;w.WortWegNounExpansion={entries:allNouns};
 w.fetch=async url=>{assert.equal(url,'./index.html');return {ok:true,text:async()=>index}};
-w.eval(situations);w.eval(source);
+w.eval(situations);w.eval(situationsA2);w.eval(source);
 const $=id=>w.document.getElementById(id);
 const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCount===874)return;await new Promise(resolve=>setTimeout(resolve,50));}throw Error('Dialog A1 source initialization timed out');};
 (async()=>{
@@ -49,6 +52,50 @@ const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCo
   assert.ok(fs.readFileSync('mobile/scripts/prepare.mjs','utf8').includes(path),'Native bundle includes '+path);
  }
  assert.ok(fs.readFileSync('home-refresh.js','utf8').includes("title:'Dialog'"),'Separate Dialog Home tile');
+ assert.ok(w.document.querySelectorAll('.dialog-levels button').length===2,'A1 and A2 are separate level windows');
+ assert.equal(w.WortWegDialog.getState().level,'A1','A1 remains the first/default level');
+ w.WortWegDialog.setLevel('A2');
+ const a2=w.WortWegDialog.getState();
+ assert.equal(a2.level,'A2');assert.equal(a2.wordCount,1175,'All A2 Word Bank and expansion records load');
+ assert.equal(a2.wordDialogCount,1175,'Each exact A2 headword has its own practice dialogue');
+ assert.equal(a2.situationCount,59,'All authored A2 real-life scenes load');
+ assert.equal($('dialogWordCount').textContent,'932 + 243 source records');
+ assert.match($('dialogTitle').textContent,/Finding a new apartment/);
+ assert.equal($('dialogTurns').querySelectorAll('.turn-de').length,6);
+ assert.equal($('dialogTurns').querySelectorAll('.turn-en').length,6,'Every German turn has an English translation');
+ assert.equal($('dialogVocabTitle').textContent,'Words from your A2 list');
+ $('dialogRoleplay').click();assert.ok($('dialogTurns').querySelectorAll('.roleplay-reveal').length>=2,'Roleplay conceals Person B');
+ $('dialogTurns').querySelector('.roleplay-reveal').click();
+ assert.ok($('dialogTurns').querySelectorAll('.roleplay-reveal').length>=1,'Reveal is independent per response');
+ $('dialogRoleplay').click();
+ const priorQuiz=w.localStorage.getItem('wortweg370-progress-v3');
+ $('dialogMark').click();
+ assert.ok(JSON.parse(w.localStorage.getItem('ww-a2-dialog-progress-v1'))['scene:wohnung'],'A2 progress persisted under its own key');
+ assert.equal(w.localStorage.getItem('wortweg370-progress-v3'),priorQuiz,'A2 never changes vocabulary quiz progress');
+ assert.equal(w.WortWegDialog.getState().completed,1,'A2 completion count isolated');
+ w.document.querySelector('.dialog-tabs button[data-mode="words"]').click();
+ assert.equal(w.WortWegDialog.getState().wordDialogCount,1175);
+ assert.ok($('dialogTitle').textContent.length>1);
+ assert.ok($('dialogTurns').textContent.includes($('dialogTitle').textContent),'Exact A2 word is used in the German dialogue');
+ assert.ok(!$('dialogTurns').textContent.includes('Auf Englisch heißt das'),'German lines do not insert English meanings');
+ $('dialogSearch').value='Quittung';$('dialogSearch').dispatchEvent(new w.Event('input'));
+ assert.ok(Number($('dialogListCount').textContent.split(' ')[0])>0,'A2 all-source search works');
+ $('dialogSearch').value='';$('dialogSearch').dispatchEvent(new w.Event('input'));
+ assert.ok($('dialogList').querySelectorAll('button.dialog-item').length<=121,'A2 large bank remains paginated');
+ w.WortWegDialog.setLevel('A1');
+ assert.equal(w.WortWegDialog.getState().wordCount,874,'A1 entries remain intact');
+ assert.equal(w.WortWegDialog.getState().completed,1,'Historical A1 completions survive A2 switch');
+ w.WortWegDialog.setLevel('A2');
+ assert.equal(w.WortWegDialog.getState().completed,1,'A2 completions survive A1 switch');
+ for(const file of ['dialog-situations-a2.js']){
+  assert.ok(fs.readFileSync('sw.js','utf8').includes(file),'A2 dialogues are PWA-cached');
+  assert.ok(fs.readFileSync('mobile/scripts/prepare.mjs','utf8').includes(file),'A2 dialogues are in the offline app');
+ }
+ assert.equal(w.WortWegA2Situations.length,59);
+ for(const scene of w.WortWegA2Situations){
+  assert.ok(scene[4].length>=4,'Real conversation must have at least four turns: '+scene[1]);
+  for(const turn of scene[4])assert.ok(turn[0].length>12&&turn[1].length>10,'Full bilingual conversation: '+scene[1]);
+ }
  assert.ok(!html.includes('id="data"'),'Dialog stays an independent view and reads the existing source');
- dom.window.close();console.log('PASS: standalone A1 Dialog, authored situations, all 874 source-linked word dialogues, bilingual speech panels, separate progress, mobile and offline bundles.');
+ dom.window.close();console.log('PASS: A1/A2 Dialog, 46 A1 and 59 A2 authored scenes, all 874+1175 exact source word dialogues, bilingual roleplay, separate progress, and offline packaging.');
 })().catch(err=>{dom.window.close();console.error(err);process.exitCode=1;});
