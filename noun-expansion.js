@@ -17,5 +17,5 @@
   nouns.push({id:'noun:'+key,de:article+' '+word,en,level,topic,type:'noun',source:'noun-expansion'});
  }
  window.WortWegNounExpansion=Object.freeze({version:1,entries:Object.freeze(nouns)});
- window.dispatchEvent(new Event('wortweg:noun-expansion-ready'));
+ window.dispatchEvent?.(new Event('wortweg:noun-expansion-ready'));
 })();
