@@ -3,7 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs'),vm=require('node:vm');
 const html=fs.readFileSync('index.html','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
-assert.match(sw,/wortweg370-v79/);
+assert.match(sw,/wortweg370-v80/);
 assert.match(html,/function progressCache\(mode,p,record\)/);
 assert.match(html,/function persistQuizSessionBackup\(p,payload\)/);
 assert.match(html,/return Promise\.all\(\[recoverIndexedProgress\(\),recoverQuizSession\(\)\]\)/);
