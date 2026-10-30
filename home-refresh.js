@@ -17,6 +17,7 @@ const actions=[
  {id:'review',icon:'↻',title:'Review',caption:'Words to revisit',run:()=>clickExisting('[data-nav="review"]')},
  {id:'library',icon:'▤',title:'Word Library',caption:'Your word history',run:()=>{if(window.WortWegSeenWords?.open){window.WortWegSeenWords.open();return true;}return clickExisting('[data-nav="seen"]');}},
  {id:'grammar',icon:'Aa',title:'Grammar',caption:'A1–C1 academy',run:()=>{if(window.WortWegGrammar?.open){window.WortWegGrammar.open();return true;}return clickExisting('#wg-grammar-launch');}},
+ {id:'gender-lifetime',icon:'Aa',title:'Gender Lifetime',caption:'der · die · das · 14 chapters (A1–C2)',run:()=>{window.location.href='./gender-lifetime.html';return true;}},
  {id:'special',icon:'Aa+',title:'Special Vocabulary',caption:'Conjunctions, numbers, time & more',run:()=>{if(window.WortWegSpecialVocabulary?.open){window.WortWegSpecialVocabulary.open();return true}return false}},
  {id:'atlas',icon:'▦',title:'Vocabulary Atlas',caption:'Static reference chart · 11,312 entries',run:()=>{window.WortWegVocabularyAtlas?.open?.();return true}}
 ];
