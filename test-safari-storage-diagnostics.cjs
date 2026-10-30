@@ -7,7 +7,7 @@ assert.match(html,/Export progress/);
 assert.match(html,/Retry saving/);
 assert.match(html,/quizCheckpointFailed=false/);
 assert.match(html,/clearWarningIfSafe\(\)/);
-assert.match(sw,/wortweg370-v77/);
+assert.match(sw,/wortweg370-v78/);
 const start=html.indexOf('function quotaError('),end=html.indexOf('function progressDatabase(',start);
 assert.ok(start>0&&end>start);
 const body="let storageLocalError='none';\n"+html.slice(start,end)+"\nthis.tryLocalSave=tryLocalSave;this.errorName=()=>storageLocalError;";
