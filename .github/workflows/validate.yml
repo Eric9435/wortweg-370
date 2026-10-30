@@ -133,12 +133,13 @@ jobs:
           node --check b2-reading-part-09.js
           node --check b2-reading-part-10.js
           node test-b2-complete-reader.cjs
-      - name: Verify standalone A1–B1 Dialog and full vocabulary coverage
+      - name: Verify standalone A1–B2 Dialog and full vocabulary coverage
         run: |
           node --check dialog.js
           node --check dialog-situations.js
           node --check dialog-situations-a2.js
           node --check dialog-situations-b1.js
+          node --check dialog-situations-b2.js
           node test-dialog.cjs
       - name: Verify flashcard ratings appear in Seen Words
         run: node test-flashcard-seen.cjs
