@@ -38,6 +38,22 @@ jobs:
               if(noArticleSamples.length<28)noArticleSamples.push({id:w.id,de,type,en:w.en});
             }
           }
+          const byTypeArticle={},nounWithoutArticle=[];
+          for(const w of bank){
+            const type=String(w.type||'(none)');
+            const m=String(w.de||'').trim().match(regex);
+            if(!byTypeArticle[type])byTypeArticle[type]={total:0,der:0,die:0,das:0,noArticle:0};
+            byTypeArticle[type].total++;
+            if(m)byTypeArticle[type][m[1].toLowerCase()]++;
+            else{
+              byTypeArticle[type].noArticle++;
+              if(/noun/i.test(type)&&nounWithoutArticle.length<35)nounWithoutArticle.push({id:w.id,de:w.de,type});
+            }
+          }
+          console.log('AUDIT_DETAIL='+JSON.stringify({nounTypes:['noun','noun phrase','compound noun'].map(type=>({type,...byTypeArticle[type]})),
+            nounWithoutArticle,academicCollocations:byTypeArticle['academic collocation'],
+            nonNounArticleTypes:Object.entries(byTypeArticle)
+              .filter(([type,v])=>!/noun/i.test(type)&&(v.der+v.die+v.das)>0)}));
           const curatedCount=curated.filter(w=>regex.test(String(w.de||''))).length;
           console.log('AUDIT_RESULT='+JSON.stringify({bank:bank.length,curated:curated.length,curatedArticles:curatedCount,
             count,uniqueArticleLabelled:tagged.size,types,levels,articleSamples,noArticleSamples}));
