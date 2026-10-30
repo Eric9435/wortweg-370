@@ -70,9 +70,9 @@ setTimeout(()=>{
   assert.ok(w.localStorage.getItem('ww-a1-complete-reader-reviewed-v1'),'Local review markers save');
   $('onlyUnseen').checked=true;$('onlyUnseen').dispatchEvent(new w.Event('change'));
   assert.equal(w.document.querySelectorAll('#allContent button.term').length,873,'Reviewed-only filter operates on source IDs');
-  assert.match(fs.readFileSync('home-refresh.js','utf8'),/a1-complete-reader\.html/,'Home shortcut exists');
+  assert.match(fs.readFileSync('home-refresh.js','utf8'),/complete-reading\.html/,'Home opens Complete Reading level selector');
   assert.match(fs.readFileSync('sw.js','utf8'),/a1-complete-reader\.html/,'Offline bundle contains complete reader');
-  assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v81/,'PWA cache refreshes after reader addition');
+  assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v82/,'PWA cache refreshes after reader addition');
   dom.window.close();
   console.log('A1_COMPLETE_READER_RESULT='+JSON.stringify({bank:bank.length,nounExpansion:nounItems.length,entries:bank.length+nounItems.length,chapters:panels.length}));
   console.log('PASS: all A1 words, complete German-English translations, default bilingual columns, mobile layout, visibility toggle and offline assets.');
