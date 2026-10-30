@@ -8,13 +8,13 @@ input{width:100%;padding:13px 15px;border:1px solid #bdd1df;border-radius:11px;f
 .pagination{display:flex;justify-content:center;align-items:center;gap:10px;margin:18px 0}.pagination button{background:#135879;color:#fff;border:0;border-radius:10px;padding:10px 14px;cursor:pointer}.pagination button:disabled{opacity:.35}
 @media(max-width:600px){.entries{grid-template-columns:1fr}}
 </style></head><body><header><a href="./complete-reading.html">‹ Complete Reading · All Levels</a><h1 id="levelTitle">German Vocabulary</h1><p>Level-specific word practice · exact vocabulary from your WortWeg library</p></header>
-<main><section class="notice"><strong>Reading chapters for this level are in preparation.</strong> The existing WortWeg words and English meanings are available here now. A1 and A2 already have full German–English passages and narration. <a href="./complete-reading.html">Choose a completed reader</a>.</section>
+<main><section class="notice"><strong>Reading chapters for this level are in preparation.</strong> The existing WortWeg words and English meanings are available here now. A1, A2 and B1 already have full German–English passages and narration. <a href="./complete-reading.html">Choose a completed reader</a>.</section>
 <div class="meta"><span class="pill" id="bankCount">Loading source bank…</span><span class="pill" id="nounCount">Loading noun expansion…</span></div>
 <label for="search"><strong>Search vocabulary at this level</strong></label><input id="search" type="search" placeholder="Search German or English">
 <section class="results"><h2>WortWeg Vocabulary <small id="shown"></small></h2><div class="entries" id="entries" aria-live="polite"></div><nav class="pagination"><button id="previous" type="button">← Previous</button><span id="page">1</span><button id="next" type="button">Next →</button></nav></section></main>
 <script src="./noun-expansion.js"></script><script>
 (()=>{'use strict';const level=new URLSearchParams(location.search).get('level')||'B1';
-const allowed=['B1','B2','C1','C2'];if(!allowed.includes(level)){location.replace('./complete-reading.html');return;}
+const allowed=['B2','C1','C2'];if(!allowed.includes(level)){location.replace('./complete-reading.html');return;}
 document.title='WortWeg '+level+' · Vocabulary Preview';document.getElementById('levelTitle').textContent=level+' Reading · Vocabulary Preview';
 const $=id=>document.getElementById(id);let all=[],page=0;const pageSize=80;
 function filtered(){const q=$('search').value.trim().toLocaleLowerCase('de');return q?all.filter(w=>(w.de+' '+w.en).toLocaleLowerCase('de').includes(q)):all;}

@@ -116,6 +116,10 @@ jobs:
         run: node test-a1-german-audio.cjs
       - name: Verify CEFR level menu and complete A2 reader
         run: node test-complete-reading-a2.cjs
+      - name: Verify complete B1 reading, German speech and offline integration
+        run: |
+          node --check b1-reading-chapters.js
+          node test-b1-complete-reader.cjs
       - name: Verify standalone A1–B1 Dialog and full vocabulary coverage
         run: |
           node --check dialog.js
