@@ -1031,5 +1031,693 @@ window.WortWegC1Situations=[
     "Agreed. Innovation shouldn't depend on simply overriding legitimate interests."
    ]
   ]
+ ],
+ [
+  "policy-tradeoffs",
+  "Balancing public spending and social needs",
+  "Public administration",
+  [
+   "Bürgermeisterin",
+   "Budget Analyst"
+  ],
+  [
+   [
+    "Die Stadt muss zwischen der Sanierung von Schulen und dem Ausbau des Nahverkehrs priorisieren.",
+    "The city has to prioritise between renovating schools and expanding public transport."
+   ],
+   [
+    "Beide Vorhaben sind wichtig, doch kurzfristig stehen nicht genügend Mittel zur Verfügung.",
+    "Both projects matter, but there isn't enough funding available in the short term."
+   ],
+   [
+    "Nach welchen Kriterien wollen Sie eine Entscheidung begründen, die unterschiedliche Gruppen belastet?",
+    "What criteria will you use to justify a decision that affects different groups?"
+   ],
+   [
+    "Wir sollten Dringlichkeit, langfristigen Nutzen und die Folgen eines Aufschubs nachvollziehbar bewerten.",
+    "We should transparently assess urgency, long-term benefits, and the consequences of delay."
+   ],
+   [
+    "Ich befürchte, dass rein wirtschaftliche Kennzahlen gesellschaftliche Auswirkungen unterschätzen.",
+    "I'm concerned that purely economic metrics underestimate social consequences."
+   ],
+   [
+    "Deshalb müssen quantitative Analysen durch die Perspektiven der Betroffenen ergänzt werden.",
+    "That's why quantitative analysis must be complemented by the perspectives of those affected."
+   ],
+   [
+    "Wie verhindern wir, dass die Beteiligung lediglich eine symbolische Funktion erfüllt?",
+    "How do we prevent participation from serving merely a symbolic function?"
+   ],
+   [
+    "Indem wir Rückmeldungen dokumentieren und offenlegen, wie sie Entscheidungen tatsächlich beeinflusst haben.",
+    "By documenting feedback and disclosing how it has actually influenced decisions."
+   ]
+  ]
+ ],
+ [
+  "medical-uncertainty",
+  "Communicating uncertainty during a medical consultation",
+  "Healthcare communication",
+  [
+   "Ärztin",
+   "Patient"
+  ],
+  [
+   [
+    "Die bisherigen Untersuchungen haben keine eindeutige Ursache meiner Beschwerden gezeigt.",
+    "The tests so far haven't identified a clear cause of my symptoms."
+   ],
+   [
+    "Das stimmt. Wir können einige Möglichkeiten eingrenzen, aber noch keine sichere Diagnose stellen.",
+    "That's correct. We can narrow down some possibilities, but cannot yet make a definitive diagnosis."
+   ],
+   [
+    "Welche weiteren Untersuchungen wären sinnvoll, ohne unnötige Risiken einzugehen?",
+    "Which further tests would make sense without taking unnecessary risks?"
+   ],
+   [
+    "Wir sollten zunächst prüfen, welche Ergebnisse unsere Entscheidung tatsächlich verändern würden.",
+    "We should first assess which results would actually change our decision."
+   ],
+   [
+    "Ich möchte auch verstehen, welche Nachteile entstehen könnten, wenn wir vorerst abwarten.",
+    "I'd also like to understand what disadvantages might arise if we wait for now."
+   ],
+   [
+    "Das besprechen wir anhand Ihrer bisherigen Befunde und der Entwicklung Ihrer Beschwerden.",
+    "We'll discuss that based on your findings to date and how your symptoms develop."
+   ],
+   [
+    "Mir ist wichtig, dass Unsicherheit nicht als fehlende Sorgfalt missverstanden wird.",
+    "It's important to me that uncertainty isn't mistaken for a lack of care."
+   ],
+   [
+    "Genau. Eine verantwortungsvolle Entscheidung berücksichtigt auch, was wir noch nicht wissen.",
+    "Exactly. A responsible decision also takes account of what we don't yet know."
+   ]
+  ]
+ ],
+ [
+  "climate-policy",
+  "Examining the unintended effects of climate measures",
+  "Environment and society",
+  [
+   "Forscherin",
+   "Abgeordneter"
+  ],
+  [
+   [
+    "Die geplante Maßnahme könnte Emissionen reduzieren, allerdings auch die Lebenshaltungskosten erhöhen.",
+    "The proposed measure could reduce emissions but also increase living costs."
+   ],
+   [
+    "Wie können wir überprüfen, welche Haushalte davon besonders stark betroffen wären?",
+    "How can we assess which households would be most affected?"
+   ],
+   [
+    "Dafür benötigen wir differenzierte Daten zu Einkommen, Verbrauch und verfügbaren Alternativen.",
+    "For that, we need detailed data on income, consumption, and available alternatives."
+   ],
+   [
+    "Ein allgemeiner Durchschnitt dürfte die Belastung mancher Gruppen verschleiern.",
+    "An overall average would probably conceal the burden on some groups."
+   ],
+   [
+    "Genau. Deshalb sollten soziale Ausgleichsmaßnahmen von Beginn an mitgeplant werden.",
+    "Exactly. That's why social compensation measures should be planned from the outset."
+   ],
+   [
+    "Würde dadurch nicht wiederum ein Teil der möglichen Einsparungen verloren gehen?",
+    "Wouldn't that in turn reduce some of the potential savings?"
+   ],
+   [
+    "Möglicherweise, aber die gesellschaftliche Akzeptanz hängt auch von einer fairen Verteilung ab.",
+    "Possibly, but public acceptance also depends on fair distribution."
+   ],
+   [
+    "Dann brauchen wir eine transparente Abwägung, statt nur ein einzelnes Ziel zu maximieren.",
+    "Then we need a transparent balance rather than maximising a single goal."
+   ]
+  ]
+ ],
+ [
+  "housing-rights",
+  "Distinguishing practical and legal aspects of a housing complaint",
+  "Housing and tenancy",
+  [
+   "Mieterin",
+   "Beratungsstelle"
+  ],
+  [
+   [
+    "Die Hausverwaltung reagiert seit Wochen nicht auf meinen Hinweis zum Schimmelbefall.",
+    "Property management hasn't responded to my report of mould for weeks."
+   ],
+   [
+    "Haben Sie die Meldung schriftlich festgehalten und die betroffenen Stellen dokumentiert?",
+    "Have you put the report in writing and documented the affected areas?"
+   ],
+   [
+    "Ja, außerdem habe ich Fotos gemacht und mehrere Termine zur Besichtigung angeboten.",
+    "Yes, I've also taken photos and offered several appointments for an inspection."
+   ],
+   [
+    "Dann sollten wir zunächst den Ablauf rekonstruieren und die möglichen nächsten Schritte prüfen.",
+    "Then we should first reconstruct what happened and examine possible next steps."
+   ],
+   [
+    "Ich möchte vermeiden, voreilig Maßnahmen zu ergreifen, die später Probleme verursachen könnten.",
+    "I'd like to avoid rushing into measures that could cause problems later."
+   ],
+   [
+    "Das ist vernünftig. Welche rechtlichen Möglichkeiten bestehen, hängt von den konkreten Umständen ab.",
+    "That's sensible. Which legal options exist depends on the specific circumstances."
+   ],
+   [
+    "Können Sie mir erklären, welche Unterlagen für eine fachkundige Beratung hilfreich wären?",
+    "Can you explain which documents would help when seeking specialist advice?"
+   ],
+   [
+    "Nehmen Sie den Vertrag, die Korrespondenz und Ihre Dokumentation mit; wir klären dann offene Fragen.",
+    "Bring the contract, correspondence, and your documentation; we can then clarify outstanding questions."
+   ]
+  ]
+ ],
+ [
+  "consumer-evidence",
+  "Evaluating evidence in a consumer dispute",
+  "Contracts and accountability",
+  [
+   "Kundin",
+   "Serviceleiter"
+  ],
+  [
+   [
+    "Nach zwei Reparaturen besteht derselbe Fehler weiterhin, obwohl ich das Gerät kaum benutzt habe.",
+    "After two repairs, the same fault persists even though I've barely used the device."
+   ],
+   [
+    "Haben Sie die bisherigen Reparaturberichte und die Kommunikation mit dem Service aufgehoben?",
+    "Have you kept the repair reports and correspondence with the service department?"
+   ],
+   [
+    "Ja, darin wird der Defekt jedes Mal unterschiedlich beschrieben.",
+    "Yes, the defect is described differently each time."
+   ],
+   [
+    "Das sollten wir klären, bevor wir weitere Maßnahmen vereinbaren.",
+    "We should clarify that before agreeing on further measures."
+   ],
+   [
+    "Ich möchte vor allem vermeiden, dass wir lediglich denselben Versuch wiederholen.",
+    "Above all, I'd like to avoid simply repeating the same attempt."
+   ],
+   [
+    "Das ist nachvollziehbar. Ich lasse die bisherigen Feststellungen unabhängig überprüfen.",
+    "That's understandable. I'll have the previous findings reviewed independently."
+   ],
+   [
+    "Könnten wir anschließend eine schriftliche Entscheidung über die weitere Vorgehensweise treffen?",
+    "Could we then make a written decision about how to proceed?"
+   ],
+   [
+    "Ja, sobald die tatsächlichen Ursachen und die verfügbaren Optionen feststehen.",
+    "Yes, once the actual causes and available options have been established."
+   ]
+  ]
+ ],
+ [
+  "public-trust",
+  "Rebuilding trust after a public communication failure",
+  "Civic communication",
+  [
+   "Pressesprecherin",
+   "Journalist"
+  ],
+  [
+   [
+    "Ihre Behörde hat widersprüchliche Angaben veröffentlicht und erst mehrere Tage später korrigiert.",
+    "Your authority published contradictory information and only corrected it several days later."
+   ],
+   [
+    "Die ursprünglichen Daten waren unvollständig; wir hätten diese Unsicherheit deutlicher machen müssen.",
+    "The original data were incomplete; we should have made that uncertainty clearer."
+   ],
+   [
+    "Weshalb sollten Bürger Ihren künftigen Mitteilungen weiterhin vertrauen?",
+    "Why should citizens continue to trust your future communications?"
+   ],
+   [
+    "Vertrauen lässt sich nicht einfordern, sondern nur durch überprüfbares Handeln wiederherstellen.",
+    "Trust can't be demanded; it can only be rebuilt through verifiable action."
+   ],
+   [
+    "Welche konkreten Änderungen wurden aus dem Vorfall abgeleitet?",
+    "What concrete changes resulted from the incident?"
+   ],
+   [
+    "Wir haben die Freigabeprozesse überarbeitet und kennzeichnen vorläufige Daten künftig ausdrücklich.",
+    "We've revised the approval processes and will explicitly label provisional data in future."
+   ],
+   [
+    "Wird auch öffentlich nachvollziehbar sein, weshalb frühere Aussagen korrigiert wurden?",
+    "Will the reasons for correcting earlier statements also be publicly traceable?"
+   ],
+   [
+    "Ja, wir veröffentlichen die Korrektur mit einer Erklärung der zugrunde liegenden Fehler.",
+    "Yes, we'll publish the correction with an explanation of the underlying errors."
+   ]
+  ]
+ ],
+ [
+  "education-equity",
+  "Questioning fairness in university admissions",
+  "Higher education policy",
+  [
+   "Studentin",
+   "Admissions Officer"
+  ],
+  [
+   [
+    "Die Auswahlkriterien wirken objektiv, berücksichtigen aber sehr unterschiedliche Bildungsbiografien.",
+    "The selection criteria appear objective but involve very different educational backgrounds."
+   ],
+   [
+    "Wir brauchen einheitliche Maßstäbe, damit Entscheidungen nachvollziehbar und vergleichbar bleiben.",
+    "We need consistent standards so decisions are transparent and comparable."
+   ],
+   [
+    "Doch gleiche Maßstäbe führen nicht automatisch zu gleichen tatsächlichen Chancen.",
+    "But identical standards don't automatically lead to equal opportunities in practice."
+   ],
+   [
+    "Wie würden Sie diesen Zielkonflikt lösen, ohne die Anforderungen beliebig zu gestalten?",
+    "How would you resolve that conflict without making the requirements arbitrary?"
+   ],
+   [
+    "Indem wir unterschiedliche Leistungen kontextbezogen betrachten und die Kriterien offenlegen.",
+    "By considering achievements in context and disclosing the criteria."
+   ],
+   [
+    "Das setzt voraus, dass solche Bewertungen zuverlässig und diskriminierungsarm erfolgen.",
+    "That presupposes that assessments are reliable and minimise discrimination."
+   ],
+   [
+    "Dann sollten wir die Ergebnisse regelmäßig überprüfen und Betroffene einbeziehen.",
+    "Then we should review the outcomes regularly and involve those affected."
+   ],
+   [
+    "Einverstanden. Fairness braucht klare Verfahren und die Bereitschaft, ihre Wirkungen kritisch zu prüfen.",
+    "Agreed. Fairness requires clear procedures and a willingness to examine their effects critically."
+   ]
+  ]
+ ],
+ [
+  "intercultural-dialogue",
+  "Addressing a misunderstanding without stereotyping",
+  "Cross-cultural cooperation",
+  [
+   "Moderatorin",
+   "Teilnehmer"
+  ],
+  [
+   [
+    "Im internationalen Team haben mehrere Personen dieselbe Aussage sehr unterschiedlich verstanden.",
+    "Several people on the international team interpreted the same statement very differently."
+   ],
+   [
+    "Ich möchte vermeiden, dass wir das vorschnell pauschal auf kulturelle Unterschiede zurückführen.",
+    "I'd like to avoid hastily attributing that to cultural differences in general."
+   ],
+   [
+    "Das ist wichtig, denn Persönlichkeit, Erfahrung und Arbeitskontext spielen ebenfalls eine Rolle.",
+    "That's important, because personality, experience, and work context also play a role."
+   ],
+   [
+    "Wie könnten wir solche Erwartungen offen ansprechen, ohne einzelne Personen bloßzustellen?",
+    "How could we discuss these expectations openly without embarrassing individuals?"
+   ],
+   [
+    "Indem wir konkrete Situationen beschreiben und nach gewünschten Kommunikationsformen fragen.",
+    "By describing specific situations and asking what communication approaches people prefer."
+   ],
+   [
+    "Dann könnten wir gemeinsame Regeln vereinbaren, statt von vermeintlich typischen Verhaltensweisen auszugehen.",
+    "Then we could agree on shared rules instead of assuming supposedly typical behaviours."
+   ],
+   [
+    "Wäre es sinnvoll, diese Regeln regelmäßig gemeinsam zu überprüfen?",
+    "Would it make sense to review those rules together regularly?"
+   ],
+   [
+    "Unbedingt. Nur wenn sie im Alltag funktionieren, tragen sie zu einer echten Zusammenarbeit bei.",
+    "Absolutely. Only if they work in practice will they contribute to genuine cooperation."
+   ]
+  ]
+ ],
+ [
+  "advanced-register",
+  "Improving formal German without sounding artificial",
+  "C1 language and register",
+  [
+   "Dozentin",
+   "Studierender"
+  ],
+  [
+   [
+    "Ihr Schreiben ist höflich, wirkt aber durch mehrere lange Nominalkonstruktionen unnötig schwerfällig.",
+    "Your letter is polite but reads unnecessarily heavily due to several long nominal constructions."
+   ],
+   [
+    "Ich dachte, ein akademischer Stil müsse möglichst viele abstrakte Formulierungen enthalten.",
+    "I thought academic style should contain as many abstract expressions as possible."
+   ],
+   [
+    "Entscheidend sind Präzision und angemessener Ton, nicht die Länge einzelner Wörter.",
+    "What matters is precision and appropriate tone, not the length of individual words."
+   ],
+   [
+    "Wie kann ich komplexe Zusammenhänge darstellen, ohne die Leser zu überfordern?",
+    "How can I present complex relationships without overwhelming readers?"
+   ],
+   [
+    "Ordnen Sie Ihre Argumente klar und verwenden Sie Fachbegriffe nur dort, wo sie tatsächlich notwendig sind.",
+    "Organise your arguments clearly and use technical terms only where they're actually needed."
+   ],
+   [
+    "Sollte ich auch die Übergänge zwischen den einzelnen Abschnitten deutlicher gestalten?",
+    "Should I also make the transitions between sections clearer?"
+   ],
+   [
+    "Ja, dadurch wird erkennbar, wie eine Aussage die nächste begründet oder einschränkt.",
+    "Yes, that makes it apparent how one claim supports or qualifies the next."
+   ],
+   [
+    "Dann möchte ich meinen Entwurf gezielt auf Verständlichkeit und argumentative Stringenz überprüfen.",
+    "Then I'd like to review my draft specifically for clarity and logical coherence."
+   ]
+  ]
+ ],
+ [
+  "formal-escalation",
+  "Escalating a service complaint diplomatically",
+  "Formal negotiations",
+  [
+   "Kundin",
+   "Abteilungsleiter"
+  ],
+  [
+   [
+    "Ich habe den Mangel mehrfach gemeldet, bislang jedoch keine verbindliche Rückmeldung erhalten.",
+    "I've reported the defect several times but have yet to receive a concrete response."
+   ],
+   [
+    "Ich bedauere, dass die bisherigen Schritte offenbar nicht ausreichend kommuniziert wurden.",
+    "I regret that the steps taken so far were evidently not communicated adequately."
+   ],
+   [
+    "Mir geht es weniger um Schuldzuweisungen als um eine dauerhaft tragfähige Lösung.",
+    "I'm less concerned with assigning blame than with a lasting solution."
+   ],
+   [
+    "Das ist nachvollziehbar. Welche Ergebnisse erwarten Sie von unserer erneuten Prüfung?",
+    "That's understandable. What outcomes do you expect from our renewed review?"
+   ],
+   [
+    "Eine klare Fehleranalyse, einen realistischen Zeitplan und eine schriftliche Bestätigung.",
+    "A clear fault analysis, a realistic timetable, and written confirmation."
+   ],
+   [
+    "Ich werde die zuständige Fachabteilung bitten, diese Punkte verbindlich zusammenzufassen.",
+    "I'll ask the responsible technical department to summarise these points formally."
+   ],
+   [
+    "Könnten wir außerdem einen Termin für die Überprüfung der Umsetzung vereinbaren?",
+    "Could we also arrange a date to review implementation?"
+   ],
+   [
+    "Ja. So stellen wir sicher, dass die Vereinbarungen nicht lediglich unverbindlich bleiben.",
+    "Yes. That way we'll ensure the agreements don't remain merely non-binding."
+   ]
+  ]
+ ],
+ [
+  "arts-criticism",
+  "Comparing interpretations of a piano work",
+  "Musical aesthetics",
+  [
+   "Pianistin",
+   "Kritiker"
+  ],
+  [
+   [
+    "Die Aufnahme betont die rhythmische Klarheit, während die Konzertaufführung deutlich freier gestaltet war.",
+    "The recording emphasises rhythmic clarity, while the live performance was considerably freer."
+   ],
+   [
+    "Beide Ansätze können überzeugend sein, sofern sie die musikalische Spannung nachvollziehbar entwickeln.",
+    "Both approaches can be convincing if they develop musical tension coherently."
+   ],
+   [
+    "Wie würden Sie den Einfluss historischer Aufführungspraxis dabei gewichten?",
+    "How would you weigh the influence of historically informed performance?"
+   ],
+   [
+    "Sie liefert wichtige Orientierung, sollte individuelle künstlerische Entscheidungen jedoch nicht mechanisch ersetzen.",
+    "It provides important guidance but shouldn't mechanically replace individual artistic choices."
+   ],
+   [
+    "Manche Zuhörer betrachten jede Abweichung vom Notentext als problematisch.",
+    "Some listeners regard any departure from the score as problematic."
+   ],
+   [
+    "Dabei bleibt zu klären, welche Angaben verbindlich sind und wo Interpretationsspielräume bestehen.",
+    "That still leaves the question of which markings are binding and where interpretative freedom exists."
+   ],
+   [
+    "Dann wäre eine differenzierte Kritik hilfreicher als ein bloßer Vergleich persönlicher Vorlieben.",
+    "Then nuanced criticism would be more useful than simply comparing personal preferences."
+   ],
+   [
+    "Genau. Entscheidend ist, ob sich ästhetische Urteile durch genaues Hören und Argumente begründen lassen.",
+    "Exactly. What matters is whether aesthetic judgements can be justified through close listening and reasoning."
+   ]
+  ]
+ ],
+ [
+  "cultural-heritage",
+  "Addressing contested cultural heritage",
+  "Museums and history",
+  [
+   "Kuratorin",
+   "Historiker"
+  ],
+  [
+   [
+    "Die Sammlung umfasst Objekte, deren Erwerb unter historisch ungleichen Machtverhältnissen erfolgte.",
+    "The collection includes objects acquired under historically unequal power relations."
+   ],
+   [
+    "Dann sollten wir ihre Herkunft nicht isoliert von diesen Zusammenhängen darstellen.",
+    "Then we shouldn't present their provenance separately from those circumstances."
+   ],
+   [
+    "Wie lassen sich unterschiedliche Sichtweisen einbeziehen, ohne eine einzige Interpretation aufzuzwingen?",
+    "How can different perspectives be included without imposing a single interpretation?"
+   ],
+   [
+    "Indem wir Quellen und Streitpunkte offenlegen und Gemeinschaften mit Bezug zu den Objekten beteiligen.",
+    "By disclosing sources and points of contention and involving communities connected to the objects."
+   ],
+   [
+    "Wäre eine solche Beteiligung nicht bedeutungslos, solange die Entscheidungen allein beim Museum bleiben?",
+    "Wouldn't such participation be meaningless as long as decisions remain solely with the museum?"
+   ],
+   [
+    "Das Risiko besteht. Deshalb müssen Zuständigkeiten und tatsächliche Mitbestimmung offen verhandelt werden.",
+    "That risk exists. That's why responsibilities and genuine participation need to be negotiated openly."
+   ],
+   [
+    "Dann sollten wir die Qualität der Zusammenarbeit an überprüfbaren Zusagen messen.",
+    "Then we should measure the quality of cooperation against verifiable commitments."
+   ],
+   [
+    "Genau. Glaubwürdigkeit entsteht nicht durch symbolische Gesten, sondern durch langfristige Praxis.",
+    "Exactly. Credibility comes not from symbolic gestures but from sustained practice."
+   ]
+  ]
+ ],
+ [
+  "c1-exam-thesis",
+  "Presenting a nuanced thesis in the C1 oral exam",
+  "C1 examination",
+  [
+   "Prüferin",
+   "Kandidat"
+  ],
+  [
+   [
+    "Nehmen Sie Stellung zu der Behauptung, technologische Innovation löse gesellschaftliche Probleme grundsätzlich effizienter.",
+    "Respond to the claim that technological innovation generally solves societal problems more efficiently."
+   ],
+   [
+    "Die Aussage ist insofern zu pauschal, als technische Lösungen von sozialen und institutionellen Bedingungen abhängen.",
+    "The claim is too sweeping insofar as technical solutions depend on social and institutional conditions."
+   ],
+   [
+    "Können Sie einen Bereich nennen, in dem diese Abhängigkeit besonders deutlich wird?",
+    "Can you name an area where that dependence becomes particularly apparent?"
+   ],
+   [
+    "Bei digitalen Verwaltungsangeboten, die ohne barrierefreie Alternativen bestimmte Bevölkerungsgruppen ausschließen können.",
+    "In digital public services, which can exclude some population groups without accessible alternatives."
+   ],
+   [
+    "Wäre es dennoch falsch, Effizienzgewinne als wesentliches Ziel anzusehen?",
+    "Would it nevertheless be wrong to regard efficiency gains as an important objective?"
+   ],
+   [
+    "Keineswegs, solange wir sie nicht mit gesellschaftlichem Nutzen gleichsetzen und mögliche Folgekosten prüfen.",
+    "Not at all, provided we don't equate them with social benefit and examine possible downstream costs."
+   ],
+   [
+    "Welche Schlussfolgerung ziehen Sie aus dieser Abwägung?",
+    "What conclusion do you draw from that balance?"
+   ],
+   [
+    "Innovation ist wertvoll, wenn ihre Wirkung überprüfbar ist und gesellschaftliche Teilhabe mitgedacht wird.",
+    "Innovation is valuable when its impact is verifiable and social inclusion is considered."
+   ]
+  ]
+ ],
+ [
+  "c1-exam-counterargument",
+  "Responding to an objection without oversimplifying",
+  "C1 examination",
+  [
+   "Diskussionsleitung",
+   "Teilnehmerin"
+  ],
+  [
+   [
+    "Sie fordern strengere Regeln für digitale Plattformen. Könnte das nicht die Meinungsfreiheit beeinträchtigen?",
+    "You call for stricter rules for digital platforms. Couldn't that impair freedom of expression?"
+   ],
+   [
+    "Diese Sorge ist berechtigt, weshalb Eingriffe sorgfältig begründet und begrenzt werden müssen.",
+    "That concern is justified, which is why interventions must be carefully justified and limited."
+   ],
+   [
+    "Manche halten jede Form der Regulierung bereits für einen unzulässigen Eingriff.",
+    "Some already regard any form of regulation as an unacceptable intervention."
+   ],
+   [
+    "Dabei müsste zunächst unterschieden werden, welche konkreten Maßnahmen überhaupt gemeint sind.",
+    "We would first need to distinguish which specific measures are actually meant."
+   ],
+   [
+    "Welche Kriterien wären aus Ihrer Sicht geeignet, um notwendige Grenzen festzulegen?",
+    "What criteria would you consider appropriate for setting necessary limits?"
+   ],
+   [
+    "Transparenz, Verhältnismäßigkeit, unabhängige Kontrolle und überprüfbare Beschwerdemöglichkeiten.",
+    "Transparency, proportionality, independent oversight, and verifiable avenues for appeal."
+   ],
+   [
+    "Würden diese Prinzipien die Zielkonflikte vollständig beseitigen?",
+    "Would those principles completely eliminate the competing objectives?"
+   ],
+   [
+    "Nein, aber sie schaffen einen nachvollziehbaren Rahmen für Entscheidungen unter Unsicherheit.",
+    "No, but they create a transparent framework for decisions under uncertainty."
+   ]
+  ]
+ ],
+ [
+  "c1-exam-synthesis",
+  "Synthesising opposing arguments in an academic debate",
+  "C1 examination",
+  [
+   "Prüfer",
+   "Kandidatin"
+  ],
+  [
+   [
+    "Fassen Sie die wesentlichen Argumente für und gegen verpflichtende Präsenzzeiten zusammen.",
+    "Summarise the main arguments for and against mandatory in-person attendance."
+   ],
+   [
+    "Befürworter betonen Zusammenarbeit und informellen Austausch, Kritiker hingegen Selbstbestimmung und Konzentration.",
+    "Supporters emphasise collaboration and informal exchange, while critics highlight autonomy and concentration."
+   ],
+   [
+    "Würden Sie eine der beiden Positionen grundsätzlich für überlegen halten?",
+    "Would you consider either position fundamentally superior?"
+   ],
+   [
+    "Nicht ohne den jeweiligen Tätigkeitsbereich, die Aufgabenstruktur und die Lebensumstände einzubeziehen.",
+    "Not without taking into account the work area, task structure, and personal circumstances."
+   ],
+   [
+    "Welche Regelung könnte die unterschiedlichen Bedürfnisse angemessen verbinden?",
+    "What arrangement could appropriately reconcile the differing needs?"
+   ],
+   [
+    "Verbindliche gemeinsame Termine bei zugleich begründeter Flexibilität für eigenständige Aufgaben.",
+    "Mandatory shared meetings combined with justified flexibility for independent tasks."
+   ],
+   [
+    "Wie könnte überprüft werden, ob dieses Modell tatsächlich funktioniert?",
+    "How could it be checked whether this model actually works?"
+   ],
+   [
+    "Durch nachvollziehbare Leistungsziele, regelmäßige Rückmeldungen und eine ergebnisoffene Evaluation.",
+    "Through transparent performance goals, regular feedback, and open-ended evaluation."
+   ]
+  ]
+ ],
+ [
+  "evidence-disagreement",
+  "Disagreeing politely with an expert conclusion",
+  "Advanced discussion",
+  [
+   "Moderator",
+   "Expertin"
+  ],
+  [
+   [
+    "Sie behaupten, dass sich der beobachtete Trend in den nächsten Jahren fortsetzen werde.",
+    "You claim that the observed trend will continue in the coming years."
+   ],
+   [
+    "Unsere Prognose beruht auf mehreren Jahren Daten und einem überprüften Modell.",
+    "Our forecast is based on several years of data and a validated model."
+   ],
+   [
+    "Dennoch scheinen mir Veränderungen der Rahmenbedingungen nur unzureichend berücksichtigt.",
+    "Nevertheless, changes in the underlying conditions seem insufficiently considered to me."
+   ],
+   [
+    "Das ist ein berechtigter Einwand; Prognosen beruhen immer auf Annahmen.",
+    "That's a fair objection; forecasts always rest on assumptions."
+   ],
+   [
+    "Welche Alternativszenarien wurden untersucht, um die Robustheit der Aussage zu beurteilen?",
+    "Which alternative scenarios were examined to assess how robust the claim is?"
+   ],
+   [
+    "Wir haben unterschiedliche Nachfrageszenarien betrachtet, allerdings keine extremen Strukturbrüche.",
+    "We examined different demand scenarios but no extreme structural changes."
+   ],
+   [
+    "Dann wäre es sinnvoll, die Aussage auf den untersuchten Geltungsbereich zu beschränken.",
+    "Then it would make sense to limit the claim to the scope that was examined."
+   ],
+   [
+    "Dem stimme ich zu. Diese Einschränkung sollte in unserer Veröffentlichung deutlicher werden.",
+    "I agree. That limitation should be clearer in our publication."
+   ]
+  ]
  ]
 ];
