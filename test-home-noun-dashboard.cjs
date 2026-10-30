@@ -45,7 +45,7 @@ assert.deepEqual(JSON.parse(JSON.stringify(s.totals.get('A1'))),{total:3,seen:0}
 assert.deepEqual(JSON.parse(JSON.stringify(s.totals.get('C1'))),{total:2,seen:0});
 assert.ok(home().textContent.includes('4 Word Bank + 4 added nouns (duplicates excluded)'),
  'Legend separates original source and deduplicated noun additions');
-assert.ok(home().textContent.includes('9 study entries encountered')===false);
+assert.ok(home().textContent.includes('0 of 9 study entries encountered'),'Home displays the new total without falsely crediting unstudied words');
 assert.ok(home().textContent.includes('CEFR vocabulary total'));
 assert.ok(home().textContent.includes('0 learned'));
 assert.equal(home().querySelectorAll('.ww-donut-svg path').length,5,
