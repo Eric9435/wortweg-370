@@ -146,7 +146,20 @@ jobs:
           node --check c1-reading-part-09.js
           node --check c1-reading-part-10.js
           node test-c1-complete-reader.cjs
-      - name: Verify standalone A1–C2 Dialog and complete CEFR vocabulary coverage
+      - name: Verify full C2 reading, full source vocabulary and German narration
+        run: |
+          node --check c2-reading-part-01.js
+          node --check c2-reading-part-02.js
+          node --check c2-reading-part-03.js
+          node --check c2-reading-part-04.js
+          node --check c2-reading-part-05.js
+          node --check c2-reading-part-06.js
+          node --check c2-reading-part-07.js
+          node --check c2-reading-part-08.js
+          node --check c2-reading-part-09.js
+          node --check c2-reading-part-10.js
+          node test-c2-complete-reader.cjs
+      - name: Verify standalone A1–C2 Dialog and complete vocabulary coverage
         run: |
           node --check dialog.js
           node --check dialog-situations.js

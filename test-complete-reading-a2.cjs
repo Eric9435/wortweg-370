@@ -12,10 +12,10 @@ assert.deepEqual(links.map(x=>x.dataset.level),['A1','A2','B1','B2','C1','C2']);
 assert.deepEqual(links.map(x=>x.getAttribute('href')),[
  './a1-complete-reader.html','./a2-complete-reader.html',
  './b1-complete-reader.html','./b2-complete-reader.html',
- './c1-complete-reader.html','./complete-reading-level.html?level=C2'
+ './c1-complete-reader.html','./c2-complete-reader.html'
 ]);
-assert.equal(selector.window.document.querySelectorAll('.level.ready').length,5,
- 'A1/A2/B1/B2/C1 are marked as complete passages');
+assert.equal(selector.window.document.querySelectorAll('.level.ready').length,6,
+ 'A1/A2/B1/B2/C1/C2 are marked as complete passages');
 assert.ok(!hub.includes('overflow-y:auto'),'Level picker must not be a scrolling list');
 selector.window.close();
 const app=read('index.html');
@@ -95,7 +95,7 @@ setTimeout(()=>{
    assert.ok(sw.includes(file),'PWA offline cache must include '+file);
    assert.ok(native.includes(file),'Native package must include '+file);
   }
-  assert.match(sw,/wortweg370-v90/);
+  assert.match(sw,/wortweg370-v91/);
   assert.match(sw,/selectedReader/,'Offline navigation must resolve selected level correctly');
   assert.match(read('a1-complete-reader.html'),/href="\.\/complete-reading\.html"/,
    'A1 Back must open level selector');
