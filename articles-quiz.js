@@ -28,17 +28,26 @@
  let cachedWords=null,cachedLookup=null;
  function catalogue(){
   if(cachedWords)return cachedWords;
-  const all=[],seen=new Set();
+  const all=[],seen=new Set(),seenLemmas=new Set();
   function add(raw){
    if(!raw)return;
    const fingerprint=[raw.article,raw.bare.toLocaleLowerCase('de'),raw.en.toLocaleLowerCase()].join('|');
    if(seen.has(fingerprint))return;
-   seen.add(fingerprint);all.push(raw);
+   seen.add(fingerprint);
+   seenLemmas.add(raw.article+'|'+raw.bare.toLocaleLowerCase('de'));
+   all.push(raw);
   }
   for(const w of source.bank)add(noun(w,'b:'+w.id,w.level,'bank'));
   for(const w of source.curated)add(noun(w,'c:'+String(w.de).toLocaleLowerCase(),w.level||'Topic 1','curated'));
   for(const lesson of window.WortWegLive?.getPack?.()?.lessons||[]){
    for(const w of lesson.words||[])add(noun(w,'l:'+w.id,lesson.level,'live'));
+  }
+  // Preserve the historical word keys for existing progress; add only genuinely
+  // new noun lemmas from the supplementary article pack.
+  for(const w of window.WortWegNounExpansion?.entries||[]){
+   const item=noun(w,'n:'+w.id,w.level,'expansion');
+   if(!item||seenLemmas.has(item.article+'|'+item.bare.toLocaleLowerCase('de')))continue;
+   add(item);
   }
   cachedWords=all;cachedLookup=new Map(all.map(w=>[w.key,w]));return all;
  }
@@ -113,7 +122,7 @@
   shell('Der · Die · Das Quiz');
   const panel=make('div','ww-articles-panel');
   const intro=make('p','ww-articles-intro',
-   'Choose the correct article for each German noun. Includes every article-labelled word in your Word Bank, Topic 1, and downloaded lessons. Verbs and entries without a definite article are excluded.');
+   'Choose der, die or das for each noun. Study the original Word Bank, Topic 1, downloaded lessons and our expanded noun pack. Words without a verified article are excluded. Expansion CEFR levels are approximate.');
   panel.append(intro);
   const stats=summary(),cards=make('div','ww-articles-stats');
   for(const [value,label] of [[stats.total,'Nouns available'],[stats.attempted,'Words attempted'],[stats.mistakes,'Mistakes to review']]){
@@ -121,10 +130,13 @@
    el.append(make('strong','',Number(value).toLocaleString('en-US')),make('small','',label));cards.append(el);
   }
   panel.append(cards);
+  const expansionCount=catalogue().filter(w=>w.source==='expansion').length;
+  panel.append(make('p','ww-articles-small',
+   expansionCount.toLocaleString('en-US')+' additional noun headwords from the expansion pack, without repeating existing article-labelled lemmas.'));
   const filters=make('div','ww-articles-filters');
   select(filters,'Level',preferences.level,[['all','All levels'],...levels.map(x=>[x,x])],
    x=>{preferences.level=x;renderSetup();});
-  select(filters,'Source',preferences.source,[['all','All sources'],['bank','Word Bank'],['curated','Topic 1'],['live','Downloaded lessons']],
+  select(filters,'Source',preferences.source,[['all','All sources'],['bank','Word Bank'],['curated','Topic 1'],['live','Downloaded lessons'],['expansion','Expanded noun vocabulary']],
    x=>{preferences.source=x;renderSetup();});
   select(filters,'Question count',preferences.size,[['20','20 questions'],['50','50 questions'],['100','100 questions'],['all','All eligible words']],
    x=>{preferences.size=x;renderSetup();});
