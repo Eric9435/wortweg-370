@@ -102,6 +102,6 @@ assert.equal(s.needsReview,0);
 assert.equal(w.localStorage.getItem(key),JSON.stringify(state),'Older profile records are intact');
 assert.match(fs.readFileSync('noun-expansion.js','utf8'),/wortweg:noun-expansion-ready/);
 assert.match(fs.readFileSync('articles-quiz.js','utf8'),/wortweg:articles-changed/);
-assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v82/);
+assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v83/);
 dom.window.close();
 console.log('PASS: Home CEFR totals, noun deduplication, article answers, flashcards, recent mastery and account separation.');
