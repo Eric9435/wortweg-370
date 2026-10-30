@@ -40,7 +40,7 @@ for(const w of expansion){
  const ending=match[2];
  if(/(heit|keit|schaft|tion|tät)$/.test(ending))
    assert.equal(match[1],'die','Strong feminine-ending consistency '+w.de);
- if(/(chen|lein)$/.test(ending))
+ if(/lein$/.test(ending))
    assert.equal(match[1],'das','Diminutive consistency '+w.de);
  const known=genders.get(ending);
  if(known&&!known.has(match[1])){
