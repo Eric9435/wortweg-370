@@ -25,7 +25,9 @@
   return {key,article,bare,de:article+' '+bare,en:String(item.en||''),
    my:String(item.mm||item.my||''),level:level||'—',source:sourceName};
  }
+ let cachedWords=null,cachedLookup=null;
  function catalogue(){
+  if(cachedWords)return cachedWords;
   const all=[],seen=new Set();
   function add(raw){
    if(!raw)return;
@@ -38,7 +40,7 @@
   for(const lesson of window.WortWegLive?.getPack?.()?.lessons||[]){
    for(const w of lesson.words||[])add(noun(w,'l:'+w.id,lesson.level,'live'));
   }
-  return all;
+  cachedWords=all;cachedLookup=new Map(all.map(w=>[w.key,w]));return all;
  }
  const root=make('section','ww-articles-root');
  root.id='ww-articles-quiz';root.hidden=true;root.setAttribute('role','dialog');
@@ -162,7 +164,8 @@
  function current(){
   const session=state.session;
   if(!session||session.cursor>=session.keys.length)return null;
-  const lookup=new Map(catalogue().map(w=>[w.key,w]));
+  catalogue();
+  const lookup=cachedLookup;
   // A live pack may change between saving and resuming. Skip removed keys
   // without corrupting the remaining checkpoint.
   while(session.cursor<session.keys.length){
@@ -251,7 +254,7 @@
  }
  launch();
  window.addEventListener('wortweg:account',()=>{switchProfile();if(!root.hidden)renderSetup();});
- window.addEventListener('wortweg:live-pack',()=>{if(!root.hidden&&!state.session)renderSetup();});
+ window.addEventListener('wortweg:live-pack',()=>{cachedWords=null;cachedLookup=null;if(!root.hidden&&!state.session)renderSetup();});
  document.addEventListener('keydown',event=>{if(!root.hidden&&event.key==='Escape'){event.preventDefault();close();}});
  window.WortWegArticlesQuiz={open,close,getSummary:summary,getEligibleCount:()=>catalogue().length};
 })();
