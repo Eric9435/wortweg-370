@@ -88,6 +88,9 @@
 /* All-word flashcard deck loads independently of the legacy quiz and writing flows. */
 (()=>{const script=document.createElement('script');script.src='./flashcards.js';script.defer=true;document.head.append(script);})();
 
+/* Independent, complete noun-article quiz: Der / Die / Das only. */
+(()=>{const script=document.createElement('script');script.src='./articles-quiz.js';script.defer=true;document.head.append(script);})();
+
 /* Floating, screen-wide teaching whiteboard on every WortWeg view. */
 (()=>{const script=document.createElement('script');script.src='./whiteboard.js?v=3';script.defer=true;document.head.append(script);})();
 

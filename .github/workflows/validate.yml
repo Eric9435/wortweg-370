@@ -29,6 +29,7 @@ jobs:
           node --check reading-studio.js
           node --check seen-words.js
           node --check flashcards.js
+          node --check articles-quiz.js
           node --check special-vocabulary.js
           node --check home-refresh.js
           node --check bank-browser.js
@@ -102,6 +103,8 @@ jobs:
         run: |
           node test-flashcards.cjs
           node test-flashcard-animation.cjs
+      - name: Verify all-word Der Die Das quiz, persistence, review and native assets
+        run: node test-articles-quiz.cjs
       - name: Verify flashcard ratings appear in Seen Words
         run: node test-flashcard-seen.cjs
       - name: Verify dynamic lessons, offline cache, and secure account separation
