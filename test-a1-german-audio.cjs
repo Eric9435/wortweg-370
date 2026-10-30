@@ -93,7 +93,9 @@ assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v81/,'Audio version is 
 assert.match(fs.readFileSync('sw.js','utf8'),/a1-complete-reader\.html/);
 dom.window.close();
 const noVoice=new JSDOM(html,{url:'https://example.test/a1-complete-reader.html',runScripts:'outside-only'});
-noVoice.window.fetch=async()=>({ok:false,status:503});
+// The unsupported-speech test does not need the separate asynchronous vocabulary fetch.
+// Keep its response pending so jsdom is not closed during an init() rejection.
+noVoice.window.fetch=()=>new Promise(()=>{});
 noVoice.window.eval(extract[1]);
 assert.equal(noVoice.window.document.querySelectorAll('.speech-play').length,12);
 assert.ok([...noVoice.window.document.querySelectorAll('.speech-play')].every(b=>b.disabled),
