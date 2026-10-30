@@ -11,11 +11,11 @@ const links=[...selector.window.document.querySelectorAll('a.level')];
 assert.deepEqual(links.map(x=>x.dataset.level),['A1','A2','B1','B2','C1','C2']);
 assert.deepEqual(links.map(x=>x.getAttribute('href')),[
  './a1-complete-reader.html','./a2-complete-reader.html',
- './complete-reading-level.html?level=B1','./complete-reading-level.html?level=B2',
+ './b1-complete-reader.html','./complete-reading-level.html?level=B2',
  './complete-reading-level.html?level=C1','./complete-reading-level.html?level=C2'
 ]);
-assert.equal(selector.window.document.querySelectorAll('.level.ready').length,2,
- 'Only A1/A2 are marked as complete passages');
+assert.equal(selector.window.document.querySelectorAll('.level.ready').length,3,
+ 'A1/A2/B1 are marked as complete passages');
 assert.ok(!hub.includes('overflow-y:auto'),'Level picker must not be a scrolling list');
 selector.window.close();
 const app=read('index.html');
@@ -91,7 +91,7 @@ setTimeout(()=>{
   assert.match(shortcut,/location\.href='\.\/complete-reading\.html'/);
   assert.ok(!shortcut.includes("title:'A1 Complete Reading'"),'No old A1-only Home label');
   const sw=read('sw.js'),native=read('mobile/scripts/prepare.mjs');
-  for(const file of ['complete-reading.html','a2-complete-reader.html','a2-reading-chapters.js','complete-reading-level.html']){
+  for(const file of ['complete-reading.html','a2-complete-reader.html','a2-reading-chapters.js','b1-complete-reader.html','b1-reading-chapters.js','complete-reading-level.html']){
    assert.ok(sw.includes(file),'PWA offline cache must include '+file);
    assert.ok(native.includes(file),'Native package must include '+file);
   }
