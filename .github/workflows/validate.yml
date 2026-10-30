@@ -159,7 +159,7 @@ jobs:
           node --check c2-reading-part-09.js
           node --check c2-reading-part-10.js
           node test-c2-complete-reader.cjs
-      - name: Verify standalone A1–C1 Dialog and full vocabulary coverage
+      - name: Verify standalone A1–C2 Dialog and complete vocabulary coverage
         run: |
           node --check dialog.js
           node --check dialog-situations.js
@@ -167,8 +167,10 @@ jobs:
           node --check dialog-situations-b1.js
           node --check dialog-situations-b2.js
           node --check dialog-situations-c1.js
+          node --check dialog-situations-c2.js
           node test-dialog.cjs
           node test-c1-dialog.cjs
+          node test-c2-dialog.cjs
       - name: Verify flashcard ratings appear in Seen Words
         run: node test-flashcard-seen.cjs
       - name: Verify dynamic lessons, offline cache, and secure account separation

@@ -20,7 +20,7 @@ assert.equal(bankB2.length,2117);assert.equal(nounsB2.length,667);
 const dom=new JSDOM(html,{url:'https://localhost/dialog.html',runScripts:'outside-only'});
 const w=dom.window;w.WortWegNounExpansion={entries:allNouns};
 w.fetch=async url=>{assert.equal(url,'./index.html');return {ok:true,text:async()=>index}};
-w.eval(situations);w.eval(situationsA2);w.eval(situationsB1);w.eval(situationsB2);w.eval(situationsC1);w.eval(source);
+w.eval(situations);w.eval(situationsA2);w.eval(situationsB1);w.eval(situationsB2);w.eval(situationsC1);w.eval(fs.readFileSync('dialog-situations-c2.js','utf8'));w.eval(source);
 const $=id=>w.document.getElementById(id);
 const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCount===874)return;await new Promise(resolve=>setTimeout(resolve,50));}throw Error('Dialog A1 source initialization timed out');};
 (async()=>{
@@ -56,7 +56,7 @@ const ready=async()=>{for(let i=0;i<30;i++){if(w.WortWegDialog.getState().wordCo
   assert.ok(fs.readFileSync('mobile/scripts/prepare.mjs','utf8').includes(path),'Native bundle includes '+path);
  }
  assert.ok(fs.readFileSync('home-refresh.js','utf8').includes("title:'Dialog'"),'Separate Dialog Home tile');
- assert.ok(w.document.querySelectorAll('.dialog-levels button').length===5,'A1 and A2 are separate level windows');
+ assert.ok(w.document.querySelectorAll('.dialog-levels button').length===6,'A1 and A2 are separate level windows');
  assert.equal(w.WortWegDialog.getState().level,'A1','A1 remains the first/default level');
  w.WortWegDialog.setLevel('A2');
  const a2=w.WortWegDialog.getState();
