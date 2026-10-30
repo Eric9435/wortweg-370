@@ -128,6 +128,6 @@ for(const file of ['noun-expansion.js']){
  assert.ok(fs.readFileSync('ios-polish.js','utf8').includes(file),'Web loader includes '+file);
 }
 assert.match(fs.readFileSync('ios-polish.js','utf8'),/nouns\.onload=load/,'Noun pack loads before quiz and flashcards');
-assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v81/);
+assert.match(fs.readFileSync('sw.js','utf8'),/wortweg370-v82/);
 dom.window.close();
 console.log('PASS: verified article-only noun expansion, bank deduplication, all-words quiz, flashcards, mobile/offline, and original data safety.');

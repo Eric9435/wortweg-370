@@ -29,10 +29,15 @@ const primaryCopy=make('span','ww-home-focus-primary-copy');primaryCopy.append(m
 primary.append(make('span','ww-home-focus-primary-icon','↗'),primaryCopy,make('span','ww-home-focus-chevron','›'));
 primary.addEventListener('click',()=>actions[0].run());zone.append(primary);
 const label=make('h4','ww-home-focus-section','Learning tools');zone.append(label);
-const grid=make('div','ww-home-focus-grid');for(const a of actions.slice(1)){
+const grid=make('div','ww-home-focus-grid');for(const a of actions.slice(1).filter(item=>item.id!=='dialog')){
  const b=make('button','ww-home-focus-tile ww-home-focus-'+a.id);b.type='button';
  const icon=make('span','ww-home-focus-tile-icon',a.icon),copy=make('span','ww-home-focus-tile-copy');copy.append(make('strong','',a.title),make('small','',a.caption));b.append(icon,copy);b.addEventListener('click',()=>a.run());grid.append(b);
 }zone.append(grid);
+const dialogLink=make('a','ww-home-dialog-link');
+dialogLink.href='./dialog.html';
+dialogLink.setAttribute('aria-label','Open standalone Dialog A1 conversations');
+dialogLink.append(make('span','ww-home-dialog-symbol','◉'),make('strong','','Dialog'),make('small','','A1 Conversations'),make('span','ww-home-dialog-arrow','›'));
+top.append(dialogLink);
 top.after(zone);
 menu.classList.add('ww-home-modern');
 zone.classList.remove('ww-home-focus-classic');
