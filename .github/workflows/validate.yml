@@ -70,6 +70,32 @@ jobs:
             suffix,originalTypesByLevel:sourceLevels
           }));
           NODE
+      - name: Spot-check broad high-utility academic noun coverage
+        run: |
+          node <<'NODE'
+          const fs=require('node:fs'),vm=require('node:vm');
+          const html=fs.readFileSync('index.html','utf8');
+          const base=JSON.parse(html.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/)[1]);
+          const ctx={window:{}};vm.createContext(ctx);vm.runInContext(fs.readFileSync('noun-expansion.js','utf8'),ctx);
+          const strings=[...base.bank,...base.curated,...ctx.window.WortWegNounExpansion.entries]
+            .map(w=>String(w.de||'').trim().toLocaleLowerCase('de'));
+          const known=new Set(strings);
+          const groups={
+            academic:'die Erkenntnis;die Herausforderung;die Voraussetzung;die Auswirkung;die Entwicklung;die Veränderung;die Verbesserung;die Umsetzung;die Lösung;die Bedeutung;die Annahme;die Aussage;die Behauptung;die Begründung;die Ursache;die Folge;die Konsequenz;die Tatsache;die Möglichkeit;die Wahrscheinlichkeit;die Unsicherheit;die Einschränkung;die Bedingung;die Regelung;die Bestimmung;die Vorgehensweise;die Herangehensweise;die Darstellung;die Untersuchung;die Analyse;die Bewertung;die Schlussfolgerung;die Zusammenfassung;die Fragestellung;die Problemstellung;die Zielsetzung;die Zielstellung;die Methodik;die Vorgehensweise;die Abweichung;die Feststellung;die Erkenntnisgewinnung',
+            society:'die Gesellschaft;die Bevölkerung;die Gemeinschaft;die Verantwortung;die Gerechtigkeit;die Gleichberechtigung;die Chancengleichheit;die Integration;die Vielfalt;die Diskriminierung;die Nachhaltigkeit;die Lebensqualität;die Lebensbedingungen;die Zuwanderung;die Einwanderung;die Auswanderung;die Mitbestimmung;die Beteiligung;die Teilhabe;die Ausgrenzung;die Öffentlichkeit;die Stellungnahme;die Haltung;die Einstellung;die Überzeugung;die Wahrnehmung;die Zustimmung;die Ablehnung;die Nachfrage;die Forderung;die Auseinandersetzung',
+            economics:'die Wirtschaft;die Nachfrage;die Produktion;die Herstellung;die Arbeitslosigkeit;die Beschäftigung;die Finanzierung;die Förderung;die Investition;die Inflation;die Rezession;die Konjunktur;die Krise;die Belastung;die Auslastung;die Kosten;die Einnahme;die Ausgabe;die Ausgaben;die Schulden;die Verteilung;die Ungleichheit;die Knappheit;die Ressourcen;die Versorgung;die Verfügbarkeit;die Abhängigkeit;die Energieversorgung;die Wettbewerbsfähigkeit',
+            masculines:'der Ansatz;der Zusammenhang;der Einfluss;der Unterschied;der Vorteil;der Nachteil;der Bedarf;der Bestand;der Aufwand;der Nutzen;der Schaden;der Mangel;der Rückgang;der Anstieg;der Zuwachs;der Fortschritt;der Rückschritt;der Wandel;der Umbruch;der Verlust;der Gewinn;der Anteil;der Beitrag;der Begriff;der Befund;der Nachweis;der Verlauf;der Umfang;der Schwerpunkt;der Rahmen;der Aspekt;der Hintergrund;der Kontext',
+            neuters:'das Ergebnis;das Problem;das Ziel;das Vorhaben;das Verfahren;das Verhalten;das Verständnis;das Bewusstsein;das Wissen;das Interesse;das Bedürfnis;das Verhältnis;das Ausmaß;das Merkmal;das Kriterium;das Konzept;das Modell;das System;das Muster;das Risiko;das Potenzial;das Hindernis;das Defizit;das Phänomen;das Prinzip;das Argument;das Beispiel;das Mittel;das Wachstum;das Einkommen;das Vertrauen;das Wohlbefinden;das Umfeld'
+          };
+          const summary={},missingAll=[];
+          for(const [group,words] of Object.entries(groups)){
+            const arr=[...new Set(words.split(';'))];
+            const absent=arr.filter(v=>!known.has(v.toLocaleLowerCase('de')));
+            summary[group]={sample:arr.length,present:arr.length-absent.length,missing:absent};
+            missingAll.push(...absent);
+          }
+          console.log('ACADEMIC_SPOT_CHECK='+JSON.stringify({groupSummary:summary,overallMissingCount:missingAll.length}));
+          NODE
       - name: Check JavaScript, manifest, and account persistence hooks
         run: |
           node --check sw.js
