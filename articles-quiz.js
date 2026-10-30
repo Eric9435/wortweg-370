@@ -197,6 +197,7 @@
    correct:(old.correct||0)+(correct?1:0),lastCorrect:correct,lastAnswered:now,
    de:word.de,en:word.en,my:word.my,level:word.level};
   session.cursor++;session.correct+=correct?1:0;session.wrong+=correct?0:1;save();
+   window.dispatchEvent(new CustomEvent('wortweg:articles-changed',{detail:{key:word.key,correct}}));
   for(const b of buttons){
    b.disabled=true;
    b.classList.toggle('ww-articles-right',b.dataset.article===word.article);
