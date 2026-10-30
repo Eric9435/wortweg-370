@@ -33,7 +33,12 @@ self.addEventListener('fetch',event=>{
     const lifetimePath=new URL('./lifetime-grammar.html',self.registration.scope).pathname;
     const posterPath=new URL('./grammar-120.html',self.registration.scope).pathname;
     const dialogPath=new URL('./dialog.html',self.registration.scope).pathname;
-    const fallback=path===lifetimePath?'./lifetime-grammar.html':path===posterPath?'./grammar-120.html':path===dialogPath?'./dialog.html':'./index.html';
+    const readerPaths=['complete-reading.html','a1-complete-reader.html','a2-complete-reader.html','complete-reading-level.html'];
+    const selectedReader=readerPaths.find(name=>path===new URL('./'+name,self.registration.scope).pathname);
+    const fallback=selectedReader?'./'+selectedReader:
+      path===lifetimePath?'./lifetime-grammar.html':
+      path===posterPath?'./grammar-120.html':
+      path===dialogPath?'./dialog.html':'./index.html';
     event.respondWith(fetch(event.request).then(response=>{
       if(response.ok){const copy=response.clone();caches.open(CACHE).then(cache=>cache.put(fallback,copy)).catch(()=>{});}
       return response;
