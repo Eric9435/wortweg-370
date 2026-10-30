@@ -10,6 +10,7 @@ const clickExisting=(selector)=>{const target=$(selector);if(target){target.clic
 const actions=[
  {id:'learn',icon:'↗',title:'Learn vocabulary',caption:'Continue learning',run:()=>clickExisting('.ww-menu-primary')||clickExisting('[data-nav="topics"]')},
  {id:'a1reader',icon:'Aa',title:'A1 Complete Reading',caption:'12 chapters · every A1 Word Bank item',run:()=>{window.location.href='./a1-complete-reader.html';return true;}},
+ {id:'dialog',icon:'◉',title:'Dialog',caption:'A1 conversations · every A1 source word',run:()=>{window.location.href='./dialog.html';return true;}},
  {id:'write',icon:'✎',title:'Writing',caption:'Memorize by typing',run:()=>{if(window.WortWegWriting?.open){window.WortWegWriting.open();return true;}return clickExisting('#ww-writing-launch');}},
  {id:'flashcards',icon:'▣',title:'Flashcards',caption:'Flip all vocabulary words',run:()=>{if(window.WortWegFlashcards?.open){window.WortWegFlashcards.open();return true;}return clickExisting('#ww-flashcards-launch');}},
  {id:'articles',icon:'Aa',title:'Der · Die · Das Quiz',caption:'Test every noun article',run:()=>{if(window.WortWegArticlesQuiz?.open){window.WortWegArticlesQuiz.open();return true;}return clickExisting('#ww-articles-launch');}},
