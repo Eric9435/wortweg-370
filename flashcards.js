@@ -67,6 +67,8 @@
  document.head.append(stylesheet);
  const settings={source:'all',level:'all',status:'all',search:'',direction:'de',size:'20',shuffle:false};
  let session=[],position=0,flipped=false,sessionProfile='',previousFocus=null;
+ let transitioning=false,transitionVersion=0;
+ function resetTransition(){transitionVersion++;transitioning=false;}
  function say(german){
   if(window.WortWegAudio?.speak){window.WortWegAudio.speak(german);return;}
   if(typeof SpeechSynthesisUtterance==='undefined'||!window.speechSynthesis)return;
@@ -117,6 +119,7 @@
   });
  }
  function renderSetup(){
+  resetTransition();
   session=[];flipped=false;shell('Flashcards');
   const pane=make('div','ww-flash-panel');
   pane.append(make('p','ww-flash-intro','Study every German word in your vocabulary bank, Topic 1 and downloaded lessons. Tap to flip and rate your recall.'));
@@ -156,6 +159,7 @@
   root.append(pane);
  }
  function startSession(){
+  resetTransition();
   const matching=filtered();
   if(!matching.length)return;
   const sorted=matching.slice();
@@ -170,6 +174,7 @@
   position=0;flipped=false;sessionProfile=profile();renderCard();
  }
  function rate(remembered){
+  if(transitioning)return;
   if(sessionProfile!==profile())return renderSetup();
   const w=session[position],old=records[w.key]||{};
   const intervalDays=remembered?(old.intervalDays?Math.min(365,Math.round(old.intervalDays*2.5)||1):1):0;
@@ -180,7 +185,7 @@
   save();
   // Seen Words reads the same profile's flashcard records without touching quiz history.
   window.dispatchEvent(new CustomEvent('wortweg:flashcards-changed',{detail:{key:w.key,remembered}}));
-  position++;flipped=false;renderCard();
+  moveCard(1);
  }
  // Pointer Events work in current Android WebViews and iOS Safari. Restrict
  // gestures to the card: vertical scrolling and every existing button stay usable.
@@ -190,9 +195,10 @@
    card.classList.remove('ww-flash-dragging');
    card.style.removeProperty('transform');
    card.style.removeProperty('opacity');
+   card.style.removeProperty('transform-origin');
   };
   card.addEventListener('pointerdown',event=>{
-   if(event.isPrimary===false||(event.pointerType==='mouse'&&event.button!==0))return;
+   if(transitioning||event.isPrimary===false||(event.pointerType==='mouse'&&event.button!==0))return;
    ignoreClick=false;
    gesture={id:event.pointerId,x:event.clientX,y:event.clientY,dx:0,dy:0,dragged:false};
    try{card.setPointerCapture?.(event.pointerId);}catch{}
@@ -206,18 +212,20 @@
     gesture.dragged=true;card.classList.add('ww-flash-dragging');
    }
    const offset=Math.sign(dx)*Math.min(Math.abs(dx)*0.8,145);
-   card.style.transform='translate3d('+offset+'px,0,0) rotate('+(offset/28)+'deg)';
+   card.style.transformOrigin=dx<0?'left center':'right center';
+   card.style.transform='translate3d('+offset+'px,0,0) rotateY('+(offset/5.5)+'deg)';
    card.style.opacity=String(1-Math.min(Math.abs(offset)/450,0.25));
   });
   function finish(event,cancelled=false){
    if(!gesture||event.pointerId!==gesture.id)return;
    const {dx,dy,dragged}=gesture;
+   const fromTransform=card.style.transform;
    gesture=null;
    reset();
    // A drag must never trigger the card's normal click-to-flip action.
    if(dragged)ignoreClick=true;
    if(cancelled||!dragged||Math.abs(dx)<60||Math.abs(dx)<=Math.abs(dy)*1.25)return;
-   moveCard(dx<0?1:-1);
+   moveCard(dx<0?1:-1,fromTransform);
   }
   card.addEventListener('pointerup',event=>finish(event));
   card.addEventListener('pointercancel',event=>finish(event,true));
@@ -228,10 +236,60 @@
   },true);
   card.addEventListener('keydown',()=>{ignoreClick=false;});
  }
- function moveCard(step){
+ // Animate only transform/opacity on the card (GPU composited). Respect system
+ // reduced-motion and browsers where Web Animations are not supported.
+ function animateChange(update,step,fromTransform='',isFlip=false){
+  if(transitioning)return;
+  const card=root.querySelector('.ww-flash-card');
+  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  if(!card||typeof card.animate!=='function'||reduced){update();return;}
+  const token=++transitionVersion;
+  transitioning=true;
+  const left=step>0;
+  const origin=left?'left center':'right center';
+  const outgoing=left?-78:78;
+  const entering=left?62:-62;
+  const exitFrames=[
+   {transform:fromTransform||'translate3d(0,0,0) rotateY(0deg)',opacity:1,transformOrigin:origin},
+   {transform:'translate3d('+(isFlip?'0':left?'-12%':'12%')+',0,0) rotateY('+outgoing+'deg)',opacity:0.35,transformOrigin:origin}
+  ];
+  function play(element,frames,duration,complete){
+   try{
+    const animation=element.animate(frames,{duration,easing:'cubic-bezier(.22,.75,.26,1)',fill:'forwards'});
+    animation.finished.then(complete,()=>{if(token===transitionVersion)transitioning=false;});
+   }catch{complete();}
+  }
+  card.classList.remove('ww-flash-dragging');
+  card.classList.add('ww-flash-turning');
+  card.style.removeProperty('transform');
+  card.style.removeProperty('opacity');
+  card.style.removeProperty('transform-origin');
+  play(card,exitFrames,isFlip?135:175,()=>{
+   if(token!==transitionVersion||root.hidden)return;
+   update();
+   const nextCard=root.querySelector('.ww-flash-card');
+   if(!nextCard){transitioning=false;return;}
+   nextCard.classList.add('ww-flash-turning');
+   const arrival=left?'right center':'left center';
+   play(nextCard,[
+    {transform:'translate3d('+(isFlip?'0':left?'8%':'-8%')+',0,0) rotateY('+entering+'deg)',opacity:0.4,transformOrigin:arrival},
+    {transform:'translate3d(0,0,0) rotateY(0deg)',opacity:1,transformOrigin:arrival}
+   ],isFlip?185:215,()=>{
+    if(token!==transitionVersion)return;
+    nextCard.classList.remove('ww-flash-turning');
+    transitioning=false;
+   });
+  });
+ }
+ function moveCard(step,fromTransform=''){
+  if(transitioning)return;
   const next=position+step;
   if(next<0||next>session.length)return;
-  position=next;flipped=false;renderCard();
+  animateChange(()=>{position=next;flipped=false;renderCard();},step,fromTransform);
+ }
+ function flipCard(){
+  if(transitioning||position>=session.length)return;
+  animateChange(()=>{flipped=!flipped;renderCard();},flipped?-1:1,'',true);
  }
  function renderCard(){
   if(sessionProfile!==profile())return renderSetup();
@@ -250,7 +308,7 @@
   panel.append(top);
   const progress=make('div','ww-flash-progress');
   const fill=make('span');fill.style.width=100*position/session.length+'%';progress.append(fill);panel.append(progress);
-  const flip=button('',()=>{flipped=!flipped;renderCard();},'ww-flash-card');
+  const flip=button('',flipCard,'ww-flash-card');
   flip.setAttribute('aria-label',flipped?'Show front of flashcard':'Reveal flashcard answer');
   flip.setAttribute('aria-pressed',String(flipped));
   const face=make('div','ww-flash-face');
@@ -268,7 +326,7 @@
    actions.append(button('Again · review',()=>rate(false),'ww-flash-again'),
     button('✓ I knew it',()=>rate(true),'ww-flash-know'));
   }else{
-   actions.append(button('Reveal answer',()=>{flipped=true;renderCard();},'ww-flash-primary'));
+   actions.append(button('Reveal answer',flipCard,'ww-flash-primary'));
   }
   panel.append(actions);
   const nav=make('div','ww-flash-navigation');
@@ -285,6 +343,7 @@
  }
  function close(){
   if(root.hidden)return;
+  resetTransition();
   root.hidden=true;document.body.classList.remove('ww-flash-open');
   session=[];previousFocus?.focus?.();
  }
@@ -295,7 +354,7 @@
   if(root.hidden)return;
   if(event.key==='Escape'){event.preventDefault();close();return;}
   if(event.target.closest('input,textarea,select'))return;
-  if(event.code==='Space'&&session.length){event.preventDefault();flipped=!flipped;renderCard();}
+  if(event.code==='Space'&&session.length){event.preventDefault();flipCard();}
  });
  window.WortWegFlashcards={open,close,getSummary:summary,getCatalogCount:()=>catalogue().length};
 })();
