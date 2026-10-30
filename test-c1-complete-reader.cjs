@@ -17,7 +17,7 @@ const chapterCtx={window:{}};vm.createContext(chapterCtx);
 const chapterFiles=['c1-reading-part-01.js','c1-reading-part-02.js','c1-reading-part-03.js','c1-reading-part-04.js','c1-reading-part-05.js','c1-reading-part-06.js','c1-reading-part-07.js','c1-reading-part-08.js','c1-reading-part-09.js','c1-reading-part-10.js'];
 for(const file of chapterFiles)vm.runInContext(read(file),chapterCtx);
 const chapters=[...(chapterCtx.window.WortWegC1Part01||[]),...(chapterCtx.window.WortWegC1Part02||[]),...(chapterCtx.window.WortWegC1Part03||[]),...(chapterCtx.window.WortWegC1Part04||[]),...(chapterCtx.window.WortWegC1Part05||[]),...(chapterCtx.window.WortWegC1Part06||[]),...(chapterCtx.window.WortWegC1Part07||[]),...(chapterCtx.window.WortWegC1Part08||[]),...(chapterCtx.window.WortWegC1Part09||[]),...(chapterCtx.window.WortWegC1Part10||[])];
-assert.equal(chapters.length,20,'C1 must have 19 complete original chapters');
+assert.equal(chapters.length,20,'C1 must have 20 complete original chapters');
 for(let i=0;i<20;i++){
  const c=chapters[i];
  assert.ok(c.title.startsWith(String(i+1).padStart(2,'0')+' · '),'Ordered chapter '+(i+1));
