@@ -109,7 +109,7 @@ for(const path of ['articles-quiz.js','articles-quiz.css']){
 }
 assert.match(fs.readFileSync('ios-polish.js','utf8'),/articles-quiz\.js/,'Bootstrap loads article quiz');
 assert.match(fs.readFileSync('home-refresh.js','utf8'),/WortWegArticlesQuiz/,'Home includes article shortcut');
-assert.match(fs.readFileSync('sw.js','utf8'),/const CACHE='wortweg370-v85'/,'New cache version');
+assert.match(fs.readFileSync('sw.js','utf8'),/const CACHE='wortweg370-v86'/,'New cache version');
 assert.ok(fs.readFileSync('articles-quiz.css','utf8').includes('ww-articles-word'),'Stylesheet exists');
 dom.window.close();
 console.log('PASS: all noun articles, no article leakage, filters, full-bank coverage, scoring, mistakes, recovery, quiz isolation, per-profile resume, mobile UI and offline assets.');

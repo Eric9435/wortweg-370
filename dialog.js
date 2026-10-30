@@ -17,7 +17,13 @@ const b2Challenges=[
 const norm=v=>String(v||'').trim().toLocaleLowerCase('de');
 const escaped=v=>[...String(v)].map(c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('');
 const wordForm=de=>String(de||'').replace(/^(der|die|das|ein|eine)\s+/i,'').trim();
-const hasPhrase=(text,term)=>{if(term.length<3)return false;try{return new RegExp('(^|[^\\p{L}\\p{N}])'+escaped(term)+'(?=$|[^\\p{L}\\p{N}])','iu').test(text);}catch{return false;}};
+const phrasePatterns=new Map();
+const hasPhrase=(text,term)=>{
+ if(term.length<3)return false;
+ let pattern=phrasePatterns.get(term);
+ if(!pattern){try{pattern=new RegExp('(^|[^\\p{L}\\p{N}])'+escaped(term)+'(?=$|[^\\p{L}\\p{N}])','iu');}catch{return false;}phrasePatterns.set(term,pattern);}
+ return pattern.test(text);
+};
 function stopSpeech(){state.playing=false;if('speechSynthesis' in window)window.speechSynthesis.cancel();}
 function speak(line,onDone){if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){state.playing=false;return;}
  const u=new SpeechSynthesisUtterance(line);u.lang='de-DE';u.rate=$('dialogSlow').checked?0.78:1;u.pitch=1;
