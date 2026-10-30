@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f2942"><title>WortWeg A1 Complete Reader · Every Word</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#172a3a;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}
+header{background:#10283f;color:white;padding:23px max(18px,calc((100% - 1050px)/2)) 24px}
+header a{color:#dbecff;text-decoration:none;font-size:14px}header h1{margin:15px 0 9px;font-size:clamp(26px,4vw,36px);line-height:1.15}
+header p{max-width:720px;color:#c6d7e5;margin:0 0 14px;font-size:15px;line-height:1.65}
+main{max-width:1050px;margin:auto;padding:20px 16px 90px}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 18px}
+.metric{background:white;border:1px solid #dce6ef;border-radius:15px;padding:15px}.metric strong{display:block;font-size:24px;font-variant-numeric:tabular-nums}.metric span{font-size:12px;color:#506578}
+nav{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px}button,.tab{font:inherit;cursor:pointer}.tab{border:1px solid #bcd0dc;border-radius:12px;padding:11px 16px;background:white;color:#25425b;font-weight:650}.tab[aria-selected="true"]{background:#174f75;color:white;border-color:#174f75}
+section.panel{display:none}section.panel.active{display:block}.chapter{background:white;border:1px solid #dae4ed;border-radius:17px;padding:22px;box-shadow:0 4px 17px rgba(33,59,83,.035);margin-bottom:12px}
+.chapter h2{font-size:20px;margin:0 0 5px}.chapter .minor{font-size:13px;color:#557184}.chapter p.german{font-size:18px;line-height:1.85;margin:12px 0;color:#172a3a}
+.muted{color:#586d81}.hint{background:#eaf4fa;border-radius:12px;padding:13px 15px;font-size:14px;line-height:1.6;margin:0 0 16px}
+input[type=search]{padding:13px 15px;border-radius:12px;border:1px solid #c6d5e3;width:100%;font-size:16px}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}
+.action{border:1px solid #bcd0dc;border-radius:11px;background:white;padding:8px 12px;color:#234766}
+.group{background:white;border:1px solid #dde6ef;border-radius:15px;padding:16px;margin-bottom:12px}.group h2{font-size:17px;margin:0 0 8px}
+.terms{display:flex;flex-wrap:wrap;gap:8px}.term{font-size:13px;border:1px solid #d9e5ee;background:#f7fafc;border-radius:9px;padding:7px 9px;max-width:100%;text-align:left;color:#23394c}
+.term strong{display:block;font-weight:650}.term small{color:#657c8f}.term.read{background:#e3f4e7;border-color:#8ccc9a}
+.recall{background:white;border:1px solid #d9e5ee;border-radius:18px;padding:25px;min-height:270px;text-align:center;display:grid;align-content:center;gap:17px;max-width:620px;margin:auto}
+.recall .prompt{font-size:clamp(23px,5vw,35px);font-weight:700}.recall .meaning{font-size:18px;color:#34536d;min-height:26px}.recall .deck-count{font-size:12px;color:#607587}
+.memorize{background:#14745e;border:1px solid #14745e;border-radius:12px;color:white;padding:11px 15px;font-weight:650}
+.recall-row{display:flex;justify-content:center;gap:9px;flex-wrap:wrap}.note{font-size:13px;line-height:1.7;color:#536c81}footer{font-size:12px;color:#607688;margin:22px 0}
+@media(max-width:550px){.metrics{grid-template-columns:repeat(3,1fr)}.metric{padding:10px}.metric strong{font-size:20px}.metric span{font-size:10px}.chapter{padding:17px}.chapter p.german{font-size:17px}header{padding:22px 17px}}
+</style></head>
+<body>
+<header><a href="./index.html">← WortWeg 370 Home</a><h1>A1 Complete Reading Studio</h1>
+<p>12 connected beginner chapters + a complete, source-linked vocabulary walk. Every A1 Word Bank item and A1 noun entry is included exactly as stored, even if a phrase is unusual in everyday conversation.</p>
+<div class="note" style="color:#cfdae5">The story is a natural A1-level reading text. The vocabulary walk lists every exact headword and fixed phrase; the full list is not forced unnaturally into the story paragraphs. CEFR labels are WortWeg practice estimates, not an official exam list.</div></header>
+<main>
+<div class="metrics">
+ <div class="metric"><strong id="bankN">—</strong><span>A1 Word Bank entries</span></div>
+ <div class="metric"><strong id="nounN">—</strong><span>A1 noun entries</span></div>
+ <div class="metric"><strong id="totalN">—</strong><span>Entries included</span></div>
+</div>
+<nav aria-label="Reader views">
+<button class="tab" data-panel="story" aria-selected="true">Read 12 chapters</button>
+<button class="tab" data-panel="all" aria-selected="false">All A1 words</button>
+<button class="tab" data-panel="recall" aria-selected="false">Memory practice</button>
+</nav>
+<section id="story" class="panel active"><p class="hint">Read the German first. Expand an English explanation only after trying to understand the paragraph. Repeat each chapter aloud.</p><div id="storyContent"></div></section>
+<section id="all" class="panel">
+ <p class="hint">Complete-source memory walk: your exact A1 list, grouped for easier reading. Nothing is silently removed as a duplicate. Select any term to mark it as reviewed. The green marker is a personal review mark, not proof of mastery.</p>
+ <input id="search" type="search" placeholder="Search German, English, or Myanmar" aria-label="Search all A1 terms">
+ <div class="controls"><label><input type="checkbox" id="onlyUnseen"> Show unreviewed only</label><span id="visibleCount" class="muted"></span></div>
+ <div id="allContent" aria-live="polite"></div>
+</section>
+<section id="recall" class="panel"><p class="hint">Try remembering the English meaning, then reveal it and move to the next card. Covers the full A1 source inventory.</p>
+ <div class="recall"><span class="deck-count" id="deckCounter"></span><div class="prompt" id="cardFront">A1 Reader</div><div class="meaning" id="cardBack"></div><div class="recall-row">
+ <button class="action" id="reveal">Reveal meaning</button><button class="memorize" id="remember">I remember</button><button class="action" id="next">Next word →</button></div></div>
+</section>
+<footer>WortWeg 370 · A1 Complete Reading Studio · Offline content loads from the application's local Word Bank cache. Review marks stay in this browser only and do not change your existing quiz progress.</footer>
+</main>
+<script src="./noun-expansion.js"></script>
+<script>
+(()=>{'use strict';
+const chapters=[{"title":"01 · Mein Zuhause","en":"My home","mm":"ကျွန်တော့်အိမ်","de":"Mein Name ist Min. Ich bin Student und wohne in einer kleinen Wohnung. Meine Wohnung ist nicht groß, aber schön. Das Haus ist in der Stadt. Ich habe ein Zimmer, eine Küche und ein Bad. In meinem Zimmer stehen ein Bett, ein Tisch, ein Stuhl und ein Schrank. Das Fenster ist groß. Am Morgen öffne ich das Fenster. Die Sonne ist da. Heute ist das Wetter schön. Mein Zimmer ist hell und sauber. Ich habe ein Buch, ein Heft und einen Stift auf dem Tisch. Ich lerne gern Deutsch.","translation":"Min is a university student living in a small, lovely flat. He describes his room and his morning."},{"title":"02 · Am Morgen","en":"In the morning","mm":"မနက်ခင်း","de":"Am Montag stehe ich um sieben Uhr auf. Ich gehe ins Bad und wasche mein Gesicht und meine Hände. Ich dusche und gehe in die Küche. Ich habe Hunger und Durst. Zum Frühstück esse ich Brot, ein Ei und Käse. Ich trinke Tee und Wasser. Manchmal trinke ich Kaffee. Meine Schwester ruft mich an. Sie fragt: „Wie geht es dir?“ Ich sage: „Gut, danke! Und dir?“ Meine Schwester ist auch gesund. Sie möchte mich am Samstag besuchen. Ich freue mich.","translation":"Min gets up, washes, eats breakfast, drinks tea, and talks to his sister."},{"title":"03 · Im Supermarkt","en":"At the supermarket","mm":"စူပါမားကတ်မှာ","de":"Ich gehe zum Supermarkt, weil ich Obst und Gemüse brauche. Ich kaufe einen Apfel, eine Banane, zwei Kartoffeln, eine Tomate und Reis. Ich sehe auch Brot, Butter, Milch und Suppe. Der Preis ist wichtig. Ein Apfel ist billig, aber das Fleisch ist heute teuer. Ich brauche nur ein Ei und eine Flasche Wasser. An der Kasse bezahle ich. Die Frau an der Kasse ist freundlich. Sie sagt: „Guten Tag!“ Ich sage: „Danke und auf Wiedersehen!“ Dann gehe ich nach Hause.","translation":"Min shops for fruit, vegetables and other food, compares prices and pays."},{"title":"04 · Zur Universität","en":"To university","mm":"တက္ကသိုလ်သို့","de":"Am Dienstag fahre ich zur Universität. Zuerst gehe ich zur Bushaltestelle. Ich habe eine Fahrkarte. Der Bus ist da, aber der Bus ist langsam. Ich sehe einen Freund. Sein Name ist Paul. Er fragt: „Wohin gehst du?“ Ich antworte: „Zur Universität.“ Wir fahren zusammen. Auf der Straße sehen wir ein Auto, ein Taxi und ein Fahrrad. Der Bahnhof ist nicht weit. Wir sprechen über die Arbeit und den Unterricht. Der Weg ist kurz. Bald sind wir da.","translation":"Min travels by bus with his friend Paul and sees transport vocabulary on the way."},{"title":"05 · Im Deutschkurs","en":"In German class","mm":"ဂျာမန်စာသင်တန်းမှာ","de":"In der Schule und an der Universität lerne ich Deutsch. Unser Lehrer ist sehr nett. Die Lehrerin ist auch freundlich. Wir lesen ein Buch und schreiben Sätze in ein Heft. Der Lehrer fragt: „Was ist das?“ Ich antworte: „Das ist ein Tisch.“ Er sagt: „Richtig!“ Dann schreiben wir die Wörter „der“, „die“ und „das“. Mein Freund macht einen Fehler, aber der Lehrer hilft ihm. Die Sprache ist manchmal schwer. Wir lernen langsam. Ich verstehe schon viele Wörter und spreche gern mit der Gruppe.","translation":"In class, Min practices simple German words, articles and sentences."},{"title":"06 · Eine Freundin","en":"A friend","mm":"သူငယ်ချင်းမတစ်ယောက်","de":"Am Mittwoch treffe ich meine Freundin Anna. Sie ist Studentin und wohnt in einer Wohnung neben der Universität. Ihre Wohnung ist hell. Wir sitzen am Tisch. Anna liest ein Buch, und ich schreibe eine E-Mail. Sie fragt mich nach meiner Familie. Ich habe eine Mutter, einen Vater, einen Bruder und eine Schwester. Mein Bruder ist jung und nett. Meine Mutter arbeitet heute. Mein Vater ist zu Hause. Wir schauen ein Foto und sprechen über unsere Familie. Dann hören wir Musik und lachen zusammen.","translation":"Min and Anna talk about their families, read, write and listen to music."},{"title":"07 · Im Restaurant","en":"At the restaurant","mm":"စားသောက်ဆိုင်မှာ","de":"Am Donnerstag gehe ich mit Paul in ein Restaurant. Wir sind hungrig. Ich bestelle Suppe und Reis. Paul möchte Fisch und Gemüse essen. Ich trinke Wasser. Paul bestellt Tee. Das Essen ist heiß und gut. Das Getränk ist kalt. Wir sitzen an einem großen Tisch. Ich frage: „Was kostet das Mittagessen?“ Der Mann sagt den Preis. Wir bezahlen das Essen. Dann gehen wir in die Stadt. Wir haben noch eine Stunde Zeit. Die Sonne scheint, und wir gehen langsam durch den Park.","translation":"Two students order lunch, ask about its price and spend time in the park."},{"title":"08 · Arbeit und Computer","en":"Work and computers","mm":"အလုပ်နှင့် ကွန်ပျူတာ","de":"Am Freitag habe ich Arbeit. Mein Chef ist freundlich, und mein Kollege hilft mir. Ich sitze an einem Tisch mit einem Computer. Der Computer ist alt, aber gut. Mein Handy ist neu. Ich lese eine wichtige E-Mail und schreibe eine kurze Antwort. Dann rufe ich einen Kunden an. Er hat eine Frage. Ich höre gut zu und gebe eine Antwort. Manchmal ist die Arbeit schwer. Ich denke: „Ich kann das machen.“ Am Abend bin ich müde, aber ich bin fertig.","translation":"Min works with his colleagues, a computer, emails, and customers."},{"title":"09 · Einkaufen und Kleidung","en":"Shopping and clothes","mm":"ဈေးဝယ်ခြင်း","de":"Am Samstag gehe ich mit Anna in einen Laden. Wir sehen viele Dinge. Ein Stuhl ist billig. Ein Tisch ist teuer. Ich suche eine Lampe für mein Zimmer. Anna möchte ein neues Buch kaufen. Sie findet ein schönes Buch. Ich finde eine kleine Lampe. Der Mann im Laden sagt: „Die Lampe kostet zehn Euro.“ Ich habe genug Geld und bezahle. Dann besuchen wir meine Wohnung. Anna sagt: „Dein Zimmer ist schön!“ Ich sage: „Danke!“ Wir trinken Kaffee und hören Musik.","translation":"Min and Anna shop for a lamp and a book and then visit his flat."},{"title":"10 · Familie und Gesundheit","en":"Family and health","mm":"မိသားစုနှင့် ကျန်းမာရေး","de":"Am Sonntag telefoniere ich mit meiner Familie. Meine Mutter fragt nach meinem Tag. Mein Bruder ist heute krank. Er hat Schmerzen am Kopf und möchte schlafen. Meine Mutter sagt: „Der Arzt ist nett.“ Mein Bruder geht zum Arzt. Ich hoffe, dass er bald gesund ist. Meine Schwester ist müde, aber sie arbeitet. Ich sage: „Du musst auch schlafen!“ Wir sprechen über das Wetter. Bei meiner Familie ist es kalt, und es gibt Regen und Wind. Hier ist das Wetter warm und schön.","translation":"Min talks to his family about health, rest and the weather."},{"title":"11 · Ein Tag im Park","en":"A day in the park","mm":"ပန်းခြံမှာ တစ်နေ့","de":"Heute habe ich frei. Ich gehe in den Park. Ich sehe einen Baum und viele Menschen. Ein Mann läuft schnell. Eine Frau sitzt auf einer Bank und liest. Ein Kind spielt mit seinem Vater. Ich gehe langsam und höre die Vögel. Es ist nicht laut, sondern leise. Ein Freund kommt auch in den Park. Wir sitzen zusammen und sprechen. Er fragt: „Was möchtest du morgen machen?“ Ich sage: „Ich möchte ein Buch lesen und Deutsch lernen.“ Er sagt: „Das ist gut!“","translation":"Min enjoys a quiet day in the park and talks about tomorrow."},{"title":"12 · Mein guter Tag","en":"My good day","mm":"ကျွန်တော့်ရဲ့ ကောင်းသောနေ့","de":"Am Abend bin ich wieder zu Hause. Ich öffne die Tür und gehe in mein Zimmer. Ich lege das Buch auf den Tisch und den Schlüssel neben das Handy. Ich koche Gemüse und Reis. Das Abendessen ist gut. Nach dem Essen wasche ich das Geschirr. Dann lerne ich zehn neue Wörter. Ich lese die Wörter und schreibe einen Satz. Ich sage jedes Wort laut. Ich wiederhole den Satz langsam. Ich mache manchmal Fehler, aber das ist nicht schlecht. Ich lerne jeden Tag. Jetzt bin ich müde. Ich schließe das Fenster, gehe ins Bett und schlafe.","translation":"Min ends the day by cooking, reviewing German words, and going to bed."}];
+const $=id=>document.getElementById(id);
+const clean=v=>String(v||'').trim();
+let entries=[],recallIndex=0,uncovered=false;
+const storageKey='ww-a1-complete-reader-reviewed-v1';
+let reviewed={};try{reviewed=JSON.parse(localStorage.getItem(storageKey)||'{}')||{}}catch{}
+const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(reviewed))}catch{}};
+function element(tag,cls,text){const node=document.createElement(tag);if(cls)node.className=cls;if(text!=null)node.textContent=text;return node;}
+function escapeHtml(text){return String(text).replace(/[&<>"']/g, s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));}
+function initStory(){
+ const wrap=$('storyContent');
+ chapters.forEach((ch,i)=>{
+  const block=element('article','chapter');
+  block.append(element('h2','',ch.title),element('div','minor',ch.en+' · '+ch.mm));
+  block.append(element('p','german',ch.de));
+  const d=element('details');d.append(element('summary','','English explanation'));
+  d.append(element('p','muted',ch.translation));block.append(d);wrap.append(block);
+ });
+}
+function setTab(name){
+ document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',String(x.dataset.panel===name)));
+ document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===name));
+ if(name==='all')renderAll();if(name==='recall')renderRecall();
+}
+function renderAll(){
+ const query=clean($('search').value).toLocaleLowerCase('de');
+ const only=$('onlyUnseen').checked;
+ const list=entries.filter(x=>(!only||!reviewed[x.key])&&(!query||[x.de,x.en,x.mm].some(t=>String(t||'').toLocaleLowerCase('de').includes(query))));
+ $('visibleCount').textContent=list.length.toLocaleString('en-US')+' / '+entries.length.toLocaleString('en-US')+' source entries';
+ const content=$('allContent');content.replaceChildren();
+ const page=120;
+ for(let start=0;start<list.length;start+=page){
+  const part=list.slice(start,start+page);
+  const group=element('div','group');
+  group.append(element('h2','',String(start+1)+'–'+String(start+part.length)+' · '+(start<642?'A1 source entries':'A1 noun expansion')));
+  const row=element('div','terms');
+  for(const entry of part){
+   const btn=element('button','term'+(reviewed[entry.key]?' read':''));btn.type='button';
+   btn.title='Mark reviewed: '+entry.de;
+   btn.append(element('strong','',entry.de),element('small','',entry.en||entry.mm||entry.source));
+   btn.setAttribute('aria-pressed',String(!!reviewed[entry.key]));
+   btn.onclick=()=>{if(reviewed[entry.key])delete reviewed[entry.key];else reviewed[entry.key]=1;save();renderAll();};
+   row.append(btn);
+  }
+  group.append(row);content.append(group);
+ }
+ if(!list.length)content.append(element('p','muted','No matching A1 entries.'));
+}
+function renderRecall(){
+ if(!entries.length)return;
+ recallIndex=(recallIndex+entries.length)%entries.length;
+ const w=entries[recallIndex];
+ $('deckCounter').textContent=(recallIndex+1)+' / '+entries.length+' · '+w.source;
+ $('cardFront').textContent=w.de;
+ $('cardBack').textContent='';
+ $('remember').textContent=reviewed[w.key]?'Reviewed ✓':'I remember';
+}
+async function init(){
+ initStory();
+ try{
+  const response=await fetch('./index.html',{cache:'default'});
+  if(!response.ok)throw Error('HTTP '+response.status);
+  const html=await response.text();
+  const parsed=new DOMParser().parseFromString(html,'text/html');
+  const node=parsed.getElementById('data');
+  if(!node)throw Error('Bundled Word Bank was not found');
+  const original=JSON.parse(node.textContent);
+  const bank=(original.bank||[]).filter(w=>w.level==='A1');
+  const nouns=(window.WortWegNounExpansion?.entries||[]).filter(w=>w.level==='A1');
+  entries=[...bank.map((w,i)=>({...w,source:'Original A1 Word Bank',key:'b:'+String(w.id??i)})),
+           ...nouns.map((w,i)=>({...w,source:'A1 Noun Expansion',key:'n:'+String(w.id??i)}))];
+  $('bankN').textContent=bank.length.toLocaleString('en-US');
+  $('nounN').textContent=nouns.length.toLocaleString('en-US');
+  $('totalN').textContent=entries.length.toLocaleString('en-US');
+  renderRecall();
+  renderAll();
+ }catch(err){
+  $('bankN').textContent='—';$('nounN').textContent='—';$('totalN').textContent='—';
+  $('allContent').textContent='Cannot open the complete A1 list. Please open WortWeg Home online once, then reopen this reader. '+err.message;
+ }
+}
+document.querySelectorAll('.tab').forEach(x=>x.onclick=()=>setTab(x.dataset.panel));
+$('search').addEventListener('input',renderAll);
+$('onlyUnseen').addEventListener('change',renderAll);
+$('reveal').onclick=()=>{const w=entries[recallIndex];if(w)$('cardBack').textContent=w.en||w.mm||'No English translation available';};
+$('remember').onclick=()=>{const w=entries[recallIndex];if(!w)return;reviewed[w.key]=1;save();renderRecall();};
+$('next').onclick=()=>{recallIndex++;renderRecall();};
+init();
+})();
+</script></body></html>
