@@ -108,6 +108,8 @@ jobs:
         run: node test-articles-quiz.cjs
       - name: Verify curated singular noun expansion and cross-app integration
         run: node test-noun-expansion.cjs
+      - name: Validate A1-C2 noun balance, original article conflicts and data integrity
+        run: node test-noun-all-levels.cjs
       - name: Verify flashcard ratings appear in Seen Words
         run: node test-flashcard-seen.cjs
       - name: Verify dynamic lessons, offline cache, and secure account separation
