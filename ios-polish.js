@@ -85,11 +85,17 @@
 /* iOS Home refresh: presentation-only, reversible, preserves original Home. */
 (()=>{const style=document.createElement('link');style.rel='stylesheet';style.href='./home-refresh.css';document.head.append(style);const script=document.createElement('script');script.src='./home-refresh.js';document.head.append(script);})();
 
-/* All-word flashcard deck loads independently of the legacy quiz and writing flows. */
-(()=>{const script=document.createElement('script');script.src='./flashcards.js';script.defer=true;document.head.append(script);})();
-
-/* Independent, complete noun-article quiz: Der / Die / Das only. */
-(()=>{const script=document.createElement('script');script.src='./articles-quiz.js';script.defer=true;document.head.append(script);})();
+/* Load noun expansion before both consumers so web and native apps see it immediately.
+ * If the optional pack fails, the original flashcards and quiz still work. */
+(()=>{
+ const load=()=>{
+  for(const file of ['flashcards.js','articles-quiz.js']){
+   const script=document.createElement('script');script.src='./'+file;document.head.append(script);
+  }
+ };
+ const nouns=document.createElement('script');nouns.src='./noun-expansion.js';
+ nouns.onload=load;nouns.onerror=load;document.head.append(nouns);
+})();
 
 /* Floating, screen-wide teaching whiteboard on every WortWeg view. */
 (()=>{const script=document.createElement('script');script.src='./whiteboard.js?v=3';script.defer=true;document.head.append(script);})();
