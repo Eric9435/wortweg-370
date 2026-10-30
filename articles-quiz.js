@@ -48,7 +48,7 @@
  document.body.append(root);
  const stylesheet=make('link');stylesheet.rel='stylesheet';stylesheet.href='./articles-quiz.css';document.head.append(stylesheet);
  const levels=['A1','A2','B1','B2','C1','C2','Topic 1'];
- const preferences={level:'all',source:'all',size:'20',shuffle:false};
+ const preferences={level:'all',source:'all',size:'all',shuffle:false};
  let profileId='',state={records:{},session:null},previousFocus=null;
  function profile(){
   const uid=window.WortWegAccountSnapshot?.uid;
