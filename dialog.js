@@ -1,4 +1,4 @@
-/* WortWeg 370 — independent A1/A2/B1/B2 Dialog Studio.
+/* WortWeg 370 — independent A1/A2/B1/B2/C1 Dialog Studio.
    Original WortWeg word-bank levels are the only source of study headwords.
    Keep existing A1 completion IDs/storage unchanged; isolate all higher-level completions. */
 (()=>{'use strict';
@@ -14,6 +14,14 @@ const b2Challenges=[
  ['Schlagen Sie eine realistische Lösung oder einen Kompromiss vor und begründen Sie Ihre Wahl.','Suggest a realistic solution or compromise and explain your choice.'],
  ['Ziehen Sie ein differenziertes Fazit und nennen Sie eine mögliche Einschränkung.','Draw a nuanced conclusion and mention a possible limitation.']
 ];
+const c1Challenges=[
+ ['Arbeiten Sie die impliziten Annahmen und den Argumentationsgang beider Positionen heraus.','Identify the implicit assumptions and reasoning behind both positions.'],
+ ['Relativieren Sie eine pauschale Aussage durch ein begründetes Gegenbeispiel.','Qualify an overly general statement using a well-supported counterexample.'],
+ ['Erörtern Sie die gesellschaftlichen und fachlichen Zielkonflikte aus zwei verschiedenen Perspektiven.','Discuss the societal and technical trade-offs from two different perspectives.'],
+ ['Entwickeln Sie eine präzise Synthese, die den Einwänden gerecht wird, ohne Widersprüche zu verwischen.','Develop a precise synthesis that addresses the objections without obscuring contradictions.'],
+ ['Formulieren Sie ein abgewogenes Fazit in formellem Deutsch und benennen Sie offene Forschungs- oder Handlungsfragen.','Deliver a balanced conclusion in formal German and identify open research or policy questions.']
+];
+const challengesFor=()=>state.level==='C1'?c1Challenges:b2Challenges;
 const norm=v=>String(v||'').trim().toLocaleLowerCase('de');
 const escaped=v=>[...String(v)].map(c=>'\\^$.*+?()[]{}|'.includes(c)?'\\'+c:c).join('');
 const wordForm=de=>String(de||'').replace(/^(der|die|das|ein|eine)\s+/i,'').trim();
@@ -71,10 +79,12 @@ function renderList(){const root=$('dialogList');root.replaceChildren();$('dialo
 function renderChallenge(){
  const panel=$('dialogB2Challenge'),scene=state.selected;
  if(!panel)return;
- panel.hidden=!(state.level==='B2'&&state.mode==='situations'&&scene);
+ panel.hidden=!(['B2','C1'].includes(state.level)&&state.mode==='situations'&&scene);
  if(panel.hidden)return;
- const prompt=b2Challenges[state.challengeIndex%b2Challenges.length];
- $('dialogChallengeNum').textContent=String(state.challengeIndex%b2Challenges.length+1)+' / '+b2Challenges.length;
+ const prompts=challengesFor(),prompt=prompts[state.challengeIndex%prompts.length];
+ $('dialogChallengeLevel').textContent=state.level+' · '+(state.level==='C1'?'CRITICAL DISCOURSE':'ARGUMENTATION PRACTICE');
+ $('dialogChallengeTitle').textContent=state.level==='C1'?'Analyse · Qualify · Synthesize':'Continue the discussion';
+ $('dialogChallengeNum').textContent=String(state.challengeIndex%prompts.length+1)+' / '+prompts.length;
  $('dialogChallengeDe').textContent=prompt[0];
  $('dialogChallengeEn').textContent=$('dialogShowEnglish').checked?prompt[1]:'';
  $('dialogChallengeEn').hidden=!$('dialogShowEnglish').checked;
@@ -133,18 +143,18 @@ async function init(){const empty=$('dialogEmpty');try{
  const original=JSON.parse(node.textContent);
  const originalBank=Array.isArray(original.bank)?original.bank:[];
  const expanded=Array.isArray(window.WortWegNounExpansion?.entries)?window.WortWegNounExpansion.entries:[];
- for(const level of ['A1','A2','B1','B2']){
+ for(const level of ['A1','A2','B1','B2','C1']){
   const bank=originalBank.filter(w=>w.level===level);
   const curated=level==='A1'?[]:(original.curated||[]).filter(w=>w.level===level);
   const nouns=expanded.filter(w=>w.level===level);
   state.words=[...bank.map((w,i)=>({...w,key:'b:'+String(w.id??i),source:'Word Bank'})),...curated.map((w,i)=>({...w,key:'c:'+String(w.id??i),source:'Curated '+level+' List'})),...nouns.map((w,i)=>({...w,key:'n:'+String(w.id??i),source:'Noun Expansion'}))];
-  const source={A1:window.WortWegA1Situations,A2:window.WortWegA2Situations,B1:window.WortWegB1Situations,B2:window.WortWegB2Situations}[level];
+  const source={A1:window.WortWegA1Situations,A2:window.WortWegA2Situations,B1:window.WortWegB1Situations,B2:window.WortWegB2Situations,C1:window.WortWegC1Situations}[level];
   if(!Array.isArray(source)||!source.length)throw Error(level+' authored dialogues could not load');
   const scenes=source.map(row=>{const scene={id:'scene:'+row[0],title:row[1],desc:row[2],speakers:row[3],turns:row[4]};scene.words=findInScene(scene);return scene;});
   state.collections[level]={words:state.words,scenes,entries:state.words.map(wordScene),bankCount:bank.length,curatedCount:curated.length,nounCount:nouns.length};
  }
  const requestLevel=new URL(window.location.href).searchParams.get('level');
- setLevel(['A1','A2','B1','B2'].includes(requestLevel)?requestLevel:'A1');
+ setLevel(['A1','A2','B1','B2','C1'].includes(requestLevel)?requestLevel:'A1');
  }catch(err){empty.textContent='Could not load your WortWeg Word Bank: '+err.message+'. Please open WortWeg Home online once, then reopen Dialog.';}}
 document.querySelectorAll('.dialog-levels button').forEach(btn=>btn.addEventListener('click',()=>{
  setLevel(btn.dataset.level);
@@ -156,8 +166,8 @@ document.querySelectorAll('.dialog-tabs button').forEach(btn=>btn.addEventListen
 $('dialogSearch').addEventListener('input',filter);$('dialogIncomplete').addEventListener('change',filter);
 $('dialogShowEnglish').addEventListener('change',renderReader);$('dialogShowMyanmar').addEventListener('change',renderReader);
 $('dialogRoleplay').addEventListener('change',renderReader);
- $('dialogChallengeNext').addEventListener('click',()=>{state.challengeIndex=(state.challengeIndex+1)%b2Challenges.length;renderChallenge();});
- $('dialogChallengeSpeak').addEventListener('click',()=>{stopSpeech();speak(b2Challenges[state.challengeIndex%b2Challenges.length][0]);});
+ $('dialogChallengeNext').addEventListener('click',()=>{state.challengeIndex=(state.challengeIndex+1)%challengesFor().length;renderChallenge();});
+ $('dialogChallengeSpeak').addEventListener('click',()=>{stopSpeech();speak(challengesFor()[state.challengeIndex%challengesFor().length][0]);});
 $('dialogSpeakAll').addEventListener('click',playAll);$('dialogStop').addEventListener('click',stopSpeech);
 $('dialogMark').addEventListener('click',()=>{if(!state.selected)return;const id=state.selected.id;
  if(state.done[id])delete state.done[id];else state.done[id]=true;save();refreshCount();
