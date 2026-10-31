@@ -1,0 +1,184 @@
+/* WortWeg 370 | 2026 quality layer.
+ * Scope: presentation, responsive layout, focus and touch ergonomics.
+ * Intentionally never targets .ww-donut-* or changes chart data/progress state.
+ * Works with legacy UI; safe to remove by unlinking this file.
+ */
+:root{
+  --wwq-primary:#155f83;--wwq-primary-strong:#103f65;
+  --wwq-focus:#1589b6;--wwq-shadow:0 8px 28px rgba(24,59,92,.075);
+  --wwq-shadow-hover:0 13px 35px rgba(24,59,92,.14);
+  --wwq-radius:18px;--wwq-motion:180ms;
+  --wwq-measure:78ch;
+}
+html{scroll-padding-top:84px;text-size-adjust:100%;-webkit-text-size-adjust:100%}
+body{overscroll-behavior-x:none}
+body :where(button,input,select,textarea){font-family:inherit}
+body :where(button,a,input,select,textarea,[tabindex]):focus-visible{
+  outline:3px solid var(--wwq-focus)!important;outline-offset:3px!important;
+}
+body :where(button,a){-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+body :where(button):disabled{cursor:not-allowed}
+body :where(textarea,input,select){max-width:100%}
+body :where(p,li,td,th,small){overflow-wrap:break-word}
+body :where(table){font-variant-numeric:tabular-nums}
+body :where([hidden]){display:none!important}
+.wwq-skip{
+  position:fixed;top:7px;left:12px;z-index:2147483647;
+  transform:translateY(-170%);padding:11px 16px;background:#113f65;
+  border-radius:12px;color:#fff!important;text-decoration:none;font-weight:800;
+  border:2px solid #fff;box-shadow:var(--wwq-shadow);
+}
+.wwq-skip:focus{transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  body :where(*, *::before, *::after){scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+/* Home: intentionally leaves original pie / progress graph untouched. */
+body.ww-game-interface #dashboard .ww-home-focus{
+  padding:0 0 8px;max-width:1060px;margin-inline:auto;
+}
+body.ww-game-interface #dashboard .ww-home-focus-head{margin-bottom:18px}
+body.ww-game-interface #dashboard .ww-home-focus-copy h3{
+  font-size:clamp(23px,3.2vw,31px);line-height:1.2;
+}
+body.ww-game-interface #dashboard .ww-home-focus-sub{
+  max-width:65ch;font-size:clamp(13px,1.1vw,15px);line-height:1.6;
+}
+body.ww-game-interface #dashboard .ww-home-focus-primary{
+  min-height:106px;border-radius:20px;padding:clamp(16px,2vw,23px);
+  box-shadow:0 10px 26px rgba(15,62,105,.18);
+}
+body.ww-game-interface #dashboard .ww-home-focus-primary:focus-visible{outline-color:#0ca8dc!important}
+body.ww-game-interface #dashboard .ww-home-focus-section{font-size:17px;margin:24px 0 12px}
+body.ww-game-interface #dashboard .ww-home-focus-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+body.ww-game-interface #dashboard .ww-home-focus-tile{
+  flex-direction:row;gap:13px;align-items:flex-start;
+  min-height:118px;padding:17px;
+  border-radius:17px;
+  box-shadow:var(--wwq-shadow);
+  transition:border-color var(--wwq-motion),transform var(--wwq-motion),box-shadow var(--wwq-motion);
+}
+body.ww-game-interface #dashboard .ww-home-focus-tile-icon{
+  flex:none;width:43px;height:43px;border-radius:13px;
+  font-size:19px;
+}
+body.ww-game-interface #dashboard .ww-home-focus-tile-copy{min-width:0;gap:5px}
+body.ww-game-interface #dashboard .ww-home-focus-tile-copy strong{
+  font-size:clamp(14px,1.1vw,16px);line-height:1.35;letter-spacing:-.015em;
+}
+body.ww-game-interface #dashboard .ww-home-focus-tile-copy small{
+  font-size:12px;line-height:1.55;overflow-wrap:anywhere;
+}
+body.ww-game-interface #dashboard .ww-home-focus-tile:hover{
+  transform:translateY(-2px);box-shadow:var(--wwq-shadow-hover);
+  border-color:color-mix(in srgb,var(--accent,#167c99) 42%,var(--line,#d9e2ec));
+}
+body.ww-game-interface #dashboard .ww-home-focus-tile:active{transform:translateY(0)}
+body.ww-game-interface #dashboard .ww-home-dialog-link{
+  min-height:44px;
+}
+body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-link{
+  margin-bottom:5px;
+}
+/* In-app tool panes */
+body.ww-game-interface :where(.ww-page-nav,.wg-header){scroll-margin-top:15px}
+body.ww-game-interface :where(.wg-panel,.wg-roadmap,.wg-summary){
+  box-shadow:0 4px 18px rgba(24,60,90,.035);
+}
+body.ww-game-interface :where(.wg-btn,.ww-page-nav button,.ww-menu-back){min-height:44px}
+body.ww-game-interface .wg-body{max-width:980px}
+body.ww-game-interface :where(.wg-panel,.wg-lesson){overflow-wrap:anywhere}
+body.ww-game-interface .wg-panel{line-height:1.75}
+body.ww-game-interface .wwr-window button{min-height:42px}
+body.ww-game-interface .wwr-row{line-height:1.85}
+/* Dialog pages: clarity, more generous touch targets and readable conversations. */
+body:has(.dialog-app){--wwq-primary:#155d85}
+body:has(.dialog-app) :where(.dialog-header){border-bottom:1px solid rgba(255,255,255,.16)}
+body:has(.dialog-app) :where(.dialog-levels button,.dialog-tabs button){
+  min-height:46px;transition:box-shadow var(--wwq-motion),transform var(--wwq-motion);
+}
+body:has(.dialog-app) :where(.dialog-levels button,.dialog-tabs button):hover{box-shadow:var(--wwq-shadow)}
+body:has(.dialog-app) :where(.dialog-sidebar,.dialog-reader,.dialog-intro>div){
+  box-shadow:var(--wwq-shadow);
+}
+body:has(.dialog-app) :where(.dialog-reader,.dialog-sidebar){min-width:0}
+body:has(.dialog-app) :where(.dialog-reader p,.dialog-reader .dialog-turn){overflow-wrap:anywhere}
+body:has(.dialog-app) :where(.search-wrap input){font-size:16px}
+body:has(.dialog-app) :where(.back-home){min-height:44px}
+/* The Goethe / Gender / Lifetime materials: readable tables and robust controls. */
+body:has(#app .hero) :where(.levelcard,.topiccard),
+body:has(#main .hero) :where(.tile){
+  box-shadow:var(--wwq-shadow);transition:box-shadow var(--wwq-motion),border-color var(--wwq-motion),transform var(--wwq-motion);
+}
+body:has(#app .hero) :where(.levelcard,.topiccard):hover,
+body:has(#main .hero) :where(.tile):hover{
+  transform:translateY(-2px);box-shadow:var(--wwq-shadow-hover);
+}
+body:has(#app .hero) :where(.tab,.btn,.nav-button,.radio),
+body:has(#main .hero) :where(button,.navbtn){
+  min-height:44px;
+}
+body:has(#app .hero) :where(.tab[aria-selected=true],.btn:not(.secondary)):focus-visible{outline-color:#6bc9f0!important}
+body:has(#app .hero) :where(.body,.task,.card){line-height:1.7}
+body:has(#app .hero) :where(.german){line-height:1.85;overflow-wrap:anywhere}
+body:has(#app .hero) :where(.draft,.search){font-size:16px}
+body:has(#app .hero) :where(.table-wrap),
+body:has(#main .hero) :where(.tablewrap),
+body:has(#wl-app) :where(.wl-table-wrap){
+  overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch;
+}
+body:has(#main .hero) :where(.lessonbody p,.notes){line-height:1.75}
+body:has(#main .hero) :where(.tile){min-height:128px}
+/* Lifetime grammar and reading libraries */
+body:has(#wl-app) :where(.wl-chapter,.wl-topic,.wl-panel,.wl-stat){
+  box-shadow:var(--wwq-shadow);
+}
+body:has(#wl-app) :where(.wl-mini,.wl-action,.wl-select){min-height:44px}
+body:has(#wl-app) :where(.wl-topic,.wl-chapter){
+  transition:border-color var(--wwq-motion),box-shadow var(--wwq-motion),transform var(--wwq-motion);
+}
+body:has(#wl-app) :where(.wl-topic,.wl-chapter):hover{
+  transform:translateY(-2px);box-shadow:var(--wwq-shadow-hover);
+}
+body:has(#wl-app) :where(.wl-reference,.wl-panel){overflow-wrap:anywhere}
+body:has(.story-duo) :where(.chapter,.metric){box-shadow:var(--wwq-shadow)}
+body:has(.story-duo) :where(.speech-play,.speech-stop,.speech-rate,.tab){min-height:44px}
+body:has(.story-duo) :where(.chapter p.german){line-height:1.9}
+body:has(.story-duo) :where(.chapter p.english){line-height:1.85}
+body:has(.story-duo) :where(.story-col){min-width:0}
+body:has(.window .levels) :where(.level){box-shadow:0 6px 20px rgba(28,64,94,.055)}
+body:has(.window .levels) :where(.level):hover{box-shadow:var(--wwq-shadow-hover)}
+body:has(.window .levels) :where(.back){min-height:44px;align-content:center}
+/* Mobile refinements for all surfaces */
+@media(max-width:900px){
+ body.ww-game-interface #dashboard .ww-home-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:620px){
+ body.ww-game-interface #dashboard .ww-home-focus-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ body.ww-game-interface #dashboard .ww-home-focus-tile{flex-direction:column;min-height:145px;gap:9px;padding:13px}
+ body.ww-game-interface #dashboard .ww-home-focus-tile-icon{width:39px;height:39px}
+ body.ww-game-interface #dashboard .ww-home-focus-tile-copy strong{font-size:14px}
+ body.ww-game-interface #dashboard .ww-home-focus-tile-copy small{font-size:12px;line-height:1.4}
+ body:has(#app .hero) :where(.top),
+ body:has(#main .hero) :where(.top){gap:7px}
+ body:has(#app .hero) :where(.tab){min-height:44px}
+ body:has(#wl-app) :where(.wl-top){gap:6px;flex-wrap:wrap}
+ body:has(#wl-app) :where(.wl-mini){padding:9px}
+ body:has(.story-duo) :where(.chapter){padding:16px}
+}
+@media(max-width:370px){
+ body.ww-game-interface #dashboard .ww-home-focus-grid{grid-template-columns:minmax(0,1fr)}
+ body.ww-game-interface #dashboard .ww-home-focus-tile{flex-direction:row;min-height:96px}
+ body:has(#app .hero) :where(.actions .btn){width:100%}
+}
+@media(prefers-contrast:more){
+ body :where(button,a,input,select,textarea):focus-visible{outline-width:4px!important}
+ body.ww-game-interface #dashboard .ww-home-focus-tile{border-width:2px}
+}
+@media(forced-colors:active){
+ body :where(button,a,input,select,textarea):focus-visible{outline:2px solid Highlight!important}
+ body.ww-game-interface #dashboard .ww-home-focus-tile{border:1px solid ButtonText}
+}
