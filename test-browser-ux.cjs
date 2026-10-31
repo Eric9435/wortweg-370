@@ -199,6 +199,39 @@ async function themeContrast(browser){
  }
 }
 
+
+async function comic(browser,width){
+ const p=await createPage(browser,width);
+ try{
+  await goto(p,'a1-comic.html');
+  await p.waitForSelector('[data-action="chapter"]',{timeout:12000});
+  const coverage=await p.evaluate(()=>window.WortWegA1Comic?.getCoverage());
+  check('A1 comic 642 records @'+width,coverage?.sourceWords===642&&coverage?.uniqueIds===642,'actual '+JSON.stringify(coverage));
+  check('A1 comic 18 episodes @'+width,await p.$eval('[data-action="chapter"]',xs=>xs.length)===18);
+  check('A1 comic 112 panels @'+width,coverage?.panels===112);
+  await inspect(p,'A1 comic library @'+width);
+  await screenshot(p,'comic-library-'+width);
+  await p.click('[data-action="chapter"][data-index="0"]');
+  check('A1 comic illustrated stage @'+width,!!await p.$('.comic-screen svg[role="img"]'));
+  check('A1 comic 2 speech balloons @'+width,await p.$eval('.comic-bubble',xs=>xs.length)===2);
+  check('A1 comic 6 vocabulary chips @'+width,await p.$eval('.comic-word',xs=>xs.length)===6);
+  await inspect(p,'A1 comic reader @'+width);
+  await screenshot(p,'comic-reader-'+width);
+  await p.click('[data-action="meanings"]');
+  check('A1 comic meaning reveal @'+width,await p.$eval('.comic-translation',x=>!x.textContent.includes('hidden')));
+  await p.click('[data-action="learn-word"]');
+  check('A1 comic independent progress @'+width,await p.$eval('.comic-word .tick',e=>e.textContent.includes('✓')));
+  await p.click('#nextPanel');
+  check('A1 comic panel navigation @'+width,await p.$eval('.comic-scene-right',e=>e.textContent.includes('2 /')));
+  await p.click('[data-action="quiz"]');
+  check('A1 comic quiz choices @'+width,await p.$eval('[data-action="pick"]',xs=>xs.length)===4);
+  await p.click('[data-action="pick"]');
+  await p.click('[data-action="submit-quiz"]');
+  check('A1 comic quiz answer @'+width,!!await p.$('.comic-quiz-feedback'));
+ }catch(e){check('A1 comic interaction @'+width,false,String(e).slice(0,340))}
+ finally{await p.close()}
+}
+
 async function reading(browser,width){
  const p=await createPage(browser,width);
  try{
@@ -257,6 +290,7 @@ async function run(){
    await goethe(browser,width);
    await gender(browser,width);
    await reading(browser,width);
+   await comic(browser,width);
   }
   for(const width of [390,1366]){await dialog(browser,width);await home(browser,width)}
   await themeContrast(browser);
