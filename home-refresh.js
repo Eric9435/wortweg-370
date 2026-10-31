@@ -31,10 +31,41 @@ const primaryCopy=make('span','ww-home-focus-primary-copy');primaryCopy.append(m
 primary.append(make('span','ww-home-focus-primary-icon','↗'),primaryCopy,make('span','ww-home-focus-chevron','›'));
 primary.addEventListener('click',()=>actions[0].run());zone.append(primary);
 const label=make('h4','ww-home-focus-section','Learning tools');zone.append(label);
-const grid=make('div','ww-home-focus-grid');for(const a of actions.slice(1).filter(item=>item.id!=='dialog')){
- const b=make('button','ww-home-focus-tile ww-home-focus-'+a.id);b.type='button';
+
+const finder=make('div','wwq-module-finder');
+const finderLabel=make('label','wwq-module-label','Find a learning tool');
+finderLabel.htmlFor='wwq-module-search';
+const finderInput=make('input','wwq-module-search');
+finderInput.id='wwq-module-search';finderInput.type='search';finderInput.autocomplete='off';
+finderInput.placeholder='Search reading, Goethe, grammar, dialogue…';
+finderInput.setAttribute('aria-controls','ww-home-learning-grid');
+const finderResult=make('span','wwq-module-results');
+finderResult.setAttribute('role','status');finderResult.setAttribute('aria-live','polite');
+finder.append(finderLabel,finderInput,finderResult);
+zone.append(finder);
+const grid=make('div','ww-home-focus-grid');grid.id='ww-home-learning-grid';for(const a of actions.slice(1).filter(item=>item.id!=='dialog')){
+ const b=make('button','ww-home-focus-tile ww-home-focus-'+a.id);b.type='button';b.dataset.wwqSearch=(a.title+' '+a.caption+' '+a.id).toLocaleLowerCase();
  const icon=make('span','ww-home-focus-tile-icon',a.icon),copy=make('span','ww-home-focus-tile-copy');copy.append(make('strong','',a.title),make('small','',a.caption));b.append(icon,copy);b.addEventListener('click',()=>a.run());grid.append(b);
-}zone.append(grid);
+ }zone.append(grid);
+const tileList=Array.from(grid.querySelectorAll('button'));
+function filterLearningTools(){
+ const q=finderInput.value.trim().toLocaleLowerCase();
+ let visible=0;
+ for(const tile of tileList){const found=!q||tile.dataset.wwqSearch.includes(q);tile.hidden=!found;if(found)visible++;}
+ finderResult.textContent=q?(visible+' of '+tileList.length+' tools'):'';
+}
+finderInput.addEventListener('input',filterLearningTools);
+finderInput.addEventListener('keydown',e=>{
+ if(e.key==='Escape'){finderInput.value='';filterLearningTools();return;}
+ if(e.key==='Enter'){const first=tileList.find(tile=>!tile.hidden);if(first){e.preventDefault();first.click();}}
+});
+document.addEventListener('keydown',e=>{
+ if(e.key!=='/'||e.altKey||e.ctrlKey||e.metaKey)return;
+ const tag=e.target?.tagName||'';
+ if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||e.target?.isContentEditable)return;
+ const active=dashboard.classList.contains('active')||dashboard.querySelector('.ww-main-menu');
+ if(active){e.preventDefault();finderInput.focus();}
+});
 const dialogLink=make('a','ww-home-dialog-link');
 dialogLink.href='./dialog.html';
 dialogLink.setAttribute('aria-label','Open standalone A1, A2, B1, B2, C1 and C2 German conversations');
@@ -45,6 +76,13 @@ menu.classList.add('ww-home-modern');
 zone.classList.remove('ww-home-focus-classic');
 try{localStorage.removeItem('wortweg370-home-view');}catch{}
 window.WortWegHomeRefresh={open:()=>zone.scrollIntoView({behavior:'smooth',block:'start'})};
+/* Shared site-wide polish and keyboard skip navigation. No chart DOM is altered. */
+for(const [tag,url] of [['link','./quality-2026.css'],['script','./quality-2026.js']]){
+ const el=document.createElement(tag);
+ if(tag==='link')el.rel='stylesheet';else el.defer=true;
+ if(tag==='link')el.href=url;else el.src=url;
+ document.head.append(el);
+}
 const checklistScript=document.createElement('script');checklistScript.src='./learning-checklist.js?v=7';document.body.append(checklistScript);
 })();
 /* All six language-support categories use one independent learning collection. */
