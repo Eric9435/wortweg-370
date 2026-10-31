@@ -101,6 +101,16 @@ body.ww-game-interface #dashboard .wwq-module-search{
 body.ww-game-interface #dashboard .wwq-module-search::placeholder{
   color:var(--muted,#68798a);opacity:.85;
 }
+body.ww-game-interface #dashboard .wwq-dialog-search-result{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:44px;padding:10px 14px;border-radius:12px;border:1px solid #277da3;
+ text-decoration:none;font-size:13px;font-weight:800;
+ background:#e6f4fa;color:#134963;
+}
+body.ww-game-interface #dashboard .wwq-dialog-search-result:hover{border-color:#125a88;background:#d8edf9}
+html[data-mode=dark] body.ww-game-interface #dashboard .wwq-dialog-search-result{
+ background:#223f56;color:#dff4ff;border-color:#6491b0;
+}
 body.ww-game-interface #dashboard .wwq-module-results{
   min-width:60px;font-size:12px;color:var(--muted);
 }
