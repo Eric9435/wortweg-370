@@ -335,3 +335,113 @@ body.ww-game-interface .audio-banner-close{
    box-shadow:0 9px 25px rgba(8,35,63,.15);
  }
 }
+
+
+/* Gender Lifetime: color-scheme collision repair (2026-11-01).
+ * The embedded lesson CSS follows OS prefers-color-scheme, while WortWeg
+ * settings can explicitly request the opposite mode. When OS=dark and
+ * settings=light, the old dark lessonhead/even rows retained dark backgrounds
+ * but inherited dark lettering. Bind BOTH foreground and background to the
+ * effective app appearance. Keep scope to Gender; preserve home progress pie.
+ */
+html[data-mode="light"] body:has(.shell > .hero) .lessonhead{
+  background:#f3f8fd;
+  color:#182b46;
+  border-bottom-color:#dce6f0;
+}
+html[data-mode="light"] body:has(.shell > .hero) .lessonhead h2{
+  color:#122e4d;
+}
+html[data-mode="light"] body:has(.shell > .hero) .lessonhead .over{
+  color:#175f96;
+}
+html[data-mode="light"] body:has(.shell > .hero) .lessonhead p{
+  color:#526c84;
+}
+html[data-mode="light"] body:has(.shell > .hero) .lessonbody{
+  color:#182b46;
+}
+html[data-mode="light"] body:has(.shell > .hero) .tablewrap{
+  background:#fff;
+  border-color:#dce6f0;
+  color:#182b46;
+}
+html[data-mode="light"] body:has(.shell > .hero) .tablewrap thead th{
+  background:#e9f2fa;
+  color:#233f5d;
+}
+html[data-mode="light"] body:has(.shell > .hero) .tablewrap tbody tr{
+  background:#fff;
+  color:#182b46;
+}
+html[data-mode="light"] body:has(.shell > .hero) .tablewrap tbody tr:nth-child(even){
+  background:#f1f6fb;
+  color:#182b46;
+}
+html[data-mode="light"] body:has(.shell > .hero) .tablewrap tbody td{
+  color:#182b46;
+  border-bottom-color:#dce6f0;
+}
+html[data-mode="light"] body:has(.shell > .hero) .notes{
+  background:#edf5fc;
+  color:#294760;
+}
+html[data-mode="light"] body:has(.shell > .hero) .quiz{
+  background:#fbfdff;
+  color:#182b46;
+}
+html[data-mode="light"] body:has(.shell > .hero) .quiz .answers label{
+  background:#fff;
+  color:#182b46;
+}
+html[data-mode="light"] body:has(.shell > .hero) .quiz .answers label:has(input:checked){
+  background:#e6f3fb;
+  color:#143b5b;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .lessonhead{
+  background:#1f3850;
+  color:#eaf4fe;
+  border-bottom-color:#3d5874;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .lessonhead h2{
+  color:#f4f9ff;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .lessonhead .over{
+  color:#99d0f8;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .lessonhead p{
+  color:#c2d7e8;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .lessonbody{
+  color:#e7f2fc;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .tablewrap{
+  background:#182b40;
+  color:#e7f2fc;
+  border-color:#395874;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .tablewrap thead th{
+  background:#254661;
+  color:#edf7ff;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .tablewrap tbody tr{
+  background:#182b40;
+  color:#e7f2fc;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .tablewrap tbody tr:nth-child(even){
+  background:#203950;
+  color:#e7f2fc;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .tablewrap tbody td{
+  color:#e7f2fc;
+  border-bottom-color:#395874;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .quiz,
+html[data-mode="dark"] body:has(.shell > .hero) .quiz .answers label{
+  background:#1a3048;
+  color:#e7f2fc;
+}
+html[data-mode="dark"] body:has(.shell > .hero) .quiz .answers label:has(input:checked){
+  background:#26506c;
+  color:#f2f9ff;
+}
