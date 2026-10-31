@@ -221,4 +221,6 @@ jobs:
         run: node test-settings-navigation.cjs
       - name: Verify card-free UI and authentication entry
         run: node mobile/scripts/test-ui.mjs
+      - name: Verify site-wide responsive UI and preserve original CEFR pie
+        run: node test-quality-2026.cjs
 
