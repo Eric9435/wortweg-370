@@ -94,6 +94,14 @@ async function gender(browser,width){
   await screenshot(p,'gender-'+width);
   await p.click('[data-open="0"]');
   check('Gender lesson 1 opens @'+width,!!await p.$('.lesson'));
+  if(width===360){
+   const info=await p.evaluate(()=>{
+    const button=document.getElementById('next'),r=button.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;
+    const front=document.elementFromPoint(x,y);
+    return {button:{x:Math.round(x),y:Math.round(y),width:r.width,height:r.height},front:front?.outerHTML?.slice(0,200),scrollY:window.scrollY,viewportHeight:innerHeight};
+   });
+   console.log('GENDER_360_NAV_DEBUG '+JSON.stringify(info));
+  }
   await p.click('#next');
   const nextHeading=await p.$eval('.lessonhead h2',x=>x.textContent.trim());
   check('Gender next navigation @'+width,nextHeading.includes('57 Gender Ending'),'actual heading: '+nextHeading);
