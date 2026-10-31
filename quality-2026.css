@@ -135,15 +135,15 @@ body:has(.dialog-app) :where(.search-wrap input){font-size:16px}
 body:has(.dialog-app) :where(.back-home){min-height:44px}
 /* The Goethe / Gender / Lifetime materials: readable tables and robust controls. */
 body:has(#app .hero) :where(.levelcard,.topiccard),
-body:has(#main .hero) :where(.tile){
+body:has(.shell > .hero) :where(.tile){
   box-shadow:var(--wwq-shadow);transition:box-shadow var(--wwq-motion),border-color var(--wwq-motion),transform var(--wwq-motion);
 }
 body:has(#app .hero) :where(.levelcard,.topiccard):hover,
-body:has(#main .hero) :where(.tile):hover{
+body:has(.shell > .hero) :where(.tile):hover{
   transform:translateY(-2px);box-shadow:var(--wwq-shadow-hover);
 }
 body:has(#app .hero) :where(.tab,.btn,.nav-button,.radio),
-body:has(#main .hero) :where(button,.navbtn){
+body:has(.shell > .hero) :where(button,.navbtn){
   min-height:44px;
 }
 body:has(#app .hero) :where(.tab[aria-selected=true],.btn:not(.secondary)):focus-visible{outline-color:#6bc9f0!important}
@@ -151,12 +151,12 @@ body:has(#app .hero) :where(.body,.task,.card){line-height:1.7}
 body:has(#app .hero) :where(.german){line-height:1.85;overflow-wrap:anywhere}
 body:has(#app .hero) :where(.draft,.search){font-size:16px}
 body:has(#app .hero) :where(.table-wrap),
-body:has(#main .hero) :where(.tablewrap),
+body:has(.shell > .hero) :where(.tablewrap),
 body:has(#wl-app) :where(.wl-table-wrap){
   overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch;
 }
-body:has(#main .hero) :where(.lessonbody p,.notes){line-height:1.75}
-body:has(#main .hero) :where(.tile){min-height:128px}
+body:has(.shell > .hero) :where(.lessonbody p,.notes){line-height:1.75}
+body:has(.shell > .hero) :where(.tile){min-height:128px}
 /* Lifetime grammar and reading libraries */
 body:has(#wl-app) :where(.wl-chapter,.wl-topic,.wl-panel,.wl-stat){
   box-shadow:var(--wwq-shadow);
@@ -188,7 +188,7 @@ body:has(.window .levels) :where(.back){min-height:44px;align-content:center}
  body.ww-game-interface #dashboard .ww-home-focus-tile-copy strong{font-size:14px}
  body.ww-game-interface #dashboard .ww-home-focus-tile-copy small{font-size:12px;line-height:1.4}
  body:has(#app .hero) :where(.top),
- body:has(#main .hero) :where(.top){gap:7px}
+ body:has(.shell > .hero) :where(.top){gap:7px}
  body:has(#app .hero) :where(.tab){min-height:44px}
  body:has(#wl-app) :where(.wl-top){gap:6px;flex-wrap:wrap}
  body:has(#wl-app) :where(.wl-mini){padding:9px}
@@ -217,13 +217,13 @@ html[data-mode=light]:root{
  --txt:#182b46;--dark:#0d3158;--green:#138264;--pink:#b73a76;
 }
 html[data-mode=light] body:has(#app .hero){background:var(--bg);color:var(--text)}
-html[data-mode=light] body:has(#main .hero){background:var(--bg);color:var(--txt)}
+html[data-mode=light] body:has(.shell > .hero){background:var(--bg);color:var(--txt)}
 html[data-mode=light] body:has(#app .hero) :is(.top,.levelcard,.topiccard,.panel,.card,.task,.radio,.draft,.search,.tab){
  background:#fff;color:#172d4a;border-color:#dbe5ef;
 }
 html[data-mode=light] body:has(#app .hero) :is(.panelhead,.tabs){background:#f1f7fc}
 html[data-mode=light] body:has(#app .hero) :is(.tab[aria-selected=true]){background:#163e66;color:white}
-html[data-mode=light] body:has(#main .hero) :is(.top,.tile,.lesson,.tablewrap,.quiz){background:#fff;color:#182b46;border-color:#dbe5ef}
+html[data-mode=light] body:has(.shell > .hero) :is(.top,.tile,.lesson,.tablewrap,.quiz){background:#fff;color:#182b46;border-color:#dbe5ef}
 html[data-mode=dark]:root{
  color-scheme:dark;
  --bg:#0d1b2b;--paper:#182b40;--text:#e7f2fc;--muted:#b4c7d9;
@@ -234,21 +234,21 @@ html[data-mode=dark]:root{
 }
 html[data-mode=dark] body:not(.ww-game-interface){background:#0d1b2b;color:#e7f2fc}
 html[data-mode=dark] body:has(#app .hero) :where(.top,.panel,.levelcard,.topiccard,.card,.task,.radio,.draft,.search,.tab),
-html[data-mode=dark] body:has(#main .hero) :where(.top,.tile,.lesson,.tablewrap,.quiz){
+html[data-mode=dark] body:has(.shell > .hero) :where(.top,.tile,.lesson,.tablewrap,.quiz){
  background:#182b40;color:#e7f2fc;border-color:#36526c;
 }
 html[data-mode=dark] body:has(#app .hero) :where(.panelhead,.tabs),
-html[data-mode=dark] body:has(#main .hero) :where(.lessonhead){background:#203b53;color:#e7f2fc}
+html[data-mode=dark] body:has(.shell > .hero) :where(.lessonhead){background:#203b53;color:#e7f2fc}
 html[data-mode=dark] body:has(#app .hero) :where(.btn.secondary,.nav-button){background:#294963;color:#e7f2fc}
 html[data-mode=dark] body:has(#app .hero) :where(.tab[aria-selected=true]){background:#28638b;color:#fff}
 html[data-mode=dark] body:has(#app .hero) :where(.radio:has(input:checked)){background:#204862}
 html[data-mode=dark] body:has(#app .hero) :where(.notice,.hintbar){background:#26435a;color:#e2f3fc;border-color:#3e617b}
-html[data-mode=dark] body:has(#main .hero) :where(.notes){background:#23415a;color:#e6f2fe}
-html[data-mode=dark] body:has(#main .hero) :where(.pill){background:#294661;color:#e9f5ff}
+html[data-mode=dark] body:has(.shell > .hero) :where(.notes){background:#23415a;color:#e6f2fe}
+html[data-mode=dark] body:has(.shell > .hero) :where(.pill){background:#294661;color:#e9f5ff}
 html[data-mode=dark] body:has(#app .hero) :where(.table-wrap th),
-html[data-mode=dark] body:has(#main .hero) :where(.tablewrap th){background:#254661;color:#e1f3fe}
+html[data-mode=dark] body:has(.shell > .hero) :where(.tablewrap th){background:#254661;color:#e1f3fe}
 html[data-mode=dark] body:has(#app .hero) :where(.table-wrap tbody tr:nth-child(even)),
-html[data-mode=dark] body:has(#main .hero) :where(.tablewrap tbody tr:nth-child(even)){background:#1c334a}
+html[data-mode=dark] body:has(.shell > .hero) :where(.tablewrap tbody tr:nth-child(even)){background:#1c334a}
 html[data-mode=dark] body:has(.dialog-app){background:#0d1b2b;color:#e7f2fc}
 html[data-mode=dark] body:has(.dialog-app) :where(.dialog-sidebar,.dialog-reader,.dialog-intro>div,.dialog-tabs button,.dialog-levels button,.search-wrap){
  background:#192d43;color:#e7f2fc;border-color:#38546c;
