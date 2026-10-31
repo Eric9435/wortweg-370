@@ -110,7 +110,16 @@ async function gender(browser,width){
    });
    console.log('GENDER_360_HITTEST '+JSON.stringify(hit));
   }
+  if(width===360)await p.evaluate(()=>{
+    window.__genderClickTrace=[];
+    for(const kind of ['pointerdown','mousedown','mouseup','click','touchstart','touchend']){
+      document.addEventListener(kind,e=>{
+        window.__genderClickTrace.push({kind,target:e.target?.id||e.target?.className?.toString().slice(0,40)||e.target?.tagName, x:e.clientX??null,y:e.clientY??null});
+      },true);
+    }
+  });
   await p.click('#next');
+  if(width===360)console.log('GENDER_360_EVENTS '+JSON.stringify(await p.evaluate(()=>window.__genderClickTrace)));
   const nextHeading=await p.$eval('.lessonhead h2',x=>x.textContent.trim());
   check('Gender next navigation @'+width,nextHeading.includes('57 Gender Ending'),'actual heading: '+nextHeading);
   await p.click('#topics');
@@ -171,12 +180,14 @@ async function run(){
  note('Chromium binary',bin);
  const browser=await puppeteer.launch({executablePath:bin,headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--disable-gpu']});
  try{
+  if(process.env.WW_AUDIT_ONLY_GENDER==='1'){await gender(browser,360)}else{
   for(const width of [360,390,768,1366]){
    await goethe(browser,width);
    await gender(browser,width);
    await reading(browser,width);
   }
   for(const width of [390,1366]){await dialog(browser,width);await home(browser,width)}
+  }
  }finally{await browser.close();await new Promise(resolve=>server.close(resolve))}
  const report={timestamp:new Date().toISOString(),passed:results.filter(x=>x.pass).length,failed:results.filter(x=>!x.pass).length,tests:results,warnings};
  fs.writeFileSync(path.join(screenshots,'report.json'),JSON.stringify(report,null,2));
