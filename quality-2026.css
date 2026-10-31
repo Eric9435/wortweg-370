@@ -320,3 +320,18 @@ body.ww-game-interface .audio-banner-close{
  body:has(.shell > .hero) .lesson .controls button{min-width:0;min-height:46px;white-space:normal;font-size:13px;touch-action:manipulation}
  body:has(.shell > .hero) .lesson .controls .steps button{width:100%}
 }
+
+/* The small-screen visual viewport can clip a footer-aligned hit target.
+ * Keep mobile chapter navigation directly below the header instead, and
+ * hide the course landing hero while a chapter is open (one-window flow). */
+@media(max-width:570px){
+ body:has(.shell > .hero):has(.lesson) .hero{display:none}
+ body:has(.shell > .hero):has(.lesson) .shell{
+   padding-top:120px;
+   padding-bottom:32px;
+ }
+ body:has(.shell > .hero) .lesson .controls{
+   inset:62px 0 auto 0;
+   box-shadow:0 9px 25px rgba(8,35,63,.15);
+ }
+}
