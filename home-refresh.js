@@ -28,7 +28,7 @@ const group=make('div','ww-home-focus-copy');group.append(make('p','ww-home-focu
 heading.append(group);zone.append(heading);
 const primary=make('button','ww-home-focus-primary');primary.type='button';
 const primaryCopy=make('span','ww-home-focus-primary-copy');primaryCopy.append(make('small','','PICK UP WHERE YOU LEFT OFF'),make('strong','','Continue vocabulary'),make('span','','Learn new German words'));
-primary.append(make('span','ww-home-focus-primary-icon','↗'),primaryCopy,make('span','ww-home-focus-chevron','›'));
+const pIcon=make('span','ww-home-focus-primary-icon','↗'),pChevron=make('span','ww-home-focus-chevron','›');pIcon.setAttribute('aria-hidden','true');pChevron.setAttribute('aria-hidden','true');primary.append(pIcon,primaryCopy,pChevron);
 primary.addEventListener('click',()=>actions[0].run());zone.append(primary);
 const label=make('h4','ww-home-focus-section','Learning tools');zone.append(label);
 
@@ -45,7 +45,7 @@ finder.append(finderLabel,finderInput,finderResult);
 zone.append(finder);
 const grid=make('div','ww-home-focus-grid');grid.id='ww-home-learning-grid';for(const a of actions.slice(1).filter(item=>item.id!=='dialog')){
  const b=make('button','ww-home-focus-tile ww-home-focus-'+a.id);b.type='button';b.dataset.wwqSearch=(a.title+' '+a.caption+' '+a.id).toLocaleLowerCase();
- const icon=make('span','ww-home-focus-tile-icon',a.icon),copy=make('span','ww-home-focus-tile-copy');copy.append(make('strong','',a.title),make('small','',a.caption));b.append(icon,copy);b.addEventListener('click',()=>a.run());grid.append(b);
+ const icon=make('span','ww-home-focus-tile-icon',a.icon),copy=make('span','ww-home-focus-tile-copy');icon.setAttribute('aria-hidden','true');copy.append(make('strong','',a.title),make('small','',a.caption));b.append(icon,copy);b.addEventListener('click',()=>a.run());grid.append(b);
  }zone.append(grid);
 const tileList=Array.from(grid.querySelectorAll('button'));
 function filterLearningTools(){
@@ -63,7 +63,7 @@ document.addEventListener('keydown',e=>{
  if(e.key!=='/'||e.altKey||e.ctrlKey||e.metaKey)return;
  const tag=e.target?.tagName||'';
  if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||e.target?.isContentEditable)return;
- const active=dashboard.classList.contains('active')||dashboard.querySelector('.ww-main-menu');
+ const active=dashboard.classList.contains('active')||(!!dashboard.getClientRects?.().length&&!dashboard.hidden);
  if(active){e.preventDefault();finderInput.focus();}
 });
 const dialogLink=make('a','ww-home-dialog-link');
