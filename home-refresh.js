@@ -10,6 +10,7 @@ const clickExisting=(selector)=>{const target=$(selector);if(target){target.clic
 const actions=[
  {id:'learn',icon:'↗',title:'Learn vocabulary',caption:'Continue learning',run:()=>clickExisting('.ww-menu-primary')||clickExisting('[data-nav="topics"]')},
  {id:'complete-reading',icon:'▤',title:'Complete Reading',caption:'A1–C2 levels · German & English',run:()=>{window.location.href='./complete-reading.html';return true;}},
+ {id:'a1-comic',icon:'✦',title:'Animated A1 Comic',caption:'18 illustrated stories · all 642 A1 words',run:()=>{window.location.href='./a1-comic.html';return true;}},
  {id:'dialog',icon:'◉',title:'Dialog',caption:'A1–C2 conversations · source-based practice',run:()=>{window.location.href='./dialog.html';return true;}},
  {id:'write',icon:'✎',title:'Writing',caption:'Memorize by typing',run:()=>{if(window.WortWegWriting?.open){window.WortWegWriting.open();return true;}return clickExisting('#ww-writing-launch');}},
  {id:'flashcards',icon:'▣',title:'Flashcards',caption:'Flip all vocabulary words',run:()=>{if(window.WortWegFlashcards?.open){window.WortWegFlashcards.open();return true;}return clickExisting('#ww-flashcards-launch');}},
