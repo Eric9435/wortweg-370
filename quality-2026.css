@@ -207,3 +207,67 @@ body:has(.window .levels) :where(.back){min-height:44px;align-content:center}
  body :where(button,a,input,select,textarea):focus-visible{outline:2px solid Highlight!important}
  body.ww-game-interface #dashboard .ww-home-focus-tile{border:1px solid ButtonText}
 }
+
+/* Saved appearance: standalone pages follow WortWeg Settings, including OS mode.
+   The main app manages its own appearance and is deliberately excluded. */
+html[data-mode=light]:root{
+ color-scheme:light;
+ --bg:#f4f7fb;--paper:#fff;--text:#172d4a;--muted:#5c738d;
+ --line:#dbe5ef;--blue:#1b5d92;--teal:#0c8b81;--soft:#eaf4fa;--accent:#163e66;
+ --txt:#182b46;--dark:#0d3158;--green:#138264;--pink:#b73a76;
+}
+html[data-mode=light] body:has(#app .hero){background:var(--bg);color:var(--text)}
+html[data-mode=light] body:has(#main .hero){background:var(--bg);color:var(--txt)}
+html[data-mode=light] body:has(#app .hero) :is(.top,.levelcard,.topiccard,.panel,.card,.task,.radio,.draft,.search,.tab){
+ background:#fff;color:#172d4a;border-color:#dbe5ef;
+}
+html[data-mode=light] body:has(#app .hero) :is(.panelhead,.tabs){background:#f1f7fc}
+html[data-mode=light] body:has(#app .hero) :is(.tab[aria-selected=true]){background:#163e66;color:white}
+html[data-mode=light] body:has(#main .hero) :is(.top,.tile,.lesson,.tablewrap,.quiz){background:#fff;color:#182b46;border-color:#dbe5ef}
+html[data-mode=dark]:root{
+ color-scheme:dark;
+ --bg:#0d1b2b;--paper:#182b40;--text:#e7f2fc;--muted:#b4c7d9;
+ --line:#36526c;--blue:#91cefa;--teal:#64d2bc;--soft:#263e55;--accent:#1b5981;
+ --txt:#e7f2fc;--dark:#255b80;--green:#53d6ac;--pink:#ed9dc8;
+ --wwq-primary:#89cfff;--wwq-primary-strong:#cbeafa;
+ --wwq-focus:#7fd5ff;
+}
+html[data-mode=dark] body:not(.ww-game-interface){background:#0d1b2b;color:#e7f2fc}
+html[data-mode=dark] body:has(#app .hero) :where(.top,.panel,.levelcard,.topiccard,.card,.task,.radio,.draft,.search,.tab),
+html[data-mode=dark] body:has(#main .hero) :where(.top,.tile,.lesson,.tablewrap,.quiz){
+ background:#182b40;color:#e7f2fc;border-color:#36526c;
+}
+html[data-mode=dark] body:has(#app .hero) :where(.panelhead,.tabs),
+html[data-mode=dark] body:has(#main .hero) :where(.lessonhead){background:#203b53;color:#e7f2fc}
+html[data-mode=dark] body:has(#app .hero) :where(.btn.secondary,.nav-button){background:#294963;color:#e7f2fc}
+html[data-mode=dark] body:has(#app .hero) :where(.tab[aria-selected=true]){background:#28638b;color:#fff}
+html[data-mode=dark] body:has(#app .hero) :where(.radio:has(input:checked)){background:#204862}
+html[data-mode=dark] body:has(#app .hero) :where(.notice,.hintbar){background:#26435a;color:#e2f3fc;border-color:#3e617b}
+html[data-mode=dark] body:has(#main .hero) :where(.notes){background:#23415a;color:#e6f2fe}
+html[data-mode=dark] body:has(#main .hero) :where(.pill){background:#294661;color:#e9f5ff}
+html[data-mode=dark] body:has(#app .hero) :where(.table-wrap th),
+html[data-mode=dark] body:has(#main .hero) :where(.tablewrap th){background:#254661;color:#e1f3fe}
+html[data-mode=dark] body:has(#app .hero) :where(.table-wrap tbody tr:nth-child(even)),
+html[data-mode=dark] body:has(#main .hero) :where(.tablewrap tbody tr:nth-child(even)){background:#1c334a}
+html[data-mode=dark] body:has(.dialog-app){background:#0d1b2b;color:#e7f2fc}
+html[data-mode=dark] body:has(.dialog-app) :where(.dialog-sidebar,.dialog-reader,.dialog-intro>div,.dialog-tabs button,.dialog-levels button,.search-wrap){
+ background:#192d43;color:#e7f2fc;border-color:#38546c;
+}
+html[data-mode=dark] body:has(.dialog-app) :where(.dialog-intro strong,.dialog-header h1,.dialog-sidebar strong,.dialog-reader strong,.search-wrap input){color:#e7f2fc}
+html[data-mode=dark] body:has(.dialog-app) :where(.dialog-intro small,.dialog-summary span,.dialog-intro span,.toggle){color:#b9cee2}
+html[data-mode=dark] body:has(.dialog-app) :where(.dialog-tabs button[aria-pressed=true],.dialog-levels button[aria-pressed=true]){background:#24658c;color:white}
+html[data-mode=dark] body:has(.story-duo){background:#0d1b2b;color:#e7f2fc}
+html[data-mode=dark] body:has(.story-duo) :where(.chapter,.metric,.story-col,.german-col,.english-col,.tab,.speech-stop,.speech-rate){background:#1a3048;color:#e7f2fc;border-color:#395874}
+html[data-mode=dark] body:has(.story-duo) :where(.chapter p.german,.chapter p.english,.story-lang,.metric strong,.metric span){color:#e7f2fc}
+html[data-mode=dark] body:has(.story-duo) :where(.chapter .minor){color:#bdd0e1}
+html[data-mode=dark] body:has(.story-duo) :where(.tab[aria-selected=true],.speech-play){background:#286a90;color:white}
+html[data-mode=dark] body:has(.window .levels) :where(.window,.level){background:#182d43;color:#e8f4fe;border-color:#3c5873}
+html[data-mode=dark] body:has(.window .levels) :where(.intro,.foot){color:#e8f4fe}
+html[data-mode=dark] body:has(.window .levels) :where(.level small,.intro p){color:#c6d8e9}
+html[data-mode=dark] body:has(#wl-app) :where(.wl-top,.wl-chapter,.wl-topic,.wl-panel,.wl-stat,.wl-reference,.wl-mini,.wl-action,.wl-select,.wl-search){background:#182d43;color:#e7f2fc;border-color:#36526c}
+html[data-mode=dark] body:has(#wl-app) :where(.wl-muted,.wl-stat span,.wl-chapter small,.wl-topic small){color:#b6cce0}
+html[data-mode=dark] body:has(#wl-app) :where(.wl-top strong){color:#e7f2fc}
+html[data-mode=dark] body:has(#wl-app) :where(.wl-primary){background:#147b80;color:#fff}
+html[data-font=large] body:not(.ww-game-interface){font-size:17px}
+html[data-font=extra] body:not(.ww-game-interface){font-size:18px}
+html[data-font=small] body:not(.ww-game-interface){font-size:14px}
