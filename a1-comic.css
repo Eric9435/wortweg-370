@@ -45,3 +45,32 @@ html[data-mode="dark"]{color-scheme:dark;--bg:#091727;--paper:#162e45;--ink:#ecf
 html[data-mode="dark"] .comic-word{background:#213f55;color:#ecf6ff;border-color:#416482}html[data-mode="dark"] .comic-word[aria-pressed=true]{background:#1f5869}html[data-mode="dark"] .comic-word-detail,html[data-mode="dark"] .comic-quiz,html[data-mode="dark"] .comic-notice{background:#1c394f;color:#eef8ff;border-color:#3d647c}html[data-mode="dark"] .comic-translation,html[data-mode="dark"] .comic-word-detail .meta{color:#c2dae9}html[data-mode="dark"] .comic-quiz-options button{background:#254159;color:#eff7ff}html[data-mode="dark"] .comic-reader-footer{background:#1e374f}
 html[data-mode="light"]{color-scheme:light;--bg:#edf4f8;--paper:#fff;--ink:#132941;--muted:#587189;--line:#cbdce9;--brand:#0b416b;--teal:#008f9c;--pale:#eaf6f9}
 html[data-mode="light"] .comic-word{background:#f0f7fa;color:#132941;border-color:#c7dae8}html[data-mode="light"] .comic-word[aria-pressed=true]{background:#d5f3f5}html[data-mode="light"] .comic-word-detail,html[data-mode="light"] .comic-notice{background:#edfaff;color:#132941}html[data-mode="light"] .comic-reader-footer{background:#f8fcfe}
+
+
+/* Effective WortWeg theme wins over OS settings; prevent mixed-mode controls. */
+html[data-mode="light"] .comic-quiz-options button,
+html[data-mode="light"] .comic-search-results button{
+ background:#fff;color:#17354d;border-color:#b5ccd7;
+}
+html[data-mode="light"] .comic-quiz,
+html[data-mode="light"] .comic-stat,
+html[data-mode="light"] .comic-reader,
+html[data-mode="light"] .comic-reader-top,
+html[data-mode="light"] .comic-chapter,
+html[data-mode="light"] .comic-input{
+ background:#fff;color:#132941;border-color:#cbdce9;
+}
+html[data-mode="light"] .comic-quiz{background:#f3fbfd}
+html[data-mode="light"] .comic-translation{color:#3e6174}
+html[data-mode="dark"] .comic-stat,
+html[data-mode="dark"] .comic-chapter,
+html[data-mode="dark"] .comic-reader,
+html[data-mode="dark"] .comic-reader-top,
+html[data-mode="dark"] .comic-input,
+html[data-mode="dark"] .comic-search-results{
+ background:#162e45;color:#ecf6ff;border-color:#36546e;
+}
+html[data-mode="dark"] .comic-search-results button{background:#162e45;color:#ecf6ff}
+html[data-mode="dark"] .comic-chapter h3,
+html[data-mode="dark"] .comic-stat strong{color:#ecf6ff}
+html[data-mode="dark"] .comic-btn.secondary{color:#ecf6ff;background:#25465f}
