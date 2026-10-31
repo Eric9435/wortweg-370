@@ -16,7 +16,7 @@ const load=()=>{try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return x
 let stored=load();
 if(!stored.known||typeof stored.known!=='object')stored.known={};
 if(!stored.quiz||typeof stored.quiz!=='object')stored.quiz={};
-let st={chapter:null,panel:0,selected:0,meanings:false,playing:false,quiz:false,question:0,chosen:null,submitted:false,filter:''},auto=null;
+let st={chapter:null,panel:0,selected:0,meanings:false,playing:false,narrate:false,quiz:false,question:0,chosen:null,submitted:false,filter:''},auto=null;
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(stored))}catch{}};
 const known=id=>!!stored.known[id];
 const studied=()=>words.filter(w=>known(w.id)).length;
@@ -129,11 +129,11 @@ function renderPanel(){
  const panelNumber=st.panel+1;
  document.title=e.title+' · Panel '+panelNumber+' | WortWeg';
  app.innerHTML='<nav class="comic-crumb">'+button('home','‹ All episodes','secondary')+'<span> / '+E(e.title)+' / Panel '+panelNumber+'</span></nav>'+
- '<article class="comic-reader"><div class="comic-reader-top"><div class="comic-reader-titles"><small>EPISODE '+String(st.chapter+1).padStart(2,'0')+' / '+eps.length+'</small><h1>'+E(e.title)+'</h1><p>'+E(e.my)+' · '+epiDone(e)+' / '+e.words.length+' learned</p></div><div class="tools">'+button('meanings',st.meanings?'Hide meanings':'Show meanings','secondary','aria-pressed="'+st.meanings+'"')+button('play',st.playing?'Ⅱ Pause auto':'▶ Auto play','secondary','aria-pressed="'+st.playing+'"')+button('quiz','Quick quiz','secondary')+'</div></div>'+
+ '<article class="comic-reader"><div class="comic-reader-top"><div class="comic-reader-titles"><small>EPISODE '+String(st.chapter+1).padStart(2,'0')+' / '+eps.length+'</small><h1>'+E(e.title)+'</h1><p>'+E(e.my)+' · '+epiDone(e)+' / '+e.words.length+' learned</p></div><div class="tools">'+button('meanings',st.meanings?'Hide meanings':'Show meanings','secondary','aria-pressed="'+st.meanings+'"')+button('play',st.playing?'Ⅱ Pause auto':'▶ Auto play','secondary','aria-pressed="'+st.playing+'"')+button('narration',st.narrate?'🔈 Voice on':'🔇 Voice off','secondary','aria-pressed="'+st.narrate+'"')+button('quiz','Quick quiz','secondary')+'</div></div>'+
  '<div class="comic-screen comic-animate">'+svgBackdrop(e,st.chapter+'-'+st.panel)+
  '<div class="comic-bubble one"><div class="speaker">'+E(dialogues[0])+'</div><div class="line" lang="de">'+E(dialogues[1])+'</div><button type="button" data-action="speak-dialog" data-voice="first" aria-label="Hear the first speaker">🔊 Listen</button></div>'+
  '<div class="comic-bubble two"><div class="speaker">'+E(dialogues[2])+'</div><div class="line" lang="de">'+E(dialogues[3])+'</div><button type="button" data-action="speak-dialog" data-voice="second" aria-label="Hear the second speaker">🔊 Listen</button></div>'+
- '<div class="comic-scene-label">'+E(e.sub)+'</div><div class="comic-scene-label comic-scene-right">PANEL '+panelNumber+' / '+panels(e)+'</div></div>'+
+ '<div class="comic-spotlight" aria-live="polite"><small>VOCABULARY SPOTLIGHT</small><strong id="comicSpotlightWord" lang="de">'+E(active.de)+'</strong></div><div class="comic-scene-label">'+E(e.sub)+'</div><div class="comic-scene-label comic-scene-right">PANEL '+panelNumber+' / '+panels(e)+'</div></div>'+
  '<div class="comic-reader-content"><div class="comic-progress-head"><span>Comic panel '+panelNumber+' / '+panels(e)+'</span><span>'+E(e.words.length)+' source words · '+epiDone(e)+' learned</span></div><div class="comic-panel-progress">'+panelProgress(e)+'</div>'+
  '<div class="comic-words-head"><div><h2>Words in this panel</h2><p>Tap a German word to hear it, reveal its meaning or mark it learned.</p></div><span class="comic-chapter-meta">'+panelWords.length+' / '+PAGE+' spotlight entries</span></div>'+
  '<div id="comicWords" class="comic-words">'+panelWords.map((w,k)=>'<button type="button" class="comic-word" data-action="word" data-index="'+k+'" aria-pressed="'+(k===st.selected)+'"><strong lang="de">'+E(w.de)+'</strong><small>#'+w.id+' · '+E(w.type)+'</small>'+(known(w.id)?'<span class="tick" aria-label="Learned">✓</span>':'')+'</button>').join('')+'</div>'+
@@ -151,6 +151,7 @@ function refreshSelection(){
  st.selected=Math.min(Math.max(0,st.selected),panel.length-1);
  app.querySelectorAll('.comic-word').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===st.selected));const word=panel[i];b.querySelector('.tick')?.remove();if(known(word.id)){const span=document.createElement('span');span.className='tick';span.setAttribute('aria-label','Learned');span.textContent='✓';b.append(span)}});
  const details=document.getElementById('comicWordDetails');if(details)details.innerHTML=renderDetails(panel[st.selected]);
+ const stageWord=document.getElementById('comicSpotlightWord');if(stageWord){stageWord.textContent=panel[st.selected].de;const card=stageWord.parentElement;card.classList.remove('comic-shimmer');void card.offsetWidth;card.classList.add('comic-shimmer')}
  const metrics=document.querySelector('.comic-reader-titles p');if(metrics)metrics.textContent=e.my+' · '+epiDone(e)+' / '+e.words.length+' learned';
  const top=document.querySelector('.comic-progress-head span:last-child');if(top)top.textContent=e.words.length+' source words · '+epiDone(e)+' learned';
  const percentage=document.querySelector('.comic-reader-footer .center span');if(percentage)percentage.textContent=progress(epiDone(e),e.words.length)+'% vocabulary reviewed';
@@ -169,7 +170,8 @@ function autoPlay(){
  if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches){message('Auto-play is disabled when reduced motion is requested. Use Next panel instead.');return}
  st.playing=true;
  const b=app.querySelector('[data-action="play"]');if(b){b.textContent='Ⅱ Pause auto';b.setAttribute('aria-pressed','true')}
- auto=setInterval(()=>{if(!document.hidden&&st.chapter!==null&&!st.quiz)move(1)},8000);
+ if(st.narrate){const w=current(record())[st.selected];if(w)say(w.de)}
+ auto=setInterval(()=>{if(document.hidden||st.chapter===null||st.quiz)return;const list=current(record());if(st.selected<list.length-1){st.selected++;refreshSelection()}else{move(1)}if(st.narrate&&!st.quiz){const w=current(record())[st.selected];if(w)say(w.de)}},2900);
 }
 function quizQuestions(e){
  const terms=e.words.filter(w=>w.en.trim()).slice();
@@ -203,10 +205,11 @@ function handleAction(el){
  if(action==='next')return move(1);
  if(action==='meanings'){st.meanings=!st.meanings;return refreshSelection()}
  if(action==='play')return autoPlay();
+ if(action==='narration'){st.narrate=!st.narrate;el.textContent=st.narrate?'🔈 Voice on':'🔇 Voice off';el.setAttribute('aria-pressed',String(st.narrate));if(st.narrate){const w=current(record())[st.selected];if(w)say(w.de)}else window.speechSynthesis?.cancel?.();return}
  if(action==='speak-word'){const w=current(record())[st.selected];if(w)say(w.de);return}
  if(action==='learn-word'){const w=current(record())[st.selected];if(!w)return;stored.known[w.id]=!known(w.id);save();return refreshSelection()}
  if(action==='speak-dialog'){const e=record();if(!e)return;const d=e.beats[st.panel%e.beats.length];say(d[el.dataset.voice==='first'?1:3]);return}
- if(action==='quiz'){halt();st.quiz=true;st.question=0;st.chosen=null;st.submitted=false;return renderQuiz()}
+ if(action==='quiz'){halt();st.quiz=true;st.question=0;st.chosen=null;st.submitted=false;st._score=0;return renderQuiz()}
  if(action==='close-quiz'){st.quiz=false;return renderPanel()}
  if(action==='pick'){if(st.submitted)return;st.chosen=idx;return renderQuiz()}
  if(action==='submit-quiz'){
