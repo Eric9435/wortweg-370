@@ -1,0 +1,83 @@
+name: Export A1-C2 German-only A4 vocabulary PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'scripts/export_a1_c2_wordlist.py'
+      - '.github/workflows/export-a1-c2-wordlist.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wortweg-a1-c2-export
+  cancel-in-progress: true
+
+jobs:
+  pdf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out WortWeg vocabulary data
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install PDF generation and validation packages
+        run: |
+          python -m pip install --disable-pip-version-check reportlab pypdf
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-dejavu-core
+      - name: Export all A1-C2 German word entries
+        run: |
+          python scripts/export_a1_c2_wordlist.py --index index.html \
+            --output WortWeg_A1-C2_German_Words_A4_4_Columns.pdf \
+            --summary WortWeg_A1-C2_export_summary.json
+      - name: Verify A4 pages, 4-column layout and original vocabulary counts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from pypdf import PdfReader
+          data=json.loads(Path('WortWeg_A1-C2_export_summary.json').read_text())
+          expected={'A1':642,'A2':932,'B1':931,'B2':2117,'C1':3088,'C2':3166}
+          assert data['entries']==10876, data
+          assert {level:x['entries'] for level,x in data['levels'].items()}==expected
+          pdf=PdfReader('WortWeg_A1-C2_German_Words_A4_4_Columns.pdf')
+          assert len(pdf.pages)==data['pages'], (len(pdf.pages),data['pages'])
+          for page in pdf.pages:
+              assert abs(float(page.mediabox.width)-595.27559)<.4
+              assert abs(float(page.mediabox.height)-841.88976)<.4
+          first=pdf.pages[0].extract_text()
+          last=pdf.pages[-1].extract_text()
+          assert 'A1' in first and 'der Abend' in first
+          assert 'C2' in last
+          assert not any('\u1000'<=c<='\u109f' for c in first+last)
+          assert pdf.trailer['/Root'].get('/Outlines')
+          print('VALIDATED',data['entries'],'German entries,',len(pdf.pages),'A4 pages, 6 CEFR levels')
+          PY
+      - name: Provide direct downloadable PDF build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WortWeg-A1-C2-German-Only-A4-Four-Columns
+          path: |
+            WortWeg_A1-C2_German_Words_A4_4_Columns.pdf
+            WortWeg_A1-C2_export_summary.json
+          retention-days: 90
+      - name: Publish PDF as a direct WortWeg download
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add WortWeg_A1-C2_German_Words_A4_4_Columns.pdf WortWeg_A1-C2_export_summary.json
+          if git diff --cached --quiet; then
+            echo "Vocabulary PDF is already current"
+          else
+            git commit -m "docs(export): publish complete A1-C2 German-only four-column A4 PDF"
+            git push
+          fi
