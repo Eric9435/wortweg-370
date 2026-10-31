@@ -204,17 +204,19 @@ async function comic(browser,width){
  const p=await createPage(browser,width);
  try{
   await goto(p,'a1-comic.html');
+  await p.evaluate(()=>localStorage.removeItem('wortweg370-a1-comic-v1'));
+  await p.reload({waitUntil:'domcontentloaded'});
   await p.waitForSelector('[data-action="chapter"]',{timeout:12000});
   const coverage=await p.evaluate(()=>window.WortWegA1Comic?.getCoverage());
   check('A1 comic 642 records @'+width,coverage?.sourceWords===642&&coverage?.uniqueIds===642,'actual '+JSON.stringify(coverage));
-  check('A1 comic 18 episodes @'+width,await p.$eval('[data-action="chapter"]',xs=>xs.length)===18);
+  check('A1 comic 18 episodes @'+width,await p.$$eval('[data-action="chapter"]',xs=>xs.length)===18);
   check('A1 comic 112 panels @'+width,coverage?.panels===112);
   await inspect(p,'A1 comic library @'+width);
   await screenshot(p,'comic-library-'+width);
   await p.click('[data-action="chapter"][data-index="0"]');
   check('A1 comic illustrated stage @'+width,!!await p.$('.comic-screen svg[role="img"]'));
-  check('A1 comic 2 speech balloons @'+width,await p.$eval('.comic-bubble',xs=>xs.length)===2);
-  check('A1 comic 6 vocabulary chips @'+width,await p.$eval('.comic-word',xs=>xs.length)===6);
+  check('A1 comic 2 speech balloons @'+width,await p.$$eval('.comic-bubble',xs=>xs.length)===2);
+  check('A1 comic 6 vocabulary chips @'+width,await p.$$eval('.comic-word',xs=>xs.length)===6);
   await inspect(p,'A1 comic reader @'+width);
   await screenshot(p,'comic-reader-'+width);
   await p.click('[data-action="meanings"]');
@@ -224,7 +226,7 @@ async function comic(browser,width){
   await p.click('#nextPanel');
   check('A1 comic panel navigation @'+width,await p.$eval('.comic-scene-right',e=>e.textContent.includes('2 /')));
   await p.click('[data-action="quiz"]');
-  check('A1 comic quiz choices @'+width,await p.$eval('[data-action="pick"]',xs=>xs.length)===4);
+  check('A1 comic quiz choices @'+width,await p.$$eval('[data-action="pick"]',xs=>xs.length)===4);
   await p.click('[data-action="pick"]');
   await p.click('[data-action="submit-quiz"]');
   check('A1 comic quiz answer @'+width,!!await p.$('.comic-quiz-feedback'));
