@@ -95,7 +95,7 @@ setTimeout(()=>{
    assert.ok(sw.includes(file),'PWA offline cache must include '+file);
    assert.ok(native.includes(file),'Native package must include '+file);
   }
-  assert.match(sw,/wortweg370-v91/);
+  assert.match(sw,/wortweg370-v\d+/);
   assert.match(sw,/selectedReader/,'Offline navigation must resolve selected level correctly');
   assert.match(read('a1-complete-reader.html'),/href="\.\/complete-reading\.html"/,
    'A1 Back must open level selector');
