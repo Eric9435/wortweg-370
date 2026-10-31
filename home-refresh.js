@@ -41,7 +41,10 @@ finderInput.placeholder='Search reading, Goethe, grammar, dialogue…';
 finderInput.setAttribute('aria-controls','ww-home-learning-grid');
 const finderResult=make('span','wwq-module-results');
 finderResult.setAttribute('role','status');finderResult.setAttribute('aria-live','polite');
-finder.append(finderLabel,finderInput,finderResult);
+const dialogSearch=make('a','wwq-dialog-search-result','Open Dialog · A1–C2 ↗');
+dialogSearch.href='./dialog.html';
+dialogSearch.hidden=true;
+finder.append(finderLabel,finderInput,finderResult,dialogSearch);
 zone.append(finder);
 const grid=make('div','ww-home-focus-grid');grid.id='ww-home-learning-grid';for(const a of actions.slice(1).filter(item=>item.id!=='dialog')){
  const b=make('button','ww-home-focus-tile ww-home-focus-'+a.id);b.type='button';b.dataset.wwqSearch=(a.title+' '+a.caption+' '+a.id).toLocaleLowerCase();
@@ -52,12 +55,16 @@ function filterLearningTools(){
  const q=finderInput.value.trim().toLocaleLowerCase();
  let visible=0;
  for(const tile of tileList){const found=!q||tile.dataset.wwqSearch.includes(q);tile.hidden=!found;if(found)visible++;}
- finderResult.textContent=q?(visible+' of '+tileList.length+' tools'):'';
+ const dialogFound=!!q&&['dialog','dialogue','conversation','sprechen','speaking','စကားပြော'].some(term=>term.includes(q)||q.includes(term));
+ dialogSearch.hidden=!dialogFound;
+ if(dialogFound)visible++;
+ finderResult.textContent=q?(visible+' of '+(tileList.length+1)+' tools'):'';
+ finderResult.textContent=q&&visible===0?'No matching learning tools':finderResult.textContent;
 }
 finderInput.addEventListener('input',filterLearningTools);
 finderInput.addEventListener('keydown',e=>{
  if(e.key==='Escape'){finderInput.value='';filterLearningTools();return;}
- if(e.key==='Enter'){const first=tileList.find(tile=>!tile.hidden);if(first){e.preventDefault();first.click();}}
+ if(e.key==='Enter'){const first=tileList.find(tile=>!tile.hidden);if(first){e.preventDefault();first.click();}else if(!dialogSearch.hidden){e.preventDefault();dialogSearch.click();}}
 });
 document.addEventListener('keydown',e=>{
  if(e.key!=='/'||e.altKey||e.ctrlKey||e.metaKey)return;
