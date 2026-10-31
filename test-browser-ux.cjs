@@ -102,11 +102,19 @@ async function gender(browser,width){
    });
    console.log('GENDER_360_NAV_DEBUG '+JSON.stringify(info));
   }
+  await p.$eval('#next',el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+  if(width===360){
+   const hit=await p.evaluate(()=>{
+     const b=document.getElementById('next'),r=b.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;
+     return {nextVisibleAt:{x,y},hit:document.elementFromPoint(x,y)?.outerHTML?.slice(0,160)};
+   });
+   console.log('GENDER_360_HITTEST '+JSON.stringify(hit));
+  }
   await p.click('#next');
   const nextHeading=await p.$eval('.lessonhead h2',x=>x.textContent.trim());
   check('Gender next navigation @'+width,nextHeading.includes('57 Gender Ending'),'actual heading: '+nextHeading);
   await p.click('#topics');
-  const tileCount=await p.$eval('.tile',xs=>xs.length);
+  const tileCount=await p.$$eval('.tile',xs=>xs.length);
   check('Gender returns to chapter menu @'+width,tileCount===14,'actual tiles: '+tileCount);
  }catch(e){check('Gender interaction @'+width,false,String(e).slice(0,270))}finally{await p.close()}
 }
