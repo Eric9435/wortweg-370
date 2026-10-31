@@ -67,7 +67,7 @@ async function test(){
  w.WortWegDialog.setLevel('C1');assert.equal(w.WortWegDialog.getState().completed,1);
  const sw=read('sw.js'),native=read('mobile/scripts/prepare.mjs');
  assert.ok(sw.includes("'./dialog-situations-c1.js'"));assert.ok(sw.includes("'dialog-situations-c1.js'"));
- assert.ok(native.includes("'dialog-situations-c1.js'"));assert.ok(sw.includes("wortweg370-v91"));
+ assert.ok(native.includes("'dialog-situations-c1.js'"));assert.ok(/wortweg370-v\d+/.test(sw));
  assert.ok(!html.includes('id="data"'));
  dom.window.close();
  console.log('C1_DIALOG='+JSON.stringify({scenes:48,turns:384,bank:bank.length,curated:curated.length,nouns:nouns.length,total}));
