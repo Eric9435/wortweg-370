@@ -127,6 +127,78 @@ async function gender(browser,width){
   check('Gender returns to chapter menu @'+width,tileCount===14,'actual tiles: '+tileCount);
  }catch(e){check('Gender interaction @'+width,false,String(e).slice(0,270))}finally{await p.close()}
 }
+
+/* Regression for OS Dark Mode + WortWeg Light Mode. This mismatch caused
+ * unreadable navy-on-navy chapter headings and alternating Gender table rows. */
+async function themeContrast(browser){
+ const p=await createPage(browser,1366);
+ const key='wortweg370-settings-v1';
+ const cases=[
+  {os:'dark',saved:'light',expectLight:true},
+  {os:'light',saved:'dark',expectLight:false},
+  {os:'light',saved:'system',expectLight:true},
+  {os:'dark',saved:'system',expectLight:false}
+ ];
+ let prior=null;
+ try{
+  await goto(p,'gender-lifetime.html');
+  prior=await p.evaluate(k=>localStorage.getItem(k),key);
+  for(const t of cases){
+   await p.emulateMediaFeatures([{name:'prefers-color-scheme',value:t.os}]);
+   await p.evaluate(({key,mode})=>localStorage.setItem(key,JSON.stringify({mode})),{key,mode:t.saved});
+   await p.reload({waitUntil:'domcontentloaded'});
+   await p.waitForSelector('[data-open="1"]',{timeout:10000});
+   await p.click('[data-open="1"]');
+   const m=await p.evaluate(()=>{
+    const rgb=x=>{
+     const v=String(x).match(/[\d.]+/g)?.slice(0,3).map(Number);
+     return v?.length===3?v:[0,0,0];
+    };
+    const lum=c=>{
+     const linear=rgb(c).map(x=>{x/=255;return x<=.04045?x/12.92:((x+.055)/1.055)**2.4});
+     return .2126*linear[0]+.7152*linear[1]+.0722*linear[2];
+    };
+    const ratio=(fg,bg)=>{
+     const a=lum(fg),b=lum(bg);
+     return (Math.max(a,b)+.05)/(Math.min(a,b)+.05);
+    };
+    const head=document.querySelector('.lessonhead'),title=head.querySelector('h2');
+    const stripe=document.querySelector('.tablewrap tbody tr:nth-child(even)');
+    const stripedText=stripe?.querySelector('td');
+    const th=document.querySelector('.tablewrap thead th');
+    return {
+     mode:document.documentElement.dataset.mode,
+     headColor:getComputedStyle(head).backgroundColor,
+     titleColor:getComputedStyle(title).color,
+     stripeColor:getComputedStyle(stripe).backgroundColor,
+     stripeTextColor:getComputedStyle(stripedText).color,
+     thColor:getComputedStyle(th).backgroundColor,
+     thTextColor:getComputedStyle(th).color,
+     titleContrast:ratio(getComputedStyle(title).color,getComputedStyle(head).backgroundColor),
+     stripeContrast:ratio(getComputedStyle(stripedText).color,getComputedStyle(stripe).backgroundColor),
+     thContrast:ratio(getComputedStyle(th).color,getComputedStyle(th).backgroundColor),
+     headLuminance:lum(getComputedStyle(head).backgroundColor),
+     stripeLuminance:lum(getComputedStyle(stripe).backgroundColor)
+    };
+   });
+   const id='Gender theme OS='+t.os+' setting='+t.saved;
+   check(id+' effective mode',m.mode===(t.saved==='system'?t.os:t.saved),JSON.stringify(m));
+   check(id+' readable contrast',m.titleContrast>=4.5&&m.stripeContrast>=4.5&&m.thContrast>=4.5,
+    'title='+m.titleContrast.toFixed(1)+' stripe='+m.stripeContrast.toFixed(1)+' tableHead='+m.thContrast.toFixed(1));
+   check(id+' matched backgrounds',t.expectLight?(m.headLuminance>.65&&m.stripeLuminance>.65):(m.headLuminance<.22&&m.stripeLuminance<.22),
+    'headLum='+m.headLuminance.toFixed(2)+' rowLum='+m.stripeLuminance.toFixed(2));
+   if(t.saved!=='system'){
+     await p.$eval('.lessonhead',el=>el.scrollIntoView({block:'start',behavior:'instant'}));
+     await screenshot(p,'gender-theme-os-'+t.os+'-setting-'+t.saved);
+   }
+  }
+ }catch(e){check('Gender cross-scheme contrast regression',false,String(e).slice(0,340))}
+ finally{
+  try{await p.evaluate(({key,prior})=>{if(prior===null)localStorage.removeItem(key);else localStorage.setItem(key,prior)},{key,prior})}catch{}
+  await p.close();
+ }
+}
+
 async function reading(browser,width){
  const p=await createPage(browser,width);
  try{
@@ -187,6 +259,7 @@ async function run(){
    await reading(browser,width);
   }
   for(const width of [390,1366]){await dialog(browser,width);await home(browser,width)}
+  await themeContrast(browser);
   }
  }finally{await browser.close();await new Promise(resolve=>server.close(resolve))}
  const report={timestamp:new Date().toISOString(),passed:results.filter(x=>x.pass).length,failed:results.filter(x=>!x.pass).length,tests:results,warnings};
