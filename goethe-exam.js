@@ -41,7 +41,7 @@ function renderHome(){
  head();
 }
 function durationTable(lv){const e=DATA.levels[lv].exam;return '<div class="table-wrap"><table><thead><tr><th>Module</th><th>Time</th><th>What you must do</th></tr></thead><tbody>'+skillNames.map((name,i)=>'<tr><td><strong>'+E(name)+'</strong></td><td>'+e.minutes[i]+' min</td><td>'+E(e.parts[i])+'</td></tr>').join('')+'</tbody></table></div>';}
-function levelHeader(lv){const data=DATA.levels[lv];return crumb()+'<section class="panel"><div class="panelhead"><div class="eyebrow" style="color:var(--blue)">GOETHE PREPARATION · '+lv+'</div><h2>'+E(data.exam.title)+'</h2><p>'+E(data.name)+' · '+data.topics.length+' themes · '+countReady(lv)+' topic reviews completed</p></div><div class="tabs" role="tablist" aria-label="'+lv+' exam preparation sections">'+tabs.map(([id,label])=>call('tab',{tab:id},E(label)).replace('<button ','<button class="tab" role="tab" aria-selected="'+(state.tab===id)+'" ')).join('')+'</div><div class="body" id="tabbody">';
+function levelHeader(lv){const data=DATA.levels[lv];return crumb()+'<section class="panel"><div class="panelhead"><div class="eyebrow" style="color:var(--blue)">GOETHE PREPARATION · '+lv+'</div><h2>'+E(data.exam.title)+'</h2><p>'+E(data.name)+' · '+data.topics.length+' themes · '+countReady(lv)+' topic reviews completed</p></div><div class="tabs" role="tablist" aria-label="'+lv+' exam preparation sections">'+tabs.map(([id,label])=>call('tab',{tab:id},E(label)).replace('<button ','<button class="tab" role="tab" aria-controls="tabbody" tabindex="'+(state.tab===id?'0':'-1')+'" aria-selected="'+(state.tab===id)+'" ')).join('')+'</div><div class="body" id="tabbody">';
 }
 function overview(lv){const v=DATA.levels[lv];const listItems=lv==='A1'?['Personal introduction and everyday conversations','Forms, signs and short messages','Ask simple questions and request help']:lv==='A2'?['Describe routines and past events','Arrange appointments and solve everyday problems','Write everyday emails and messages']:lv==='B1'?['Explain experiences and opinions','Write structured emails and contributions','Plan with a partner and give short presentations']:lv==='B2'?['Argue and compare viewpoints','Write a forum contribution and professional message','Present and debate with clear structure']:lv==='C1'?['Use academic and professional language','Handle nuanced social issues and formal writing','Summarise points and respond to counterarguments']:['Interpret implicit meaning and complex arguments','Control register and rewrite text precisely','Sustain sophisticated presentations and debate'];
  return '<div class="info-grid"><section class="card"><div class="skilltag">YOUR LEARNING TARGET</div><h3>'+lv+' outcomes</h3>'+list(listItems)+'</section><section class="card"><div class="skilltag">HOW TO PREPARE</div><h3>Daily learning routine</h3>'+list(['15 min vocabulary + example phrases','15 min grammar with own sentences','20 min Lesen/Hören practice','20 min Schreiben/Sprechen practice','Review mistakes and use the Goethe model test'])+'</section></div><h3 class="sectiontitle">Official exam structure</h3>'+durationTable(lv)+'<div class="actions">'+call('tab',{tab:'topics'},'Explore '+v.topics.length+' topics →').replace('<button ','<button class="btn" ')+call('tab',{tab:'practice'},'Start practice').replace('<button ','<button class="btn secondary" ')+openLink(v.practiceUrl,'Goethe official exam training')+'</div><div class="notice">အောက်က Topic Bank က Goethe စာမေးပွဲမှာ ဒီအတိုင်းပဲ မေးမယ်ဆိုတဲ့ fixed list မဟုတ်ပါ။ A1 topics are anchored to the Goethe Wortliste; A2/B1 are informed by DW; B2/C1 by higher-level coursebooks.</div>';
@@ -117,6 +117,21 @@ app.addEventListener('change',e=>{
  if(el.matches('input[type=radio]')&&(el.name==='reading'||el.name==='listen')){saved.answers[lv]=saved.answers[lv]||{};saved.answers[lv][el.name]=el.value;save();renderLevel();window.scrollTo(0,y);return}
  if(el.dataset.goal){saved.goals[lv]=saved.goals[lv]||{};saved.goals[lv][el.dataset.goal]=el.checked;save();renderLevel();window.scrollTo(0,y);return}
  if(el.dataset.topicFlag&&state.topic!==null){const k=lv+':'+state.topic;saved.flags[k]=saved.flags[k]||{};saved.flags[k][el.dataset.topicFlag]=el.checked;save();topicView();window.scrollTo(0,y);return}
+});
+app.addEventListener('keydown',e=>{
+ const current=e.target?.closest?.('[role="tab"][data-tab]');
+ if(!current)return;
+ const index=tabs.findIndex(t=>t[0]===current.dataset.tab);
+ let next=index;
+ if(e.key==='ArrowRight')next=(index+1)%tabs.length;
+ else if(e.key==='ArrowLeft')next=(index+tabs.length-1)%tabs.length;
+ else if(e.key==='Home')next=0;
+ else if(e.key==='End')next=tabs.length-1;
+ else return;
+ e.preventDefault();
+ const tab=tabs[next][0];
+ goto(state.level,tab);
+ app.querySelector?.('[role="tab"][data-tab="'+tab+'"]')?.focus();
 });
 document.getElementById('back').addEventListener('click',()=>{if(state.topic!==null)goto(state.level,'topics');else goto(null)});
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&state.level){if(state.topic!==null)goto(state.level,'topics');else goto(null)}});
