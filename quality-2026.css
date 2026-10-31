@@ -83,6 +83,31 @@ body.ww-game-interface #dashboard .ww-home-dialog-link{
 body.ww-game-interface #dashboard .ww-menu-top .ww-home-dialog-link{
   margin-bottom:5px;
 }
+
+/* Home module search: quick discovery without changing original curriculum content. */
+body.ww-game-interface #dashboard .wwq-module-finder{
+  display:flex;align-items:center;flex-wrap:wrap;gap:9px 13px;
+  padding:13px 0;margin:0 0 6px;
+}
+body.ww-game-interface #dashboard .wwq-module-label{
+  font-size:13px;font-weight:750;color:var(--txt);
+}
+body.ww-game-interface #dashboard .wwq-module-search{
+  min-width:210px;flex:1;max-width:560px;min-height:46px;
+  padding:10px 14px;border:1px solid var(--line,#cedce9);
+  border-radius:13px;background:var(--panel,#fff);color:var(--txt,#1d3450);
+  font:inherit;font-size:16px;
+}
+body.ww-game-interface #dashboard .wwq-module-search::placeholder{
+  color:var(--muted,#68798a);opacity:.85;
+}
+body.ww-game-interface #dashboard .wwq-module-results{
+  min-width:60px;font-size:12px;color:var(--muted);
+}
+@media(max-width:570px){
+ body.ww-game-interface #dashboard .wwq-module-finder{display:grid;grid-template-columns:1fr;margin-bottom:5px}
+ body.ww-game-interface #dashboard .wwq-module-search{width:100%;min-width:0;max-width:none}
+}
 /* In-app tool panes */
 body.ww-game-interface :where(.ww-page-nav,.wg-header){scroll-margin-top:15px}
 body.ww-game-interface :where(.wg-panel,.wg-roadmap,.wg-summary){
