@@ -281,3 +281,18 @@ html[data-mode=dark] body:has(#wl-app) :where(.wl-primary){background:#147b80;co
 html[data-font=large] body:not(.ww-game-interface){font-size:17px}
 html[data-font=extra] body:not(.ww-game-interface){font-size:18px}
 html[data-font=small] body:not(.ww-game-interface){font-size:14px}
+
+/* Browser-audit 2026-10-31: enlarge undersized interactive targets. */
+body:has(#app .hero) .top .brand,
+body:has(.shell > .hero) .top .brand{
+  display:inline-flex;align-items:center;min-height:44px;
+}
+body:has(.dialog-app) .back-home{min-width:44px;min-height:44px}
+body:has(.dialog-app) .turn-audio{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:44px;min-height:44px;
+  padding:8px;flex-shrink:0;
+}
+body.ww-game-interface .audio-banner-close{
+  min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;
+}
