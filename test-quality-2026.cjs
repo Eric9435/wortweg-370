@@ -26,6 +26,9 @@ assert.match(css,/prefers-reduced-motion/,'Reduced-motion support is required');
 assert.match(css,/focus-visible/,'Visible keyboard focus is required');
 assert.match(css,/data-mode=dark/,'Standalone dark mode must be supported');
 assert.match(goethe,/ArrowRight/,'Goethe tabs should support keyboard navigation');
+assert.match(sw,/const genderPath=/,'Offline Gender navigation route');
+assert.match(sw,/const goethePath=/,'Offline Goethe navigation route');
+assert.match(sw,/quality-2026\.css/,'UI stylesheet should be refreshed online');
 const pages=[
  'a1-complete-reader.html','a2-complete-reader.html','b1-complete-reader.html',
  'b2-complete-reader.html','c1-complete-reader.html','c2-complete-reader.html',
@@ -41,5 +44,5 @@ for(const asset of ['quality-2026.css','quality-2026.js','goethe-exam.html','gen
  assert(sw.includes("'./"+asset+"'"),'Offline cache missing '+asset);
  assert(native.includes("'"+asset+"'"),'Native package missing '+asset);
 }
-assert.match(sw,/wortweg370-v94/,'Offline cache version should be updated');
+assert.match(sw,/const CACHE='wortweg370-v\d+'/,'Service worker must use a versioned cache');
 console.log('PASS: 13 learning pages, home finder, accessibility, offline/native bundles, original pie preserved.');
