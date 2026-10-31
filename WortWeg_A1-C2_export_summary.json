@@ -1,0 +1,30 @@
+{
+  "entries": 10876,
+  "pages": 56,
+  "levels": {
+    "A1": {
+      "entries": 642,
+      "pages": 3
+    },
+    "A2": {
+      "entries": 932,
+      "pages": 5
+    },
+    "B1": {
+      "entries": 931,
+      "pages": 5
+    },
+    "B2": {
+      "entries": 2117,
+      "pages": 10
+    },
+    "C1": {
+      "entries": 3088,
+      "pages": 16
+    },
+    "C2": {
+      "entries": 3166,
+      "pages": 17
+    }
+  }
+}
