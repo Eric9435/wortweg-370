@@ -1,0 +1,31 @@
+name: Browser UI/UX Audit
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  chromium-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install headless Chromium test driver
+        run: npm install --no-save --no-package-lock puppeteer-core@24
+      - name: Test WortWeg mobile tablet and desktop UI in real Chrome
+        run: node test-browser-ux.cjs
+      - name: Upload browser screenshots and audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wortweg-ui-audit
+          path: audit-ux-screenshots/
+          if-no-files-found: ignore
+          retention-days: 7
