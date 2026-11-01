@@ -176,8 +176,8 @@
    settings.startAt=Math.max(1,Math.min(max,selected));
    startNumber.value=String(settings.startAt);startRange.value=String(settings.startAt);
   };
-  startRange.addEventListener('input',()=>updateStart(startRange.value,filtered().length||1));
-  startNumber.addEventListener('change',()=>updateStart(startNumber.value,filtered().length||1));
+  startRange.addEventListener('input',()=>updateStart(startRange.value,Number(startRange.max)||1));
+  startNumber.addEventListener('change',()=>updateStart(startNumber.value,Number(startRange.max)||1));
   const count=make('p','ww-flash-count');pane.append(count);
   const start=button('Start flashcards',startSession,'ww-flash-primary');pane.append(start);
   function refreshCount(){
