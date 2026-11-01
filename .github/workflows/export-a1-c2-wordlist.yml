@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'noun-expansion.js'
       - 'scripts/export_a1_c2_wordlist.py'
       - '.github/workflows/export-a1-c2-wordlist.yml'
   workflow_dispatch:
@@ -39,6 +40,9 @@ jobs:
           python scripts/export_a1_c2_wordlist.py --index index.html \
             --output WortWeg_A1-C2_German_Words_A4_4_Columns.pdf \
             --summary WortWeg_A1-C2_export_summary.json
+      - name: Export all 3466 supplemental A1-C2 nouns (German only)
+        run: |
+          python scripts/export_a1_c2_wordlist.py --noun-expansion             --noun-source noun-expansion.js             --output WortWeg_Noun_Expansion_A1-C2_A4_4_Columns.pdf             --summary WortWeg_Noun_Expansion_A1-C2_export_summary.json
       - name: Verify A4 pages, 4-column layout and original vocabulary counts
         run: |
           python - <<'PY'
@@ -62,22 +66,45 @@ jobs:
           assert pdf.trailer['/Root'].get('/Outlines')
           print('VALIDATED',data['entries'],'German entries,',len(pdf.pages),'A4 pages, 6 CEFR levels')
           PY
+      - name: Verify noun pack counts, CEFR groups and A4 German-only PDF
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from pypdf import PdfReader
+          stats=json.loads(Path('WortWeg_Noun_Expansion_A1-C2_export_summary.json').read_text())
+          expected={'A1':232,'A2':243,'B1':376,'B2':667,'C1':1827,'C2':121}
+          assert stats['entries']==3466, stats
+          assert {k:v['entries'] for k,v in stats['levels'].items()}==expected
+          pdf=PdfReader('WortWeg_Noun_Expansion_A1-C2_A4_4_Columns.pdf')
+          assert len(pdf.pages)==stats['pages']
+          assert len(stats['levels'])==6
+          for page in pdf.pages:
+              assert abs(float(page.mediabox.width)-595.27559)<.4
+              assert abs(float(page.mediabox.height)-841.88976)<.4
+              assert not any('\u1000'<=ch<='\u109f' for ch in page.extract_text())
+          assert 'der Montag' in pdf.pages[0].extract_text()
+          assert 'C2' in pdf.pages[-1].extract_text()
+          print('VALIDATED:',stats['entries'],'noun entries in four columns across',len(pdf.pages),'A4 pages')
+          PY
       - name: Provide direct downloadable PDF build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: WortWeg-A1-C2-German-Only-A4-Four-Columns
+          name: WortWeg-A1-C2-WordBank-and-NounExpansion-German-Only-A4
           path: |
             WortWeg_A1-C2_German_Words_A4_4_Columns.pdf
             WortWeg_A1-C2_export_summary.json
+            WortWeg_Noun_Expansion_A1-C2_A4_4_Columns.pdf
+            WortWeg_Noun_Expansion_A1-C2_export_summary.json
           retention-days: 90
       - name: Publish PDF as a direct WortWeg download
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add WortWeg_A1-C2_German_Words_A4_4_Columns.pdf WortWeg_A1-C2_export_summary.json
+          git add WortWeg_A1-C2_German_Words_A4_4_Columns.pdf WortWeg_A1-C2_export_summary.json WortWeg_Noun_Expansion_A1-C2_A4_4_Columns.pdf WortWeg_Noun_Expansion_A1-C2_export_summary.json
           if git diff --cached --quiet; then
             echo "Vocabulary PDF is already current"
           else
-            git commit -m "docs(export): publish complete A1-C2 German-only four-column A4 PDF"
+            git commit -m "docs(export): publish A1-C2 word bank and noun expansion A4 PDFs"
             git push
           fi
