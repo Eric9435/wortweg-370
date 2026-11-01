@@ -84,15 +84,14 @@ function gesture(dx,dy=0,cancel=false){
   tapping.dispatchEvent(event);
  }
  tapping.click();
- assert.equal(animations.length,1,'Myanmar face uses the same 3D flip animation');
- await finish();await finish();
- assert.equal($('.ww-flash-face-caption').textContent,'ANSWER','Myanmar answer renders after flip');
+ assert.equal(animations.length,0,'Revealing Myanmar meaning is instantaneous');
+ assert.equal($('.ww-flash-face-caption').textContent,'ANSWER','Myanmar answer appears immediately');
  assert.match($('.ww-flash-translation').textContent,/မင်္ဂလာပါ/);
  $('.ww-flash-card').click();
- assert.equal(animations.length,1,'Myanmar to German flip is animated');
- await finish();await finish();
+ assert.equal(animations.length,0,'Hiding Myanmar meaning is instantaneous');
+ assert.equal($('.ww-flash-face-caption').textContent,'RECALL THE MEANING');
  $('.ww-flash-card').click();
- await finish();await finish();
+ assert.equal(animations.length,0,'Revealing answer remains instant on every tap');
  assert.equal($('.ww-flash-face-caption').textContent,'ANSWER');
  $('.ww-flash-know').click();
  assert.equal(w.WortWegFlashcards.getSummary().reviewed,1,'Rating saved on original card');
@@ -119,7 +118,7 @@ function gesture(dx,dy=0,cancel=false){
  assert.equal($('.ww-flash-face-caption').textContent,'ANSWER','Reduced-motion reveal remains usable');
  assert.equal(animations.length,0);
  assert.equal(w.WortWegFlashcards.getSummary().reviewed,1,'Saved review stays unchanged');
- // English + Myanmar fronts use the same animated transitions as all other cards.
+ // Meaning reveal stays instant even when the front starts with Myanmar.
  w.WortWegFlashcards.close();
  reduce=false;
  w.WortWegFlashcards.open();
@@ -134,8 +133,7 @@ function gesture(dx,dy=0,cancel=false){
  await finish();await finish();
  assert.match(count(),/2 \/ 3/,'Myanmar-facing swipe changes cards');
  $('.ww-flash-card').click();
- assert.equal(animations.length,1,'Myanmar-facing answer animates');
- await finish();await finish();
+ assert.equal(animations.length,0,'Myanmar-facing answer reveals without animation');
  assert.equal($('.ww-flash-face-caption').textContent,'ANSWER','Myanmar-facing reveal works');
  w.WortWegFlashcards.close();
  // Interface locale must not change the card animation for noun or vocabulary.
