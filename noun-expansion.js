@@ -42,6 +42,6 @@
   const my=myanmarByLevel[level]?.[pos]||myanmarFromBank(article+' '+word,en);
   nouns.push({id:'noun:'+key,de:article+' '+word,en,my,level,topic,type:'noun',source:'noun-expansion'});
  }
- window.WortWegNounExpansion=Object.freeze({version:1,entries:Object.freeze(nouns)});
+ window.WortWegNounExpansion=Object.freeze({version:2,entries:Object.freeze(nouns)});
  window.dispatchEvent?.(new Event('wortweg:noun-expansion-ready'));
 })();

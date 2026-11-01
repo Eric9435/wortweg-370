@@ -93,7 +93,7 @@
    const script=document.createElement('script');script.src='./'+file;document.head.append(script);
   }
  };
- const nouns=document.createElement('script');nouns.src='./noun-expansion.js';
+ const nouns=document.createElement('script');nouns.src='./noun-expansion.js?v=2';
  nouns.onload=load;nouns.onerror=load;document.head.append(nouns);
 })();
 
