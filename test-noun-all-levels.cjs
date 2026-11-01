@@ -79,6 +79,7 @@ const myanmarByLevel=Object.fromEntries(levels.map(level=>[level,expansion.filte
 assert.equal(myanmarByLevel.A1,232,'A1 native Myanmar translations must cover every noun');
 assert.equal(myanmarByLevel.A2,243,'A2 native Myanmar translations must cover every noun');
 assert.equal(myanmarByLevel.B1,376,'B1 native Myanmar translations must cover every noun');
+assert.ok(myanmarByLevel.B2>=220,'At least 220 engineering and academic B2 nouns have Burmese glosses');
 assert.equal(myanmarByLevel.C2,121,'C2 native Myanmar translations must cover every noun');
 console.log('NOUN_TRANSLATION_COVERAGE='+JSON.stringify(myanmarByLevel));
 const newTotal=levels.reduce((sum,l)=>sum+byLevel[l].new,0);
