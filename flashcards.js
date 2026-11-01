@@ -173,10 +173,6 @@
    const item=make('div','ww-flash-metric');item.append(make('strong','',Number(number).toLocaleString('en-US')),make('small','',label));metrics.append(item);
   }
   pane.append(metrics);
-  const nounPdf=make('a','ww-flash-pdf-export','↓ Noun Expansion A1–C2 · A4 · German-only PDF');
-  nounPdf.href='./WortWeg_Noun_Expansion_A1-C2_A4_4_Columns.pdf';
-  nounPdf.download='WortWeg_Noun_Expansion_A1-C2_A4_4_Columns.pdf';
-  pane.append(nounPdf);
   const fields=make('div','ww-flash-fields');
   const change=(name,value)=>{settings[name]=value;if(['source','level','status'].includes(name))settings.startAt=1;renderSetup();};
   selectControl(fields,'Source',settings.source,[['all','All vocabulary'],['bank','Word Bank (A1–C2)'],['curated','Topic 1 curated'],['live','New lessons'],['expansion','Noun expansion']],v=>change('source',v));
@@ -381,10 +377,11 @@
   const update=()=>{position=next;flipped=false;renderCard();};
   animateChange(update,step,fromTransform);
  }
+ // Reveal translations immediately; page-turn animation is ONLY for next/previous cards.
  function flipCard(){
   if(transitioning||position>=session.length)return;
-  const update=()=>{flipped=!flipped;renderCard();};
-  animateChange(update,flipped?-1:1,'',true);
+  flipped=!flipped;
+  renderCard();
  }
  function renderCard(){
   if(sessionProfile!==profile())return renderSetup();
