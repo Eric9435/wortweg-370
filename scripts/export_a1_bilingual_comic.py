@@ -228,7 +228,7 @@ def draw_panel(c,x,y,e,i,wrd):
  eng=DIALOGUE_EN[e["key"]][(i//2)%len(e["beats"])]
  actor=(i%2)*2
  # Bubble slightly above actors, between colored header and character faces.
- balloonH=69
+ balloonH=81
  draw_balloon(c,x+8,sceneY+sceneH-balloonH-7,width-16,balloonH,beat[1+actor],eng[actor],beat[actor])
  draw_word_tag(c,x+1.4,y+1.5,width-2.8,tagH-1,wrd["de"],wrd["en"],wrd["id"])
 def load():
