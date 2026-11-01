@@ -103,5 +103,36 @@ for(const path of ['flashcards.js','flashcards.css']){
 }
 assert.ok(fs.readFileSync('ios-polish.js','utf8').includes('flashcards.js'),'Web bootstrap loads flashcards');
 assert.ok(fs.readFileSync('home-refresh.js','utf8').includes('WortWegFlashcards'),'Home shortcut opens flashcards');
+// Manual numbered navigation must work across the full matching deck, even with a 20-card session.
+w.WortWegLive={getPack:()=>({lessons:[{id:'many',level:'A1',words:
+ Array.from({length:30},(_,i)=>({id:'seek'+i,de:'Wort '+(i+1),en:'Word '+(i+1)}))}]})};
+const reviewedBeforeSeek=w.WortWegFlashcards.getSummary().reviewed;
+w.WortWegFlashcards.open();
+set('Session size','20');
+const startRange=$('.ww-flash-start-seek input[type="range"]');
+const startNumber=$('#ww-flash-start-number');
+assert.ok(startRange&&startNumber,'Starting-card slider and number entry are available');
+assert.equal(startRange.max,'34','Starting-card slider spans full filtered catalogue');
+startRange.value='28';
+startRange.dispatchEvent(new w.Event('input',{bubbles:true}));
+assert.equal(startNumber.value,'28','Drag previews the chosen start number');
+$('#ww-flashcards .ww-flash-primary').click();
+assert.ok($('.ww-flash-study-top').textContent.includes('28 / 34'),'Study starts at chosen card number');
+let studyRange=$('.ww-flash-study-seek input[type="range"]');
+assert.equal(studyRange.max,'34','Study slider reaches outside the 20-card session window');
+studyRange.value='2';
+studyRange.dispatchEvent(new w.Event('change',{bubbles:true}));
+assert.ok($('.ww-flash-study-top').textContent.includes('2 / 34'),'Jumping back rebases the session');
+let studyNumber=$('#ww-flash-jump-number');
+studyNumber.value='34';
+studyNumber.dispatchEvent(new w.Event('change',{bubbles:true}));
+assert.ok($('.ww-flash-study-top').textContent.includes('34 / 34'),'Manual number entry jumps to last card');
+assert.equal(w.WortWegFlashcards.getSummary().reviewed,reviewedBeforeSeek,
+ 'Jumping never changes spaced-repetition ratings');
+w.WortWegFlashcards.close();
+w.WortWegFlashcards.open();
+assert.equal($('#ww-flash-start-number').value,'1','Reopening does not auto-resume a previous card');
+w.WortWegFlashcards.close();
+assert.match(fs.readFileSync('flashcards.css','utf8'),/ww-flash-seek-range/,'Slider has responsive styling');
 dom.window.close();
 console.log('PASS: all vocabulary cards, CEFR/source filters, flip, audio, persisted per-profile SRS, existing quiz isolation, and offline assets.');
