@@ -262,12 +262,12 @@ def cover(c):
  centered(c,W/2,H-149,"A1 · THE COMPLETE GERMAN WORD BANK",13,"Bold","#164b62")
  centered(c,W/2,H-177,"BILINGUAL EDITION  ·  DEUTSCH + ENGLISH",10,"Bold",BLACK)
  samples=[
- {"key":"hello","location":"city","beats":[["Mia","Hallo, Leo!","Leo","Hallo, Mia!"]]},
- {"key":"home","location":"home","beats":[["Mia","Das ist meine Wohnung.","Leo","Sehr schön!"]]},
- {"key":"breakfast","location":"kitchen","beats":[["Leo","Möchtest du Kaffee?","Mia","Ja, bitte!"]]},
- {"key":"course","location":"classroom","beats":[["Lehrer","Lest den Text!","Mia","Ja!"]]},
- {"key":"transport","location":"station","beats":[["Mia","Wo ist der Bus?","Leo","Hier!"]]},
- {"key":"nature","location":"park","beats":[["Mia","Der Park ist schön.","Leo","Ja!"]]}
+ {"key":"hello","title":"Hallo, Hamburg!","location":"city","beats":[["Mia","Hallo! Ich heiße Mia.","Leo","Hallo, Mia! Ich bin Leo."]]},
+ {"key":"home","title":"Die neue Wohnung","location":"home","beats":[["Mia","Das ist meine neue Wohnung.","Leo","Oh, sie ist sehr schön!"]]},
+ {"key":"breakfast","title":"Frühstück und Küche","location":"kitchen","beats":[["Leo","Was möchtest du essen?","Mia","Brot und ein Ei, bitte."]]},
+ {"key":"course","title":"Im Deutschkurs","location":"classroom","beats":[["Lehrer","Guten Morgen! Habt ihr das Buch?","Mia","Ja, wir haben das Buch."]]},
+ {"key":"transport","title":"Mit Bus und Bahn","location":"station","beats":[["Mia","Wann kommt der Bus?","Leo","In fünf Minuten."]]},
+ {"key":"nature","title":"Im grünen Park","location":"park","beats":[["Mia","Sieh mal, die Blumen!","Leo","Ja, der Park ist schön."]]}
  ]
  sample_words=[("Hallo","hello",1),("die Wohnung","apartment",2),("der Kaffee","coffee",3),("lernen","to learn",4),("der Bus","bus",5),("der Park","park",6)]
  sy=H-228
