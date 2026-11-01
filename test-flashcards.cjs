@@ -207,9 +207,9 @@ for(const [de,my] of [
 w.WortWegFlashcards.close();
 const sw=fs.readFileSync('sw.js','utf8');
 const ios=fs.readFileSync('ios-polish.js','utf8');
-assert.match(ios,/noun-expansion\\.js\\?v=2/,'Noun URL bypasses older cache-first PWA versions');
+assert.ok(ios.includes("nouns.src='./noun-expansion.js?v=2'"),'Noun URL bypasses older cache-first PWA versions');
 assert.match(sw,/const CACHE='wortweg370-v99'/,'Offline cache is bumped');
-assert.match(sw,/const freshUI=[\\s\\S]*?'noun-expansion\\.js'/,
+assert.ok(sw.slice(sw.indexOf('const freshUI=')).includes("'noun-expansion.js'"),
  'Noun pack is network-first with offline fallback, just like flashcards');
 dom.window.close();
 console.log('PASS: all vocabulary cards, CEFR/source filters, flip, audio, persisted per-profile SRS, existing quiz isolation, and offline assets.');
