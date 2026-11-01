@@ -76,11 +76,22 @@ for(const [lvl,words] of Object.entries(required))
  for(const noun of words)assert.ok(complete.has(normalize(noun)),lvl+' missing essential checked noun: '+noun);
 const originalByLevel=Object.fromEntries(levels.map(l=>[l,bank.bank.filter(w=>w.level===l).length]));
 const myanmarByLevel=Object.fromEntries(levels.map(level=>[level,expansion.filter(x=>x.level===level&&/[\u1000-\u109F]/u.test(x.my||'')).length]));
-assert.equal(myanmarByLevel.A1,232,'A1 native Myanmar translations must cover every noun');
-assert.equal(myanmarByLevel.A2,243,'A2 native Myanmar translations must cover every noun');
-assert.equal(myanmarByLevel.B1,376,'B1 native Myanmar translations must cover every noun');
-assert.ok(myanmarByLevel.B2>=220,'At least 220 engineering and academic B2 nouns have Burmese glosses');
-assert.equal(myanmarByLevel.C2,121,'C2 native Myanmar translations must cover every noun');
+const expectedNounLevels={A1:232,A2:243,B1:376,B2:667,C1:1827,C2:121};
+for(const [level,count] of Object.entries(expectedNounLevels))
+ assert.equal(myanmarByLevel[level],count,
+  'All original '+level+' nouns have a nonempty Burmese translation in the native noun pack');
+assert.equal(Object.values(myanmarByLevel).reduce((total,count)=>total+count,0),3466,
+ 'Every one of the 3466 noun expansion entries has Burmese meaning');
+
+const meanings=new Map(expansion.map(w=>[w.de.toLocaleLowerCase('de'),w.my]));
+for(const [term,expected] of [
+ ['der Montag','တနင်္လာနေ့'],
+ ['die Dissertation','ဒေါက်တာဘွဲ့စာတမ်း'],
+ ['die Vertragsbedingung','စာချုပ်ပါသတ်မှတ်ချက်'],
+ ['die Systemoptimierung','စနစ်အကောင်းဆုံးပြုခြင်း'],
+ ['das Hochschulwesen','အဆင့်မြင့်ပညာရေးကဏ္ဍ']
+])assert.equal(meanings.get(term.toLocaleLowerCase('de')),expected,
+ 'Burmese mapping must stay aligned to the correct German headword: '+term);
 console.log('NOUN_TRANSLATION_COVERAGE='+JSON.stringify(myanmarByLevel));
 const newTotal=levels.reduce((sum,l)=>sum+byLevel[l].new,0);
 console.log('ALL_LEVEL_NOUN_AUDIT='+JSON.stringify({
