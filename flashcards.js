@@ -377,7 +377,7 @@
   panel.append(top);
   // The compact progress bar is also the disclosure control for manual seeking.
   // The larger always-visible Jump to card panel is intentionally removed.
-  const progress=button('','ww-flash-progress');
+  const progress=make('button','ww-flash-progress');progress.type='button';
   progress.setAttribute('aria-label','Choose flashcard number');
   progress.setAttribute('aria-controls','ww-flash-inline-seek');
   progress.setAttribute('aria-expanded','false');
