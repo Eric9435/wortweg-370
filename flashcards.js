@@ -373,49 +373,20 @@
   const panel=make('div','ww-flash-study');
   const top=make('div','ww-flash-study-top');
   top.append(make('span','ww-flash-position',(sessionStart+position+1)+' / '+deck.length),
-   make('span','',w.level+' · '+(w.source==='bank'?'Word Bank':w.source==='live'?'New lessons':w.source==='expansion'?'Noun expansion':'Topic 1')));
+   make('span','ww-flash-source',w.level+' · '+(w.source==='bank'?'Word Bank':w.source==='live'?'New lessons':w.source==='expansion'?'Noun expansion':'Topic 1')));
   panel.append(top);
-  // The compact progress bar is also the disclosure control for manual seeking.
-  // The larger always-visible Jump to card panel is intentionally removed.
-  const progress=make('button','ww-flash-progress');progress.type='button';
-  progress.setAttribute('aria-label','Choose flashcard number');
-  progress.setAttribute('aria-controls','ww-flash-inline-seek');
-  progress.setAttribute('aria-expanded','false');
-  progress.title='Tap to jump to a card';
-  const track=make('span','ww-flash-progress-track');
-  const fill=make('span','ww-flash-progress-fill');
-  fill.style.width=100*(sessionStart+position+1)/deck.length+'%';
-  track.append(fill);progress.append(track);panel.append(progress);
-  const seek=make('div','ww-flash-inline-seek');
-  seek.id='ww-flash-inline-seek';seek.hidden=true;
-  const seekHead=make('div','ww-flash-inline-seek-head');
-  const seekLabel=make('label','','Go to card');seekLabel.htmlFor='ww-flash-jump-number';
-  const seekNumber=make('input','ww-flash-seek-number');
-  seekNumber.id='ww-flash-jump-number';seekNumber.type='number';seekNumber.min='1';
-  seekNumber.max=String(deck.length);seekNumber.step='1';seekNumber.inputMode='numeric';
-  seekNumber.value=String(sessionStart+position+1);
-  const seekTotal=make('span','ww-flash-seek-total','/ '+deck.length.toLocaleString('en-US'));
-  const closeSeek=button('✕',()=>{
-   seek.hidden=true;progress.setAttribute('aria-expanded','false');progress.focus();
-  },'ww-flash-inline-seek-close');
-  closeSeek.setAttribute('aria-label','Hide card number slider');
-  seekHead.append(seekLabel,seekNumber,seekTotal,closeSeek);
-  const seekRange=make('input','ww-flash-seek-range');
-  seekRange.type='range';seekRange.min='1';seekRange.max=String(deck.length);
-  seekRange.step='1';seekRange.value=String(sessionStart+position+1);
-  seekRange.setAttribute('aria-label','Jump to flashcard number');
-  seekRange.addEventListener('input',()=>{seekNumber.value=seekRange.value;});
-  seekRange.addEventListener('change',()=>jumpToCard(seekRange.value));
-  seekNumber.addEventListener('change',()=>jumpToCard(seekNumber.value));
-  seekNumber.addEventListener('keydown',event=>{
-   if(event.key==='Enter'){event.preventDefault();jumpToCard(seekNumber.value);}
-  });
-  seek.append(seekHead,seekRange);panel.append(seek);
-  progress.addEventListener('click',()=>{
-   seek.hidden=!seek.hidden;
-   progress.setAttribute('aria-expanded',String(!seek.hidden));
-   if(!seek.hidden)seekRange.focus();
-  });
+  // The existing progress line IS the only study slider: no toggle or secondary panel.
+  // Keep the native range element mounted during dragging so touch gestures stay active.
+  const progress=make('input','ww-flash-progress');
+  progress.type='range';progress.min='1';progress.max=String(deck.length);
+  progress.step='1';progress.value=String(sessionStart+position+1);
+  progress.setAttribute('aria-label','Go directly to flashcard number');
+  progress.title='Drag to change flashcard';
+  const updateProgressFill=()=>{
+   const percent=deck.length>1?100*(Number(progress.value)-1)/(deck.length-1):100;
+   progress.style.setProperty('--ww-seek-fill',percent+'%');
+  };
+  updateProgressFill();panel.append(progress);
   const flip=button('',flipCard,'ww-flash-card');
   flip.setAttribute('aria-label',flipped?'Show front of flashcard':'Reveal flashcard answer');
   flip.setAttribute('aria-pressed',String(flipped));
@@ -429,6 +400,32 @@
   panel.append(make('p','ww-flash-swipe-hint','← Swipe left: next card · Swipe right: previous card →'));
   const audio=button('🔊 Listen in German',()=>say(w.de),'ww-flash-audio');
   panel.append(audio);
+  // Preview the selected word while the thumb is moving. Never re-render the range
+  // mid-gesture, since replacing a native input interrupts touch dragging on mobile.
+  progress.addEventListener('input',()=>{
+   const number=Math.max(1,Math.min(deck.length,Number(progress.value)||1));
+   const selected=deck[number-1];
+   if(!selected)return;
+   updateProgressFill();
+   top.querySelector('.ww-flash-position').textContent=number+' / '+deck.length;
+   top.querySelector('.ww-flash-source').textContent=selected.level+' · '+
+    (selected.source==='bank'?'Word Bank':selected.source==='live'?'New lessons':
+     selected.source==='expansion'?'Noun expansion':'Topic 1');
+   const caption=face.querySelector('.ww-flash-face-caption');
+   const word=face.querySelector('.ww-flash-word');
+   const translation=face.querySelector('.ww-flash-translation');
+   const hint=face.querySelector('.ww-flash-flip-hint');
+   caption.textContent=back?'RECALL THE MEANING':'RECALL THE GERMAN';
+   word.textContent=back?selected.de:(selected.en||'Meaning');
+   translation.textContent=back?'Tap to reveal English + မြန်မာ':
+    (selected.my?selected.my+' · ':'')+'Tap to reveal German';
+   hint.textContent='Tap card to flip';
+   flip.setAttribute('aria-label','Reveal flashcard answer');
+   flip.setAttribute('aria-pressed','false');
+  });
+  // Commit the new card only when the thumb is released (also supports keyboard).
+  // Jumping never marks a card reviewed and does not auto-resume past sessions.
+  progress.addEventListener('change',()=>jumpToCard(progress.value));
   const actions=make('div','ww-flash-actions');
   if(flipped){
    actions.append(button('Again · review',()=>rate(false),'ww-flash-again'),
