@@ -1,0 +1,27 @@
+{
+  "source": "WortWeg original A2/B1 reading chapter scripts",
+  "languages": [
+    "de"
+  ],
+  "original_chapters": {
+    "A2": 14,
+    "B1": 16
+  },
+  "documents": {
+    "A2": {
+      "file": "WortWeg_A2_Reading_German_Only.pdf",
+      "pages": 4,
+      "chapters": 14
+    },
+    "B1": {
+      "file": "WortWeg_B1_Reading_German_Only.pdf",
+      "pages": 6,
+      "chapters": 16
+    },
+    "A2-B1": {
+      "file": "WortWeg_A2_B1_Reading_German_Only_Combined.pdf",
+      "pages": 10,
+      "chapters": 30
+    }
+  }
+}
