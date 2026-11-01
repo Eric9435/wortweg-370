@@ -375,32 +375,47 @@
   top.append(make('span','ww-flash-position',(sessionStart+position+1)+' / '+deck.length),
    make('span','',w.level+' · '+(w.source==='bank'?'Word Bank':w.source==='live'?'New lessons':w.source==='expansion'?'Noun expansion':'Topic 1')));
   panel.append(top);
-  const progress=make('div','ww-flash-progress');
-  const fill=make('span');fill.style.width=100*position/session.length+'%';progress.append(fill);panel.append(progress);
-  const seek=make('div','ww-flash-seek ww-flash-study-seek');
-  const seekHead=make('div','ww-flash-seek-head');
-  const seekLabel=make('label','','Jump to card');seekLabel.htmlFor='ww-flash-jump-number';
+  // The compact progress bar is also the disclosure control for manual seeking.
+  // The larger always-visible Jump to card panel is intentionally removed.
+  const progress=make('button','ww-flash-progress');progress.type='button';
+  progress.setAttribute('aria-label','Choose flashcard number');
+  progress.setAttribute('aria-controls','ww-flash-inline-seek');
+  progress.setAttribute('aria-expanded','false');
+  progress.title='Tap to jump to a card';
+  const track=make('span','ww-flash-progress-track');
+  const fill=make('span','ww-flash-progress-fill');
+  fill.style.width=100*(sessionStart+position+1)/deck.length+'%';
+  track.append(fill);progress.append(track);panel.append(progress);
+  const seek=make('div','ww-flash-inline-seek');
+  seek.id='ww-flash-inline-seek';seek.hidden=true;
+  const seekHead=make('div','ww-flash-inline-seek-head');
+  const seekLabel=make('label','','Go to card');seekLabel.htmlFor='ww-flash-jump-number';
   const seekNumber=make('input','ww-flash-seek-number');
   seekNumber.id='ww-flash-jump-number';seekNumber.type='number';seekNumber.min='1';
   seekNumber.max=String(deck.length);seekNumber.step='1';seekNumber.inputMode='numeric';
   seekNumber.value=String(sessionStart+position+1);
-  const seekTotal=make('span','ww-flash-seek-total','of '+deck.length.toLocaleString('en-US'));
-  seekHead.append(seekLabel,seekNumber,seekTotal);
+  const seekTotal=make('span','ww-flash-seek-total','/ '+deck.length.toLocaleString('en-US'));
+  const closeSeek=button('✕',()=>{
+   seek.hidden=true;progress.setAttribute('aria-expanded','false');progress.focus();
+  },'ww-flash-inline-seek-close');
+  closeSeek.setAttribute('aria-label','Hide card number slider');
+  seekHead.append(seekLabel,seekNumber,seekTotal,closeSeek);
   const seekRange=make('input','ww-flash-seek-range');
   seekRange.type='range';seekRange.min='1';seekRange.max=String(deck.length);
   seekRange.step='1';seekRange.value=String(sessionStart+position+1);
   seekRange.setAttribute('aria-label','Jump to flashcard number');
-  const seekPreview=make('p','ww-flash-seek-hint','Drag to any card without marking it reviewed');
-  seekRange.addEventListener('input',()=>{
-   seekNumber.value=seekRange.value;
-   seekPreview.textContent='Go to card '+seekRange.value+' of '+deck.length;
-  });
+  seekRange.addEventListener('input',()=>{seekNumber.value=seekRange.value;});
   seekRange.addEventListener('change',()=>jumpToCard(seekRange.value));
   seekNumber.addEventListener('change',()=>jumpToCard(seekNumber.value));
   seekNumber.addEventListener('keydown',event=>{
    if(event.key==='Enter'){event.preventDefault();jumpToCard(seekNumber.value);}
   });
-  seek.append(seekHead,seekRange,seekPreview);panel.append(seek);
+  seek.append(seekHead,seekRange);panel.append(seek);
+  progress.addEventListener('click',()=>{
+   seek.hidden=!seek.hidden;
+   progress.setAttribute('aria-expanded',String(!seek.hidden));
+   if(!seek.hidden)seekRange.focus();
+  });
   const flip=button('',flipCard,'ww-flash-card');
   flip.setAttribute('aria-label',flipped?'Show front of flashcard':'Reveal flashcard answer');
   flip.setAttribute('aria-pressed',String(flipped));
