@@ -75,6 +75,13 @@ const complete=new Set([...bank.bank,...bank.curated,...expansion].map(w=>normal
 for(const [lvl,words] of Object.entries(required))
  for(const noun of words)assert.ok(complete.has(normalize(noun)),lvl+' missing essential checked noun: '+noun);
 const originalByLevel=Object.fromEntries(levels.map(l=>[l,bank.bank.filter(w=>w.level===l).length]));
+const myanmarByLevel=Object.fromEntries(levels.map(level=>[level,expansion.filter(x=>x.level===level&&/[\u1000-\u109F]/u.test(x.my||'')).length]));
+assert.equal(myanmarByLevel.A1,232,'A1 native Myanmar translations must cover every noun');
+assert.equal(myanmarByLevel.A2,243,'A2 native Myanmar translations must cover every noun');
+assert.equal(myanmarByLevel.B1,376,'B1 native Myanmar translations must cover every noun');
+assert.ok(myanmarByLevel.B2>=220,'At least 220 engineering and academic B2 nouns have Burmese glosses');
+assert.equal(myanmarByLevel.C2,121,'C2 native Myanmar translations must cover every noun');
+console.log('NOUN_TRANSLATION_COVERAGE='+JSON.stringify(myanmarByLevel));
 const newTotal=levels.reduce((sum,l)=>sum+byLevel[l].new,0);
 console.log('ALL_LEVEL_NOUN_AUDIT='+JSON.stringify({
  originalTotal:bank.bank.length,originalByLevel,

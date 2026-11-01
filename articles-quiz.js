@@ -133,10 +133,6 @@
   const expansionCount=catalogue().filter(w=>w.source==='expansion').length;
   panel.append(make('p','ww-articles-small',
    expansionCount.toLocaleString('en-US')+' additional noun headwords from the expansion pack, without repeating existing article-labelled lemmas.'));
-  const nounPdf=make('a','ww-articles-pdf-export','↓ Download A1–C2 Noun Expansion · A4 PDF · 4 columns · German only');
-  nounPdf.href='./WortWeg_Noun_Expansion_A1-C2_A4_4_Columns.pdf';
-  nounPdf.download='WortWeg_Noun_Expansion_A1-C2_A4_4_Columns.pdf';
-  panel.append(nounPdf);
   const filters=make('div','ww-articles-filters');
   select(filters,'Level',preferences.level,[['all','All levels'],...levels.map(x=>[x,x])],
    x=>{preferences.level=x;renderSetup();});
