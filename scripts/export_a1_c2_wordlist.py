@@ -41,6 +41,29 @@ def load(index):
         groups[level].append(word.strip())
     return groups,len(records)
 
+def load_nouns(source):
+    """Read each definite-article noun in the original A1-C2 expansion source."""
+    src=Path(source).read_text(encoding="utf-8")
+    encoded=re.search(r'const raw=("(?:\\.|[^"\\])*");',src)
+    if not encoded:
+        raise ValueError("Noun source data not found")
+    rows=json.loads(encoded.group(1)).split("\n")
+    groups={level:[] for level in LEVELS}
+    seen=set()
+    for row in rows:
+        fields=row.split("|")
+        if len(fields)!=5:
+            raise ValueError("Invalid noun row: "+row[:80])
+        article,word,meaning,level,topic=fields
+        if article not in ("der","die","das") or level not in groups or not word or not meaning or not topic:
+            raise ValueError("Invalid article/level/word in noun expansion")
+        noun=article+" "+word
+        if noun.casefold() in seen:
+            raise ValueError("Duplicate noun: "+noun)
+        seen.add(noun.casefold())
+        groups[level].append(noun)
+    return groups,len(rows)
+
 def words_to_lines(word):
     maxw=CW-4
     if pdfmetrics.stringWidth(word,"Word",SIZE)<=maxw:
@@ -131,10 +154,12 @@ def export(groups,output):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--index",default="index.html")
+    p.add_argument("--noun-expansion",action="store_true")
+    p.add_argument("--noun-source",default="noun-expansion.js")
     p.add_argument("--output",default=PDF_NAME)
     p.add_argument("--summary",default="WortWeg_A1-C2_export_summary.json")
     args=p.parse_args()
-    groups,n=load(args.index)
+    groups,n=load_nouns(args.noun_source) if args.noun_expansion else load(args.index)
     result=export(groups,args.output)
     if n!=result["entries"]:
         raise AssertionError("Source/export entry count mismatch")

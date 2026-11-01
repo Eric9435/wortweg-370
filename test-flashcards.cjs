@@ -159,5 +159,25 @@ assert.equal($('#ww-flash-start-number').value,'1','Reopening does not auto-resu
 w.WortWegFlashcards.close();
 assert.match(fs.readFileSync('flashcards.css','utf8'),/ww-flash-progress::-webkit-slider-thumb/,'Native slider thumb is styled for touch');
 assert.match(fs.readFileSync('flashcards.css','utf8'),/touch-action:pan-x/,'Top slider allows horizontal gestures');
+// Supplemental noun entries must remain available across A1-C2.
+w.WortWegNounExpansion={entries:['A1','A2','B1','B2','C1','C2'].map((level,i)=>({
+ id:'noun-'+level,de:i===0?'der Wochenabend':'das Fachnomen'+level,
+ en:i===0?'evening':'specialized '+level,level
+}))};
+w.WortWegLive={getPack:()=>({lessons:[]})};
+w.WortWegFlashcards.open();
+set('Source','expansion');
+assert.ok($('#ww-flashcards').textContent.includes('6 matching entries'));
+set('Level','A1');
+$('#ww-flashcards .ww-flash-primary').click();
+$('.ww-flash-card').click();
+assert.match($('.ww-flash-translation').textContent,/\u100A\u1014\u1031/);
+w.WortWegFlashcards.close();
+w.WortWegFlashcards.open();
+set('Level','C2');
+$('#ww-flashcards .ww-flash-primary').click();
+$('.ww-flash-card').click();
+assert.ok($('.ww-flash-translation').textContent.length>0);
+w.WortWegFlashcards.close();
 dom.window.close();
 console.log('PASS: all vocabulary cards, CEFR/source filters, flip, audio, persisted per-profile SRS, existing quiz isolation, and offline assets.');

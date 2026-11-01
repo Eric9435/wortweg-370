@@ -84,17 +84,20 @@ function gesture(dx,dy=0,cancel=false){
   tapping.dispatchEvent(event);
  }
  tapping.click();
- assert.equal(animations.length,0,'Myanmar translation opens with no animation');
- assert.equal($('.ww-flash-face-caption').textContent,'ANSWER','Myanmar answer appears immediately');
+ assert.equal(animations.length,1,'Myanmar face uses the same 3D flip animation');
+ await finish();await finish();
+ assert.equal($('.ww-flash-face-caption').textContent,'ANSWER','Myanmar answer renders after flip');
  assert.match($('.ww-flash-translation').textContent,/မင်္ဂလာပါ/);
- // When the answer contains Myanmar, turning back is instantaneous too.
  $('.ww-flash-card').click();
- assert.equal(animations.length,0,'Myanmar to German flip stays instant');
+ assert.equal(animations.length,1,'Myanmar to German flip is animated');
+ await finish();await finish();
  $('.ww-flash-card').click();
+ await finish();await finish();
  assert.equal($('.ww-flash-face-caption').textContent,'ANSWER');
  $('.ww-flash-know').click();
  assert.equal(w.WortWegFlashcards.getSummary().reviewed,1,'Rating saved on original card');
- assert.equal(animations.length,0,'Moving away from visible Myanmar text never animates');
+ assert.equal(animations.length,1,'Rate-to-next uses the same page turn');
+ await finish();await finish();
  assert.match(count(),/2 \/ 3/);
  $('.ww-flash-navigation button:last-child').click();
  assert.equal(animations.length,1,'Original Skip button animates');
@@ -116,8 +119,7 @@ function gesture(dx,dy=0,cancel=false){
  assert.equal($('.ww-flash-face-caption').textContent,'ANSWER','Reduced-motion reveal remains usable');
  assert.equal(animations.length,0);
  assert.equal(w.WortWegFlashcards.getSummary().reviewed,1,'Saved review stays unchanged');
- // English + Myanmar front side: all card navigation and flips are instant
- // regardless of the device's normal animation preference.
+ // English + Myanmar fronts use the same animated transitions as all other cards.
  w.WortWegFlashcards.close();
  reduce=false;
  w.WortWegFlashcards.open();
@@ -128,13 +130,15 @@ function gesture(dx,dy=0,cancel=false){
  $('#ww-flashcards .ww-flash-primary').click();
  assert.match($('.ww-flash-translation').textContent,/[\u1000-\u109F]/,'Front face includes Myanmar translation');
  gesture(-110);
- assert.match(count(),/2 \/ 3/,'Myanmar-facing swipe changes cards without page-turn');
- assert.equal(animations.length,0,'Myanmar view never invokes Web Animations');
+ assert.equal(animations.length,1,'Myanmar-facing swipe uses same animation');
+ await finish();await finish();
+ assert.match(count(),/2 \/ 3/,'Myanmar-facing swipe changes cards');
  $('.ww-flash-card').click();
+ assert.equal(animations.length,1,'Myanmar-facing answer animates');
+ await finish();await finish();
  assert.equal($('.ww-flash-face-caption').textContent,'ANSWER','Myanmar-facing reveal works');
- assert.equal(animations.length,0,'Myanmar-facing reveal uses no animation');
  w.WortWegFlashcards.close();
- // Full Myanmar interface locale also disables page-turn on German-only fronts.
+ // Interface locale must not change the card animation for noun or vocabulary.
  w.document.documentElement.lang='my';
  w.WortWegFlashcards.open();
  const german=[...w.document.querySelectorAll('.ww-flash-field select')]
@@ -143,8 +147,9 @@ function gesture(dx,dy=0,cancel=false){
  german.dispatchEvent(new w.Event('change'));
  $('#ww-flashcards .ww-flash-primary').click();
  gesture(-110);
+ assert.equal(animations.length,1,'Locale does not change animation behavior');
+ await finish();await finish();
  assert.match(count(),/2 \/ 3/);
- assert.equal(animations.length,0,'Myanmar interface locale disables animation throughout');
  dom.window.close();
  console.log('PASS: 3D book-page transitions, button continuity, animation locks, flip timing, interruption safety, accessibility, and unchanged SRS.');
 })().catch(error=>{console.error(error);dom.window.close();process.exitCode=1;});
