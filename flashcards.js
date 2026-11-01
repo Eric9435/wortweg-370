@@ -77,8 +77,8 @@
  const stylesheet=document.createElement('link');
  stylesheet.rel='stylesheet';stylesheet.href='./flashcards.css';
  document.head.append(stylesheet);
- const settings={source:'all',level:'all',status:'all',search:'',direction:'de',size:'20',shuffle:false};
- let session=[],position=0,flipped=false,sessionProfile='',previousFocus=null;
+ const settings={source:'all',level:'all',status:'all',search:'',direction:'de',size:'20',shuffle:false,startAt:1};
+ let deck=[],session=[],sessionStart=0,sessionLimit=20,position=0,flipped=false,sessionProfile='',previousFocus=null;
  let transitioning=false,transitionVersion=0;
  function resetTransition(){transitionVersion++;transitioning=false;}
  function say(german){
@@ -142,7 +142,7 @@
   }
   pane.append(metrics);
   const fields=make('div','ww-flash-fields');
-  const change=(name,value)=>{settings[name]=value;renderSetup();};
+  const change=(name,value)=>{settings[name]=value;if(['source','level','status'].includes(name))settings.startAt=1;renderSetup();};
   selectControl(fields,'Source',settings.source,[['all','All vocabulary'],['bank','Word Bank (A1–C2)'],['curated','Topic 1 curated'],['live','New lessons'],['expansion','Noun expansion']],v=>change('source',v));
   selectControl(fields,'Level',settings.level,[['all','All levels'],...levels.map(s=>[s,s]),['Topic 1','Topic 1']],v=>change('level',v));
   selectControl(fields,'Cards to study',settings.status,[['all','All cards'],['new','Not yet reviewed'],['due','Due for review'],['missed','Previously missed'],['learned','Not due yet']],v=>change('status',v));
@@ -157,11 +157,36 @@
   const shuffle=make('input');shuffle.type='checkbox';shuffle.checked=settings.shuffle;
   shuffle.addEventListener('change',()=>{settings.shuffle=shuffle.checked;});
   toggles.append(shuffle,make('span','','Shuffle cards'));pane.append(toggles);
+  // Manual card selection: deliberately independent of previous session history.
+  const startSeek=make('div','ww-flash-seek ww-flash-start-seek');
+  const startHead=make('div','ww-flash-seek-head');
+  const startLabel=make('label','','Start at card');startLabel.htmlFor='ww-flash-start-number';
+  const startNumber=make('input','ww-flash-seek-number');
+  startNumber.id='ww-flash-start-number';startNumber.type='number';startNumber.min='1';
+  startNumber.step='1';startNumber.inputMode='numeric';
+  const startMax=make('span','ww-flash-seek-total');
+  const startRange=make('input','ww-flash-seek-range');
+  startRange.type='range';startRange.min='1';startRange.step='1';
+  startRange.setAttribute('aria-label','Choose starting flashcard');
+  startHead.append(startLabel,startNumber,startMax);
+  startSeek.append(startHead,startRange,make('p','ww-flash-seek-hint','Drag to choose any card number. Turn off Shuffle for predictable order.'));
+  pane.append(startSeek);
+  const updateStart=(raw,max)=>{
+   const n=Number(raw),selected=Number.isFinite(n)?Math.trunc(n):1;
+   settings.startAt=Math.max(1,Math.min(max,selected));
+   startNumber.value=String(settings.startAt);startRange.value=String(settings.startAt);
+  };
+  startRange.addEventListener('input',()=>updateStart(startRange.value,Number(startRange.max)||1));
+  startNumber.addEventListener('change',()=>updateStart(startNumber.value,Number(startRange.max)||1));
   const count=make('p','ww-flash-count');pane.append(count);
   const start=button('Start flashcards',startSession,'ww-flash-primary');pane.append(start);
   function refreshCount(){
    settings.search=input.value;
    const amount=filtered().length;
+   startRange.max=String(Math.max(1,amount));startNumber.max=String(Math.max(1,amount));
+   startRange.disabled=amount===0;startNumber.disabled=amount===0;
+   startMax.textContent='of '+amount.toLocaleString('en-US');
+   updateStart(settings.startAt,Math.max(1,amount));
    count.textContent=amount.toLocaleString('en-US')+' matching entries · no words removed from your library';
    start.disabled=amount===0;
    start.textContent='Study '+(settings.size==='all'?amount:Math.min(amount,Number(settings.size))).toLocaleString('en-US')+' cards';
@@ -182,7 +207,10 @@
    const rank=w=>statusFor(w)==='due'?0:statusFor(w)==='new'?1:2;
    sorted.sort((a,b)=>rank(a)-rank(b));
   }
-  session=sorted.slice(0,settings.size==='all'?sorted.length:Number(settings.size));
+  deck=sorted;
+  sessionLimit=settings.size==='all'?sorted.length:Number(settings.size);
+  sessionStart=Math.max(0,Math.min(sorted.length-1,settings.startAt-1));
+  session=deck.slice(sessionStart,sessionStart+sessionLimit);
   position=0;flipped=false;sessionProfile=profile();renderCard();
  }
  function rate(remembered){
@@ -304,6 +332,20 @@
    });
   });
  }
+ // Seek by absolute card number within the currently filtered deck. Does not rate or save.
+ function jumpToCard(raw){
+  if(sessionProfile!==profile())return renderSetup();
+  if(!deck.length)return;
+  const n=Number(raw);
+  const target=Math.max(0,Math.min(deck.length-1,(Number.isFinite(n)?Math.trunc(n):1)-1));
+  resetTransition();
+  if(target<sessionStart||target>=sessionStart+session.length){
+   sessionStart=target;
+   session=deck.slice(sessionStart,sessionStart+sessionLimit);
+   position=0;
+  }else position=target-sessionStart;
+  flipped=false;renderCard();
+ }
  function moveCard(step,fromTransform=''){
   if(transitioning)return;
   const next=position+step;
@@ -330,11 +372,35 @@
   const w=session[position],back=settings.direction==='de';
   const panel=make('div','ww-flash-study');
   const top=make('div','ww-flash-study-top');
-  top.append(make('span','',(position+1)+' / '+session.length),
+  top.append(make('span','ww-flash-position',(sessionStart+position+1)+' / '+deck.length),
    make('span','',w.level+' · '+(w.source==='bank'?'Word Bank':w.source==='live'?'New lessons':w.source==='expansion'?'Noun expansion':'Topic 1')));
   panel.append(top);
   const progress=make('div','ww-flash-progress');
   const fill=make('span');fill.style.width=100*position/session.length+'%';progress.append(fill);panel.append(progress);
+  const seek=make('div','ww-flash-seek ww-flash-study-seek');
+  const seekHead=make('div','ww-flash-seek-head');
+  const seekLabel=make('label','','Jump to card');seekLabel.htmlFor='ww-flash-jump-number';
+  const seekNumber=make('input','ww-flash-seek-number');
+  seekNumber.id='ww-flash-jump-number';seekNumber.type='number';seekNumber.min='1';
+  seekNumber.max=String(deck.length);seekNumber.step='1';seekNumber.inputMode='numeric';
+  seekNumber.value=String(sessionStart+position+1);
+  const seekTotal=make('span','ww-flash-seek-total','of '+deck.length.toLocaleString('en-US'));
+  seekHead.append(seekLabel,seekNumber,seekTotal);
+  const seekRange=make('input','ww-flash-seek-range');
+  seekRange.type='range';seekRange.min='1';seekRange.max=String(deck.length);
+  seekRange.step='1';seekRange.value=String(sessionStart+position+1);
+  seekRange.setAttribute('aria-label','Jump to flashcard number');
+  const seekPreview=make('p','ww-flash-seek-hint','Drag to any card without marking it reviewed');
+  seekRange.addEventListener('input',()=>{
+   seekNumber.value=seekRange.value;
+   seekPreview.textContent='Go to card '+seekRange.value+' of '+deck.length;
+  });
+  seekRange.addEventListener('change',()=>jumpToCard(seekRange.value));
+  seekNumber.addEventListener('change',()=>jumpToCard(seekNumber.value));
+  seekNumber.addEventListener('keydown',event=>{
+   if(event.key==='Enter'){event.preventDefault();jumpToCard(seekNumber.value);}
+  });
+  seek.append(seekHead,seekRange,seekPreview);panel.append(seek);
   const flip=button('',flipCard,'ww-flash-card');
   flip.setAttribute('aria-label',flipped?'Show front of flashcard':'Reveal flashcard answer');
   flip.setAttribute('aria-pressed',String(flipped));
@@ -366,13 +432,13 @@
   if(!root.hidden)return;
   previousFocus=document.activeElement;
   root.hidden=false;document.body.classList.add('ww-flash-open');
-  records=load();renderSetup();root.querySelector('.ww-flash-close')?.focus();
+  settings.startAt=1;records=load();renderSetup();root.querySelector('.ww-flash-close')?.focus();
  }
  function close(){
   if(root.hidden)return;
   resetTransition();
   root.hidden=true;document.body.classList.remove('ww-flash-open');
-  session=[];previousFocus?.focus?.();
+  session=[];deck=[];previousFocus?.focus?.();
  }
  launchButton();
  window.addEventListener('wortweg:account',()=>{records=load();session=[];if(!root.hidden)renderSetup();});
