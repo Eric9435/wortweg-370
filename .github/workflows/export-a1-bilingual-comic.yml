@@ -1,0 +1,98 @@
+name: Export A1 Complete Bilingual Comic PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/a1-comic-source.js'
+      - 'scripts/export_a1_bilingual_comic.py'
+      - '.github/workflows/export-a1-bilingual-comic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wortweg-a1-comic-pdf
+  cancel-in-progress: true
+
+jobs:
+  comic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out source data
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install original vector-comic PDF generator
+        run: |
+          python -m pip install --disable-pip-version-check reportlab pypdf
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-dejavu-core poppler-utils
+      - name: Render full A1 illustrated German/English comic book
+        run: |
+          python scripts/export_a1_bilingual_comic.py \
+            --output WortWeg_A1_Complete_Bilingual_Comic_642_Words.pdf \
+            --summary WortWeg_A1_Comic_Coverage_642.json
+      - name: Verify all 642 original entries, page size and PDF readability
+        run: |
+          python - <<'PY'
+          import json,re
+          from pathlib import Path
+          from pypdf import PdfReader
+          filename='WortWeg_A1_Complete_Bilingual_Comic_642_Words.pdf'
+          summary=json.loads(Path('WortWeg_A1_Comic_Coverage_642.json').read_text())
+          records=summary['source_records']
+          assert len(records)==642 and len({w['id'] for w in records})==642
+          assert len(summary['chapters_detail'])==18
+          assert sum(ch['count'] for ch in summary['chapters_detail'])==642
+          reader=PdfReader(filename)
+          assert len(reader.pages)==summary['pdf_pages']
+          assert '/Outlines' in reader.trailer['/Root']
+          printed_ids=[]
+          for index,page in enumerate(reader.pages):
+              assert abs(float(page.mediabox.width)-595.27559)<.5,index
+              assert abs(float(page.mediabox.height)-841.88976)<.5,index
+              text=page.extract_text()
+              assert text.strip(),index
+              if index>=2:
+                  printed_ids.extend(int(s) for s in re.findall(r'#(\d+)\b',text))
+          expected={w['id'] for w in records}
+          assert len(printed_ids)==642,('Printed vocabulary labels',len(printed_ids))
+          assert set(printed_ids)==expected,('Printed vocabulary mismatch',set(printed_ids)^expected)
+          assert len(set(printed_ids))==642
+          assert Path(filename).stat().st_size>100000
+          print(f"VERIFIED 642/642 exact source IDs on {len(reader.pages)} A4 pages, 18 episodes, German dialogue, English translations")
+          PY
+      - name: Render preview images for quality review
+        run: |
+          mkdir -p WortWeg_A1_Comic_Previews
+          pdftoppm -f 1 -l 1 -scale-to 1200 -png -singlefile WortWeg_A1_Complete_Bilingual_Comic_642_Words.pdf WortWeg_A1_Comic_Previews/cover
+          pdftoppm -f 3 -l 3 -scale-to 1200 -png -singlefile WortWeg_A1_Complete_Bilingual_Comic_642_Words.pdf WortWeg_A1_Comic_Previews/first-page
+          pdftoppm -f 20 -l 20 -scale-to 1200 -png -singlefile WortWeg_A1_Complete_Bilingual_Comic_642_Words.pdf WortWeg_A1_Comic_Previews/page-20
+      - name: Upload combined book and page previews
+        uses: actions/upload-artifact@v4
+        with:
+          name: WortWeg-A1-Complete-Bilingual-Comic-PDF-642-Words
+          path: |
+            WortWeg_A1_Complete_Bilingual_Comic_642_Words.pdf
+            WortWeg_A1_Comic_Coverage_642.json
+            WortWeg_A1_Comic_Previews/*.png
+          retention-days: 90
+      - name: Publish printable bilingual PDF
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add WortWeg_A1_Complete_Bilingual_Comic_642_Words.pdf WortWeg_A1_Comic_Coverage_642.json
+          if git diff --cached --quiet; then
+            echo "Comic PDF already matches source"
+          else
+            git commit -m "docs: publish combined illustrated A1 German-English comic (642 words)"
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
