@@ -10,6 +10,38 @@
   ...input.bank.map(w=>({key:'b:'+w.id,de:w.de,en:w.en,my:w.mm||w.my||'',level:w.level||'—',source:'bank'})),
   ...input.curated.map(w=>({key:'c:'+w.de.toLocaleLowerCase(),de:w.de,en:w.en,my:w.mm||w.my||'',level:'Topic 1',source:'curated'}))
  ].filter(w=>typeof w.de==='string'&&w.de.trim());
+ // Reuse available Myanmar translations from existing Word Bank and downloaded lessons.
+ // Ambiguous and missing glosses are not silently fabricated.
+ const norm=v=>String(v||'').trim().replace(/\s+/g,' ').toLocaleLowerCase('de');
+ const bare=v=>norm(v).replace(/^(der|die|das)\s+/u,'');
+ function myanmarIndex(){
+  const exact=new Map(),lemma=new Map(),english=new Map();
+  const inputs=[...input.bank,...input.curated];
+  for(const lesson of window.WortWegLive?.getPack?.()?.lessons||[])
+   inputs.push(...(lesson.words||[]));
+  function add(map,key,val){
+   if(!key||!val)return;
+   if(!map.has(key))map.set(key,val);
+   else if(map.get(key)!==val)map.set(key,null);
+  }
+  for(const w of inputs){
+   const my=String(w.mm||w.my||'').trim();if(!my)continue;
+   add(exact,norm(w.de),my);
+   add(lemma,bare(w.de),my);
+   add(english,String(w.en||'').trim().toLocaleLowerCase(),my);
+  }
+  return {exact,lemma,english};
+ }
+ function withMyanmar(words){
+  const index=myanmarIndex();
+  return words.map(w=>{
+   if(String(w.my||'').trim())return w;
+   const my=index.exact.get(norm(w.de))||
+    index.lemma.get(bare(w.de))||
+    index.english.get(String(w.en||'').trim().toLocaleLowerCase())||'';
+   return my?{...w,my}:w;
+  });
+ }
  function catalogue(){
   const list=legacy.slice(),keys=new Set(list.map(w=>w.key));
   const pack=window.WortWegLive?.getPack?.();
@@ -34,7 +66,7 @@
    list.push({key:'n:'+w.id,de:w.de,en:w.en||'',my:w.my||'',
     level:w.level||'—',source:'expansion'});
   }
-  return list;
+  return withMyanmar(list);
  }
  const make=(tag,cls,label)=>{
   const e=document.createElement(tag);if(cls)e.className=cls;
@@ -227,14 +259,7 @@
   window.dispatchEvent(new CustomEvent('wortweg:flashcards-changed',{detail:{key:w.key,remembered}}));
   moveCard(1);
  }
- // Avoid any 3D motion while a Myanmar translation is visible or is about
- // to be revealed. German/English-only faces retain the paper-turn effect.
- function isMyanmarView(index,revealed){
-  if((document.documentElement.lang||'').toLowerCase().startsWith('my'))return true;
-  const word=session[index];
-  if(!word||!String(word.my||'').trim())return false;
-  return settings.direction==='de'?revealed:!revealed;
- }
+ // All A1-C2 vocabulary and noun cards use identical animations.
  // Pointer Events work in current Android WebViews and iOS Safari. Restrict
  // gestures to the card: vertical scrolling and every existing button stay usable.
  function attachSwipe(card){
@@ -258,10 +283,9 @@
    if(!gesture.dragged){
     if(Math.abs(dx)<10||Math.abs(dx)<Math.abs(dy)*1.2)return;
     gesture.dragged=true;
-    if(!isMyanmarView(position,flipped))card.classList.add('ww-flash-dragging');
+    card.classList.add('ww-flash-dragging');
    }
-   // Track the swipe without deforming text when Myanmar is being read.
-   if(isMyanmarView(position,flipped))return;
+   // Shared swipe animation, regardless of word source or script.
    const offset=Math.sign(dx)*Math.min(Math.abs(dx)*0.8,145);
    card.style.transformOrigin=dx<0?'left center':'right center';
    card.style.transform='translate3d('+offset+'px,0,0) rotateY('+(offset/5.5)+'deg)';
@@ -351,13 +375,11 @@
   const next=position+step;
   if(next<0||next>session.length)return;
   const update=()=>{position=next;flipped=false;renderCard();};
-  if(isMyanmarView(position,flipped)||isMyanmarView(next,false)){update();return;}
   animateChange(update,step,fromTransform);
  }
  function flipCard(){
   if(transitioning||position>=session.length)return;
   const update=()=>{flipped=!flipped;renderCard();};
-  if(isMyanmarView(position,flipped)||isMyanmarView(position,!flipped)){update();return;}
   animateChange(update,flipped?-1:1,'',true);
  }
  function renderCard(){
@@ -392,7 +414,8 @@
   flip.setAttribute('aria-pressed',String(flipped));
   const face=make('div','ww-flash-face');
   const primary=flipped?(back?(w.en||'English meaning unavailable'):(w.de)):(back?w.de:(w.en||'Meaning'));
-  const extra=flipped?(back?w.my:'German answer'):(back?'Tap to reveal English + မြန်မာ':(w.my?w.my+' · ':'')+'Tap to reveal German');
+  const my=w.my||'မြန်မာဘာသာပြန် မရှိသေးပါ';
+  const extra=flipped?(back?my:'German answer · '+my):(back?'Tap to reveal English + မြန်မာ':my+' · Tap to reveal German');
   face.append(make('span','ww-flash-face-caption',flipped?'ANSWER':back?'RECALL THE MEANING':'RECALL THE GERMAN'),
    make('strong','ww-flash-word',primary),make('p','ww-flash-translation',extra));
   face.append(make('small','ww-flash-flip-hint',flipped?'Tap to see the front again':'Tap card to flip'));
@@ -418,7 +441,7 @@
    caption.textContent=back?'RECALL THE MEANING':'RECALL THE GERMAN';
    word.textContent=back?selected.de:(selected.en||'Meaning');
    translation.textContent=back?'Tap to reveal English + မြန်မာ':
-    (selected.my?selected.my+' · ':'')+'Tap to reveal German';
+    (selected.my||'မြန်မာဘာသာပြန် မရှိသေးပါ')+' · Tap to reveal German';
    hint.textContent='Tap card to flip';
    flip.setAttribute('aria-label','Reveal flashcard answer');
    flip.setAttribute('aria-pressed','false');
