@@ -1,0 +1,4691 @@
+{
+  "total_source_entries": 642,
+  "unique_source_ids": 642,
+  "chapters": 18,
+  "comic_pages": 84,
+  "pdf_pages": 86,
+  "language": [
+    "German",
+    "English"
+  ],
+  "page_size": "A4 portrait",
+  "layout": "3 columns × 3 rows",
+  "chapters_detail": [
+    {
+      "number": 1,
+      "de": "Hallo, Hamburg!",
+      "en": "Hello, Hamburg!",
+      "count": 30,
+      "pages": [
+        3,
+        6
+      ]
+    },
+    {
+      "number": 2,
+      "de": "Die neue Wohnung",
+      "en": "The New Apartment",
+      "count": 52,
+      "pages": [
+        7,
+        12
+      ]
+    },
+    {
+      "number": 3,
+      "de": "Meine Familie",
+      "en": "My Family",
+      "count": 29,
+      "pages": [
+        13,
+        16
+      ]
+    },
+    {
+      "number": 4,
+      "de": "Ein guter Morgen",
+      "en": "A Good Morning",
+      "count": 29,
+      "pages": [
+        17,
+        20
+      ]
+    },
+    {
+      "number": 5,
+      "de": "Frühstück und Küche",
+      "en": "Breakfast and Kitchen",
+      "count": 52,
+      "pages": [
+        21,
+        26
+      ]
+    },
+    {
+      "number": 6,
+      "de": "Mit Bus und Bahn",
+      "en": "By Bus and Train",
+      "count": 29,
+      "pages": [
+        27,
+        30
+      ]
+    },
+    {
+      "number": 7,
+      "de": "Der Weg durch die Stadt",
+      "en": "Finding Our Way Through the City",
+      "count": 29,
+      "pages": [
+        31,
+        34
+      ]
+    },
+    {
+      "number": 8,
+      "de": "Im Deutschkurs",
+      "en": "In German Class",
+      "count": 42,
+      "pages": [
+        35,
+        39
+      ]
+    },
+    {
+      "number": 9,
+      "de": "Auf dem Markt",
+      "en": "At the Market",
+      "count": 32,
+      "pages": [
+        40,
+        43
+      ]
+    },
+    {
+      "number": 10,
+      "de": "Im Café",
+      "en": "At the Cafe",
+      "count": 28,
+      "pages": [
+        44,
+        47
+      ]
+    },
+    {
+      "number": 11,
+      "de": "Im grünen Park",
+      "en": "In the Green Park",
+      "count": 28,
+      "pages": [
+        48,
+        51
+      ]
+    },
+    {
+      "number": 12,
+      "de": "Sonne und Regen",
+      "en": "Sunshine and Rain",
+      "count": 28,
+      "pages": [
+        52,
+        55
+      ]
+    },
+    {
+      "number": 13,
+      "de": "Beim Arzt",
+      "en": "At the Doctor",
+      "count": 28,
+      "pages": [
+        56,
+        59
+      ]
+    },
+    {
+      "number": 14,
+      "de": "Arbeit und Computer",
+      "en": "Work and Computers",
+      "count": 28,
+      "pages": [
+        60,
+        63
+      ]
+    },
+    {
+      "number": 15,
+      "de": "Freizeit und Musik",
+      "en": "Free Time and Music",
+      "count": 28,
+      "pages": [
+        64,
+        67
+      ]
+    },
+    {
+      "number": 16,
+      "de": "Eine kleine Reise",
+      "en": "A Little Journey",
+      "count": 28,
+      "pages": [
+        68,
+        71
+      ]
+    },
+    {
+      "number": 17,
+      "de": "Neue Freunde",
+      "en": "New Friends",
+      "count": 28,
+      "pages": [
+        72,
+        75
+      ]
+    },
+    {
+      "number": 18,
+      "de": "Unser erster Monat",
+      "en": "Our First Month",
+      "count": 94,
+      "pages": [
+        76,
+        86
+      ]
+    }
+  ],
+  "source_records": [
+    {
+      "id": 20,
+      "de": "die alte Frau",
+      "en": "old woman",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 21,
+      "de": "der alte Freund",
+      "en": "old male friend",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 31,
+      "de": "das Alter",
+      "en": "age",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 51,
+      "de": "aus",
+      "en": "from; out of",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 179,
+      "de": "die Frau",
+      "en": "woman; wife",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 180,
+      "de": "Frau treffen",
+      "en": "to meet woman",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 183,
+      "de": "der Freund",
+      "en": "male friend; boyfriend",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 184,
+      "de": "Freund anrufen",
+      "en": "to call male friend",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 185,
+      "de": "die Freundin",
+      "en": "female friend; girlfriend",
+      "chapter": 1,
+      "page": 3
+    },
+    {
+      "id": 186,
+      "de": "Freundin anrufen",
+      "en": "to call female friend",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 190,
+      "de": "der freundliche Freund",
+      "en": "friendly male friend",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 239,
+      "de": "die gute Sprache",
+      "en": "good language",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 280,
+      "de": "jung",
+      "en": "young",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 281,
+      "de": "der junge Bruder",
+      "en": "young brother",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 282,
+      "de": "der junge Freund",
+      "en": "young male friend",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 296,
+      "de": "kennen",
+      "en": "to know (person/place)",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 350,
+      "de": "die leichte Sprache",
+      "en": "easy language",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 359,
+      "de": "der Mann",
+      "en": "man; husband",
+      "chapter": 1,
+      "page": 4
+    },
+    {
+      "id": 360,
+      "de": "Mann besuchen",
+      "en": "to visit man",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 362,
+      "de": "der Mensch",
+      "en": "person; human",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 387,
+      "de": "der Name",
+      "en": "name",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 407,
+      "de": "die neue Sprache",
+      "en": "new language",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 470,
+      "de": "die schlechte Sprache",
+      "en": "bad language",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 495,
+      "de": "die schwere Sprache",
+      "en": "difficult language",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 517,
+      "de": "die Sprache",
+      "en": "language",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 524,
+      "de": "der Student",
+      "en": "male student",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 525,
+      "de": "die Studentin",
+      "en": "female student",
+      "chapter": 1,
+      "page": 5
+    },
+    {
+      "id": 586,
+      "de": "von",
+      "en": "from; of",
+      "chapter": 1,
+      "page": 6
+    },
+    {
+      "id": 615,
+      "de": "die wichtige Sprache",
+      "en": "important language",
+      "chapter": 1,
+      "page": 6
+    },
+    {
+      "id": 624,
+      "de": "woher",
+      "en": "where from",
+      "chapter": 1,
+      "page": 6
+    },
+    {
+      "id": 10,
+      "de": "alt",
+      "en": "old",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 11,
+      "de": "das alte Buch",
+      "en": "old book",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 12,
+      "de": "der alte Bus",
+      "en": "old bus",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 13,
+      "de": "das alte Büro",
+      "en": "old office",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 14,
+      "de": "der alte Computer",
+      "en": "old computer",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 15,
+      "de": "die alte E-Mail",
+      "en": "old email",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 16,
+      "de": "die alte Fahrkarte",
+      "en": "old ticket",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 17,
+      "de": "das alte Fahrrad",
+      "en": "old bicycle",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 18,
+      "de": "das alte Fenster",
+      "en": "old window",
+      "chapter": 2,
+      "page": 7
+    },
+    {
+      "id": 19,
+      "de": "der alte Film",
+      "en": "old film",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 22,
+      "de": "das alte Handy",
+      "en": "old mobile phone",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 23,
+      "de": "das alte Hotel",
+      "en": "old hotel",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 24,
+      "de": "das alte Kind",
+      "en": "old child",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 25,
+      "de": "die alte Küche",
+      "en": "old kitchen",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 26,
+      "de": "die alte Lampe",
+      "en": "old lamp",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 27,
+      "de": "die alte Mutter",
+      "en": "old mother",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 28,
+      "de": "der alte Schrank",
+      "en": "old cupboard",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 29,
+      "de": "die alte Tochter",
+      "en": "old daughter",
+      "chapter": 2,
+      "page": 8
+    },
+    {
+      "id": 30,
+      "de": "die alte Tür",
+      "en": "old door",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 66,
+      "de": "das Bett",
+      "en": "bed",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 67,
+      "de": "Bett kaufen",
+      "en": "to buy bed",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 72,
+      "de": "das billige Bett",
+      "en": "cheap bed",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 82,
+      "de": "das billige Haus",
+      "en": "cheap house",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 87,
+      "de": "der billige Stuhl",
+      "en": "cheap chair",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 90,
+      "de": "das billige Zimmer",
+      "en": "cheap room",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 125,
+      "de": "die dunkle Wohnung",
+      "en": "dark apartment",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 126,
+      "de": "das dunkle Zimmer",
+      "en": "dark room",
+      "chapter": 2,
+      "page": 9
+    },
+    {
+      "id": 162,
+      "de": "das Fenster",
+      "en": "window",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 163,
+      "de": "Fenster schließen",
+      "en": "to close window",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 164,
+      "de": "Fenster öffnen",
+      "en": "to open window",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 207,
+      "de": "das geschlossene Fenster",
+      "en": "closed window",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 208,
+      "de": "die geschlossene Tür",
+      "en": "closed door",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 225,
+      "de": "das große Fenster",
+      "en": "big window",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 227,
+      "de": "der große Tisch",
+      "en": "big table",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 228,
+      "de": "die große Tür",
+      "en": "big door",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 245,
+      "de": "das Haus",
+      "en": "house",
+      "chapter": 2,
+      "page": 10
+    },
+    {
+      "id": 246,
+      "de": "Haus besuchen",
+      "en": "to visit house",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 257,
+      "de": "hell",
+      "en": "bright",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 258,
+      "de": "das helle Zimmer",
+      "en": "bright room",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 268,
+      "de": "der hässliche Schrank",
+      "en": "ugly cupboard",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 269,
+      "de": "der hässliche Tisch",
+      "en": "ugly table",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 300,
+      "de": "klein",
+      "en": "small; short",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 301,
+      "de": "das kleine Bad",
+      "en": "small bathroom",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 302,
+      "de": "das kleine Büro",
+      "en": "small office",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 303,
+      "de": "das kleine Fenster",
+      "en": "small window",
+      "chapter": 2,
+      "page": 11
+    },
+    {
+      "id": 304,
+      "de": "das kleine Hotel",
+      "en": "small hotel",
+      "chapter": 2,
+      "page": 12
+    },
+    {
+      "id": 305,
+      "de": "der kleine Schrank",
+      "en": "small cupboard",
+      "chapter": 2,
+      "page": 12
+    },
+    {
+      "id": 306,
+      "de": "die kleine Tür",
+      "en": "small door",
+      "chapter": 2,
+      "page": 12
+    },
+    {
+      "id": 326,
+      "de": "die Küche",
+      "en": "kitchen",
+      "chapter": 2,
+      "page": 12
+    },
+    {
+      "id": 327,
+      "de": "Küche besuchen",
+      "en": "to visit kitchen",
+      "chapter": 2,
+      "page": 12
+    },
+    {
+      "id": 329,
+      "de": "die Lampe",
+      "en": "lamp",
+      "chapter": 2,
+      "page": 12
+    },
+    {
+      "id": 330,
+      "de": "Lampe kaufen",
+      "en": "to buy lamp",
+      "chapter": 2,
+      "page": 12
+    },
+    {
+      "id": 97,
+      "de": "der Bruder",
+      "en": "brother",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 98,
+      "de": "Bruder treffen",
+      "en": "to meet brother",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 160,
+      "de": "die Familie",
+      "en": "family",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 216,
+      "de": "die gesunde Mutter",
+      "en": "healthy mother",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 218,
+      "de": "der gesunde Sohn",
+      "en": "healthy son",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 297,
+      "de": "das Kind",
+      "en": "child",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 298,
+      "de": "Kind anrufen",
+      "en": "to call child",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 315,
+      "de": "der kranke Bruder",
+      "en": "ill brother",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 316,
+      "de": "das kranke Kind",
+      "en": "ill child",
+      "chapter": 3,
+      "page": 13
+    },
+    {
+      "id": 317,
+      "de": "die kranke Tochter",
+      "en": "ill daughter",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 381,
+      "de": "die Mutter",
+      "en": "mother",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 384,
+      "de": "müssen",
+      "en": "must; have to",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 393,
+      "de": "der nette Bruder",
+      "en": "nice brother",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 418,
+      "de": "oder",
+      "en": "or",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 469,
+      "de": "der schlechte Satz",
+      "en": "bad sentence",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 496,
+      "de": "die Schwester",
+      "en": "sister",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 497,
+      "de": "Schwester anrufen",
+      "en": "to call sister",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 504,
+      "de": "sehr",
+      "en": "very",
+      "chapter": 3,
+      "page": 14
+    },
+    {
+      "id": 512,
+      "de": "der Sohn",
+      "en": "son",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 521,
+      "de": "stehen",
+      "en": "to stand",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 563,
+      "de": "die Tochter",
+      "en": "daughter",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 564,
+      "de": "Tochter anrufen",
+      "en": "to call daughter",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 575,
+      "de": "die Universität",
+      "en": "university",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 579,
+      "de": "der Vater",
+      "en": "father",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 580,
+      "de": "Vater anrufen",
+      "en": "to call father",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 581,
+      "de": "Vater besuchen",
+      "en": "to visit father",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 582,
+      "de": "Vater treffen",
+      "en": "to meet father",
+      "chapter": 3,
+      "page": 15
+    },
+    {
+      "id": 604,
+      "de": "wenn",
+      "en": "if; when",
+      "chapter": 3,
+      "page": 16
+    },
+    {
+      "id": 632,
+      "de": "zeigen",
+      "en": "to show",
+      "chapter": 3,
+      "page": 16
+    },
+    {
+      "id": 1,
+      "de": "der Abend",
+      "en": "evening",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 33,
+      "de": "anfangen",
+      "en": "to start",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 49,
+      "de": "aufstehen",
+      "en": "to get up",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 59,
+      "de": "beginnen",
+      "en": "to begin",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 79,
+      "de": "das billige Frühstück",
+      "en": "cheap breakfast",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 191,
+      "de": "das Frühstück",
+      "en": "breakfast",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 192,
+      "de": "Frühstück bestellen",
+      "en": "to order breakfast",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 193,
+      "de": "Frühstück bezahlen",
+      "en": "to pay for breakfast",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 209,
+      "de": "gestern",
+      "en": "yesterday",
+      "chapter": 4,
+      "page": 17
+    },
+    {
+      "id": 212,
+      "de": "das gesunde Frühstück",
+      "en": "healthy breakfast",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 235,
+      "de": "das gute Frühstück",
+      "en": "good breakfast",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 259,
+      "de": "heute",
+      "en": "today",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 274,
+      "de": "immer",
+      "en": "always",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 358,
+      "de": "manchmal",
+      "en": "sometimes",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 367,
+      "de": "die Minute",
+      "en": "minute",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 377,
+      "de": "morgen",
+      "en": "tomorrow",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 378,
+      "de": "der Morgen",
+      "en": "morning",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 386,
+      "de": "die Nacht",
+      "en": "night",
+      "chapter": 4,
+      "page": 18
+    },
+    {
+      "id": 413,
+      "de": "nie",
+      "en": "never",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 422,
+      "de": "oft",
+      "en": "often",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 456,
+      "de": "schlafen",
+      "en": "to sleep",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 462,
+      "de": "das schlechte Frühstück",
+      "en": "bad breakfast",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 529,
+      "de": "die Stunde",
+      "en": "hour",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 534,
+      "de": "der Tag",
+      "en": "day",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 572,
+      "de": "die Uhr",
+      "en": "clock; o'clock",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 573,
+      "de": "um",
+      "en": "around; at (time)",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 605,
+      "de": "wer",
+      "en": "who",
+      "chapter": 4,
+      "page": 19
+    },
+    {
+      "id": 623,
+      "de": "die Woche",
+      "en": "week",
+      "chapter": 4,
+      "page": 20
+    },
+    {
+      "id": 635,
+      "de": "zu",
+      "en": "to",
+      "chapter": 4,
+      "page": 20
+    },
+    {
+      "id": 5,
+      "de": "Abendessen essen",
+      "en": "to eat dinner",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 6,
+      "de": "Abendessen kochen",
+      "en": "to cook dinner",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 39,
+      "de": "der Apfel",
+      "en": "apple",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 40,
+      "de": "Apfel bestellen",
+      "en": "to order apple",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 41,
+      "de": "Apfel kaufen",
+      "en": "to buy apple",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 56,
+      "de": "die Banane",
+      "en": "banana",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 57,
+      "de": "Banane bestellen",
+      "en": "to order banana",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 58,
+      "de": "Banane essen",
+      "en": "to eat banana",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 71,
+      "de": "die billige Banane",
+      "en": "cheap banana",
+      "chapter": 5,
+      "page": 21
+    },
+    {
+      "id": 78,
+      "de": "das billige Fleisch",
+      "en": "cheap meat",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 80,
+      "de": "das billige Getränk",
+      "en": "cheap drink",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 84,
+      "de": "die billige Kartoffel",
+      "en": "cheap potato",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 89,
+      "de": "der billige Tee",
+      "en": "cheap tea",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 95,
+      "de": "das Brot",
+      "en": "bread",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 96,
+      "de": "Brot kaufen",
+      "en": "to buy bread",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 99,
+      "de": "das Brötchen",
+      "en": "bread roll",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 104,
+      "de": "die Butter",
+      "en": "butter",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 127,
+      "de": "durstig",
+      "en": "thirsty",
+      "chapter": 5,
+      "page": 22
+    },
+    {
+      "id": 133,
+      "de": "das Ei",
+      "en": "egg",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 134,
+      "de": "Ei kaufen",
+      "en": "to buy egg",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 135,
+      "de": "Ei kochen",
+      "en": "to cook egg",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 141,
+      "de": "das Essen",
+      "en": "food; meal",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 142,
+      "de": "essen",
+      "en": "to eat",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 143,
+      "de": "Essen bestellen",
+      "en": "to order food",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 144,
+      "de": "Essen bezahlen",
+      "en": "to pay for food",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 145,
+      "de": "Essen essen",
+      "en": "to eat food",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 146,
+      "de": "Essen kochen",
+      "en": "to cook food",
+      "chapter": 5,
+      "page": 23
+    },
+    {
+      "id": 172,
+      "de": "das Fleisch",
+      "en": "meat",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 173,
+      "de": "Fleisch kaufen",
+      "en": "to buy meat",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 174,
+      "de": "Fleisch kochen",
+      "en": "to cook meat",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 194,
+      "de": "Frühstück essen",
+      "en": "to eat breakfast",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 195,
+      "de": "Frühstück kochen",
+      "en": "to cook breakfast",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 211,
+      "de": "das gesunde Essen",
+      "en": "healthy food",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 217,
+      "de": "das gesunde Obst",
+      "en": "healthy fruit",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 219,
+      "de": "das Getränk",
+      "en": "drink; beverage",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 220,
+      "de": "Getränk bezahlen",
+      "en": "to pay for drink",
+      "chapter": 5,
+      "page": 24
+    },
+    {
+      "id": 221,
+      "de": "Getränk kaufen",
+      "en": "to buy drink",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 222,
+      "de": "Getränk trinken",
+      "en": "to drink drink",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 231,
+      "de": "die gute Banane",
+      "en": "good banana",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 234,
+      "de": "das gute Fleisch",
+      "en": "good meat",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 236,
+      "de": "das gute Getränk",
+      "en": "good drink",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 248,
+      "de": "heiß",
+      "en": "hot",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 249,
+      "de": "das heiße Abendessen",
+      "en": "hot dinner",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 250,
+      "de": "das heiße Essen",
+      "en": "hot food",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 251,
+      "de": "das heiße Fleisch",
+      "en": "hot meat",
+      "chapter": 5,
+      "page": 25
+    },
+    {
+      "id": 252,
+      "de": "das heiße Getränk",
+      "en": "hot drink",
+      "chapter": 5,
+      "page": 26
+    },
+    {
+      "id": 253,
+      "de": "der heiße Kaffee",
+      "en": "hot coffee",
+      "chapter": 5,
+      "page": 26
+    },
+    {
+      "id": 254,
+      "de": "die heiße Milch",
+      "en": "hot milk",
+      "chapter": 5,
+      "page": 26
+    },
+    {
+      "id": 266,
+      "de": "hungrig",
+      "en": "hungry",
+      "chapter": 5,
+      "page": 26
+    },
+    {
+      "id": 283,
+      "de": "der Kaffee",
+      "en": "coffee",
+      "chapter": 5,
+      "page": 26
+    },
+    {
+      "id": 285,
+      "de": "Kaffee trinken",
+      "en": "to drink coffee",
+      "chapter": 5,
+      "page": 26
+    },
+    {
+      "id": 286,
+      "de": "kalt",
+      "en": "cold",
+      "chapter": 5,
+      "page": 26
+    },
+    {
+      "id": 52,
+      "de": "das Auto",
+      "en": "car",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 55,
+      "de": "der Bahnhof",
+      "en": "train station",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 70,
+      "de": "das billige Auto",
+      "en": "cheap car",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 75,
+      "de": "die billige Fahrkarte",
+      "en": "cheap ticket",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 76,
+      "de": "das billige Fahrrad",
+      "en": "cheap bicycle",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 103,
+      "de": "der Bus",
+      "en": "bus",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 149,
+      "de": "fahren",
+      "en": "to drive; travel",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 150,
+      "de": "die Fahrkarte",
+      "en": "ticket",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 151,
+      "de": "Fahrkarte bezahlen",
+      "en": "to pay for ticket",
+      "chapter": 6,
+      "page": 27
+    },
+    {
+      "id": 152,
+      "de": "Fahrkarte kaufen",
+      "en": "to buy ticket",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 153,
+      "de": "Fahrkarte reservieren",
+      "en": "to reserve ticket",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 154,
+      "de": "Fahrkarte zeigen",
+      "en": "to show ticket",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 155,
+      "de": "das Fahrrad",
+      "en": "bicycle",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 158,
+      "de": "die falsche Fahrkarte",
+      "en": "wrong ticket",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 175,
+      "de": "der Flughafen",
+      "en": "airport",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 336,
+      "de": "das langsame Auto",
+      "en": "slow car",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 337,
+      "de": "der langsame Bus",
+      "en": "slow bus",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 339,
+      "de": "das langsame Fahrrad",
+      "en": "slow bicycle",
+      "chapter": 6,
+      "page": 28
+    },
+    {
+      "id": 341,
+      "de": "der langsame Zug",
+      "en": "slow train",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 432,
+      "de": "reisen",
+      "en": "to travel",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 436,
+      "de": "die richtige Fahrkarte",
+      "en": "correct ticket",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 484,
+      "de": "das schnelle Fahrrad",
+      "en": "fast bicycle",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 487,
+      "de": "der schnelle Zug",
+      "en": "fast train",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 523,
+      "de": "die Straße",
+      "en": "street",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 544,
+      "de": "das teure Auto",
+      "en": "expensive car",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 546,
+      "de": "der teure Bus",
+      "en": "expensive bus",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 550,
+      "de": "die teure Fahrkarte",
+      "en": "expensive ticket",
+      "chapter": 6,
+      "page": 29
+    },
+    {
+      "id": 613,
+      "de": "die wichtige Fahrkarte",
+      "en": "important ticket",
+      "chapter": 6,
+      "page": 30
+    },
+    {
+      "id": 637,
+      "de": "der Zug",
+      "en": "train",
+      "chapter": 6,
+      "page": 30
+    },
+    {
+      "id": 110,
+      "de": "da",
+      "en": "there; here",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 117,
+      "de": "die",
+      "en": "the (feminine/plural)",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 122,
+      "de": "dort",
+      "en": "there",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 124,
+      "de": "dunkel",
+      "en": "dark",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 140,
+      "de": "es",
+      "en": "it",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 176,
+      "de": "das Foto",
+      "en": "photo",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 206,
+      "de": "geschlossen",
+      "en": "closed",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 260,
+      "de": "hier",
+      "en": "here",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 261,
+      "de": "hinter",
+      "en": "behind",
+      "chapter": 7,
+      "page": 31
+    },
+    {
+      "id": 262,
+      "de": "holen",
+      "en": "to fetch; get",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 278,
+      "de": "das Jahr",
+      "en": "year",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 332,
+      "de": "lang",
+      "en": "long",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 357,
+      "de": "machen",
+      "en": "to do; make",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 385,
+      "de": "nach",
+      "en": "after; to",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 419,
+      "de": "offen",
+      "en": "open",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 426,
+      "de": "der Platz",
+      "en": "place; square; seat",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 473,
+      "de": "schließen",
+      "en": "to close",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 505,
+      "de": "sein",
+      "en": "his; its",
+      "chapter": 7,
+      "page": 32
+    },
+    {
+      "id": 520,
+      "de": "die Stadt",
+      "en": "city",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 522,
+      "de": "der Stift",
+      "en": "pen",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 576,
+      "de": "unser",
+      "en": "our",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 577,
+      "de": "unter",
+      "en": "under",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 587,
+      "de": "vor",
+      "en": "before; in front of",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 606,
+      "de": "werden",
+      "en": "to become",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 622,
+      "de": "wo",
+      "en": "where",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 625,
+      "de": "wohin",
+      "en": "where to",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 639,
+      "de": "zwischen",
+      "en": "between",
+      "chapter": 7,
+      "page": 33
+    },
+    {
+      "id": 641,
+      "de": "öffnen",
+      "en": "to open",
+      "chapter": 7,
+      "page": 34
+    },
+    {
+      "id": 642,
+      "de": "über",
+      "en": "over; about",
+      "chapter": 7,
+      "page": 34
+    },
+    {
+      "id": 35,
+      "de": "die Antwort",
+      "en": "answer",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 36,
+      "de": "Antwort lesen",
+      "en": "to read answer",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 37,
+      "de": "Antwort schreiben",
+      "en": "to write answer",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 38,
+      "de": "antworten",
+      "en": "to answer",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 73,
+      "de": "das billige Buch",
+      "en": "cheap book",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 100,
+      "de": "das Buch",
+      "en": "book",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 101,
+      "de": "Buch kaufen",
+      "en": "to buy book",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 102,
+      "de": "Buch lesen",
+      "en": "to read book",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 156,
+      "de": "falsch",
+      "en": "wrong",
+      "chapter": 8,
+      "page": 35
+    },
+    {
+      "id": 157,
+      "de": "die falsche Antwort",
+      "en": "wrong answer",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 159,
+      "de": "der falsche Satz",
+      "en": "wrong sentence",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 177,
+      "de": "die Frage",
+      "en": "question",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 230,
+      "de": "die gute Antwort",
+      "en": "good answer",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 232,
+      "de": "das gute Buch",
+      "en": "good book",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 240,
+      "de": "das gute Wort",
+      "en": "good word",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 320,
+      "de": "die kurze Antwort",
+      "en": "short answer",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 333,
+      "de": "die lange Antwort",
+      "en": "long answer",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 345,
+      "de": "der Lehrer",
+      "en": "male teacher",
+      "chapter": 8,
+      "page": 36
+    },
+    {
+      "id": 346,
+      "de": "die Lehrerin",
+      "en": "female teacher",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 351,
+      "de": "das leichte Wort",
+      "en": "easy word",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 353,
+      "de": "lernen",
+      "en": "to learn; study",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 354,
+      "de": "lesen",
+      "en": "to read",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 434,
+      "de": "richtig",
+      "en": "correct",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 435,
+      "de": "die richtige Antwort",
+      "en": "correct answer",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 437,
+      "de": "der richtige Satz",
+      "en": "correct sentence",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 442,
+      "de": "Satz lernen",
+      "en": "to learn sentence",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 443,
+      "de": "Satz lesen",
+      "en": "to read sentence",
+      "chapter": 8,
+      "page": 37
+    },
+    {
+      "id": 444,
+      "de": "Satz schreiben",
+      "en": "to write sentence",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 458,
+      "de": "die schlechte Antwort",
+      "en": "bad answer",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 459,
+      "de": "das schlechte Buch",
+      "en": "bad book",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 472,
+      "de": "das schlechte Wort",
+      "en": "bad word",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 491,
+      "de": "schreiben",
+      "en": "to write",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 492,
+      "de": "die Schule",
+      "en": "school",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 518,
+      "de": "Sprache lernen",
+      "en": "to learn language",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 526,
+      "de": "studieren",
+      "en": "to study at university",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 545,
+      "de": "das teure Buch",
+      "en": "expensive book",
+      "chapter": 8,
+      "page": 38
+    },
+    {
+      "id": 584,
+      "de": "verstehen",
+      "en": "to understand",
+      "chapter": 8,
+      "page": 39
+    },
+    {
+      "id": 609,
+      "de": "die wichtige Antwort",
+      "en": "important answer",
+      "chapter": 8,
+      "page": 39
+    },
+    {
+      "id": 611,
+      "de": "das wichtige Buch",
+      "en": "important book",
+      "chapter": 8,
+      "page": 39
+    },
+    {
+      "id": 616,
+      "de": "das wichtige Wort",
+      "en": "important word",
+      "chapter": 8,
+      "page": 39
+    },
+    {
+      "id": 630,
+      "de": "das Wort",
+      "en": "word",
+      "chapter": 8,
+      "page": 39
+    },
+    {
+      "id": 631,
+      "de": "Wort lernen",
+      "en": "to learn word",
+      "chapter": 8,
+      "page": 39
+    },
+    {
+      "id": 4,
+      "de": "Abendessen bezahlen",
+      "en": "to pay for dinner",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 68,
+      "de": "bezahlen",
+      "en": "to pay",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 69,
+      "de": "billig",
+      "en": "cheap",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 74,
+      "de": "der billige Computer",
+      "en": "cheap computer",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 77,
+      "de": "der billige Fisch",
+      "en": "cheap fish",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 81,
+      "de": "das billige Handy",
+      "en": "cheap mobile phone",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 83,
+      "de": "das billige Hotel",
+      "en": "cheap hotel",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 85,
+      "de": "das billige Mittagessen",
+      "en": "cheap lunch",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 86,
+      "de": "die billige Orange",
+      "en": "cheap orange",
+      "chapter": 9,
+      "page": 40
+    },
+    {
+      "id": 88,
+      "de": "die billige Suppe",
+      "en": "cheap soup",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 109,
+      "de": "Computer kaufen",
+      "en": "to buy computer",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 202,
+      "de": "das Geld",
+      "en": "money",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 203,
+      "de": "das Gemüse",
+      "en": "vegetables",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 204,
+      "de": "Gemüse kaufen",
+      "en": "to buy vegetables",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 244,
+      "de": "Handy kaufen",
+      "en": "to buy mobile phone",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 264,
+      "de": "Hotel bezahlen",
+      "en": "to pay for hotel",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 294,
+      "de": "kaufen",
+      "en": "to buy",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 313,
+      "de": "kosten",
+      "en": "to cost",
+      "chapter": 9,
+      "page": 41
+    },
+    {
+      "id": 328,
+      "de": "der Laden",
+      "en": "shop",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 371,
+      "de": "Mittagessen bezahlen",
+      "en": "to pay for lunch",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 417,
+      "de": "Obst kaufen",
+      "en": "to buy fruit",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 427,
+      "de": "der Preis",
+      "en": "price",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 463,
+      "de": "das schlechte Gemüse",
+      "en": "bad vegetables",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 531,
+      "de": "der Supermarkt",
+      "en": "supermarket",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 542,
+      "de": "teuer",
+      "en": "expensive",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 547,
+      "de": "das teure Büro",
+      "en": "expensive office",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 548,
+      "de": "der teure Computer",
+      "en": "expensive computer",
+      "chapter": 9,
+      "page": 42
+    },
+    {
+      "id": 552,
+      "de": "das teure Handy",
+      "en": "expensive mobile phone",
+      "chapter": 9,
+      "page": 43
+    },
+    {
+      "id": 553,
+      "de": "das teure Hotel",
+      "en": "expensive hotel",
+      "chapter": 9,
+      "page": 43
+    },
+    {
+      "id": 556,
+      "de": "das teure Mittagessen",
+      "en": "expensive lunch",
+      "chapter": 9,
+      "page": 43
+    },
+    {
+      "id": 559,
+      "de": "das teure Taxi",
+      "en": "expensive taxi",
+      "chapter": 9,
+      "page": 43
+    },
+    {
+      "id": 583,
+      "de": "verkaufen",
+      "en": "to sell",
+      "chapter": 9,
+      "page": 43
+    },
+    {
+      "id": 2,
+      "de": "das Abendessen",
+      "en": "dinner",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 3,
+      "de": "Abendessen bestellen",
+      "en": "to order dinner",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 64,
+      "de": "bestellen",
+      "en": "to order",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 91,
+      "de": "bis",
+      "en": "until",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 112,
+      "de": "dass",
+      "en": "that",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 118,
+      "de": "Dienstag",
+      "en": "Tuesday",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 128,
+      "de": "duschen",
+      "en": "to shower",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 147,
+      "de": "euer",
+      "en": "your (plural)",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 171,
+      "de": "Fisch bestellen",
+      "en": "to order fish",
+      "chapter": 10,
+      "page": 44
+    },
+    {
+      "id": 181,
+      "de": "frei",
+      "en": "free; available",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 210,
+      "de": "gesund",
+      "en": "healthy",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 215,
+      "de": "das gesunde Mittagessen",
+      "en": "healthy lunch",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 237,
+      "de": "das gute Mittagessen",
+      "en": "good lunch",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 267,
+      "de": "hässlich",
+      "en": "ugly",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 279,
+      "de": "jetzt",
+      "en": "now",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 284,
+      "de": "Kaffee bestellen",
+      "en": "to order coffee",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 334,
+      "de": "der lange Satz",
+      "en": "long sentence",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 361,
+      "de": "mein",
+      "en": "my",
+      "chapter": 10,
+      "page": 45
+    },
+    {
+      "id": 370,
+      "de": "das Mittagessen",
+      "en": "lunch",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 388,
+      "de": "die Nase",
+      "en": "nose",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 423,
+      "de": "ohne",
+      "en": "without",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 433,
+      "de": "reservieren",
+      "en": "to reserve",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 466,
+      "de": "das schlechte Mittagessen",
+      "en": "bad lunch",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 474,
+      "de": "der Schlüssel",
+      "en": "key",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 506,
+      "de": "sein",
+      "en": "to be",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 530,
+      "de": "suchen",
+      "en": "to search",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 585,
+      "de": "vielleicht",
+      "en": "perhaps",
+      "chapter": 10,
+      "page": 46
+    },
+    {
+      "id": 608,
+      "de": "wichtig",
+      "en": "important",
+      "chapter": 10,
+      "page": 47
+    },
+    {
+      "id": 7,
+      "de": "aber",
+      "en": "but",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 8,
+      "de": "die Adresse",
+      "en": "address",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 9,
+      "de": "allein",
+      "en": "alone",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 47,
+      "de": "auch",
+      "en": "also; too",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 60,
+      "de": "bei",
+      "en": "at; with",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 92,
+      "de": "bleiben",
+      "en": "to stay",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 113,
+      "de": "dein",
+      "en": "your",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 119,
+      "de": "dieser",
+      "en": "this",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 129,
+      "de": "dürfen",
+      "en": "may; be allowed to",
+      "chapter": 11,
+      "page": 48
+    },
+    {
+      "id": 148,
+      "de": "der Euro",
+      "en": "euro",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 182,
+      "de": "Freitag",
+      "en": "Friday",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 223,
+      "de": "glauben",
+      "en": "to believe",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 271,
+      "de": "ich",
+      "en": "I",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 295,
+      "de": "kein",
+      "en": "no; not a",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 335,
+      "de": "langsam",
+      "en": "slow",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 368,
+      "de": "mit",
+      "en": "with",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 389,
+      "de": "neben",
+      "en": "next to",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 425,
+      "de": "die Orange",
+      "en": "orange",
+      "chapter": 11,
+      "page": 49
+    },
+    {
+      "id": 475,
+      "de": "schmutzig",
+      "en": "dirty",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 498,
+      "de": "schön",
+      "en": "beautiful; nice",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 499,
+      "de": "der schöne Film",
+      "en": "beautiful film",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 501,
+      "de": "das schöne Hotel",
+      "en": "beautiful hotel",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 502,
+      "de": "das schöne Wetter",
+      "en": "beautiful weather",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 507,
+      "de": "sie",
+      "en": "she; they",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 514,
+      "de": "die Sonne",
+      "en": "sun",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 532,
+      "de": "die Suppe",
+      "en": "soup",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 588,
+      "de": "wann",
+      "en": "when",
+      "chapter": 11,
+      "page": 50
+    },
+    {
+      "id": 614,
+      "de": "der wichtige Satz",
+      "en": "important sentence",
+      "chapter": 11,
+      "page": 51
+    },
+    {
+      "id": 48,
+      "de": "auf",
+      "en": "on; onto",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 61,
+      "de": "das Bein",
+      "en": "leg",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 93,
+      "de": "brauchen",
+      "en": "to need",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 114,
+      "de": "denken",
+      "en": "to think",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 120,
+      "de": "Donnerstag",
+      "en": "Thursday",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 136,
+      "de": "ein",
+      "en": "a; an (masc./neut.)",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 161,
+      "de": "fehlen",
+      "en": "to be missing; lack",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 189,
+      "de": "freundlich",
+      "en": "friendly",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 224,
+      "de": "groß",
+      "en": "big; tall",
+      "chapter": 12,
+      "page": 52
+    },
+    {
+      "id": 255,
+      "de": "das heiße Wetter",
+      "en": "hot weather",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 272,
+      "de": "ihr",
+      "en": "her; their",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 292,
+      "de": "das kalte Wetter",
+      "en": "cold weather",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 311,
+      "de": "kommen",
+      "en": "to come",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 343,
+      "de": "laut",
+      "en": "loud",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 369,
+      "de": "der Mittag",
+      "en": "noon",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 390,
+      "de": "nehmen",
+      "en": "to take",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 428,
+      "de": "der Regen",
+      "en": "rain",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 438,
+      "de": "sagen",
+      "en": "to say",
+      "chapter": 12,
+      "page": 53
+    },
+    {
+      "id": 471,
+      "de": "das schlechte Wetter",
+      "en": "bad weather",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 481,
+      "de": "der Schnee",
+      "en": "snow",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 482,
+      "de": "schnell",
+      "en": "fast",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 508,
+      "de": "Sie",
+      "en": "you (formal)",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 536,
+      "de": "das Taxi",
+      "en": "taxi",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 592,
+      "de": "das warme Wetter",
+      "en": "warm weather",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 593,
+      "de": "warten",
+      "en": "to wait",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 607,
+      "de": "das Wetter",
+      "en": "weather",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 617,
+      "de": "wie",
+      "en": "how",
+      "chapter": 12,
+      "page": 54
+    },
+    {
+      "id": 619,
+      "de": "der Wind",
+      "en": "wind",
+      "chapter": 12,
+      "page": 55
+    },
+    {
+      "id": 42,
+      "de": "die Apotheke",
+      "en": "pharmacy",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 45,
+      "de": "der Arm",
+      "en": "arm",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 46,
+      "de": "der Arzt",
+      "en": "male doctor",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 50,
+      "de": "das Auge",
+      "en": "eye",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 196,
+      "de": "der Fuß",
+      "en": "foot",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 197,
+      "de": "für",
+      "en": "for",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 229,
+      "de": "gut",
+      "en": "good",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 242,
+      "de": "die Hand",
+      "en": "hand",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 256,
+      "de": "helfen",
+      "en": "to help",
+      "chapter": 13,
+      "page": 56
+    },
+    {
+      "id": 273,
+      "de": "ihr",
+      "en": "you (informal plural)",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 312,
+      "de": "der Kopf",
+      "en": "head",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 314,
+      "de": "krank",
+      "en": "sick",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 318,
+      "de": "das Krankenhaus",
+      "en": "hospital",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 319,
+      "de": "kurz",
+      "en": "short",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 325,
+      "de": "der Körper",
+      "en": "body",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 344,
+      "de": "leben",
+      "en": "to live",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 374,
+      "de": "Mittwoch",
+      "en": "Wednesday",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 379,
+      "de": "der Mund",
+      "en": "mouth",
+      "chapter": 13,
+      "page": 57
+    },
+    {
+      "id": 383,
+      "de": "müde",
+      "en": "tired",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 391,
+      "de": "nein",
+      "en": "no",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 424,
+      "de": "das Ohr",
+      "en": "ear",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 440,
+      "de": "Samstag",
+      "en": "Saturday",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 486,
+      "de": "das schnelle Taxi",
+      "en": "fast taxi",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 510,
+      "de": "sitzen",
+      "en": "to sit",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 541,
+      "de": "die Telefonnummer",
+      "en": "telephone number",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 594,
+      "de": "warum",
+      "en": "why",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 618,
+      "de": "wieder",
+      "en": "again",
+      "chapter": 13,
+      "page": 58
+    },
+    {
+      "id": 640,
+      "de": "die Ärztin",
+      "en": "female doctor",
+      "chapter": 13,
+      "page": 59
+    },
+    {
+      "id": 34,
+      "de": "anrufen",
+      "en": "to call by phone",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 43,
+      "de": "die Arbeit",
+      "en": "work; job",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 44,
+      "de": "arbeiten",
+      "en": "to work",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 62,
+      "de": "der Beruf",
+      "en": "profession; occupation",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 105,
+      "de": "das Büro",
+      "en": "office",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 106,
+      "de": "Büro besuchen",
+      "en": "to visit office",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 107,
+      "de": "der Chef",
+      "en": "boss",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 108,
+      "de": "der Computer",
+      "en": "computer",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 130,
+      "de": "die E-Mail",
+      "en": "email",
+      "chapter": 14,
+      "page": 60
+    },
+    {
+      "id": 131,
+      "de": "E-Mail schicken",
+      "en": "to send email",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 132,
+      "de": "E-Mail öffnen",
+      "en": "to open email",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 213,
+      "de": "der gesunde Kollege",
+      "en": "healthy male colleague",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 214,
+      "de": "die gesunde Kollegin",
+      "en": "healthy female colleague",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 243,
+      "de": "das Handy",
+      "en": "mobile phone",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 308,
+      "de": "der Kollege",
+      "en": "male colleague",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 309,
+      "de": "Kollege treffen",
+      "en": "to meet male colleague",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 310,
+      "de": "die Kollegin",
+      "en": "female colleague",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 338,
+      "de": "der langsame Computer",
+      "en": "slow computer",
+      "chapter": 14,
+      "page": 61
+    },
+    {
+      "id": 340,
+      "de": "das langsame Handy",
+      "en": "slow mobile phone",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 348,
+      "de": "die leichte Arbeit",
+      "en": "easy work",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 455,
+      "de": "schicken",
+      "en": "to send",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 483,
+      "de": "der schnelle Computer",
+      "en": "fast computer",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 485,
+      "de": "das schnelle Handy",
+      "en": "fast mobile phone",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 494,
+      "de": "die schwere Arbeit",
+      "en": "difficult work",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 595,
+      "de": "was",
+      "en": "what",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 610,
+      "de": "die wichtige Arbeit",
+      "en": "important work",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 612,
+      "de": "die wichtige E-Mail",
+      "en": "important email",
+      "chapter": 14,
+      "page": 62
+    },
+    {
+      "id": 620,
+      "de": "wir",
+      "en": "we",
+      "chapter": 14,
+      "page": 63
+    },
+    {
+      "id": 137,
+      "de": "eine",
+      "en": "a; an (fem.)",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 165,
+      "de": "fertig",
+      "en": "finished; ready",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 166,
+      "de": "der Film",
+      "en": "film; movie",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 167,
+      "de": "Film besuchen",
+      "en": "to visit film",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 168,
+      "de": "Film sehen",
+      "en": "to see; watch film",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 198,
+      "de": "geben",
+      "en": "to give",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 201,
+      "de": "gehen",
+      "en": "to go; walk",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 233,
+      "de": "der gute Film",
+      "en": "good film",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 238,
+      "de": "der gute Satz",
+      "en": "good sentence",
+      "chapter": 15,
+      "page": 64
+    },
+    {
+      "id": 270,
+      "de": "hören",
+      "en": "to hear; listen",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 275,
+      "de": "in",
+      "en": "in; into",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 321,
+      "de": "der kurze Satz",
+      "en": "short sentence",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 342,
+      "de": "laufen",
+      "en": "to run; walk",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 349,
+      "de": "der leichte Satz",
+      "en": "easy sentence",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 375,
+      "de": "der Monat",
+      "en": "month",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 380,
+      "de": "die Musik",
+      "en": "music",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 412,
+      "de": "nicht",
+      "en": "not",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 441,
+      "de": "der Satz",
+      "en": "sentence",
+      "chapter": 15,
+      "page": 65
+    },
+    {
+      "id": 454,
+      "de": "schauen",
+      "en": "to look; watch",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 461,
+      "de": "der schlechte Film",
+      "en": "bad film",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 488,
+      "de": "schon",
+      "en": "already",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 509,
+      "de": "singen",
+      "en": "to sing",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 511,
+      "de": "so",
+      "en": "so; like this",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 516,
+      "de": "spielen",
+      "en": "to play",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 535,
+      "de": "tanzen",
+      "en": "to dance",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 565,
+      "de": "die Toilette",
+      "en": "toilet",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 596,
+      "de": "waschen",
+      "en": "to wash",
+      "chapter": 15,
+      "page": 66
+    },
+    {
+      "id": 621,
+      "de": "wissen",
+      "en": "to know (fact)",
+      "chapter": 15,
+      "page": 67
+    },
+    {
+      "id": 32,
+      "de": "an",
+      "en": "at; on",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 53,
+      "de": "das Bad",
+      "en": "bathroom",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 54,
+      "de": "Bad besuchen",
+      "en": "to visit bathroom",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 63,
+      "de": "besetzt",
+      "en": "occupied; busy",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 65,
+      "de": "besuchen",
+      "en": "to visit",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 94,
+      "de": "bringen",
+      "en": "to bring",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 115,
+      "de": "denn",
+      "en": "because; then",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 121,
+      "de": "das Dorf",
+      "en": "village",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 138,
+      "de": "enden",
+      "en": "to end",
+      "chapter": 16,
+      "page": 68
+    },
+    {
+      "id": 169,
+      "de": "finden",
+      "en": "to find",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 200,
+      "de": "gegen",
+      "en": "against; around",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 226,
+      "de": "das große Hotel",
+      "en": "big hotel",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 241,
+      "de": "haben",
+      "en": "to have",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 263,
+      "de": "das Hotel",
+      "en": "hotel",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 265,
+      "de": "Hotel reservieren",
+      "en": "to reserve hotel",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 276,
+      "de": "das Internet",
+      "en": "internet",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 324,
+      "de": "können",
+      "en": "can; be able to",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 352,
+      "de": "leise",
+      "en": "quiet",
+      "chapter": 16,
+      "page": 69
+    },
+    {
+      "id": 376,
+      "de": "Montag",
+      "en": "Monday",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 414,
+      "de": "noch",
+      "en": "still; yet",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 431,
+      "de": "die Reise",
+      "en": "trip; journey",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 457,
+      "de": "schlecht",
+      "en": "bad",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 493,
+      "de": "schwer",
+      "en": "heavy; difficult",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 513,
+      "de": "sollen",
+      "en": "should; be supposed to",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 566,
+      "de": "tragen",
+      "en": "to carry; wear",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 578,
+      "de": "der Urlaub",
+      "en": "holiday; vacation",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 602,
+      "de": "weil",
+      "en": "because",
+      "chapter": 16,
+      "page": 70
+    },
+    {
+      "id": 626,
+      "de": "wohnen",
+      "en": "to live; reside",
+      "chapter": 16,
+      "page": 71
+    },
+    {
+      "id": 111,
+      "de": "das",
+      "en": "the (neuter)",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 116,
+      "de": "der",
+      "en": "the (masculine)",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 123,
+      "de": "du",
+      "en": "you (informal singular)",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 139,
+      "de": "er",
+      "en": "he",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 170,
+      "de": "der Fisch",
+      "en": "fish",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 178,
+      "de": "fragen",
+      "en": "to ask",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 187,
+      "de": "Freundin besuchen",
+      "en": "to visit female friend",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 188,
+      "de": "Freundin treffen",
+      "en": "to meet female friend",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 199,
+      "de": "gefallen",
+      "en": "to please; be liked",
+      "chapter": 17,
+      "page": 72
+    },
+    {
+      "id": 205,
+      "de": "gern",
+      "en": "gladly; like to",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 247,
+      "de": "das Heft",
+      "en": "notebook",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 277,
+      "de": "ja",
+      "en": "yes",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 299,
+      "de": "Kind treffen",
+      "en": "to meet child",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 331,
+      "de": "das Land",
+      "en": "country",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 355,
+      "de": "lieben",
+      "en": "to love",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 356,
+      "de": "liegen",
+      "en": "to lie; be located",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 382,
+      "de": "mögen",
+      "en": "to like",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 392,
+      "de": "nett",
+      "en": "nice; kind",
+      "chapter": 17,
+      "page": 73
+    },
+    {
+      "id": 415,
+      "de": "nur",
+      "en": "only",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 468,
+      "de": "die schlechte Orange",
+      "en": "bad orange",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 503,
+      "de": "sehen",
+      "en": "to see",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 515,
+      "de": "Sonntag",
+      "en": "Sunday",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 519,
+      "de": "sprechen",
+      "en": "to speak",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 567,
+      "de": "treffen",
+      "en": "to meet",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 574,
+      "de": "und",
+      "en": "and",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 603,
+      "de": "welcher",
+      "en": "which",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 629,
+      "de": "wollen",
+      "en": "want to",
+      "chapter": 17,
+      "page": 74
+    },
+    {
+      "id": 638,
+      "de": "zusammen",
+      "en": "together",
+      "chapter": 17,
+      "page": 75
+    },
+    {
+      "id": 287,
+      "de": "das kalte Abendessen",
+      "en": "cold dinner",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 288,
+      "de": "das kalte Mittagessen",
+      "en": "cold lunch",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 289,
+      "de": "die kalte Orange",
+      "en": "cold orange",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 290,
+      "de": "der kalte Tee",
+      "en": "cold tea",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 291,
+      "de": "das kalte Wasser",
+      "en": "cold water",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 293,
+      "de": "die Kartoffel",
+      "en": "potato",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 307,
+      "de": "kochen",
+      "en": "to cook",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 322,
+      "de": "der Käse",
+      "en": "cheese",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 323,
+      "de": "Käse essen",
+      "en": "to eat cheese",
+      "chapter": 18,
+      "page": 76
+    },
+    {
+      "id": 347,
+      "de": "leicht",
+      "en": "light; easy",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 363,
+      "de": "die Milch",
+      "en": "milk",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 364,
+      "de": "Milch bestellen",
+      "en": "to order milk",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 365,
+      "de": "Milch bezahlen",
+      "en": "to pay for milk",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 366,
+      "de": "Milch trinken",
+      "en": "to drink milk",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 372,
+      "de": "Mittagessen essen",
+      "en": "to eat lunch",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 373,
+      "de": "Mittagessen kochen",
+      "en": "to cook lunch",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 394,
+      "de": "neu",
+      "en": "new",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 395,
+      "de": "die neue Arbeit",
+      "en": "new work",
+      "chapter": 18,
+      "page": 77
+    },
+    {
+      "id": 396,
+      "de": "das neue Bad",
+      "en": "new bathroom",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 397,
+      "de": "das neue Buch",
+      "en": "new book",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 398,
+      "de": "der neue Computer",
+      "en": "new computer",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 399,
+      "de": "die neue E-Mail",
+      "en": "new email",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 400,
+      "de": "die neue Fahrkarte",
+      "en": "new ticket",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 401,
+      "de": "das neue Fenster",
+      "en": "new window",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 402,
+      "de": "der neue Film",
+      "en": "new film",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 403,
+      "de": "das neue Handy",
+      "en": "new mobile phone",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 404,
+      "de": "das neue Hotel",
+      "en": "new hotel",
+      "chapter": 18,
+      "page": 78
+    },
+    {
+      "id": 405,
+      "de": "die neue Lampe",
+      "en": "new lamp",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 406,
+      "de": "der neue Satz",
+      "en": "new sentence",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 408,
+      "de": "das neue Taxi",
+      "en": "new taxi",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 409,
+      "de": "der neue Tisch",
+      "en": "new table",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 410,
+      "de": "die neue Tür",
+      "en": "new door",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 411,
+      "de": "das neue Wort",
+      "en": "new word",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 416,
+      "de": "das Obst",
+      "en": "fruit",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 420,
+      "de": "das offene Fenster",
+      "en": "open window",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 421,
+      "de": "die offene Tür",
+      "en": "open door",
+      "chapter": 18,
+      "page": 79
+    },
+    {
+      "id": 429,
+      "de": "der Reis",
+      "en": "rice",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 430,
+      "de": "Reis bestellen",
+      "en": "to order rice",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 439,
+      "de": "das Salz",
+      "en": "salt",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 445,
+      "de": "sauber",
+      "en": "clean",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 446,
+      "de": "das saubere Fenster",
+      "en": "clean window",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 447,
+      "de": "das saubere Hotel",
+      "en": "clean hotel",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 448,
+      "de": "die saubere Lampe",
+      "en": "clean lamp",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 449,
+      "de": "der saubere Schrank",
+      "en": "clean cupboard",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 450,
+      "de": "der saubere Stuhl",
+      "en": "clean chair",
+      "chapter": 18,
+      "page": 80
+    },
+    {
+      "id": 451,
+      "de": "der saubere Tisch",
+      "en": "clean table",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 452,
+      "de": "die saubere Tür",
+      "en": "clean door",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 453,
+      "de": "das saubere Zimmer",
+      "en": "clean room",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 460,
+      "de": "das schlechte Essen",
+      "en": "bad food",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 464,
+      "de": "das schlechte Getränk",
+      "en": "bad drink",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 465,
+      "de": "der schlechte Kaffee",
+      "en": "bad coffee",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 467,
+      "de": "das schlechte Obst",
+      "en": "bad fruit",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 476,
+      "de": "das schmutzige Fenster",
+      "en": "dirty window",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 477,
+      "de": "die schmutzige Küche",
+      "en": "dirty kitchen",
+      "chapter": 18,
+      "page": 81
+    },
+    {
+      "id": 478,
+      "de": "der schmutzige Schrank",
+      "en": "dirty cupboard",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 479,
+      "de": "die schmutzige Tür",
+      "en": "dirty door",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 480,
+      "de": "das schmutzige Zimmer",
+      "en": "dirty room",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 489,
+      "de": "der Schrank",
+      "en": "cupboard; wardrobe",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 490,
+      "de": "Schrank kaufen",
+      "en": "to buy cupboard",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 500,
+      "de": "das schöne Haus",
+      "en": "beautiful house",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 527,
+      "de": "der Stuhl",
+      "en": "chair",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 528,
+      "de": "Stuhl kaufen",
+      "en": "to buy chair",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 533,
+      "de": "Suppe kochen",
+      "en": "to cook soup",
+      "chapter": 18,
+      "page": 82
+    },
+    {
+      "id": 537,
+      "de": "der Tee",
+      "en": "tea",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 538,
+      "de": "Tee bezahlen",
+      "en": "to pay for tea",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 539,
+      "de": "Tee kaufen",
+      "en": "to buy tea",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 540,
+      "de": "Tee trinken",
+      "en": "to drink tea",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 543,
+      "de": "der teure Apfel",
+      "en": "expensive apple",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 549,
+      "de": "das teure Essen",
+      "en": "expensive food",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 551,
+      "de": "das teure Getränk",
+      "en": "expensive drink",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 554,
+      "de": "der teure Kaffee",
+      "en": "expensive coffee",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 555,
+      "de": "die teure Milch",
+      "en": "expensive milk",
+      "chapter": 18,
+      "page": 83
+    },
+    {
+      "id": 557,
+      "de": "der teure Reis",
+      "en": "expensive rice",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 558,
+      "de": "der teure Schrank",
+      "en": "expensive cupboard",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 560,
+      "de": "das teure Wasser",
+      "en": "expensive water",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 561,
+      "de": "der Tisch",
+      "en": "table",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 562,
+      "de": "Tisch kaufen",
+      "en": "to buy table",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 568,
+      "de": "trinken",
+      "en": "to drink",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 569,
+      "de": "die Tür",
+      "en": "door",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 570,
+      "de": "Tür schließen",
+      "en": "to close door",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 571,
+      "de": "Tür öffnen",
+      "en": "to open door",
+      "chapter": 18,
+      "page": 84
+    },
+    {
+      "id": 589,
+      "de": "warm",
+      "en": "warm",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 590,
+      "de": "das warme Getränk",
+      "en": "warm drink",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 591,
+      "de": "die warme Milch",
+      "en": "warm milk",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 597,
+      "de": "das Wasser",
+      "en": "water",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 598,
+      "de": "Wasser bestellen",
+      "en": "to order water",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 599,
+      "de": "Wasser bezahlen",
+      "en": "to pay for water",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 600,
+      "de": "Wasser kaufen",
+      "en": "to buy water",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 601,
+      "de": "Wasser trinken",
+      "en": "to drink water",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 627,
+      "de": "die Wohnung",
+      "en": "apartment",
+      "chapter": 18,
+      "page": 85
+    },
+    {
+      "id": 628,
+      "de": "Wohnung besuchen",
+      "en": "to visit apartment",
+      "chapter": 18,
+      "page": 86
+    },
+    {
+      "id": 633,
+      "de": "das Zimmer",
+      "en": "room",
+      "chapter": 18,
+      "page": 86
+    },
+    {
+      "id": 634,
+      "de": "Zimmer besuchen",
+      "en": "to visit room",
+      "chapter": 18,
+      "page": 86
+    },
+    {
+      "id": 636,
+      "de": "der Zucker",
+      "en": "sugar",
+      "chapter": 18,
+      "page": 86
+    }
+  ]
+}
