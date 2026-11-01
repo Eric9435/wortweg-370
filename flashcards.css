@@ -91,6 +91,3 @@ html[data-mode=dark] .ww-flash-again{background:#512d32;color:#ffd4ce;border-col
 .ww-flash-seek-hint{color:var(--muted,#667685);font-size:11px;line-height:1.5;margin:3px 0 0}
 @media(max-width:600px){.ww-flash-seek{padding:12px}.ww-flash-seek-head{gap:8px}.ww-flash-seek-number{width:72px}.ww-flash-seek-head label{font-size:12px}}
 
-.ww-flash-pdf-export{display:block;width:fit-content;max-width:100%;margin:10px 0 18px;padding:11px 14px;border:1px solid var(--line,#d1dce6);border-radius:12px;background:var(--panel,#fff);color:var(--accent,#1a548a);font-size:13px;font-weight:750;text-decoration:none;line-height:1.5}
-.ww-flash-pdf-export:hover{background:var(--bg,#f4f7fa);text-decoration:underline}
-.ww-flash-pdf-export:focus-visible{outline:3px solid #268ab5;outline-offset:3px}
