@@ -179,5 +179,37 @@ $('#ww-flashcards .ww-flash-primary').click();
 $('.ww-flash-card').click();
 assert.ok($('.ww-flash-translation').textContent.length>0);
 w.WortWegFlashcards.close();
+// Regression for the exact B1 screenshot: a cached old noun pack displayed
+// 'မြန်မာဘာသာပြန် မရှိသေးပါ' for words that now have native meanings.
+w.eval(fs.readFileSync('noun-expansion.js','utf8'));
+assert.equal(w.WortWegNounExpansion.version,2,'Published noun pack has the translation-aware version');
+w.WortWegFlashcards.open();
+set('Source','expansion');
+set('Level','B1');
+set('Front of card','de');
+for(const [de,my] of [
+ ['Vorstellungsgespräch','အလုပ်အင်တာဗျူး'],
+ ['Bewerbungsgespräch','အလုပ်လျှောက်အင်တာဗျူး']
+]){
+ const search=$('.ww-flash-search input');
+ search.value=de;
+ search.dispatchEvent(new w.Event('input',{bubbles:true}));
+ assert.ok($('#ww-flashcards').textContent.includes('1 matching entries'),
+  'Search finds the exact B1 noun '+de);
+ $('#ww-flashcards .ww-flash-primary').click();
+ $('.ww-flash-card').click();
+ assert.equal($('.ww-flash-word').textContent,'job interview');
+ assert.equal($('.ww-flash-translation').textContent,my,'Burmese answer missing for '+de);
+ assert.ok(!$('.ww-flash-translation').textContent.includes('မရှိသေးပါ'));
+ w.WortWegFlashcards.close();
+ w.WortWegFlashcards.open();
+}
+w.WortWegFlashcards.close();
+const sw=fs.readFileSync('sw.js','utf8');
+const ios=fs.readFileSync('ios-polish.js','utf8');
+assert.match(ios,/noun-expansion\\.js\\?v=2/,'Noun URL bypasses older cache-first PWA versions');
+assert.match(sw,/const CACHE='wortweg370-v99'/,'Offline cache is bumped');
+assert.match(sw,/const freshUI=[\\s\\S]*?'noun-expansion\\.js'/,
+ 'Noun pack is network-first with offline fallback, just like flashcards');
 dom.window.close();
 console.log('PASS: all vocabulary cards, CEFR/source filters, flip, audio, persisted per-profile SRS, existing quiz isolation, and offline assets.');
