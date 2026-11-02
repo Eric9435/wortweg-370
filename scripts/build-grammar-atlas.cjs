@@ -13,7 +13,7 @@ const files=['lifetime-grammar-index-1.js','lifetime-grammar-index-2.js','lifeti
  'lifetime-grammar-myanmar-1.js','lifetime-grammar-myanmar-2.js','lifetime-grammar-verified-matrices.js'];
 for(const file of files)vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),context,{filename:file,timeout:4000});
 const life=fs.readFileSync(path.join(root,'lifetime-grammar.js'),'utf8');
-const match=life.match(/const CORE=(\{[\s\S]*?\});\s*function header\(/);
+const match=life.match(/const CORE=(\{[\s\S]*?\});\s*function el\(/);
 if(!match)throw Error('Unable to extract the existing Lifetime Grammar core paradigms');
 const core=vm.runInContext('('+match[1]+')',context,{timeout:4000});
 const data=context.window;
