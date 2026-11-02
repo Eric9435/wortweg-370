@@ -22,6 +22,7 @@ const actions=[
  {id:'goethe-exam',icon:'◎',title:'Goethe Exam Prep',caption:'A1–C2 · 100 topics · exam skills',run:()=>{window.location.href='./goethe-exam.html';return true;}},
  {id:'special',icon:'Aa+',title:'Special Vocabulary',caption:'Conjunctions, numbers, time & more',run:()=>{if(window.WortWegSpecialVocabulary?.open){window.WortWegSpecialVocabulary.open();return true}return false}},
  {id:'atlas',icon:'▦',title:'Vocabulary Atlas',caption:'Static reference chart · 11,312 entries',run:()=>{window.WortWegVocabularyAtlas?.open?.();return true}},
+ {id:'verb-forms',icon:'V³',title:'Verb Forms · V1 V2 V3',caption:'All detected WortWeg verbs · searchable tables',run:()=>{window.location.href='./verb-forms.html';return true;}},
  {id:'grammar-120',icon:'▦',title:'Grammar Atlas',caption:'A1–C1 · 120 detailed tables · SVG',run:()=>{if(window.WortWegGrammarTablesAtlas?.open){window.WortWegGrammarTablesAtlas.open();return true;}window.location.href='./grammar-120.html';return true;}}
 ];
 const zone=make('section','ww-home-focus');zone.id='ww-home-focus';zone.setAttribute('aria-label','Learning shortcuts');
