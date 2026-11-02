@@ -20,7 +20,8 @@ const actions=[
  {id:'gender-lifetime',icon:'Aa',title:'Gender Lifetime',caption:'der · die · das · 14 chapters (A1–C2)',run:()=>{window.location.href='./gender-lifetime.html';return true;}},
  {id:'goethe-exam',icon:'◎',title:'Goethe Exam Prep',caption:'A1–C2 · 100 topics · exam skills',run:()=>{window.location.href='./goethe-exam.html';return true;}},
  {id:'special',icon:'Aa+',title:'Special Vocabulary',caption:'Conjunctions, numbers, time & more',run:()=>{if(window.WortWegSpecialVocabulary?.open){window.WortWegSpecialVocabulary.open();return true}return false}},
- {id:'atlas',icon:'▦',title:'Vocabulary Atlas',caption:'Static reference chart · 11,312 entries',run:()=>{window.WortWegVocabularyAtlas?.open?.();return true}}
+ {id:'atlas',icon:'▦',title:'Vocabulary Atlas',caption:'Static reference chart · 11,312 entries',run:()=>{window.WortWegVocabularyAtlas?.open?.();return true}},
+ {id:'grammar-120',icon:'▦',title:'Grammar Atlas',caption:'A1–C1 · 120 detailed tables · SVG',run:()=>{if(window.WortWegGrammarTablesAtlas?.open){window.WortWegGrammarTablesAtlas.open();return true;}window.location.href='./grammar-120.html';return true;}}
 ];
 const zone=make('section','ww-home-focus');zone.id='ww-home-focus';zone.setAttribute('aria-label','Learning shortcuts');
 const heading=make('div','ww-home-focus-head');
@@ -97,3 +98,5 @@ const checklistScript=document.createElement('script');checklistScript.src='./le
 
 /* Add the full-resolution 11,312-word SVG reference viewer (independent learning tool). */
 (()=>{const js=document.createElement('script');js.src='./vocabulary-atlas.js?v=1';document.body.append(js);})();
+/* Home grammar atlas uses the original 120-table vector image, with the same zoom controls as Vocabulary Atlas. */
+(()=>{const js=document.createElement('script');js.src='./grammar-tables-atlas.js?v=1';document.body.append(js);})();
