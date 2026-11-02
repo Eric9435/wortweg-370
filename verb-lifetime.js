@@ -49,7 +49,7 @@ function stats(){const list=[...state.verbs.values()],word=[...state.bank.values
  $('pattern').textContent=list.filter(w=>!w.isWortWeg).length.toLocaleString('en-US');
  $('unknown').textContent=list.filter(w=>w.source==='Review needed'||w.v2==='—'||w.v3==='—').length.toLocaleString('en-US');
 }
-const filters={query:$('query'),level:$('level'),status:$('status'),collection:$('collection')};
+const filters={query:$('query'),level:$('level'),status:$('status'),collection:$('collection'),sort:$('sort')};
 function output(){
  const search=key(filters.query.value),level=filters.level.value,status=filters.status.value,collection=filters.collection.value;
  // Keep source headwords distinct: treffen / sich treffen, abstrahieren / abstrahieren von.
@@ -69,13 +69,36 @@ function output(){
  if(status!=='all'&&status!=='incomplete'&&v.source!==status)return false;
  if(search&&!([v.v1,v.v2,v.v3,v.english||'',v.myanmar||'',v.aux||'',...(v.levels||[]),v.preposition||'',v.reflexive?.v1||''].some(x=>key(x).includes(search))))return false;
  return true;
- }).sort((a,b)=>a.v1.localeCompare(b.v1,'de'));
+ }).sort((a,b)=>{
+  // Place the learner's own vocabulary first in the unfiltered lifetime reference.
+  if(filters.sort.value==='course'&&collection==='all'&&!!a.isWortWeg!==!!b.isWortWeg)return a.isWortWeg?-1:1;
+  return a.v1.localeCompare(b.v1,'de');
+ });
  const pages=Math.max(1,Math.ceil(state.filtered.length/state.size));state.page=Math.max(1,Math.min(state.page,pages));
  const tbody=$('rows');const frag=document.createDocumentFragment();
  for(const item of state.filtered.slice((state.page-1)*state.size,state.page*state.size)){
   const tr=el('tr');
   const values=[item.v1,item.v2,item.v3,item.english||'—',item.myanmar||'—',(item.levels||[]).join(', ')||'—',item.aux||'—'];
-  for(const val of values){const td=el('td','',val);tr.append(td);}
+  values.forEach((val,i)=>{
+    const td=el('td','',val);
+    if(val==='—'&&(i===3||i===4)){
+      td.textContent='';
+      const lang=i===3?'en':'my',a=el('a','lookup','Translate ↗');
+      a.href='https://translate.google.com/?sl=de&tl='+lang+'&text='+encodeURIComponent(item.v1)+'&op=translate';
+      a.target='_blank';a.rel='noopener noreferrer';
+      a.title='External automatic translation (not verified by WortWeg)';
+      td.append(a,el('span','lookup-hint','External · unverified'));
+    }
+    if(val==='—'&&(i===1||i===2)){
+      td.textContent='';
+      const a=el('a','lookup','Check form ↗');
+      a.href='https://de.wiktionary.org/wiki/'+encodeURIComponent(item.v1);
+      a.target='_blank';a.rel='noopener noreferrer';
+      a.title='Look up the missing principal part in Wiktionary';
+      td.append(a);
+    }
+    tr.append(td);
+  });
   const td=el('td');const incomplete=item.source==='Review needed'||!item.v2||!item.v3||item.v2==='—'||item.v3==='—';
   const tag=el('span','flag '+(incomplete?'unverified':item.source==='Wiktionary'?'reviewed':item.source==='Manual'?'derived':'unverified'),
    incomplete?'Needs verification':item.source==='Wiktionary'?'Dictionary':item.source==='Manual'?'Curated':'Check form');
@@ -148,10 +171,21 @@ $('previous').addEventListener('click',()=>{state.page--;output();document.query
 $('next').addEventListener('click',()=>{state.page++;output();document.querySelector('.scroll').scrollTop=0;});
 $('csv').addEventListener('click',csv);
 $('reset').addEventListener('click',()=>{
- filters.query.value='';filters.level.value='All';filters.level.disabled=false;filters.status.value='all';filters.collection.value='all';$('level-note').textContent='CEFR labels come from WortWeg only; external dictionary words are not level-rated.';
+ filters.query.value='';filters.level.value='All';filters.level.disabled=false;filters.status.value='all';filters.collection.value='all';filters.sort.value='course';$('level-note').textContent='CEFR labels come from WortWeg only; external dictionary words are not level-rated.';
  state.page=1;output();filters.query.focus();
 });
-$('retry').addEventListener('click',()=>{ $('source-status').textContent='Checking updated verb data…';loadDict();loadBank();});
+$('retry').addEventListener('click',async()=>{
+  // Refresh the document itself, not merely the data. This is essential for
+  // clients previously served the old desktop-only table from the PWA cache.
+  $('source-status').textContent='Checking for app update and refreshing…';
+  try{
+    const registration=await navigator.serviceWorker?.getRegistration?.();
+    await registration?.update?.();
+  }catch(e){console.warn('Service worker refresh unavailable',e);}
+  const url=new URL(window.location.href);
+  url.searchParams.set('refresh',String(Date.now()));
+  window.location.replace(url.href);
+});
 window.WortWegLifetimeVerbs={get total(){return state.verbs.size},get wortweg(){return state.bank.size}};
 output();loadDict();loadBank();
 })();
