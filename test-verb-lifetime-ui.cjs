@@ -39,6 +39,10 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  input('query','abstrahieren');assert.equal(total(),1);assert.deepEqual(shown()[0].slice(0,3),['abstrahieren','abstrahierte','abstrahiert']);
  input('query','');input('level','A1');assert(total()>40&&total()<100,'CEFR A1 should show tagged WortWeg entries, not falsely inferred levels');
  input('level','All');input('collection','additional');assert.equal(total(),7642,'Expanded-only count should exclude 357 WortWeg lemma cores');
+ assert(d.getElementById('level').disabled,'Expanded-only lexicon has no independent CEFR rating');
+ d.getElementById('reset').click();
+ assert.equal(total(),7999,'Reset must recover entire dictionary');
+ assert(!d.getElementById('level').disabled,'Reset must restore CEFR filter');
  assert.equal(Number(d.getElementById('pattern').textContent.replaceAll(',','')),7642);
  assert(html.includes('@media(max-width:1024px)')&&html.includes('grid-template-columns'),'Mobile card layout is required');
  assert(html.includes('CC BY-SA 4.0'),'Data attribution is required');
