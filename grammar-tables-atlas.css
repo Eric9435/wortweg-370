@@ -1,4 +1,4 @@
-/* WortWeg 370: full-screen, compact and zoomable vocabulary image. */
+/* WortWeg 370: full-screen, compact and zoomable grammar image. */
 #ww-grammar-tables-atlas[hidden]{display:none!important}
 #ww-grammar-tables-atlas{position:fixed;inset:0;z-index:100000;display:flex;flex-direction:column;background:#fff;color:#17263b;padding:0;overflow:hidden;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 #ww-grammar-tables-atlas *{box-sizing:border-box}
@@ -7,8 +7,8 @@
 #ww-grammar-tables-atlas .ww-atlas-heading strong{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em}
 #ww-grammar-tables-atlas .ww-atlas-heading small{font-size:11px;color:#68768a}
 #ww-grammar-tables-atlas .ww-atlas-controls{display:flex;gap:5px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
-#ww-grammar-tables-atlas .ww-atlas-btn,{border:1px solid #d9e0e8;background:#f7f9fb;color:#26374d;font:700 13px system-ui,sans-serif;min-width:37px;min-height:37px;padding:7px 10px;display:inline-flex;justify-content:center;align-items:center;border-radius:9px;text-decoration:none;cursor:pointer}
-#ww-grammar-tables-atlas .ww-atlas-btn:focus-visible,:focus-visible{outline:3px solid #2b69a3;outline-offset:2px}
+#ww-grammar-tables-atlas .ww-atlas-btn{border:1px solid #d9e0e8;background:#f7f9fb;color:#26374d;font:700 13px system-ui,sans-serif;min-width:37px;min-height:37px;padding:7px 10px;display:inline-flex;justify-content:center;align-items:center;border-radius:9px;text-decoration:none;cursor:pointer}
+#ww-grammar-tables-atlas .ww-atlas-btn:focus-visible{outline:3px solid #2b69a3;outline-offset:2px}
 #ww-grammar-tables-atlas .ww-atlas-zoom{font-size:11px;min-width:35px;text-align:center;font-variant-numeric:tabular-nums}
 #ww-grammar-tables-atlas .ww-atlas-back{white-space:nowrap}
 #ww-grammar-tables-atlas .ww-atlas-close{font-size:23px;line-height:1}
