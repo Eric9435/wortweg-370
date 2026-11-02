@@ -84,7 +84,7 @@ function output(){
  tbody.replaceChildren(frag);
  $('page').textContent='Page '+state.page+' / '+pages;
  $('previous').disabled=state.page===1;$('next').disabled=state.page===pages;
- $('result').textContent=state.filtered.length.toLocaleString('en-US')+' verb entries • '+(state.dictionary?'dictionary ready':'loading dictionary')+' • '+(state.wordBank?'WortWeg matched':'matching WortWeg words');
+ $('result').textContent=state.filtered.length.toLocaleString('en-US')+' matching entries · '+(state.dictionary?'dictionary ready':'loading dictionary')+' · '+(state.wordBank?'WortWeg matched':'matching WortWeg words');
  stats();
 }
 function ingestWortWeg(raw){if(!Array.isArray(raw.bank))throw Error('Word Bank format missing');
@@ -106,15 +106,22 @@ function ingestWortWeg(raw){if(!Array.isArray(raw.bank))throw Error('Word Bank f
 async function loadDict(){try{const res=await fetch('./assets/german-verbs-lifetime.json');if(!res.ok)throw Error('HTTP '+res.status);const data=await res.json();
  if(data.version!==1||!Array.isArray(data.rows)||data.rows.length<7500)throw Error('Dictionary invalid');
  for(const [v1,v2,v3,aux] of data.rows)if(v1&&v2&&v3)put({v1,v2,v3,aux:aux||'—',source:'Wiktionary'});
- state.dictionary=true;enrich();output();
+ state.dictionary=true;$('source-status').textContent='';enrich();output();
  }catch(e){$('source-status').textContent='Expanded dictionary unavailable offline. Please reconnect to download the verb data.';output();}}
 async function loadBank(){try{
- const handoff=sessionStorage.getItem('wortweg:verb-forms:source:v3');
- if(handoff){const rows=JSON.parse(handoff);if(Array.isArray(rows)&&rows.length>=10){ingestWortWeg({bank:rows,curated:[]});return;}}
+ // Storage may be blocked in private browsing or Android WebView.
+ let handoff=null;
+ try{handoff=sessionStorage.getItem('wortweg:verb-forms:source:v3');}catch{}
+ if(handoff){
+  try{
+   const rows=JSON.parse(handoff);
+   if(Array.isArray(rows)&&rows.length>=10){ingestWortWeg({bank:rows,curated:[]});$('wordbank-status').textContent='';return;}
+  }catch(e){console.warn('Verb handoff unavailable; using original Word Bank',e);}
+ }
  const res=await fetch('./index.html');if(!res.ok)throw Error('HTTP '+res.status);
  const doc=new DOMParser().parseFromString(await res.text(),'text/html');const node=doc.getElementById('data');
  if(!node)throw Error('Word Bank missing');const data=JSON.parse(node.textContent);
- ingestWortWeg(data);
+ ingestWortWeg(data);$('wordbank-status').textContent='';
  }catch(e){$('wordbank-status').textContent='WortWeg matching unavailable; the standalone dictionary is still usable.';output();}}
 function csv(){const rows=[['V1','V2','V3','English (WortWeg)','Myanmar (WortWeg)','CEFR (WortWeg)','Auxiliary','Source'],...state.filtered.map(v=>[v.v1,v.v2,v.v3,v.english||'',v.myanmar||'',(v.levels||[]).join(';'),v.aux||'',v.source])];
  const esc=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
@@ -125,6 +132,11 @@ for(const control of Object.values(filters))control.addEventListener(control.tag
 $('previous').addEventListener('click',()=>{state.page--;output();document.querySelector('.scroll').scrollTop=0;});
 $('next').addEventListener('click',()=>{state.page++;output();document.querySelector('.scroll').scrollTop=0;});
 $('csv').addEventListener('click',csv);
+$('reset').addEventListener('click',()=>{
+ filters.query.value='';filters.level.value='All';filters.status.value='all';filters.collection.value='all';
+ state.page=1;output();filters.query.focus();
+});
+$('retry').addEventListener('click',()=>{loadDict();loadBank();});
 window.WortWegLifetimeVerbs={get total(){return state.verbs.size},get wortweg(){return state.bank.size}};
 output();loadDict();loadBank();
 })();
