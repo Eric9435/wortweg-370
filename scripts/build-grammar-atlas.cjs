@@ -4,8 +4,9 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const root=path.resolve(__dirname,'..');
-const output=path.resolve(root,process.argv[process.argv.indexOf('--output')+1]||'assets/german-grammar-a1-c2-complete.svg');
-const indexOutput=path.resolve(root,process.argv[process.argv.indexOf('--index')+1]||'assets/german-grammar-a1-c2-index.json');
+const argValue=(name,fallback)=>{const i=process.argv.indexOf(name);return i>=0?process.argv[i+1]:fallback;};
+const output=path.resolve(root,argValue('--output','assets/german-grammar-a1-c2-complete.svg'));
+const indexOutput=path.resolve(root,argValue('--index','assets/german-grammar-a1-c2-index.json'));
 const context={window:{}};vm.createContext(context);
 const files=['lifetime-grammar-index-1.js','lifetime-grammar-index-2.js','lifetime-grammar-rules-1.js','lifetime-grammar-rules-2.js',
  'lifetime-grammar-exact-1.js','lifetime-grammar-exact-2.js','lifetime-grammar-exact-3.js','lifetime-grammar-exact-4.js',
