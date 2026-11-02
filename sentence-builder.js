@@ -3,9 +3,13 @@
 const source=window.WortWegSentenceData;
 if(!source || !Array.isArray(source.lessons)) return;
 const lessons=source.lessons;
+const TOTAL_EXERCISES=lessons.reduce((n,l)=>n+l.items.length,0);
+lessons.forEach((lesson,i)=>{if(!lesson.section){lesson.section='English Tenses';lesson.level='Tenses';}lesson.sequence=i+1;});
+const levels=['All','Tenses','A1','A2','B1','B2','C1','C2'];
+let activeLevel='All';
 const byId=id=>document.getElementById(id);
 const els={};
-for(const id of ['topicView','practiceView','lessonGrid','totalRing','totalSolved','overallPercent','resumeButton','allTopics','lessonCounter','lessonScore','linearFill','topicBadge','currentLevel','practiceTitle','englishPrompt','answerZone','wordBank','undoButton','resetButton','checkButton','showAnswerButton','feedback','previousButton','nextButton','verbOne','verbTwo','verbThree','verbEnglish','grammarSubtitle','grammarExplanation','grammarFormula','hintButton','hintText','themeToggle'])els[id]=byId(id);
+for(const id of ['topicView','practiceView','lessonGrid','courseFilters','courseHeading','courseCount','totalAvailable','totalRing','totalSolved','overallPercent','resumeButton','allTopics','lessonCounter','lessonScore','linearFill','topicBadge','currentLevel','practiceTitle','englishPrompt','answerZone','wordBank','undoButton','resetButton','checkButton','showAnswerButton','feedback','previousButton','nextButton','verbOne','verbTwo','verbThree','verbEnglish','grammarSubtitle','grammarExplanation','grammarFormula','hintButton','hintText','themeToggle'])els[id]=byId(id);
 const KEY='wortweg370:sentence-builder:progress:v1';
 const THEME_KEY='wortweg370:sentence-builder:theme:v1';
 const read=(key)=>{try{return localStorage.getItem(key);}catch{return null;}};
@@ -24,17 +28,27 @@ const savedTheme=read(THEME_KEY);applyTheme(savedTheme==='light'||savedTheme==='
 els.themeToggle.addEventListener('click',()=>{const next=document.documentElement.dataset.theme==='dark'?'light':'dark';applyTheme(next);save(THEME_KEY,next);});
 const add=(tag,cls,txt)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(txt!==undefined)node.textContent=txt;return node;};
 function updateOverview(){
- const count=sumMastered(),percent=Math.round(count/120*100);
+ const count=sumMastered(),percent=TOTAL_EXERCISES?Math.round(count/TOTAL_EXERCISES*100):0;
+ els.totalAvailable.textContent='of '+TOTAL_EXERCISES+' mastered';
  els.totalSolved.textContent=count;
  els.overallPercent.textContent=percent+'%';
  els.totalRing.style.setProperty('--percent',percent+'%');
 }
 function renderTopics(){
  updateOverview();els.lessonGrid.replaceChildren();
- lessons.forEach((lesson,index)=>{
+ els.courseFilters.replaceChildren();
+ const available=lessons.filter(x=>activeLevel==='All'||(activeLevel==='Tenses'?x.section==='English Tenses':x.level===activeLevel));
+ for(const lv of levels){
+  const count=lessons.filter(x=>lv==='All'||(lv==='Tenses'?x.section==='English Tenses':x.level===lv)).length;
+  const tab=add('button','course-filter'+(activeLevel===lv?' selected':''),lv+' · '+count);tab.type='button';tab.setAttribute('aria-pressed',String(activeLevel===lv));
+  tab.addEventListener('click',()=>{activeLevel=lv;renderTopics();});els.courseFilters.append(tab);
+ }
+ els.courseHeading.textContent=activeLevel==='All'?'36 sentence-building topics':activeLevel==='Tenses'?'12 tense comparisons':activeLevel+' grammar sentence topics';
+ els.courseCount.textContent=available.length+' topics · '+available.reduce((n,l)=>n+l.items.length,0)+' exercises';
+ available.forEach((lesson,index)=>{
   const done=completed(lesson),card=add('button','lesson');card.type='button';
   card.setAttribute('aria-label',lesson.title+', '+done+' of 10 mastered');
-  const top=add('div','lesson-top');top.append(add('span','lesson-index','TOPIC '+String(index+1).padStart(2,'0')),add('span','lesson-count',done+'/10 mastered'));
+  const top=add('div','lesson-top');top.append(add('span','lesson-index',lesson.section==='English Tenses'?'TENSE '+String(lesson.sequence).padStart(2,'0'):lesson.level+' · TOPIC '+String(lesson.sequence-12).padStart(2,'0')),add('span','lesson-count',done+'/10 mastered'));
   const name=add('div','lesson-title',lesson.title.replace(/^[0-9]+ · /,''));
   const subtitle=add('div','lesson-subtitle',lesson.subtitle);
   const track=add('div','mini-track');const fill=add('span');fill.style.width=done*10+'%';track.append(fill);
@@ -62,7 +76,7 @@ function chooseExercise(n){
  els.lessonCounter.textContent='Exercise '+(index+1)+' of 10';
  els.lessonScore.textContent=completed(lesson)+' / 10 mastered';
  els.linearFill.style.width=(index+1)*10+'%';
- els.topicBadge.textContent=lesson.subtitle;
+ els.topicBadge.textContent=(lesson.level==='Tenses'?'Tense comparison':lesson.level+' · Lifetime Grammar')+' · '+lesson.subtitle;
  els.currentLevel.textContent=(index+1)+' / 10';
  els.practiceTitle.textContent=lesson.title.replace(/^[0-9]+ · /,'');
  els.englishPrompt.textContent=entry.en;
@@ -207,7 +221,18 @@ els.showAnswerButton.addEventListener('click',()=>{
  feedback('warning','Reference answer · Study mode','Compare the reference sentence with your cards. Revealing the answer does not earn mastery credit.',lesson.items[index].de);
 });
 els.previousButton.addEventListener('click',()=>chooseExercise(index-1));
-els.nextButton.addEventListener('click',()=>{if(index===9)showTopics();else chooseExercise(index+1);});
+els.nextButton.addEventListener('click',()=>{
+ if(index===9){
+  if(completed(lesson)<lesson.items.length){
+   const missing=lesson.items.map((_,i)=>i).filter(i=>!marked(lesson,i));
+   const first=missing[0];
+   if(first!==undefined&&first!==index){chooseExercise(first);feedback('warning','Keep practising','This topic has '+missing.length+' exercises still unmastered. Try this one next.');return;}
+   feedback('warning','Topic not yet mastered','Your score is '+completed(lesson)+' / '+lesson.items.length+'. Check this sentence to earn mastery before finishing.');
+   return;
+  }
+  showTopics();
+ }else chooseExercise(index+1);
+});
 els.allTopics.addEventListener('click',showTopics);
 els.hintButton.addEventListener('click',()=>{const hidden=!els.hintText.hidden;els.hintText.hidden=hidden;els.hintButton.textContent=hidden?'Show word-order hint':'Hide word-order hint';});
 els.resumeButton.addEventListener('click',()=>{
