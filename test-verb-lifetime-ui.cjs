@@ -45,7 +45,9 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  assert.equal(total(),8000,'Reset must recover entire dictionary');
  assert(!d.getElementById('level').disabled,'Reset must restore CEFR filter');
  assert.equal(Number(d.getElementById('pattern').textContent.replaceAll(',','')),7642);
- assert(html.includes('@media(max-width:1024px)')&&html.includes('grid-template-columns'),'Mobile card layout is required');
+ assert(html.includes('@media(max-width:1280px)')&&html.includes('grid-template-columns'),'Tablet/mobile card layout is required');
+ assert(html.includes('UPDATED 2026-11-02'),'Version marker must be visible to diagnose stale cache');
+ assert(js.includes("cache:'no-cache'"),'Refresh must request updated data');
  assert(html.includes('CC BY-SA 4.0'),'Data attribution is required');
  console.log('PASS: lifetime verb page loads 8000 total / 360 WortWeg source entries, search, filtering and mobile layout');
  dom.window.close();
