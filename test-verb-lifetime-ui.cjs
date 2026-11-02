@@ -28,6 +28,10 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  assert.equal(w.WortWegLifetimeVerbs.total,8000,'All dictionary lemmas and source-specific manual additions');
  assert.equal(w.WortWegLifetimeVerbs.wortweg,360,'Raw WortWeg headwords must not merge reflexive or prepositional versions');
  assert.equal(total(),8000);
+ assert.equal(d.getElementById('sort').value,'course','WortWeg-first sorting should be the default');
+ input('sort','az');
+ assert.equal(shown()[0][0],'abbummeln','Alphabetical list must include expanded verbs from A');
+ input('sort','course');
  input('collection','wortweg');assert.equal(total(),360);
  input('query','treffen');assert(total()>=2,'treffen and sich treffen must remain searchable');
  const tref=shown().map(row=>row[0]);
@@ -51,6 +55,10 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  assert(html.includes('UPDATED 2026-11-02'),'Version marker must be visible to diagnose stale cache');
  assert(js.includes("cache:'no-cache'"),'Refresh must request updated data');
  assert(html.includes('CC BY-SA 4.0'),'Data attribution is required');
+ assert(html.includes('id="sort"')&&html.includes('Update app &amp; data'),'Sort and update affordances must exist');
+ assert(js.includes('translate.google.com/?sl=de&tl='),'External translations must be explicitly opt-in');
+ assert(js.includes('External · unverified'),'Automatic translations must not be presented as verified');
+ assert(sw.includes("wortweg370-v111"),'PWA cache must advance for updated app');
  console.log('PASS: lifetime verb page loads 8000 total / 360 WortWeg source entries, search, filtering and mobile layout');
  dom.window.close();
 })().catch(err=>{console.error(err);process.exitCode=1});
