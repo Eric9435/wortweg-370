@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f4f7fc">
-<title>Sentence Builder · WortWeg 370</title>
+<title>Lifetime Sentence Builder · WortWeg 370</title>
 <link rel="icon" href="./icon.svg">
 <link rel="stylesheet" href="./sentence-builder.css">
 </head>
@@ -12,27 +12,28 @@
 <div class="app">
 <header class="topbar">
   <a class="home-link" href="./index.html" aria-label="Return to WortWeg Home">‹ <span>Home</span></a>
-  <div class="brand">WORTWEG <strong>370</strong><small> / SENTENCE BUILDER</small></div>
+  <div class="brand">WORTWEG <strong>370</strong><small> / LIFETIME SENTENCE BUILDER</small></div>
   <button class="icon-button" type="button" id="themeToggle" aria-label="Toggle dark mode" title="Switch appearance">◐</button>
 </header>
 <main>
 <section id="topicView">
   <div class="hero">
     <div class="hero-copy">
-      <div class="eyebrow">INTERACTIVE GRAMMAR STUDIO · A1–B2</div>
-      <h1>Build German sentences.<br><em>One word at a time.</em></h1>
-      <p>Translate English into German by dragging word cards into place. No typing. Practise verb conjugation, tense and German word order at your own pace.</p>
-      <p class="myanmar">စာရိုက်စရာမလိုပါ။ စကားလုံးကတ်တွေကို လက်နဲ့ဆွဲပြီး German ဝါကျဖွဲ့ပါ။ English Tense 12 မျိုးကို တစ်မျိုးလျှင် လေ့ကျင့်ခန်း 10 ခုစီ ပါဝင်ပါတယ်။</p>
+      <div class="eyebrow">INTERACTIVE GRAMMAR STUDIO · A1–C2</div>
+      <h1>Lifetime Sentence Builder.<br><em>One word at a time.</em></h1>
+      <p>Practise English-to-German sentences with draggable word cards: 12 English tense comparisons and 24 authored A1–C2 grammar topics, with ten exercises per topic. No typing required.</p>
+      <p class="myanmar">စာရိုက်စရာမလိုပါ။ စကားလုံးကတ်တွေကို လက်နဲ့ဆွဲပြီး German ဝါကျဖွဲ့ပါ။ Tenses 12 ခုနဲ့ A1–C2 Grammar Topics 24 ခုပါဝင်ပြီး Topic တစ်ခုကို Exercises 10 ခုစီ စီနိုင်ပါတယ်။</p>
       <button type="button" id="resumeButton" class="primary hero-cta">Start practising <span aria-hidden="true">↗</span></button>
     </div>
     <div class="overview" aria-label="Sentence practice progress">
-      <div class="ring" id="totalRing"><div><strong id="totalSolved">0</strong><small>of 120 mastered</small></div></div>
+      <div class="ring" id="totalRing"><div><strong id="totalSolved">0</strong><small id="totalAvailable">of 360 mastered</small></div></div>
       <div class="overview-caption"><span id="overallPercent">0%</span> mastered · saved on this device</div>
     </div>
   </div>
-  <div class="section-head"><div><p class="eyebrow">YOUR COURSE</p><h2>12 tense topics</h2></div><span class="muted">10 exercises each · 120 total</span></div>
+  <div class="section-head"><div><p class="eyebrow">YOUR COURSE</p><h2 id="courseHeading">36 sentence-building topics</h2></div><span class="muted" id="courseCount">10 exercises each · 360 total</span></div>
+  <div id="courseFilters" class="course-filters" role="group" aria-label="Filter by grammar level"></div>
   <div id="lessonGrid" class="lesson-grid" aria-label="Choose a tense topic"></div>
-  <aside class="study-note"><strong>Grammar note</strong><p>German has six traditional tenses, not twelve. These twelve topics compare common English tense/aspect meanings with natural German expressions. More than one German sentence may be valid; each exercise trains one reference word order.</p></aside>
+  <aside class="study-note"><strong>Grammar note</strong><p>German has six traditional tenses, not twelve. The English-tense section compares 12 common tense/aspect meanings with German expressions. The Lifetime Grammar section adds 24 specifically authored topics across A1–C2; it is an expanding curriculum, not all possible German constructions or a CEFR certification. Some alternative German sentences may be valid even when the reference word order differs.</p></aside>
 </section>
 <section id="practiceView" hidden>
   <div class="practice-top">
@@ -69,6 +70,8 @@
 </main>
 </div>
 <script src="./sentence-builder-data.js"></script>
+<script src="./sentence-builder-lifetime-1.js"></script>
+<script src="./sentence-builder-lifetime-2.js"></script>
 <script src="./sentence-builder.js"></script>
 </body>
 </html>
