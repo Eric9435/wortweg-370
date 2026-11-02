@@ -208,7 +208,7 @@ w.WortWegFlashcards.close();
 const sw=fs.readFileSync('sw.js','utf8');
 const ios=fs.readFileSync('ios-polish.js','utf8');
 assert.ok(ios.includes("nouns.src='./noun-expansion.js?v=2'"),'Noun URL bypasses older cache-first PWA versions');
-assert.match(sw,/const CACHE='wortweg370-v99'/,'Offline cache is bumped');
+assert.ok(Number(sw.match(/const CACHE='wortweg370-v(\d+)'/)?.[1])>=99,'Offline cache must retain or increase the version after the noun translation fix');
 assert.ok(sw.slice(sw.indexOf('const freshUI=')).includes("'noun-expansion.js'"),
  'Noun pack is network-first with offline fallback, just like flashcards');
 dom.window.close();

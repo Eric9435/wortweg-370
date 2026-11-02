@@ -1,0 +1,70 @@
+name: Build A1-C2 Complete Grammar Atlas SVG
+on:
+  pull_request:
+    paths:
+      - 'scripts/build-grammar-atlas.cjs'
+      - 'test-grammar-atlas.cjs'
+      - 'grammar-atlas.html'
+      - 'grammar.js'
+      - 'grammar.css'
+      - 'lifetime-grammar.html'
+      - 'lifetime-grammar.js'
+      - 'lifetime-grammar-*.js'
+      - 'sw.js'
+      - '.github/workflows/build-grammar-atlas.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build-grammar-atlas.cjs'
+      - 'test-grammar-atlas.cjs'
+      - 'grammar-atlas.html'
+      - 'grammar.js'
+      - 'grammar.css'
+      - 'lifetime-grammar.html'
+      - 'lifetime-grammar.js'
+      - 'lifetime-grammar-*.js'
+      - 'sw.js'
+      - '.github/workflows/build-grammar-atlas.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: wortweg-grammar-atlas
+  cancel-in-progress: true
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout authoritative WortWeg grammar data
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build full-resolution grammar SVG and searchable index
+        run: node scripts/build-grammar-atlas.cjs
+      - name: Verify all 288 topics, paradigms and user controls
+        run: node test-grammar-atlas.cjs
+      - name: Upload independently downloadable SVG
+        uses: actions/upload-artifact@v4
+        with:
+          name: WortWeg-A1-C2-Complete-Grammar-Atlas-SVG
+          path: |
+            assets/german-grammar-a1-c2-complete.svg
+            assets/german-grammar-a1-c2-index.json
+          retention-days: 90
+      - name: Publish static SVG to GitHub Pages assets
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/german-grammar-a1-c2-complete.svg assets/german-grammar-a1-c2-index.json
+          if git diff --cached --quiet; then
+            echo "Grammar Atlas is already current"
+          else
+            git commit -m "docs(grammar): publish 288-topic A1-C2 SVG Atlas"
+            git push
+          fi
