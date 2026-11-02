@@ -9,6 +9,66 @@
 *{box-sizing:border-box}html{background:#f6f8fc;color:#192e44;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}body{margin:0}a,button,input,select{font:inherit}.shell{max-width:1340px;margin:auto}.top{display:flex;gap:15px;align-items:center;padding:13px 22px;border-bottom:1px solid #d7e0eb;background:white}.brand{flex:1;letter-spacing:.12em;font-size:13px;font-weight:800;color:#1d4166}.brand b{color:#158a80}.back{text-decoration:none;border:1px solid #d8e2ec;background:white;border-radius:10px;padding:8px 12px;color:#234c70;font-weight:650;font-size:13px}main{padding:25px 20px 70px}.eyebrow{font-size:11px;color:#067b70;font-weight:800;letter-spacing:.12em}.intro h1{font-size:clamp(27px,5vw,42px);letter-spacing:-.05em;margin:5px 0}.intro p{max-width:880px;font-size:14px;line-height:1.55;color:#52667b;margin:8px 0 21px}.numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:22px}.numbers>div{border-radius:14px;border:1px solid #e0e8f0;background:white;padding:15px}.numbers strong{display:block;font-size:25px;letter-spacing:-.05em}.numbers span{font-size:11px;color:#64748b}.tools{display:flex;align-items:end;gap:11px;flex-wrap:wrap;padding:16px;border:1px solid #dce5ee;border-radius:15px;background:white}.tools label{font-size:12px;font-weight:700;color:#3b5169;display:flex;flex-direction:column;gap:6px}.tools label:first-child{flex:1;min-width:220px}.tools input,.tools select{background:#fff;border:1px solid #cedbe6;border-radius:8px;min-height:39px;padding:7px 10px;color:#20364d}.tools button,.paging button{background:#1f5b85;border:1px solid #1f5b85;color:white;font-weight:700;border-radius:9px;padding:9px 14px;min-height:39px;cursor:pointer}.tools button:hover,.paging button:hover{background:#19496b}.tools button:focus-visible,.paging button:focus-visible,input:focus-visible,select:focus-visible,.back:focus-visible{outline:3px solid #40c8ac;outline-offset:2px}.result{font-size:13px;color:#5b6d7e;margin:13px 0}.scroll{overflow:auto;max-height:65vh;border:1px solid #dee6ee;border-radius:13px;background:white}table{border-collapse:collapse;min-width:1080px;width:100%;font-size:13px}th{position:sticky;top:0;text-align:left;background:#eaf2f7;color:#294f69;padding:12px;z-index:1}td{padding:10px 12px;border-top:1px solid #e6edf3;vertical-align:top;white-space:normal}td:first-child{font-weight:750;color:#0d5a68}tr:nth-child(even){background:#fbfcfe}.flag{display:inline-block;white-space:nowrap;padding:5px 8px;border-radius:7px;font-size:11px;font-weight:700;background:#f1f5f9;color:#475569}.flag.reviewed{color:#0c7559;background:#e3f7ed}.flag.derived{color:#215b8f;background:#e7f1fd}.flag.pattern{color:#95600b;background:#fff3d6}.flag.unverified{color:#a72d45;background:#fff0f3}.paging{display:flex;align-items:center;justify-content:center;gap:13px;margin:17px 0}.paging button:disabled{opacity:.3;cursor:default}.paging span{font-size:12px;color:#5b6d7e;font-weight:650}.notice{border-left:3px solid #d99a47;background:#fff9ef;padding:15px 18px;font-size:12px;line-height:1.65;color:#74552e;border-radius:5px;margin-top:26px} @media(max-width:600px){main{padding:17px 10px 55px}.top{padding:12px}.numbers{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.numbers>div{padding:11px}.numbers strong{font-size:22px}.tools{padding:11px}.tools label{flex:1;min-width:128px}.tools label:first-child{flex-basis:100%}.scroll{max-height:68vh}}
 @media(prefers-color-scheme:dark){html{background:#111d2b;color:#edf5fa}.top,.numbers>div,.tools,.scroll{background:#1c2e40;border-color:#3e5266}.back,.tools input,.tools select{background:#152637;color:#f0f6fa;border-color:#41536a}.intro p,.result,.numbers span,.paging span{color:#b0c0d1}th{background:#283f54;color:#dcecf7}td{border-color:#384e63}tr:nth-child(even){background:#213449}.flag.pattern{background:#5a4220;color:#ffe4a4}.flag.reviewed{background:#1e5947;color:#b0f4d5}.flag.derived{background:#224a70;color:#c7e6fb}.flag.unverified{background:#67303d;color:#ffd9e0}.notice{background:#3b3021;color:#f6dbaa}}
 
+
+/* Lifetime Verbs: table on wide screens, readable records on narrow devices */
+:root{color-scheme:light dark}
+input[type=search]{width:100%}
+.tools{position:relative}
+.tools label{flex:1;min-width:142px}
+.tools label:first-child{flex:2;min-width:210px}
+.tools select{width:100%;max-width:100%}
+#source-status:empty,#wordbank-status:empty{display:none}
+.empty-results{text-align:center;padding:26px!important;color:#68788c}
+table td:nth-child(1),table td:nth-child(2),table td:nth-child(3){font-variant-ligatures:none}
+table td:nth-child(1){min-width:120px}
+table td:nth-child(4),table td:nth-child(5){max-width:200px;line-height:1.5}
+.numbers strong{font-variant-numeric:tabular-nums}
+.numbers>div{box-shadow:0 6px 20px #12345109}
+.intro{padding-bottom:6px}
+.paging{position:sticky;bottom:0;background:#f6f8fce8;backdrop-filter:blur(8px);z-index:2;padding:10px}
+#result{font-variant-numeric:tabular-nums}
+@media(max-width:1024px){
+ .scroll{max-height:none;overflow:visible;border:0;background:transparent}
+ .scroll table,.scroll tbody{display:block;width:100%;min-width:0}
+ .scroll thead{display:none}
+ .scroll tbody{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ .scroll tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 10px;
+     min-width:0;border:1px solid #dce5ee;border-radius:16px;background:white!important;
+     box-shadow:0 6px 20px #1234510a;overflow:hidden;padding:7px 14px 12px}
+ .scroll td{display:flex;flex-direction:column;gap:2px;border:0;padding:6px 2px;min-width:0;
+     word-break:break-word;font-size:13px;line-height:1.38}
+ .scroll td::before{color:#61768b;font-size:10px;letter-spacing:.025em;font-weight:700;text-transform:uppercase}
+ .scroll td:nth-child(1){grid-column:1/-1;font-size:19px;border-bottom:1px solid #e6edf3;padding:10px 2px}
+ .scroll td:nth-child(1)::before{content:'V1 · Infinitiv'}
+ .scroll td:nth-child(2)::before{content:'V2 · Präteritum'}
+ .scroll td:nth-child(3)::before{content:'V3 · Partizip II'}
+ .scroll td:nth-child(4)::before{content:'English'}
+ .scroll td:nth-child(5)::before{content:'Myanmar'}
+ .scroll td:nth-child(6)::before{content:'CEFR'}
+ .scroll td:nth-child(7)::before{content:'Auxiliary'}
+ .scroll td:nth-child(8)::before{content:'Source'}
+ .scroll td:nth-child(4),.scroll td:nth-child(5){max-width:none}
+ .scroll td.empty-results{grid-column:1/-1}
+}
+@media(max-width:670px){
+ .scroll tbody{grid-template-columns:minmax(0,1fr)}
+ .numbers{gap:8px}
+ .numbers strong{font-size:20px}
+ .intro h1{font-size:29px}
+ .top .brand{font-size:11px}
+ .top .back{padding:8px;font-size:12px}
+ .tools{gap:9px}
+ .tools label:first-child{flex-basis:100%}
+ .tools label{min-width:125px}
+ .paging{margin-bottom:0}
+}
+@media(prefers-color-scheme:dark){
+ .scroll tr{background:#1c2e40!important;border-color:#3e5266}
+ .scroll td:nth-child(1){border-color:#3e5266}
+ .scroll td::before{color:#a6bfd2}
+ .paging{background:#111d2bea}
+}
+
 </style>
 
 
@@ -17,14 +77,14 @@
 <div class="shell">
 <header class="top"><a href="./index.html" class="back" aria-label="Back to WortWeg Home">‹ Home</a><span class="brand">WORTWEG <b>370</b></span><a class="back" href="./index.html" aria-label="Close verb table">Close ×</a></header>
 <main>
-<section class="intro"><span class="eyebrow">GERMAN VERB DICTIONARY · A1–C2</span><h1>Lifetime V1 · V2 · V3</h1><p>WortWeg verb headwords plus an expanded Wiktionary-derived V1/V2/V3 dictionary. Use Collection → WortWeg only for your course vocabulary, or Lifetime for the broader reference. No noun or adjective is treated as a verb.</p></section>
-<section class="numbers" aria-label="Vocabulary status"><div><strong id="total">—</strong><span>Dictionary entries</span></div><div><strong id="reviewed">—</strong><span>WortWeg verb lemmas matched</span></div><div><strong id="pattern">—</strong><span>Additional dictionary verbs</span></div><div><strong id="unknown">—</strong><span>Missing V2/V3</span></div></section>
+<section class="intro"><span class="eyebrow">GERMAN VERB DICTIONARY · A1–C2</span><h1>Lifetime Verb Dictionary · V1 / V2 / V3</h1><p>WortWeg verb headwords plus an expanded Wiktionary-derived V1/V2/V3 dictionary. Use Collection → WortWeg only for your course vocabulary, or Lifetime for the broader reference. No noun or adjective is treated as a verb.</p></section>
+<section class="numbers" aria-label="Vocabulary status"><div><strong id="total">—</strong><span>Dictionary entries</span></div><div><strong id="reviewed">—</strong><span>WortWeg source headwords</span></div><div><strong id="pattern">—</strong><span>Expanded-only lemmas</span></div><div><strong id="unknown">—</strong><span>Missing source forms</span></div></section>
 <div class="tools"><label>Find a verb<input type="search" id="query" placeholder="gehen, go, Perfekt…" autocomplete="off"></label><label>Collection<select id="collection"><option value="all">Lifetime · All verbs</option><option value="wortweg">WortWeg only</option><option value="additional">Additional verbs</option></select></label><label>Level<select id="level"><option>All</option><option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C1</option><option>C2</option><option>Topic 1</option><option>Reference</option></select></label><label>Form source<select id="status"><option value="all">All forms</option><option value="Wiktionary">Wiktionary-derived</option><option value="Manual">Curated additions</option><option value="Review needed">Missing forms</option></select></label><button id="csv" type="button">Export CSV</button></div>
 <p id="result" class="result" role="status" aria-live="polite">Loading dictionary…</p><p id="source-status" class="result" role="status"></p><p id="wordbank-status" class="result" role="status"></p>
-<div class="scroll"><table><thead><tr><th>V1 · Infinitiv</th><th>V2 · Präteritum</th><th>V3 · Partizip II</th><th>English (WortWeg)</th><th>Myanmar (WortWeg)</th><th>Level</th><th>Auxiliary</th><th>Form source</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="scroll" role="region" aria-label="Scrollable verb forms on desktop and verb cards on mobile"><table><thead><tr><th>V1 · Infinitiv</th><th>V2 · Präteritum</th><th>V3 · Partizip II</th><th>English (WortWeg)</th><th>Myanmar (WortWeg)</th><th>Level</th><th>Auxiliary</th><th>Form source</th></tr></thead><tbody id="rows"></tbody></table></div>
 <div class="paging"><button type="button" id="previous">‹ Previous</button><span id="page"></span><button type="button" id="next">Next ›</button></div>
 <p class="notice"><strong>Source &amp; limitations:</strong> Expanded forms derived from <a href="https://en.wiktionary.org/" rel="noopener noreferrer">Wiktionary</a> via <a href="https://github.com/viorelsfetea/german-verbs-database" rel="noopener noreferrer">german-verbs-database</a>; dictionary data shared under <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="noopener noreferrer">CC BY-SA 4.0</a>. WortWeg originals identified from explicit verb and modal-verb type tags, with available English/Myanmar/CEFR labels. Data filtered to exclude malformed and multiword source rows; uncommon or ambiguous verbs can have alternate conjugations. This is a broad reference, not every possible German verb or a guarantee that every form has been independently checked.</p>
 </main>
 </div>
-<script defer src="./verb-lifetime.js"></script>
+<script defer src="./verb-lifetime.js?v=2"></script>
 </body></html>
