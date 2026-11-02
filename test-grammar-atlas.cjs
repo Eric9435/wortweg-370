@@ -44,7 +44,7 @@ for(const p of ['assets/german-grammar-a1-c2-complete.svg','assets/german-gramma
  assert(html.includes(p),'Viewer missing asset '+p);
  assert(pwa.includes('./'+p),'Offline PWA missing asset '+p);
 }
-assert(lifetime.includes('href="./grammar-120.html"'),'Updated 120-table Lifetime reference link missing');
+assert(!lifetime.includes('href="./grammar-120.html"'),'Old Lifetime toolbar SVG shortcut should move to Home');
 assert(!lifetime.includes('href="./grammar-atlas.html"'),'Older 288-table launcher must be removed');
 assert(academy.includes("atlasLink.href='./grammar-120.html'"),'Grammar Academy 120-table shortcut missing');
 assert(html.includes('pinch')&&html.includes('setZoom')&&html.includes('jump(item)'),'Zoom and search-jump interactions missing');
