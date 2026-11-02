@@ -33,7 +33,7 @@ const actions=[
       sessionStorage.setItem('wortweg:verb-forms:source:v3',JSON.stringify(words));
     }
   }catch(e){console.warn('WortWeg verb handoff unavailable; loading source file instead.',e);}
-  window.location.href='./verb-forms.html?release=20261102b';return true;
+  window.location.href='./verb-forms.html?release=20261102c';return true;
  }},
  {id:'grammar-120',icon:'▦',title:'Grammar Atlas',caption:'A1–C1 · 120 detailed tables · SVG',run:()=>{if(window.WortWegGrammarTablesAtlas?.open){window.WortWegGrammarTablesAtlas.open();return true;}window.location.href='./grammar-120.html';return true;}}
 ];
