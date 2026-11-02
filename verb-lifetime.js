@@ -5,7 +5,12 @@
 const $=id=>document.getElementById(id);
 const el=(tag,cls,label)=>{const node=document.createElement(tag);if(cls)node.className=cls;if(label!==undefined)node.textContent=label;return node;};
 const model=window.WortWegVerbFormsData;
-const state={verbs:new Map(),bank:new Map(),dictionary:false,wordBank:false,page:1,filtered:[],size:75};
+const SAVE_KEY='wortweg:verb-studio:saved:v1';
+function readSaved(){
+ try{const value=JSON.parse(localStorage.getItem(SAVE_KEY)||'[]');return new Set(Array.isArray(value)?value.filter(x=>typeof x==='string').slice(0,10000):[]);}
+ catch{return new Set();}
+}
+const state={verbs:new Map(),bank:new Map(),dictionary:false,wordBank:false,page:1,filtered:[],size:24,saved:readSaved(),practice:false};
 const manual=[
 ['sein','war','gewesen','sein'],['ad absurdum führen','führte ad absurdum','ad absurdum geführt','haben'],['zugrunde legen','legte zugrunde','zugrunde gelegt','haben'],['abschätzen','schätzte ab','abgeschätzt','haben'],
 ['extrapolieren','extrapolierte','extrapoliert','haben'],['generalisieren','generalisierte','generalisiert','haben'],
@@ -48,21 +53,47 @@ function stats(){const list=[...state.verbs.values()],word=[...state.bank.values
  $('reviewed').textContent=word.length.toLocaleString('en-US');
  $('pattern').textContent=list.filter(w=>!w.isWortWeg).length.toLocaleString('en-US');
  $('unknown').textContent=list.filter(w=>w.source==='Review needed'||w.v2==='—'||w.v3==='—').length.toLocaleString('en-US');
+ $('saved-count').textContent=state.saved.size.toLocaleString('en-US');
 }
-const filters={query:$('query'),level:$('level'),status:$('status'),collection:$('collection'),sort:$('sort')};
+const filters={query:$('query'),level:$('level'),status:$('status'),collection:$('collection'),sort:$('sort'),size:$('page-size')};
+function courseRows(){return [...state.bank.values()].map(w=>{
+ const base=state.verbs.get(w.core)||{v1:w.core,v2:'—',v3:'—',aux:'—',source:'Review needed'};
+ const reflex=w.original.startsWith('sich ')?fixedReflexive[w.core]:null;
+ return {...base,v1:w.original,v2:reflex?reflex[0]:base.v2,v3:reflex?reflex[1]:base.v3,
+   english:w.english,myanmar:w.myanmar,levels:[...w.levels].sort(),isWortWeg:true};
+});}
+function setFeedback(message){$('wordbank-status').textContent=message;}
+function toggleSave(item){
+ if(state.saved.has(item.v1))state.saved.delete(item.v1);
+ else state.saved.add(item.v1);
+ try{localStorage.setItem(SAVE_KEY,JSON.stringify([...state.saved]));}
+ catch{setFeedback('Saved words are available for this session only; device storage is unavailable.');}
+ output();
+}
+function pronounce(word){
+ if(!('speechSynthesis' in window)||!('SpeechSynthesisUtterance' in window)){
+  setFeedback('German text-to-speech is unavailable in this browser.');return;
+ }
+ try{
+  window.speechSynthesis.cancel();
+  const speech=new window.SpeechSynthesisUtterance(word);
+  speech.lang='de-DE';speech.rate=.84;
+  window.speechSynthesis.speak(speech);
+ }catch{setFeedback('German audio could not start on this device.');}
+}
+function copyForms(item){
+ const content=[item.v1,item.v2,item.v3].join(' · ');
+ if(!navigator.clipboard?.writeText){setFeedback('Clipboard access is not supported on this device.');return;}
+ navigator.clipboard.writeText(content).then(()=>setFeedback('Copied verb forms: '+item.v1)).catch(()=>setFeedback('Could not copy. Please select the text manually.'));
+}
 function output(){
  const search=key(filters.query.value),level=filters.level.value,status=filters.status.value,collection=filters.collection.value;
  // Keep source headwords distinct: treffen / sich treffen, abstrahieren / abstrahieren von.
- const candidates=collection==='wortweg'
-  ? [...state.bank.values()].map(w=>{
-     const base=state.verbs.get(w.core)||{v1:w.core,v2:'—',v3:'—',aux:'—',source:'Review needed'};
-     const reflex=w.original.startsWith('sich ') ? fixedReflexive[w.core] : null;
-     return {...base,v1:w.original,v2:reflex?reflex[0]:base.v2,v3:reflex?reflex[1]:base.v3,
-       english:w.english,myanmar:w.myanmar,levels:[...w.levels].sort(),isWortWeg:true};
-    })
-  : [...state.verbs.values()];
+ const candidates=collection==='wortweg'?courseRows():collection==='saved'
+   ?[...state.verbs.values(),...courseRows().filter(w=>w.v1!==normHeadword(w.v1))]:[...state.verbs.values()];
  state.filtered=candidates.filter(v=>{
  if(collection==='additional'&&v.isWortWeg)return false;
+ if(collection==='saved'&&!state.saved.has(v.v1))return false;
  if(level!=='All'&&!(v.levels||[]).includes(level))return false;
  const incomplete=v.source==='Review needed'||!v.v2||!v.v3||v.v2==='—'||v.v3==='—';
  if(status==='incomplete'&&!incomplete)return false;
@@ -76,11 +107,15 @@ function output(){
  });
  const pages=Math.max(1,Math.ceil(state.filtered.length/state.size));state.page=Math.max(1,Math.min(state.page,pages));
  const tbody=$('rows');const frag=document.createDocumentFragment();
+ $('practice').setAttribute('aria-pressed',String(state.practice));
+ $('practice').textContent=state.practice?'Show all V2/V3':'Hide V2/V3 · Practice';
+ $('practice-hint').hidden=!state.practice;
  for(const item of state.filtered.slice((state.page-1)*state.size,state.page*state.size)){
   const tr=el('tr');
   const values=[item.v1,item.v2,item.v3,item.english||'—',item.myanmar||'—',(item.levels||[]).join(', ')||'—',item.aux||'—'];
   values.forEach((val,i)=>{
-    const td=el('td','',val);
+    const td=el('td','',state.practice&&(i===1||i===2)?'••••':val);
+    if(state.practice&&(i===1||i===2)){td.classList.add('suppress-form');tr.append(td);return;}
     if(val==='—'&&(i===3||i===4)){
       td.textContent='';
       const lang=i===3?'en':'my',a=el('a','lookup','Translate ↗');
@@ -103,11 +138,26 @@ function output(){
   const tag=el('span','flag '+(incomplete?'unverified':item.source==='Wiktionary'?'reviewed':item.source==='Manual'?'derived':'unverified'),
    incomplete?'Needs verification':item.source==='Wiktionary'?'Dictionary':item.source==='Manual'?'Curated':'Check form');
   if(incomplete)tag.title='The source lacks an attested V2 or V3. No form has been guessed.';
-  td.append(tag);tr.append(td);frag.append(tr);
+  td.append(tag);tr.append(td);
+  const actions=el('td'),group=el('div','actionbar');
+  const button=(label,aria,fn,klass='')=>{
+    const b=el('button',klass,label);b.type='button';b.setAttribute('aria-label',aria);b.addEventListener('click',fn);group.append(b);return b;
+  };
+  const saved=state.saved.has(item.v1);
+  const star=button(saved?'★ Saved':'☆ Save',(saved?'Remove saved verb ':'Save verb ')+item.v1,()=>toggleSave(item),saved?'saved':'');
+  star.setAttribute('aria-pressed',String(saved));
+  button('▶ Listen','Pronounce '+item.v1+' in German',()=>pronounce(item.v1));
+  button('Copy','Copy three forms of '+item.v1,()=>copyForms(item));
+  if(state.practice)button('Reveal','Reveal V2 and V3 for '+item.v1,()=>{
+    [1,2].forEach(index=>{
+      const cell=tr.children[index];cell.textContent=values[index];cell.classList.remove('suppress-form');
+    });
+  },'reveal');
+  actions.append(group);tr.append(actions);frag.append(tr);
  }
  if(!frag.childNodes.length){
    const tr=el('tr'),td=el('td','','No verbs match these filters. Try All levels and All forms.');
-   td.colSpan=8;td.className='empty-results';tr.append(td);frag.append(tr);
+   td.colSpan=9;td.className='empty-results';tr.append(td);frag.append(tr);
  }
  tbody.replaceChildren(frag);
  $('page').textContent='Page '+state.page+' / '+pages;
@@ -158,6 +208,7 @@ function csv(){const rows=[['V1','V2','V3','English (WortWeg)','Myanmar (WortWeg
  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='WortWeg_Lifetime_V1_V2_V3.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
 for(const control of Object.values(filters))control.addEventListener(control.tagName==='INPUT'?'input':'change',()=>{
+ if(control===filters.size){state.size=Number(filters.size.value)||24;}
  if(control===filters.collection){
   // The external lexicon has no honest CEFR classification; do not infer a level.
   const external=filters.collection.value==='additional';
@@ -170,8 +221,9 @@ for(const control of Object.values(filters))control.addEventListener(control.tag
 $('previous').addEventListener('click',()=>{state.page--;output();document.querySelector('.scroll').scrollTop=0;});
 $('next').addEventListener('click',()=>{state.page++;output();document.querySelector('.scroll').scrollTop=0;});
 $('csv').addEventListener('click',csv);
+$('practice').addEventListener('click',()=>{state.practice=!state.practice;output();});
 $('reset').addEventListener('click',()=>{
- filters.query.value='';filters.level.value='All';filters.level.disabled=false;filters.status.value='all';filters.collection.value='all';filters.sort.value='course';$('level-note').textContent='CEFR labels come from WortWeg only; external dictionary words are not level-rated.';
+ filters.query.value='';filters.level.value='All';filters.level.disabled=false;filters.status.value='all';filters.collection.value='all';filters.sort.value='course';filters.size.value='24';state.size=24;state.practice=false;$('level-note').textContent='CEFR labels come from WortWeg only; external dictionary words are not level-rated.';
  state.page=1;output();filters.query.focus();
 });
 $('retry').addEventListener('click',async()=>{
