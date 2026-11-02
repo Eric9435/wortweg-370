@@ -33,7 +33,10 @@ for(const [v1,v2,v3,aux] of manual)put({v1,v2,v3,aux,source:'Manual'});
 function enrich(){for(const word of state.bank.values()){
  let core=state.verbs.get(word.core);
  if(!core){core={v1:word.core,v2:'—',v3:'—',aux:'—',source:'Review needed'};state.verbs.set(word.core,core);}
- core.isWortWeg=true;core.english=word.english;core.myanmar=word.myanmar;core.levels=[...word.levels].sort();
+ core.isWortWeg=true;
+ if(!core.english&&word.english)core.english=word.english;
+ if(!core.myanmar&&word.myanmar)core.myanmar=word.myanmar;
+ core.levels=[...new Set([...(core.levels||[]),...word.levels])].sort();
  if(word.reflexive){
   const f=fixedReflexive[word.core];
   if(f){core.reflexive={v1:'sich '+word.core,v2:f[0],v3:f[1]};}
@@ -47,9 +50,18 @@ function stats(){const list=[...state.verbs.values()],word=[...state.bank.values
  $('unknown').textContent=list.filter(w=>w.source==='Review needed'||w.v2==='—'||w.v3==='—').length.toLocaleString('en-US');
 }
 const filters={query:$('query'),level:$('level'),status:$('status'),collection:$('collection')};
-function output(){const search=key(filters.query.value),level=filters.level.value,status=filters.status.value,collection=filters.collection.value;
- state.filtered=[...state.verbs.values()].filter(v=>{
- if(collection==='wortweg'&&!v.isWortWeg)return false;
+function output(){
+ const search=key(filters.query.value),level=filters.level.value,status=filters.status.value,collection=filters.collection.value;
+ // Keep source headwords distinct: treffen / sich treffen, abstrahieren / abstrahieren von.
+ const candidates=collection==='wortweg'
+  ? [...state.bank.values()].map(w=>{
+     const base=state.verbs.get(w.core)||{v1:w.core,v2:'—',v3:'—',aux:'—',source:'Review needed'};
+     const reflex=w.original.startsWith('sich ') ? fixedReflexive[w.core] : null;
+     return {...base,v1:w.original,v2:reflex?reflex[0]:base.v2,v3:reflex?reflex[1]:base.v3,
+       english:w.english,myanmar:w.myanmar,levels:[...w.levels].sort(),isWortWeg:true};
+    })
+  : [...state.verbs.values()];
+ state.filtered=candidates.filter(v=>{
  if(collection==='additional'&&v.isWortWeg)return false;
  if(level!=='All'&&!(v.levels||[]).includes(level))return false;
  if(status!=='all'&&v.source!==status)return false;
@@ -60,13 +72,14 @@ function output(){const search=key(filters.query.value),level=filters.level.valu
  const tbody=$('rows');const frag=document.createDocumentFragment();
  for(const item of state.filtered.slice((state.page-1)*state.size,state.page*state.size)){
   const tr=el('tr');
-  let v1=item.v1,v2=item.v2,v3=item.v3;
-  if(filters.collection.value==='wortweg'&&item.reflexive){v1=item.reflexive.v1;v2=item.reflexive.v2;v3=item.reflexive.v3;}
-  if(filters.collection.value==='wortweg'&&item.preposition)v1+=' '+item.preposition;
-  const values=[v1,v2,v3,item.english||'—',item.myanmar||'—',(item.levels||[]).join(', ')||'—',item.aux||'—'];
+  const values=[item.v1,item.v2,item.v3,item.english||'—',item.myanmar||'—',(item.levels||[]).join(', ')||'—',item.aux||'—'];
   for(const val of values){const td=el('td','',val);tr.append(td);}
   const td=el('td');const tag=el('span','flag '+(item.source==='Wiktionary'?'reviewed':item.source==='Manual'?'derived':'unverified'),
    item.source==='Wiktionary'?'Dictionary':item.source==='Manual'?'Curated':'Check form');td.append(tag);tr.append(td);frag.append(tr);
+ }
+ if(!frag.childNodes.length){
+   const tr=el('tr'),td=el('td','','No verbs match these filters. Try All levels and All forms.');
+   td.colSpan=8;td.className='empty-results';tr.append(td);frag.append(tr);
  }
  tbody.replaceChildren(frag);
  $('page').textContent='Page '+state.page+' / '+pages;
@@ -80,8 +93,8 @@ function ingestWortWeg(raw){if(!Array.isArray(raw.bank))throw Error('Word Bank f
   if(!['verb','modal verb'].includes(w.type))continue;
   const original=key(w.de),core=normHeadword(original);
   if(!core||(core.includes(' ')&&core!=='zugrunde legen')||(!(/^(?:[a-zäöüß][a-zäöüß-]{1,80})$/u.test(core))&&core!=='zugrunde legen'))continue;
-  let entry=state.bank.get(core);
-  if(!entry){entry={core,levels:new Set(),english:'',myanmar:'',reflexive:false,preposition:''};state.bank.set(core,entry);}
+  let entry=state.bank.get(original);
+  if(!entry){entry={original,core,levels:new Set(),english:'',myanmar:'',reflexive:false,preposition:''};state.bank.set(original,entry);}
   if(w.level)entry.levels.add(w.level);
   if(!entry.english&&w.en)entry.english=clean(w.en);
   if(!entry.myanmar&&(w.mm||w.my))entry.myanmar=clean(w.mm||w.my);
