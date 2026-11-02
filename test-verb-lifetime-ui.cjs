@@ -58,7 +58,7 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  assert(html.includes('id="sort"')&&html.includes('Update app &amp; data'),'Sort and update affordances must exist');
  assert(js.includes('translate.google.com/?sl=de&tl='),'External translations must be explicitly opt-in');
  assert(js.includes('External · unverified'),'Automatic translations must not be presented as verified');
- assert(sw.includes("wortweg370-v111"),'PWA cache must advance for updated app');
+ assert(Number(sw.match(/wortweg370-v(\d+)/)?.[1])>=111,'PWA cache must advance for updated app');
  console.log('PASS: lifetime verb page loads 8000 total / 360 WortWeg source entries, search, filtering and mobile layout');
  dom.window.close();
 })().catch(err=>{console.error(err);process.exitCode=1});
