@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7f9fc">
+<meta name="description" content="WortWeg A1-C2 Grammar Atlas: 288 topic tables in a single zoomable SVG, with searchable headings and complete paradigms where verified.">
+<title>Complete Grammar Atlas A1–C2 | WortWeg 370</title>
+<link rel="icon" href="./icon.svg">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#1d3048;background:#fff}
+#atlas{height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:9px 14px;border-bottom:1px solid #d9e3ed;background:#fff;flex:none}
+a,button,select,input{font:inherit}
+nav{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ctrl{display:inline-flex;align-items:center;justify-content:center;min-height:36px;border:1px solid #cddae6;border-radius:9px;background:#f7fafd;color:#153956;padding:5px 10px;text-decoration:none;font-weight:650;font-size:13px;cursor:pointer}
+.ctrl:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #1e7faf;outline-offset:2px}
+.brand{display:flex;flex-direction:column;gap:1px;min-width:165px;flex:1}
+.brand strong{font-size:14px;color:#142f4a}
+.brand small{font-size:11px;color:#61768c}
+#search-form{display:flex;align-items:center;gap:6px;padding:8px 14px;background:#f6f9fc;border-bottom:1px solid #dce5ee;flex:none;flex-wrap:wrap}
+#query{flex:1;min-width:150px;max-width:410px;border:1px solid #c7d8e6;border-radius:8px;padding:7px 10px;min-height:37px;background:white}
+#level{min-height:37px;border-radius:8px;border:1px solid #c7d8e6;background:white;padding:6px}
+#result{font-size:12px;color:#61778e;min-width:92px}
+#viewport{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-color:#a9bdd0 #f3f7fb;touch-action:pan-x pan-y;background:#eef3f7;cursor:grab;outline:none}
+#viewport.dragging{cursor:grabbing}
+#picture{display:block;width:100%;height:auto;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
+footer{flex:none;padding:6px 12px calc(7px + env(safe-area-inset-bottom));background:white;border-top:1px solid #e0e8f0;color:#61758b;font-size:11px;line-height:1.35}
+#zoom{font-size:12px;min-width:42px;font-variant-numeric:tabular-nums;text-align:center;color:#627890}
+@media(max-width:650px){header{padding:7px 9px;gap:6px}.brand{min-width:125px}.brand strong{font-size:12px}#search-form{padding:7px 9px;gap:5px}.ctrl{min-height:35px;padding:5px 9px}#query{min-width:120px}#result{min-width:unset}}
+@media print{header,#search-form,footer{display:none}#atlas{height:auto}#viewport{overflow:visible}#picture{width:100%!important}}
+</style>
+</head>
+<body>
+<main id="atlas">
+<header>
+  <a class="ctrl" href="./lifetime-grammar.html" aria-label="Back to Lifetime Grammar">‹ Back</a>
+  <div class="brand"><strong>Complete Grammar Atlas · A1–C2</strong><small>288 topics · 36 chapters · one SVG</small></div>
+  <nav aria-label="Atlas zoom and export">
+    <button class="ctrl" id="minus" title="Zoom out" type="button">−</button>
+    <span id="zoom">Fit</span>
+    <button class="ctrl" id="plus" title="Zoom in" type="button">+</button>
+    <button class="ctrl" id="fit" title="Fit image to screen width" type="button">Fit</button>
+    <a class="ctrl" id="download" href="./assets/german-grammar-a1-c2-complete.svg" download="WortWeg_Complete_Grammar_A1-C2_288_Tables.svg">SVG ↓</a>
+    <a class="ctrl" href="./index.html" aria-label="Close atlas">×</a>
+  </nav>
+</header>
+<form id="search-form">
+  <label for="query" style="font-size:12px;font-weight:650">Find a table</label>
+  <input type="search" id="query" placeholder="T025, Dativ, Konjunktiv…" autocomplete="off" aria-label="Find grammar topic">
+  <select id="level" aria-label="Filter by CEFR level"><option>All</option><option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C1</option><option>C2</option></select>
+  <button class="ctrl" type="submit">Find</button>
+  <button class="ctrl" type="button" id="prev" title="Previous search result">←</button>
+  <button class="ctrl" type="button" id="next" title="Next search result">→</button>
+  <span id="result" aria-live="polite">Loading index…</span>
+</form>
+<div id="viewport" tabindex="0" aria-label="Pan or zoom the single SVG grammar atlas. Search a topic to jump directly to that table.">
+  <img id="picture" src="./assets/german-grammar-a1-c2-complete.svg" alt="One complete A1–C2 Grammar Atlas: 77 verified full paradigms and 211 rule and example reference tables" draggable="false">
+</div>
+<footer>77 verified multi-row paradigms · 211 topic-specific references. Topic references are not full inflection charts. For extended explanations and practice, open Lifetime Grammar. Pinch, drag or use + / − to zoom.</footer>
+</main>
+<script>
+(()=>{
+'use strict';
+const viewport=document.getElementById('viewport'),picture=document.getElementById('picture');
+const $=id=>document.getElementById(id),clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
+let atlas=null,zoom=1,results=[],cursor=-1,pinch=null,drag=null;
+function dimensions(){const width=Math.max(240,viewport.clientWidth)*zoom;return {width,height:atlas?width*atlas.height/atlas.width:width*4};}
+function paint(){picture.style.width=dimensions().width+'px';$('zoom').textContent=zoom===1?'Fit':Math.round(zoom*100)+'%';$('minus').disabled=zoom<=1;$('plus').disabled=zoom>=20;}
+function setZoom(next,cx,cy){
+ next=clamp(next,1,20);if(next===zoom)return;
+ const box=viewport.getBoundingClientRect(),px=Number.isFinite(cx)?cx-box.left:box.width/2,py=Number.isFinite(cy)?cy-box.top:box.height/2;
+ const old=dimensions(),u=(viewport.scrollLeft+px)/old.width,v=(viewport.scrollTop+py)/old.height;
+ zoom=next;paint();const updated=dimensions();
+ viewport.scrollLeft=u*updated.width-px;viewport.scrollTop=v*updated.height-py;
+}
+function jump(item){
+ if(!atlas||!item)return;
+ zoom=clamp(atlas.width/(item.width*1.25),1,12);paint();
+ requestAnimationFrame(()=>{
+  const d=dimensions();
+  viewport.scrollLeft=(item.x+item.width/2)/atlas.width*d.width-viewport.clientWidth/2;
+  viewport.scrollTop=(item.y+Math.min(item.height,220)/2)/atlas.height*d.height-viewport.clientHeight/2;
+ });
+}
+function matches(){
+ if(!atlas)return [];
+ const q=$('query').value.trim().toLocaleLowerCase();
+ const level=$('level').value;
+ return atlas.items.filter(item=>(level==='All'||item.level.split('–').includes(level))&&
+  (!q||[item.id,item.title,item.chapterTitle,item.level].some(s=>String(s).toLocaleLowerCase().includes(q))));
+}
+function show(index){
+ results=matches();cursor=results.length?((index%results.length)+results.length)%results.length:-1;
+ const entry=cursor>=0?results[cursor]:null;
+ $('result').textContent=entry?(cursor+1)+' / '+results.length+' · '+entry.id+' · '+entry.level:'No matching topics';
+ $('prev').disabled=$('next').disabled=!results.length;
+ if(entry)jump(entry);
+}
+$('search-form').addEventListener('submit',e=>{e.preventDefault();show(0);});
+$('level').addEventListener('change',()=>show(0));
+$('prev').addEventListener('click',()=>show(cursor-1));
+$('next').addEventListener('click',()=>show(cursor+1));
+$('minus').addEventListener('click',()=>setZoom(zoom/1.5));
+$('plus').addEventListener('click',()=>setZoom(zoom*1.5));
+$('fit').addEventListener('click',()=>{zoom=1;paint();viewport.scrollTo(0,0);});
+viewport.addEventListener('wheel',e=>{
+ if(!e.ctrlKey&&!e.metaKey)return;e.preventDefault();
+ setZoom(zoom*(e.deltaY<0?1.15:1/1.15),e.clientX,e.clientY);
+},{passive:false});
+const distance=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+viewport.addEventListener('touchstart',e=>{if(e.touches.length===2)pinch={dist:distance(e.touches),zoom};},{passive:true});
+viewport.addEventListener('touchmove',e=>{
+ if(!pinch||e.touches.length!==2)return;
+ e.preventDefault();
+ setZoom(pinch.zoom*distance(e.touches)/pinch.dist,(e.touches[0].clientX+e.touches[1].clientX)/2,(e.touches[0].clientY+e.touches[1].clientY)/2);
+},{passive:false});
+viewport.addEventListener('touchend',e=>{if(e.touches.length<2)pinch=null;},{passive:true});
+viewport.addEventListener('pointerdown',e=>{
+ if(e.pointerType!=='mouse'||e.button!==0)return;
+ drag={x:e.clientX,y:e.clientY,left:viewport.scrollLeft,top:viewport.scrollTop,id:e.pointerId};
+ viewport.setPointerCapture(e.pointerId);viewport.classList.add('dragging');
+});
+viewport.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;viewport.scrollLeft=drag.left+drag.x-e.clientX;viewport.scrollTop=drag.top+drag.y-e.clientY;});
+function stop(){drag=null;viewport.classList.remove('dragging');}
+viewport.addEventListener('pointerup',stop);viewport.addEventListener('pointercancel',stop);viewport.addEventListener('lostpointercapture',stop);
+window.addEventListener('keydown',e=>{if(e.target.matches('input,select,button'))return;if(e.key==='+'||e.key==='=')setZoom(zoom*1.5);if(e.key==='-')setZoom(zoom/1.5);});
+window.addEventListener('resize',paint);
+picture.addEventListener('error',()=>{$('result').textContent='SVG unavailable. Please reconnect.';});
+fetch('./assets/german-grammar-a1-c2-index.json').then(response=>{
+ if(!response.ok)throw Error('Cannot load atlas index');return response.json();
+}).then(data=>{
+ if(data.topics!==288||data.chapters!==36||data.verifiedParadigms!==77||data.items.length!==288)throw Error('Incorrect atlas index');
+ atlas=data;paint();$('result').textContent='288 topics ready';$('prev').disabled=$('next').disabled=true;
+}).catch(()=>{$('result').textContent='Index unavailable; SVG remains viewable.';});
+paint();
+})();
+</script>
+</body>
+</html>
