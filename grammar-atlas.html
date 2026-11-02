@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f9fc">
-<meta name="description" content="WortWeg A1-C2 Grammar Atlas: 288 topic tables in a single zoomable SVG, with searchable headings and complete paradigms where verified.">
+<meta name="description" content="WortWeg A1-C2 Grammar Atlas: 288 topic references in a single zoomable SVG, with searchable headings and 77 existing form matrices.">
 <title>Complete Grammar Atlas A1–C2 | WortWeg 370</title>
 <link rel="icon" href="./icon.svg">
 <style>
@@ -56,9 +56,9 @@ footer{flex:none;padding:6px 12px calc(7px + env(safe-area-inset-bottom));backgr
   <span id="result" aria-live="polite">Loading index…</span>
 </form>
 <div id="viewport" tabindex="0" aria-label="Pan or zoom the single SVG grammar atlas. Search a topic to jump directly to that table.">
-  <img id="picture" src="./assets/german-grammar-a1-c2-complete.svg" alt="One complete A1–C2 Grammar Atlas: 77 verified full paradigms and 211 rule and example reference tables" draggable="false">
+  <img id="picture" src="./assets/german-grammar-a1-c2-complete.svg" alt="One complete A1–C2 Grammar Atlas: 77 form matrices (48 reviewed) and 211 topic reference tables" draggable="false">
 </div>
-<footer>77 verified multi-row paradigms · 211 topic-specific references. Topic references are not full inflection charts. For extended explanations and practice, open Lifetime Grammar. Pinch, drag or use + / − to zoom.</footer>
+<footer>77 form matrices (48 reviewed) · 211 topic-specific references. Not every topic has a full inflection paradigm. For extended explanations and practice, open Lifetime Grammar. Pinch, drag or use + / − to zoom.</footer>
 </main>
 <script>
 (()=>{
@@ -131,7 +131,7 @@ picture.addEventListener('error',()=>{$('result').textContent='SVG unavailable. 
 fetch('./assets/german-grammar-a1-c2-index.json').then(response=>{
  if(!response.ok)throw Error('Cannot load atlas index');return response.json();
 }).then(data=>{
- if(data.topics!==288||data.chapters!==36||data.verifiedParadigms!==77||data.items.length!==288)throw Error('Incorrect atlas index');
+ if(data.topics!==288||data.chapters!==36||data.formMatrices!==77||data.reviewedMatrices!==48||data.items.length!==288)throw Error('Incorrect atlas index');
  atlas=data;paint();$('result').textContent='288 topics ready';$('prev').disabled=$('next').disabled=true;
 }).catch(()=>{$('result').textContent='Index unavailable; SVG remains viewable.';});
 paint();
