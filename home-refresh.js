@@ -18,7 +18,7 @@ const actions=[
  {id:'library',icon:'▤',title:'Word Library',caption:'Your word history',run:()=>{if(window.WortWegSeenWords?.open){window.WortWegSeenWords.open();return true;}return clickExisting('[data-nav="seen"]');}},
  {id:'grammar',icon:'Aa',title:'Grammar',caption:'A1–C1 academy',run:()=>{if(window.WortWegGrammar?.open){window.WortWegGrammar.open();return true;}return clickExisting('#wg-grammar-launch');}},
  {id:'grammar-200',icon:'☑',title:'Grammar 200',caption:'A1–C1 · 200 complete sentences',run:()=>{window.location.href='./grammar-200.html';return true;}},
- {id:'sentence-builder',icon:'▧',title:'Sentence Builder',caption:'Drag & drop · 12 tense topics · 120 exercises',run:()=>{window.location.href='./sentence-builder.html';return true;}},
+ {id:'sentence-builder',icon:'▧',title:'Lifetime Sentence Builder',caption:'A1–C2 Grammar + 12 Tenses · 360 drag-and-drop exercises',run:()=>{window.location.href='./sentence-builder.html';return true;}},
  {id:'gender-lifetime',icon:'Aa',title:'Gender Lifetime',caption:'der · die · das · 14 chapters (A1–C2)',run:()=>{window.location.href='./gender-lifetime.html';return true;}},
  {id:'goethe-exam',icon:'◎',title:'Goethe Exam Prep',caption:'A1–C2 · 100 topics · exam skills',run:()=>{window.location.href='./goethe-exam.html';return true;}},
  {id:'special',icon:'Aa+',title:'Special Vocabulary',caption:'Conjunctions, numbers, time & more',run:()=>{if(window.WortWegSpecialVocabulary?.open){window.WortWegSpecialVocabulary.open();return true}return false}},
