@@ -1,0 +1,45 @@
+name: Export A4 V1 V2 V3 PDF
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/export-lifetime-verb-pdf.py'
+      - '.github/workflows/export-lifetime-verb-pdf.yml'
+      - 'assets/german-verbs-lifetime.json'
+      - 'index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Myanmar fonts and PDF renderer
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-core fonts-noto-extra fonts-dejavu-core
+          python -m pip install --quiet 'weasyprint>=62,<70'
+      - name: Export complete and Myanmar-filtered A4 PDFs
+        run: python scripts/export-lifetime-verb-pdf.py
+      - name: Verify PDF outputs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          a=list(Path("exports").glob("*.pdf"))
+          assert len(a)==2,a
+          for p in a:
+              assert p.stat().st_size>25000, (p,p.stat().st_size)
+              print(p.name,p.stat().st_size)
+          PY
+      - name: Upload separate PDFs as one downloadable archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: WortWeg-Lifetime-German-Verbs-A4-PDFs
+          path: exports/*.pdf
+          if-no-files-found: error
+          retention-days: 30
