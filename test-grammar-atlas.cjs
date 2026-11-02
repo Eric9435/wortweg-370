@@ -12,7 +12,8 @@ assert.match(svg,/<svg\b/);
 assert.match(svg,/<\/svg>\s*$/);
 assert.equal(index.topics,288);
 assert.equal(index.chapters,36);
-assert.equal(index.verifiedParadigms,77);
+assert.equal(index.formMatrices,77);
+assert.equal(index.reviewedMatrices,48);
 assert.equal(index.topicReferences,211);
 assert.equal(index.items.length,288);
 assert.equal(new Set(index.items.map(t=>t.id)).size,288);
@@ -34,9 +35,9 @@ assert(svg.includes('Nominativ')&&svg.includes('Akkusativ')&&svg.includes('Dativ
 assert(svg.includes('mein Vater'),'Possessive adjective matrix missing');
 assert(svg.includes('Konjunktiv')||svg.includes('Konjunktiv II'),'Advanced grammatical mood missing');
 assert(svg.includes('Ich bin 25 Jahre alt.'),'Final T288 topic German example missing');
-assert(svg.includes('VERIFIED PARADIGM')&&svg.includes('TOPIC REFERENCE'),
+assert(svg.includes('REVIEWED MATRIX')&&svg.includes('FORM MATRIX')&&svg.includes('TOPIC REFERENCE'),
  'No differentiation between verified paradigms and explanatory reference topics');
-assert(svg.includes('77 verified paradigms')&&svg.includes('211 topic references'));
+assert(svg.includes('77 form matrices (48 reviewed)')&&svg.includes('211 topic references'));
 assert(svg.length>200000,'Generated SVG unexpectedly short');
 assert(index.height<50000,'Image too tall for common SVG renderers');
 for(const p of ['assets/german-grammar-a1-c2-complete.svg','assets/german-grammar-a1-c2-index.json']){
@@ -49,4 +50,4 @@ assert(html.includes('pinch')&&html.includes('setZoom')&&html.includes('jump(ite
 assert(html.includes('download="WortWeg_Complete_Grammar_A1-C2_288_Tables.svg"'),'SVG download missing');
 assert(pwa.includes("const CACHE='wortweg370-v100'"),'Offline cache version must be incremented');
 const total=fs.statSync('assets/german-grammar-a1-c2-complete.svg').size;
-console.log('PASS: WortWeg Grammar Atlas '+index.topics+' topics, '+index.chapters+' chapters, '+index.verifiedParadigms+' verified matrices, '+index.topicReferences+' reference tables, '+index.width+'×'+index.height+', '+total+' bytes');
+console.log('PASS: WortWeg Grammar Atlas '+index.topics+' topics, '+index.chapters+' chapters, '+index.formMatrices+' form matrices ('+index.reviewedMatrices+' reviewed), '+index.topicReferences+' reference tables, '+index.width+'×'+index.height+', '+total+' bytes');
