@@ -79,7 +79,7 @@ function chooseExercise(n){
  clearFeedback();renderTiles();
  storage.last={id:lesson.id,index};persist();
  try{history.replaceState(null,'',location.pathname+'?topic='+encodeURIComponent(lesson.id)+'&item='+(index+1));}catch{}
- window.scrollTo({top:0,behavior:'instant'});
+ window.scrollTo({top:0,behavior:'auto'});
 }
 function openLesson(id,start){
  const target=lessons.find(item=>item.id===id);if(!target)return;
@@ -90,7 +90,7 @@ function openLesson(id,start){
 function showTopics(){
  cancelDrag();lesson=null;els.practiceView.hidden=true;els.topicView.hidden=false;
  try{history.replaceState(null,'',location.pathname);}catch{}
- renderTopics();window.scrollTo({top:0,behavior:'instant'});
+ renderTopics();window.scrollTo({top:0,behavior:'auto'});
 }
 function clearFeedback(){els.feedback.hidden=true;els.feedback.className='feedback';els.feedback.replaceChildren();}
 function feedback(kind,heading,detail,reference){
