@@ -30,7 +30,7 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  assert.equal(total(),8000);
  assert.equal(d.getElementById('sort').value,'course','WortWeg-first sorting should be the default');
  input('sort','az');
- assert.equal(shown()[0][0],'abbummeln','Alphabetical list must include expanded verbs from A');
+ assert.equal(shown()[0][0],'aalen','Alphabetical list must start with the first dictionary lemma');
  input('sort','course');
  input('collection','wortweg');assert.equal(total(),360);
  input('query','treffen');assert(total()>=2,'treffen and sich treffen must remain searchable');
