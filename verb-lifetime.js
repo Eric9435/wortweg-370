@@ -7,7 +7,7 @@ const el=(tag,cls,label)=>{const node=document.createElement(tag);if(cls)node.cl
 const model=window.WortWegVerbFormsData;
 const state={verbs:new Map(),bank:new Map(),dictionary:false,wordBank:false,page:1,filtered:[],size:75};
 const manual=[
-['sein','war','gewesen','sein'],['zugrunde legen','legte zugrunde','zugrunde gelegt','haben'],['abschätzen','schätzte ab','abgeschätzt','haben'],
+['sein','war','gewesen','sein'],['ad absurdum führen','führte ad absurdum','ad absurdum geführt','haben'],['zugrunde legen','legte zugrunde','zugrunde gelegt','haben'],['abschätzen','schätzte ab','abgeschätzt','haben'],
 ['extrapolieren','extrapolierte','extrapoliert','haben'],['generalisieren','generalisierte','generalisiert','haben'],
 ['attribuieren','attribuierte','attribuiert','haben'],['dekonstruieren','dekonstruierte','dekonstruiert','haben'],
 ['dissimulieren','dissimulierte','dissimuliert','haben'],['fragmentieren','fragmentierte','fragmentiert','haben'],
@@ -90,9 +90,10 @@ function output(){
 function ingestWortWeg(raw){if(!Array.isArray(raw.bank))throw Error('Word Bank format missing');
  const rows=[...raw.bank,...(Array.isArray(raw.curated)?raw.curated:[])];
  for(const w of rows){
-  if(!['verb','modal verb'].includes(w.type))continue;
+  if(!['verb','modal verb','verb phrase'].includes(w.type))continue;
   const original=key(w.de),core=normHeadword(original);
-  if(!core||(core.includes(' ')&&core!=='zugrunde legen')||(!(/^(?:[a-zäöüß][a-zäöüß-]{1,80})$/u.test(core))&&core!=='zugrunde legen'))continue;
+  const knownPhrase=core==='zugrunde legen'||core==='ad absurdum führen';
+  if(!core||(!knownPhrase&&(core.includes(' ')||!/^[a-zäöüß][a-zäöüß-]{1,80}$/u.test(core))))continue;
   let entry=state.bank.get(original);
   if(!entry){entry={original,core,levels:new Set(),english:'',myanmar:'',reflexive:false,preposition:''};state.bank.set(original,entry);}
   if(w.level)entry.levels.add(w.level);
