@@ -142,7 +142,7 @@ $('previous').addEventListener('click',()=>{state.page--;output();document.query
 $('next').addEventListener('click',()=>{state.page++;output();document.querySelector('.scroll').scrollTop=0;});
 $('csv').addEventListener('click',csv);
 $('reset').addEventListener('click',()=>{
- filters.query.value='';filters.level.value='All';filters.status.value='all';filters.collection.value='all';
+ filters.query.value='';filters.level.value='All';filters.level.disabled=false;filters.status.value='all';filters.collection.value='all';$('level-note').textContent='CEFR labels come from WortWeg only; external dictionary words are not level-rated.';
  state.page=1;output();filters.query.focus();
 });
 $('retry').addEventListener('click',()=>{loadDict();loadBank();});
