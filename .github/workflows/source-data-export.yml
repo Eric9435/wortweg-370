@@ -1,0 +1,27 @@
+name: WortWeg source-data export
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/source-data-export.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WortWeg-Verbs-Source-Data
+          path: |
+            assets/german-verbs-lifetime.json
+            index.html
+            verb-lifetime.js
+          if-no-files-found: error
+          retention-days: 3
