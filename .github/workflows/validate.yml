@@ -76,6 +76,8 @@ jobs:
           node --check lifetime-grammar-rules-1.js
           node --check lifetime-grammar-rules-2.js
           node test-lifetime-grammar.cjs
+      - name: Verify drag-and-drop Sentence Builder, all 120 drills and offline assets
+        run: node test-sentence-builder.cjs
       - name: Verify vocabulary writing repetition tracking
         run: node test-vocab-writing.cjs
       - name: Validate reversible iPhone Home dashboard
@@ -225,5 +227,4 @@ jobs:
         run: node mobile/scripts/test-ui.mjs
       - name: Verify site-wide responsive UI and preserve original CEFR pie
         run: node test-quality-2026.cjs
-
 
