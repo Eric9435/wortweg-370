@@ -1,0 +1,75 @@
+/* Professional WortWeg Lifetime Verb Studio */
+:root{--wv-accent:#087a77;--wv-border:#d9e4eb;--wv-bg:#f3f7f9}
+html,body{min-height:100%;background:var(--wv-bg)}
+.shell{max-width:1220px}
+.top{padding:13px 24px;box-shadow:0 2px 15px #102a3b08}
+.top .brand{font-size:15px}.back:hover{border-color:#a9c5ce;background:#f5faf9}
+main{padding:30px 24px 85px}
+.intro h1{font-size:clamp(31px,4vw,46px);line-height:1.12;letter-spacing:-.045em;margin:8px 0 10px}
+.intro p{font-size:15px;line-height:1.65;max-width:790px}
+.numbers{grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.numbers>div{border:1px solid var(--wv-border);border-radius:15px;padding:18px 16px;border-top:3px solid #1d8a84}
+.numbers strong{font-size:clamp(21px,2.6vw,29px)}.numbers span{display:block;line-height:1.4;margin-top:3px}
+.tools{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:13px;padding:20px;border-color:var(--wv-border);box-shadow:0 8px 30px #11375209}
+.tools>label{min-width:0!important;grid-column:span 2;font-weight:700}
+.tools>label:first-child{grid-column:span 4;min-width:0}
+.tools input,.tools select{width:100%;height:44px;border-radius:10px;min-width:0}
+.tools>button{grid-column:span 2;height:43px;border-radius:10px;white-space:normal}
+.tools .practice-action{background:#0d7773;border-color:#0d7773}
+.tools .practice-action[aria-pressed=true]{background:#225d52;border-color:#225d52}
+.result{line-height:1.5}
+.scroll{border-color:var(--wv-border)}.scroll table{min-width:1100px}
+.scroll th{padding:15px 12px;font-size:12px;letter-spacing:.015em}
+.scroll td{padding:14px 12px;line-height:1.5}
+.scroll tr:hover{background:#f0faf9}.scroll td:nth-child(1){font-size:14px}
+.actionbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.actionbar button{border:1px solid #c9dce0;background:#fff;color:#266074;border-radius:8px;padding:6px 8px;cursor:pointer;font-size:12px;font-weight:700;min-height:34px}
+.actionbar button:hover{border-color:#0d8380;background:#eef9f7}
+.actionbar button:focus-visible{outline:3px solid #44c5a8;outline-offset:1px}
+.actionbar .saved{background:#e5f6ef;border-color:#93d5ba;color:#166c52}
+.actionbar .reveal{background:#e9f3ff;color:#225b87;border-color:#c6dbf2}
+.suppress-form{color:#728499;font-weight:650;letter-spacing:.1em}
+.paging button{min-width:115px}.paging{gap:16px}
+#practice-hint{background:#eaf5f3;border:1px solid #b8dad4;color:#1f6460;border-radius:10px;padding:11px 14px}
+#saved-count{color:var(--wv-accent)}
+@media(max-width:1280px){
+ .scroll tr{box-shadow:0 8px 24px #1137520e}
+ .scroll td:nth-child(9){grid-column:1/-1;border-top:1px solid #e6edf3;padding-top:12px}
+ .scroll td:nth-child(9)::before{content:'Study actions'}
+ .scroll td:nth-child(1){color:var(--wv-accent);overflow-wrap:anywhere}
+}
+@media(max-width:850px){
+ main{padding:22px 16px 80px}
+ .numbers{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .tools>label:first-child{grid-column:span 12}
+ .tools>label{grid-column:span 4}.tools>button{grid-column:span 4}
+}
+@media(max-width:670px){
+ .top{padding:12px}.top .brand{font-size:12px}
+ main{padding:18px 12px 76px}
+ .intro h1{font-size:33px}.intro p{font-size:14px}
+ .numbers{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .numbers>div{padding:13px}.numbers strong{font-size:24px}
+ .numbers>div:last-child{grid-column:1/-1}
+ .tools{padding:13px;gap:10px}
+ .tools>label:first-child{grid-column:span 12}
+ .tools>label{grid-column:span 6}
+ .tools>button{grid-column:span 6;padding:8px;font-size:12px}
+ .scroll tbody{gap:10px}.scroll tr{border-radius:15px;padding:8px 12px}
+ .scroll td:nth-child(1){font-size:20px}
+ .actionbar{gap:6px}.actionbar button{min-height:38px}
+ .paging{gap:8px}.paging button{min-width:0;flex:1}.paging span{white-space:nowrap}
+}
+@media(max-width:380px){.top .brand{letter-spacing:.06em}.back{font-size:11px!important}.paging{flex-wrap:wrap}.paging span{order:-1;width:100%;text-align:center}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(prefers-color-scheme:dark){
+ :root{--wv-bg:#111d2b;--wv-border:#3b5364;--wv-accent:#83d5cb}
+ .back:hover{background:#243b4f}.tools{box-shadow:none}.numbers>div{border-color:var(--wv-border)}
+ .scroll tr:hover{background:#203a46!important}
+ .actionbar button{background:#233c50;color:#d4ecfa;border-color:#48657a}
+ .actionbar button:hover{background:#2b5162}
+ .actionbar .saved{background:#1f4a3f;color:#c9f7e8;border-color:#4b8e71}
+ .actionbar .reveal{background:#234768;color:#d3eaff;border-color:#487caa}
+ #practice-hint{background:#1c403f;color:#c5ebe4;border-color:#3a6a66}
+ .scroll td:nth-child(9){border-color:#3e5266}
+}
