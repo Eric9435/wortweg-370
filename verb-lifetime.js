@@ -64,7 +64,9 @@ function output(){
  state.filtered=candidates.filter(v=>{
  if(collection==='additional'&&v.isWortWeg)return false;
  if(level!=='All'&&!(v.levels||[]).includes(level))return false;
- if(status!=='all'&&v.source!==status)return false;
+ const incomplete=v.source==='Review needed'||!v.v2||!v.v3||v.v2==='—'||v.v3==='—';
+ if(status==='incomplete'&&!incomplete)return false;
+ if(status!=='all'&&status!=='incomplete'&&v.source!==status)return false;
  if(search&&!([v.v1,v.v2,v.v3,v.english||'',v.myanmar||'',v.aux||'',...(v.levels||[]),v.preposition||'',v.reflexive?.v1||''].some(x=>key(x).includes(search))))return false;
  return true;
  }).sort((a,b)=>a.v1.localeCompare(b.v1,'de'));
@@ -74,8 +76,11 @@ function output(){
   const tr=el('tr');
   const values=[item.v1,item.v2,item.v3,item.english||'—',item.myanmar||'—',(item.levels||[]).join(', ')||'—',item.aux||'—'];
   for(const val of values){const td=el('td','',val);tr.append(td);}
-  const td=el('td');const tag=el('span','flag '+(item.source==='Wiktionary'?'reviewed':item.source==='Manual'?'derived':'unverified'),
-   item.source==='Wiktionary'?'Dictionary':item.source==='Manual'?'Curated':'Check form');td.append(tag);tr.append(td);frag.append(tr);
+  const td=el('td');const incomplete=item.source==='Review needed'||!item.v2||!item.v3||item.v2==='—'||item.v3==='—';
+  const tag=el('span','flag '+(incomplete?'unverified':item.source==='Wiktionary'?'reviewed':item.source==='Manual'?'derived':'unverified'),
+   incomplete?'Needs verification':item.source==='Wiktionary'?'Dictionary':item.source==='Manual'?'Curated':'Check form');
+  if(incomplete)tag.title='The source lacks an attested V2 or V3. No form has been guessed.';
+  td.append(tag);tr.append(td);frag.append(tr);
  }
  if(!frag.childNodes.length){
    const tr=el('tr'),td=el('td','','No verbs match these filters. Try All levels and All forms.');
