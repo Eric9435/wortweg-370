@@ -193,6 +193,8 @@ jobs:
           assert.ok(published.versionCode<=info.versionCode,'Only real public APKs can appear in update manifest');
           console.log('PASS: Android update syntax, version integrity and safe public release baseline');
           NODE
+      - name: Validate lifetime German verb dictionary and WortWeg lexical coverage
+        run: node test-verb-lifetime.cjs
       - name: Test saved answers and separate account progress
         run: node test-memory.cjs
       - name: Verify offline quiz checkpoint and Continue / New flow
