@@ -95,7 +95,10 @@ async function loadDict(){try{const res=await fetch('./assets/german-verbs-lifet
  for(const [v1,v2,v3,aux] of data.rows)if(v1&&v2&&v3)put({v1,v2,v3,aux:aux||'—',source:'Wiktionary'});
  state.dictionary=true;enrich();output();
  }catch(e){$('source-status').textContent='Expanded dictionary unavailable offline. Please reconnect to download the verb data.';output();}}
-async function loadBank(){try{const res=await fetch('./index.html');if(!res.ok)throw Error('HTTP '+res.status);
+async function loadBank(){try{
+ const handoff=sessionStorage.getItem('wortweg:verb-forms:source:v3');
+ if(handoff){const rows=JSON.parse(handoff);if(Array.isArray(rows)&&rows.length>=10){ingestWortWeg({bank:rows,curated:[]});return;}}
+ const res=await fetch('./index.html');if(!res.ok)throw Error('HTTP '+res.status);
  const doc=new DOMParser().parseFromString(await res.text(),'text/html');const node=doc.getElementById('data');
  if(!node)throw Error('Word Bank missing');const data=JSON.parse(node.textContent);
  ingestWortWeg(data);
