@@ -90,7 +90,7 @@ function output(){
  const search=key(filters.query.value),level=filters.level.value,status=filters.status.value,collection=filters.collection.value;
  // Keep source headwords distinct: treffen / sich treffen, abstrahieren / abstrahieren von.
  const candidates=collection==='wortweg'?courseRows():collection==='saved'
-   ?[...state.verbs.values(),...courseRows().filter(w=>w.v1!==w.core)]:[...state.verbs.values()];
+   ?[...state.verbs.values(),...courseRows().filter(w=>w.v1!==normHeadword(w.v1))]:[...state.verbs.values()];
  state.filtered=candidates.filter(v=>{
  if(collection==='additional'&&v.isWortWeg)return false;
  if(collection==='saved'&&!state.saved.has(v.v1))return false;
