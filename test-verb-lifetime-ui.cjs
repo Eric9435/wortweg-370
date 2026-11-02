@@ -9,7 +9,7 @@ const index=read('index.html');
 const match=index.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/);
 assert(match,'Word Bank embedded JSON missing');
 const bank=JSON.parse(match[1]);
-const typed=[...bank.bank,...bank.curated].filter(w=>['verb','modal verb'].includes(w.type))
+const typed=[...bank.bank,...bank.curated].filter(w=>['verb','modal verb','verb phrase'].includes(w.type))
   .map(w=>({de:w.de,en:w.en,mm:w.mm||w.my,level:w.level,type:w.type}));
 const dom=new JSDOM(html,{url:'https://localhost/verb-forms.html',runScripts:'outside-only'});
 const w=dom.window,d=w.document;
@@ -25,14 +25,15 @@ const total=()=>Number(d.getElementById('result').textContent.match(/[\d,]+/)[0]
 const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAll('td')].map(c=>c.textContent));
 (async()=>{
  await ready();
- assert.equal(w.WortWegLifetimeVerbs.total,7999,'All unique dictionary lemmas + 16 manual additions');
- assert.equal(w.WortWegLifetimeVerbs.wortweg,359,'Raw WortWeg headwords must not merge reflexive or prepositional versions');
- assert.equal(total(),7999);
- input('collection','wortweg');assert.equal(total(),359);
+ assert.equal(w.WortWegLifetimeVerbs.total,8000,'All unique dictionary lemmas + 16 manual additions');
+ assert.equal(w.WortWegLifetimeVerbs.wortweg,360,'Raw WortWeg headwords must not merge reflexive or prepositional versions');
+ assert.equal(total(),8000);
+ input('collection','wortweg');assert.equal(total(),360);
  input('query','treffen');assert.equal(total(),2,'treffen and sich treffen must remain distinct');
  const tref=shown().map(row=>row[0]);
  assert.deepEqual(tref,['sich treffen','treffen'].sort((a,b)=>a.localeCompare(b,'de')));
  input('query','abstrahieren');assert.equal(total(),2,'abstrahieren and abstrahieren von remain distinct');
+ input('query','ad absurdum führen');assert.equal(total(),1,'A tagged verb phrase must be shown');
  input('query','angemessen');assert.equal(total(),0,'Adjective must not count as a verb');
  input('query','');input('collection','all');
  input('query','abwiegen');assert.equal(total(),1);assert.deepEqual(shown()[0].slice(0,3),['abwiegen','wog ab','abgewogen']);
@@ -41,11 +42,11 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  input('level','All');input('collection','additional');assert.equal(total(),7642,'Expanded-only count should exclude 357 WortWeg lemma cores');
  assert(d.getElementById('level').disabled,'Expanded-only lexicon has no independent CEFR rating');
  d.getElementById('reset').click();
- assert.equal(total(),7999,'Reset must recover entire dictionary');
+ assert.equal(total(),8000,'Reset must recover entire dictionary');
  assert(!d.getElementById('level').disabled,'Reset must restore CEFR filter');
  assert.equal(Number(d.getElementById('pattern').textContent.replaceAll(',','')),7642);
  assert(html.includes('@media(max-width:1024px)')&&html.includes('grid-template-columns'),'Mobile card layout is required');
  assert(html.includes('CC BY-SA 4.0'),'Data attribution is required');
- console.log('PASS: lifetime verb page loads 7999 total / 359 WortWeg source entries, search, filtering and mobile layout');
+ console.log('PASS: lifetime verb page loads 8000 total / 360 WortWeg source entries, search, filtering and mobile layout');
  dom.window.close();
 })().catch(err=>{console.error(err);process.exitCode=1});
