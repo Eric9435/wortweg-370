@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f8fb">
+<title>Grammar 200 | WortWeg 370</title>
+<link rel="icon" href="./icon.svg">
+<style>
+:root{color-scheme:light;--ink:#182d43;--sub:#66788b;--line:#dce5ee;--paper:#fff;--bg:#f6f8fb;--accent:#167a9a;--tint:#ebf5f8}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Myanmar",sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #2699d4;outline-offset:3px}
+[hidden]{display:none!important}
+.top{background:var(--paper);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.top-inner{max-width:980px;margin:auto;padding:14px 22px;display:flex;align-items:center;gap:16px}
+.brand{font-size:15px;letter-spacing:.09em;font-weight:800;text-decoration:none;color:var(--ink)}.brand b{color:var(--accent)}
+.top a.home{margin-left:auto;text-decoration:none;border:1px solid var(--line);border-radius:12px;padding:8px 13px;color:var(--ink);font-weight:650;font-size:14px}
+main{max-width:980px;margin:auto;padding:30px 22px 100px}
+.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:15px}
+h1{font-size:clamp(26px,4vw,38px);letter-spacing:-.045em;margin:0;line-height:1.2}
+.progress{font-size:15px;color:var(--sub);font-variant-numeric:tabular-nums;font-weight:650}
+.track{height:6px;background:#dce6ee;border-radius:99px;overflow:hidden;margin:16px 0 22px}
+.track span{display:block;height:100%;background:var(--accent);width:0;transition:width .2s}
+.actions{display:flex;justify-content:flex-end;gap:8px;margin:0 0 18px}
+.actions button{background:white;border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:10px;font-size:13px;font-weight:650}
+.level{margin:28px 0 36px;scroll-margin-top:75px}
+.level-head{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--line);padding-bottom:10px;margin-bottom:10px;gap:12px}
+h2{font-size:23px;letter-spacing:-.025em;margin:0}
+.level-count{font-size:13px;color:var(--sub);font-variant-numeric:tabular-nums}
+.list{display:grid;gap:8px}
+.entry{border:1px solid var(--line);background:var(--paper);border-radius:14px;overflow:hidden}
+.entry.done{border-color:#a5d5c8}
+.entry-line{display:flex;align-items:center;gap:12px;min-height:61px;padding:12px 14px}
+.tick{width:21px;height:21px;flex:0 0 auto;accent-color:#148670;cursor:pointer}
+.entry-label{font-weight:650;line-height:1.4;flex:1;min-width:0;cursor:pointer;display:flex;gap:10px;align-items:baseline}
+.num{color:var(--sub);font-size:13px;font-variant-numeric:tabular-nums;font-weight:700;min-width:26px}
+.entry.done .entry-label .topic-title{text-decoration:line-through;text-decoration-color:#8caba3;color:var(--sub)}
+.toggle{border:1px solid var(--line);border-radius:9px;min-width:63px;padding:7px 9px;background:var(--paper);color:var(--accent);font-weight:700;font-size:13px}
+.details{padding:14px 18px 17px 47px;border-top:1px solid var(--line);background:#fbfdff}
+.german{font-size:17px;line-height:1.7;overflow-wrap:anywhere;margin:0 0 8px}
+.german strong{font-weight:800;color:#137a9e}
+.myanmar{font-size:14px;line-height:1.75;margin:0 0 8px}
+.rule{font-size:13px;color:var(--sub);margin:0 0 10px}
+.copy{border:1px solid var(--line);border-radius:8px;background:white;color:var(--ink);padding:6px 11px;font-size:12px;font-weight:650}
+@media(max-width:600px){.top-inner{padding:12px 15px}main{padding:22px 12px 72px}.entry-line{padding:11px 10px;gap:9px}.entry-label{gap:6px;font-size:14px}.details{padding:13px 14px}.german{font-size:16px}.toggle{min-width:57px}.tick{width:20px;height:20px}}
+@media(prefers-color-scheme:dark){:root{color-scheme:dark;--ink:#e7edf4;--sub:#afbdcb;--line:#33465d;--paper:#1b2a3a;--bg:#111c2a;--tint:#203e4d}.actions button,.toggle,.copy{background:#203144;color:var(--ink)}.toggle{color:#80d3ef}.details{background:#162737}.german strong{color:#80d3ef}.track{background:#34465a}}
+</style>
+<script defer src="./grammar-200-a1.js"></script>
+<script defer src="./grammar-200-a2.js"></script>
+<script defer src="./grammar-200-b1.js"></script>
+<script defer src="./grammar-200-b2.js"></script>
+<script defer src="./grammar-200-c1.js"></script>
+</head>
+<body>
+<header class="top"><div class="top-inner"><a class="brand" href="./index.html">WORTWEG <b>370</b></a><a class="home" href="./index.html">Home</a></div></header>
+<main>
+<div class="heading"><h1>Grammar 200</h1><span class="progress" id="totalProgress">0 / 200</span></div>
+<div class="track" aria-hidden="true"><span id="progressBar"></span></div>
+<div class="actions"><button id="toggleAll" type="button">Show All</button></div>
+<div id="levels"></div>
+</main>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+'use strict';
+const levels=['A1','A2','B1','B2','C1'];
+const data=window.WWGrammar200||{};
+const root=document.getElementById('levels');
+const storageKey='wortweg370:grammar200:checked:v1';
+let saved={};
+try{const value=JSON.parse(localStorage.getItem(storageKey)||'{}');if(value&&typeof value==='object'&&!Array.isArray(value))saved=value;}catch{}
+const details=[];
+const allRows=[];
+const create=(tag,className,text)=>{const el=document.createElement(tag);if(className)el.className=className;if(text!==undefined)el.textContent=text;return el;};
+function persist(){try{localStorage.setItem(storageKey,JSON.stringify(saved));}catch{}}
+function refresh(){
+ let sum=0;
+ levels.forEach(level=>{
+  const rows=data[level]||[];
+  const count=rows.filter((_,i)=>saved[level+'-'+(i+1)]===true).length;
+  sum+=count;
+  const target=document.getElementById('count-'+level);
+  if(target)target.textContent=count+' / '+rows.length;
+ });
+ document.getElementById('totalProgress').textContent=sum+' / '+allRows.length;
+ document.getElementById('progressBar').style.width=(allRows.length?100*sum/allRows.length:0)+'%';
+}
+function setExpanded(item,open){
+ item.panel.hidden=!open;
+ item.btn.textContent=open?'Hide':'Show';
+ item.btn.setAttribute('aria-expanded',String(open));
+}
+function refreshAllButton(){document.getElementById('toggleAll').textContent=details.length&&details.every(o=>!o.panel.hidden)?'Hide All':'Show All';}
+for(const level of levels){
+ const rows=data[level];
+ if(!Array.isArray(rows)||rows.length!==40){root.append(create('p','',level+' (0 / 40)'));continue;}
+ const section=create('section','level');section.id='level-'+level;
+ const head=create('div','level-head');
+ head.append(create('h2','',level));
+ const count=create('span','level-count','0 / 40');count.id='count-'+level;head.append(count);
+ section.append(head);
+ const list=create('div','list');section.append(list);
+ rows.forEach((r,i)=>{
+  const id=level+'-'+(i+1),full=r[1]+r[2]+r[3],panelId='g200-'+level+'-'+(i+1);
+  allRows.push({id,full});
+  const article=create('article','entry');
+  if(saved[id]===true)article.classList.add('done');
+  const line=create('div','entry-line');
+  const checkbox=create('input','tick');checkbox.type='checkbox';checkbox.id='tick-'+id;
+  checkbox.checked=saved[id]===true;
+  checkbox.setAttribute('aria-label',level+' '+(i+1)+' '+r[0]);
+  checkbox.addEventListener('change',()=>{if(checkbox.checked)saved[id]=true;else delete saved[id];article.classList.toggle('done',checkbox.checked);persist();refresh();});
+  line.append(checkbox);
+  const label=create('label','entry-label');label.htmlFor=checkbox.id;
+  const number=create('span','num',String(i+1).padStart(2,'0'));
+  label.append(number,create('span','topic-title',r[0]));line.append(label);
+  const toggle=create('button','toggle','Show');toggle.type='button';
+  toggle.setAttribute('aria-controls',panelId);toggle.setAttribute('aria-expanded','false');
+  line.append(toggle);article.append(line);
+  const panel=create('div','details');panel.id=panelId;panel.hidden=true;
+  const p=create('p','german');
+  p.append(document.createTextNode(r[1]),create('strong','',r[2]),document.createTextNode(r[3]));
+  panel.append(p,create('p','myanmar',r[4]),create('p','rule',r[5]));
+  const copy=create('button','copy','Copy');copy.type='button';
+  copy.addEventListener('click',async()=>{
+   try{await navigator.clipboard.writeText(full);copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy',1300);}
+   catch{const box=document.createElement('textarea');box.value=full;document.body.append(box);box.select();try{document.execCommand('copy');copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy',1300);}catch{}box.remove();}
+  });
+  panel.append(copy);article.append(panel);
+  toggle.addEventListener('click',()=>{setExpanded({panel,btn:toggle},panel.hidden);refreshAllButton();});
+  details.push({panel,btn:toggle});list.append(article);
+ });
+ root.append(section);
+}
+const all=document.getElementById('toggleAll');
+all.addEventListener('click',()=>{
+ const toOpen=details.some(o=>o.panel.hidden);
+ details.forEach(o=>setExpanded(o,toOpen));
+ refreshAllButton();
+});
+refresh();refreshAllButton();
+});
+</script>
+</body>
+</html>
