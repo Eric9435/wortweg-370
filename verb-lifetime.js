@@ -104,7 +104,7 @@ function ingestWortWeg(raw){if(!Array.isArray(raw.bank))throw Error('Word Bank f
  }
  enrich();state.wordBank=true;output();
 }
-async function loadDict(){try{const res=await fetch('./assets/german-verbs-lifetime.json');if(!res.ok)throw Error('HTTP '+res.status);const data=await res.json();
+async function loadDict(){try{const res=await fetch('./assets/german-verbs-lifetime.json',{cache:'no-cache'});if(!res.ok)throw Error('HTTP '+res.status);const data=await res.json();
  if(data.version!==1||!Array.isArray(data.rows)||data.rows.length<7500)throw Error('Dictionary invalid');
  for(const [v1,v2,v3,aux] of data.rows)if(v1&&v2&&v3)put({v1,v2,v3,aux:aux||'—',source:'Wiktionary'});
  state.dictionary=true;$('source-status').textContent='';enrich();output();
@@ -119,7 +119,7 @@ async function loadBank(){try{
    if(Array.isArray(rows)&&rows.length>=10){ingestWortWeg({bank:rows,curated:[]});$('wordbank-status').textContent='';return;}
   }catch(e){console.warn('Verb handoff unavailable; using original Word Bank',e);}
  }
- const res=await fetch('./index.html');if(!res.ok)throw Error('HTTP '+res.status);
+ const res=await fetch('./index.html',{cache:'no-cache'});if(!res.ok)throw Error('HTTP '+res.status);
  const doc=new DOMParser().parseFromString(await res.text(),'text/html');const node=doc.getElementById('data');
  if(!node)throw Error('Word Bank missing');const data=JSON.parse(node.textContent);
  ingestWortWeg(data);$('wordbank-status').textContent='';
@@ -135,7 +135,7 @@ for(const control of Object.values(filters))control.addEventListener(control.tag
   const external=filters.collection.value==='additional';
   if(external)filters.level.value='All';
   filters.level.disabled=external;
-  $('level-note').textContent=external?'CEFR levels are available only for WortWeg course verbs.':'CEFR labels come from WortWeg only; external dictionary words are not level-rated.';
+  $('level-note').textContent=external?'CEFR levels are available only for WortWeg course verbs.':'CEFR levels apply only to WortWeg course verbs. A dash (—) means no verified WortWeg translation is available.';
  }
  state.page=1;output();
 });
@@ -146,7 +146,7 @@ $('reset').addEventListener('click',()=>{
  filters.query.value='';filters.level.value='All';filters.level.disabled=false;filters.status.value='all';filters.collection.value='all';$('level-note').textContent='CEFR labels come from WortWeg only; external dictionary words are not level-rated.';
  state.page=1;output();filters.query.focus();
 });
-$('retry').addEventListener('click',()=>{loadDict();loadBank();});
+$('retry').addEventListener('click',()=>{ $('source-status').textContent='Checking updated verb data…';loadDict();loadBank();});
 window.WortWegLifetimeVerbs={get total(){return state.verbs.size},get wortweg(){return state.bank.size}};
 output();loadDict();loadBank();
 })();
