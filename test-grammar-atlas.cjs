@@ -44,10 +44,16 @@ for(const p of ['assets/german-grammar-a1-c2-complete.svg','assets/german-gramma
  assert(html.includes(p),'Viewer missing asset '+p);
  assert(pwa.includes('./'+p),'Offline PWA missing asset '+p);
 }
-assert(lifetime.includes('href="./grammar-atlas.html"'),'Lifetime Grammar launcher missing');
-assert(academy.includes("atlasLink.href='./grammar-atlas.html'"),'Grammar Academy launcher missing');
+assert(lifetime.includes('href="./grammar-120.html"'),'Updated 120-table Lifetime reference link missing');
+assert(!lifetime.includes('href="./grammar-atlas.html"'),'Older 288-table launcher must be removed');
+assert(academy.includes("atlasLink.href='./grammar-120.html'"),'Grammar Academy 120-table shortcut missing');
 assert(html.includes('pinch')&&html.includes('setZoom')&&html.includes('jump(item)'),'Zoom and search-jump interactions missing');
 assert(html.includes('download="WortWeg_Complete_Grammar_A1-C2_288_Tables.svg"'),'SVG download missing');
-assert(pwa.includes("const CACHE='wortweg370-v100'"),'Offline cache version must be incremented');
+assert(pwa.includes("const CACHE='wortweg370-v101'"),'Offline cache version must be incremented');
+const home=fs.readFileSync('home-refresh.js','utf8');
+const overlay=fs.readFileSync('grammar-tables-atlas.js','utf8');
+assert(home.includes("id:'grammar-120'")&&home.includes('WortWegGrammarTablesAtlas'),'120-table tile missing from Home');
+assert(overlay.includes("./assets/german-grammar-a1-c1-120.svg")&&overlay.includes('pinch'),'Original SVG / pinch viewer missing');
+assert(pwa.includes("'./grammar-tables-atlas.js'")&&pwa.includes("'./grammar-tables-atlas.css'"),'Grammar overlay PWA files missing');
 const total=fs.statSync('assets/german-grammar-a1-c2-complete.svg').size;
 console.log('PASS: WortWeg Grammar Atlas '+index.topics+' topics, '+index.chapters+' chapters, '+index.formMatrices+' form matrices ('+index.reviewedMatrices+' reviewed), '+index.topicReferences+' reference tables, '+index.width+'×'+index.height+', '+total+' bytes');
