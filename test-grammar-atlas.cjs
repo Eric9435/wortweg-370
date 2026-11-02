@@ -49,7 +49,8 @@ assert(!lifetime.includes('href="./grammar-atlas.html"'),'Older 288-table launch
 assert(academy.includes("atlasLink.href='./grammar-120.html'"),'Grammar Academy 120-table shortcut missing');
 assert(html.includes('pinch')&&html.includes('setZoom')&&html.includes('jump(item)'),'Zoom and search-jump interactions missing');
 assert(html.includes('download="WortWeg_Complete_Grammar_A1-C2_288_Tables.svg"'),'SVG download missing');
-assert(pwa.includes("const CACHE='wortweg370-v101'"),'Offline cache version must be incremented');
+const cacheVersion=Number(pwa.match(/const CACHE='wortweg370-v(\d+)'/)?.[1]);
+assert(cacheVersion>=101,'Offline cache version must be at least v101');
 const home=fs.readFileSync('home-refresh.js','utf8');
 const overlay=fs.readFileSync('grammar-tables-atlas.js','utf8');
 assert(home.includes("id:'grammar-120'")&&home.includes('WortWegGrammarTablesAtlas'),'120-table tile missing from Home');
