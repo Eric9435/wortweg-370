@@ -7,7 +7,7 @@ const el=(tag,cls,label)=>{const node=document.createElement(tag);if(cls)node.cl
 const model=window.WortWegVerbFormsData;
 const state={verbs:new Map(),bank:new Map(),dictionary:false,wordBank:false,page:1,filtered:[],size:75};
 const manual=[
-['sein','war','gewesen','sein'],['abschätzen','schätzte ab','abgeschätzt','haben'],
+['sein','war','gewesen','sein'],['zugrunde legen','legte zugrunde','zugrunde gelegt','haben'],['abschätzen','schätzte ab','abgeschätzt','haben'],
 ['extrapolieren','extrapolierte','extrapoliert','haben'],['generalisieren','generalisierte','generalisiert','haben'],
 ['attribuieren','attribuierte','attribuiert','haben'],['dekonstruieren','dekonstruierte','dekonstruiert','haben'],
 ['dissimulieren','dissimulierte','dissimuliert','haben'],['fragmentieren','fragmentierte','fragmentiert','haben'],
@@ -79,7 +79,7 @@ function ingestWortWeg(raw){if(!Array.isArray(raw.bank))throw Error('Word Bank f
  for(const w of rows){
   if(!['verb','modal verb'].includes(w.type))continue;
   const original=key(w.de),core=normHeadword(original);
-  if(!core||core.includes(' ')||!(/^(?:[a-zäöüß][a-zäöüß-]{1,80})$/u.test(core)))continue;
+  if(!core||(core.includes(' ')&&core!=='zugrunde legen')||(!(/^(?:[a-zäöüß][a-zäöüß-]{1,80})$/u.test(core))&&core!=='zugrunde legen'))continue;
   let entry=state.bank.get(core);
   if(!entry){entry={core,levels:new Set(),english:'',myanmar:'',reflexive:false,preposition:''};state.bank.set(core,entry);}
   if(w.level)entry.levels.add(w.level);
