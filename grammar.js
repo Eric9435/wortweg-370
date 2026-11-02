@@ -18,6 +18,9 @@ function readUser(){try{const value=JSON.parse(localStorage.getItem(userKey())||
 function writeUser(){try{localStorage.setItem(userKey(),JSON.stringify(progress));}catch{}window.dispatchEvent(new Event('wortweg:grammar-changed'));}
 const root=el('section','wg-academy');root.id='wg-academy';root.hidden=true;root.setAttribute('aria-label','German grammar academy');
 const header=el('header','wg-header');add(header,btn('‹  Back',close,'wg-back'),el('strong','', 'Grammar Academy'),el('span','wg-brand','WortWeg 370'));
+const atlasLink=document.createElement('a');atlasLink.href='./grammar-atlas.html';atlasLink.className='wg-atlas-launch';
+atlasLink.textContent='Grammar Atlas 288';atlasLink.setAttribute('aria-label','Open A1 to C2 zoomable Grammar Atlas with 288 topic tables');
+header.insertBefore(atlasLink,header.lastElementChild);
 const body=el('div','wg-body');add(root,header,body);document.body.append(root);
 function open(){readUser();root.hidden=false;document.body.classList.add('wg-open');render();root.scrollTop=0;history.replaceState(null,'',location.pathname+location.search+'#grammar');}
 function close(){root.hidden=true;document.body.classList.remove('wg-open');active=null;if(location.hash==='#grammar')history.replaceState(null,'',location.pathname+location.search);}
