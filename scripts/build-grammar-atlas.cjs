@@ -24,7 +24,8 @@ if(chapters.length!==36||topics.length!==288||rules.length!==288||exact.length!=
 if(new Set(topics.map(t=>t.id)).size!==288)throw Error('Duplicate topic IDs');
 const exactById=new Map(exact.map(x=>[x.id,x])),myById=new Map(my.map(x=>[x.id,x.my]));
 const count=topics.filter(t=>matrix[t.id]&&matrix[t.id].rows&&matrix[t.id].rows.length).length;
-if(count!==77)throw Error('Expected 77 independently authored paradigms; got '+count);
+const reviewed=topics.filter(t=>verified[t.id]&&verified[t.id].rows&&verified[t.id].rows.length).length;
+if(count!==77||reviewed!==48)throw Error('Expected 77 form matrices (48 reviewed), got '+count+' ('+reviewed+' reviewed)');
 const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
 const W=5440,X=42,CARD=652,GAP=16,COL=8;
 if(X*2+COL*CARD+(COL-1)*GAP>W)throw Error('SVG width too small');
@@ -90,7 +91,7 @@ function drawCard(t){
   '<rect x="18" y="24" width="53" height="25" rx="6" fill="#e8f1f8"/>',
   textSvg(28,41,t.id,13,'#1b638e',700),
   textSvg(84,41,t.level,13,'#526c81',700),
-  textSvg(CARD-18- (hasMatrix?170:182),41,hasMatrix?'VERIFIED PARADIGM':'TOPIC REFERENCE',12,hasMatrix?'#166b69':'#6c7584',700),
+  textSvg(CARD-18- (hasMatrix?170:182),41,hasMatrix?(verified[t.id]?'REVIEWED MATRIX':'FORM MATRIX'):'TOPIC REFERENCE',12,hasMatrix?'#166b69':'#6c7584',700),
   lines(18,80,titleLines,21,26,'#152c43','card-title'),
   ...rows
  ];
@@ -99,8 +100,8 @@ function drawCard(t){
 const cards=new Map(topics.map(t=>[t.id,drawCard(t)]));
 let y=202,index=[],parts=['<rect width="'+W+'" height="100%" fill="#f0f5fa"/>'];
 parts.push(textSvg(44,62,'WORTWEG 370   /   COMPLETE GRAMMAR ATLAS',37,'#133550',750));
-parts.push(textSvg(46,96,'A1–C2   ·   36 chapters   ·   288 topics   ·   77 verified paradigms   ·   211 topic references',19,'#46667f'));
-parts.push(textSvg(46,128,'Exact grammar paradigms are distinguished from rule-and-example references. Read the full lesson in Lifetime Grammar.',16,'#55718a'));
+parts.push(textSvg(46,96,'A1–C2   ·   36 chapters   ·   288 topics   ·   77 form matrices (48 reviewed)   ·   211 topic references',19,'#46667f'));
+parts.push(textSvg(46,128,'Existing form tables are distinguished from rule-and-example references. Read the full lesson in Lifetime Grammar.',16,'#55718a'));
 for(const chapter of chapters){
  const members=topics.filter(t=>t.chapter===chapter.chapter);
  if(members.length!==8)throw Error('Expected eight topics per chapter');
@@ -114,7 +115,7 @@ for(const chapter of chapters){
   const t=members[i],x=X+i*(CARD+GAP),card=cards.get(t.id);
   parts.push('<g transform="translate('+x+' '+top+')">'+card.svg+'</g>');
   index.push({id:t.id,title:t.en,level:t.level,chapter:chapter.chapter,chapterTitle:chapter.en,
-   x,y:top,width:CARD,height:card.height,verified:card.hasMatrix});
+   x,y:top,width:CARD,height:card.height,hasMatrix:card.hasMatrix,reviewed:!!verified[t.id]});
  }
  y=top+rowHeight+21;
 }
@@ -122,11 +123,11 @@ parts.push(textSvg(46,y+34,'WORTWEG 370 · Structured grammar reference atlas ·
 y+=62;
 const svg='<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="'+W+'" height="'+y+
  '" viewBox="0 0 '+W+' '+y+'" role="img" aria-label="WortWeg German Grammar Atlas A1 to C2, 288 topics">'+
- '<title>WortWeg Complete German Grammar Atlas A1–C2</title><desc>36 chapters; 288 topics; 77 verified paradigm tables and 211 topic-specific rule and example reference tables.</desc>'+css+
+ '<title>WortWeg Complete German Grammar Atlas A1–C2</title><desc>36 chapters; 288 topics; 77 form tables (48 reviewed), and 211 topic-specific rule and example reference tables.</desc>'+css+
  parts.join('')+'</svg>\n';
-const summary={version:1,width:W,height:y,chapters:36,topics:288,verifiedParadigms:count,topicReferences:288-count,items:index};
+const summary={version:1,width:W,height:y,chapters:36,topics:288,formMatrices:count,reviewedMatrices:reviewed,topicReferences:288-count,items:index};
 fs.mkdirSync(path.dirname(output),{recursive:true});
 fs.writeFileSync(output,svg,'utf8');
 fs.writeFileSync(indexOutput,JSON.stringify(summary,null,0)+'\n','utf8');
 console.log(JSON.stringify({file:path.relative(root,output),bytes:Buffer.byteLength(svg),index:path.relative(root,indexOutput),
- width:W,height:y,topics:summary.topics,verifiedParadigms:count,references:288-count}));
+ width:W,height:y,topics:summary.topics,formMatrices:count,reviewedMatrices:reviewed,references:288-count}));
