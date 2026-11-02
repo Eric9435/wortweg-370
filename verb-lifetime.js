@@ -128,7 +128,16 @@ function csv(){const rows=[['V1','V2','V3','English (WortWeg)','Myanmar (WortWeg
  const blob=new Blob(['\ufeff',rows.map(row=>row.map(esc).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='WortWeg_Lifetime_V1_V2_V3.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
-for(const control of Object.values(filters))control.addEventListener(control.tagName==='INPUT'?'input':'change',()=>{state.page=1;output();});
+for(const control of Object.values(filters))control.addEventListener(control.tagName==='INPUT'?'input':'change',()=>{
+ if(control===filters.collection){
+  // The external lexicon has no honest CEFR classification; do not infer a level.
+  const external=filters.collection.value==='additional';
+  if(external)filters.level.value='All';
+  filters.level.disabled=external;
+  $('level-note').textContent=external?'CEFR levels are available only for WortWeg course verbs.':'CEFR labels come from WortWeg only; external dictionary words are not level-rated.';
+ }
+ state.page=1;output();
+});
 $('previous').addEventListener('click',()=>{state.page--;output();document.querySelector('.scroll').scrollTop=0;});
 $('next').addEventListener('click',()=>{state.page++;output();document.querySelector('.scroll').scrollTop=0;});
 $('csv').addEventListener('click',csv);
