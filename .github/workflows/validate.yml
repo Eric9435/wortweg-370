@@ -76,7 +76,7 @@ jobs:
           node --check lifetime-grammar-rules-1.js
           node --check lifetime-grammar-rules-2.js
           node test-lifetime-grammar.cjs
-      - name: Verify drag-and-drop Sentence Builder, all 120 drills and offline assets
+      - name: Verify Lifetime Sentence Builder, all 360 drills and offline assets
         run: node test-sentence-builder.cjs
       - name: Verify vocabulary writing repetition tracking
         run: node test-vocab-writing.cjs
@@ -84,6 +84,8 @@ jobs:
         run: node test-home-refresh.cjs
       - name: Install test-only DOM simulator
         run: npm install --no-save --no-package-lock jsdom@26
+      - name: Exercise Lifetime Sentence Builder A1–C2 browser interactions
+        run: node test-sentence-builder-ui.cjs
       - name: Prevent Home menu MutationObserver infinite reordering on mobile
         run: node test-menu-observer-stability.cjs
       - name: Verify 48 memorize charts and interactive study mode
@@ -230,4 +232,3 @@ jobs:
         run: node mobile/scripts/test-ui.mjs
       - name: Verify site-wide responsive UI and preserve original CEFR pie
         run: node test-quality-2026.cjs
-
