@@ -22,20 +22,16 @@ const actions=[
  {id:'goethe-exam',icon:'◎',title:'Goethe Exam Prep',caption:'A1–C2 · 100 topics · exam skills',run:()=>{window.location.href='./goethe-exam.html';return true;}},
  {id:'special',icon:'Aa+',title:'Special Vocabulary',caption:'Conjunctions, numbers, time & more',run:()=>{if(window.WortWegSpecialVocabulary?.open){window.WortWegSpecialVocabulary.open();return true}return false}},
  {id:'atlas',icon:'▦',title:'Vocabulary Atlas',caption:'Static reference chart · 11,312 entries',run:()=>{window.WortWegVocabularyAtlas?.open?.();return true}},
- {id:'verb-forms',icon:'V³',title:'Verb Forms · V1 V2 V3',caption:'WortWeg verbs · searchable tables',run:()=>{
-  // Pass just possible verb headwords already loaded on Home to the viewer.
-  // Avoid re-downloading/parsing the entire Word Bank when navigating.
+ {id:'verb-forms',icon:'V³',title:'Lifetime Verbs · V1 V2 V3',caption:'WortWeg verbs + ~8,000 dictionary entries',run:()=>{
   try{
-   const node=document.getElementById('data');
-   if(node){
-    const pack=JSON.parse(node.textContent||'{}');
-    if(Array.isArray(pack.bank)){
-     const likely=w=>typeof w?.de==='string'&&(/^(?:sich\s+)?[a-zäöüß-]{3,75}(?:en|ern|eln)$/iu.test(w.de.trim())||/^(?:sein|tun)$/iu.test(w.de.trim()));
-     const words=[...pack.bank,...(Array.isArray(pack.curated)?pack.curated.map(w=>({...w,level:'Topic 1'})):[])].filter(likely).map(w=>({de:w.de,en:w.en||'',level:w.level||'—'}));
-     sessionStorage.setItem('wortweg:verb-forms:source:v2',JSON.stringify(words));
+    const node=document.getElementById('data');
+    if(node){
+      const bank=JSON.parse(node.textContent||'{}');
+      const words=[...(bank.bank||[]),...(bank.curated||[])].filter(w=>['verb','modal verb'].includes(w.type))
+        .map(w=>({de:w.de,en:w.en||'',mm:w.mm||w.my||'',level:w.level||'Topic 1',type:w.type}));
+      sessionStorage.setItem('wortweg:verb-forms:source:v3',JSON.stringify(words));
     }
-   }
-  }catch(e){console.warn('Word Bank handoff unavailable; verb viewer will load its offline list.',e);}
+  }catch(e){console.warn('WortWeg verb handoff unavailable; loading source file instead.',e);}
   window.location.href='./verb-forms.html';return true;
  }},
  {id:'grammar-120',icon:'▦',title:'Grammar Atlas',caption:'A1–C1 · 120 detailed tables · SVG',run:()=>{if(window.WortWegGrammarTablesAtlas?.open){window.WortWegGrammarTablesAtlas.open();return true;}window.location.href='./grammar-120.html';return true;}}
