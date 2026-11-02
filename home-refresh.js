@@ -28,7 +28,7 @@ const actions=[
     const node=document.getElementById('data');
     if(node){
       const bank=JSON.parse(node.textContent||'{}');
-      const words=[...(bank.bank||[]),...(bank.curated||[])].filter(w=>['verb','modal verb'].includes(w.type))
+      const words=[...(bank.bank||[]),...(bank.curated||[])].filter(w=>['verb','modal verb','verb phrase'].includes(w.type))
         .map(w=>({de:w.de,en:w.en||'',mm:w.mm||w.my||'',level:w.level||'Topic 1',type:w.type}));
       sessionStorage.setItem('wortweg:verb-forms:source:v3',JSON.stringify(words));
     }
