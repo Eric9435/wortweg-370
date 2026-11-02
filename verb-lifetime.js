@@ -46,7 +46,7 @@ function enrich(){for(const word of state.bank.values()){
 function stats(){const list=[...state.verbs.values()],word=[...state.bank.values()];
  $('total').textContent=list.length.toLocaleString('en-US');
  $('reviewed').textContent=word.length.toLocaleString('en-US');
- $('pattern').textContent=Math.max(0,list.length-word.length).toLocaleString('en-US');
+ $('pattern').textContent=list.filter(w=>!w.isWortWeg).length.toLocaleString('en-US');
  $('unknown').textContent=list.filter(w=>w.source==='Review needed'||w.v2==='—'||w.v3==='—').length.toLocaleString('en-US');
 }
 const filters={query:$('query'),level:$('level'),status:$('status'),collection:$('collection')};
