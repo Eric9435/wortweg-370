@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f8fc">
+<title>WortWeg V1 · V2 · V3</title>
+<link rel="icon" href="./icon.svg">
+<style>
+*{box-sizing:border-box}html{background:#f6f8fc;color:#192e44;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}body{margin:0}a,button,input,select{font:inherit}.shell{max-width:1340px;margin:auto}.top{display:flex;gap:15px;align-items:center;padding:13px 22px;border-bottom:1px solid #d7e0eb;background:white}.brand{flex:1;letter-spacing:.12em;font-size:13px;font-weight:800;color:#1d4166}.brand b{color:#158a80}.back{text-decoration:none;border:1px solid #d8e2ec;background:white;border-radius:10px;padding:8px 12px;color:#234c70;font-weight:650;font-size:13px}main{padding:25px 20px 70px}.eyebrow{font-size:11px;color:#067b70;font-weight:800;letter-spacing:.12em}.intro h1{font-size:clamp(27px,5vw,42px);letter-spacing:-.05em;margin:5px 0}.intro p{max-width:880px;font-size:14px;line-height:1.55;color:#52667b;margin:8px 0 21px}.numbers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin-bottom:22px}.numbers>div{border-radius:14px;border:1px solid #e0e8f0;background:white;padding:15px}.numbers strong{display:block;font-size:25px;letter-spacing:-.05em}.numbers span{font-size:11px;color:#64748b}.tools{display:flex;align-items:end;gap:11px;flex-wrap:wrap;padding:16px;border:1px solid #dce5ee;border-radius:15px;background:white}.tools label{font-size:12px;font-weight:700;color:#3b5169;display:flex;flex-direction:column;gap:6px}.tools label:first-child{flex:1;min-width:220px}.tools input,.tools select{background:#fff;border:1px solid #cedbe6;border-radius:8px;min-height:39px;padding:7px 10px;color:#20364d}.tools button,.paging button{background:#1f5b85;border:1px solid #1f5b85;color:white;font-weight:700;border-radius:9px;padding:9px 14px;min-height:39px;cursor:pointer}.tools button:hover,.paging button:hover{background:#19496b}.tools button:focus-visible,.paging button:focus-visible,input:focus-visible,select:focus-visible,.back:focus-visible{outline:3px solid #40c8ac;outline-offset:2px}.result{font-size:13px;color:#5b6d7e;margin:13px 0}.scroll{overflow:auto;max-height:65vh;border:1px solid #dee6ee;border-radius:13px;background:white}table{border-collapse:collapse;min-width:780px;width:100%;font-size:13px}th{position:sticky;top:0;text-align:left;background:#eaf2f7;color:#294f69;padding:12px;z-index:1}td{padding:10px 12px;border-top:1px solid #e6edf3;vertical-align:top;white-space:normal}td:first-child{font-weight:750;color:#0d5a68}tr:nth-child(even){background:#fbfcfe}.flag{display:inline-block;white-space:nowrap;padding:5px 8px;border-radius:7px;font-size:11px;font-weight:700;background:#f1f5f9;color:#475569}.flag.reviewed{color:#0c7559;background:#e3f7ed}.flag.derived{color:#215b8f;background:#e7f1fd}.flag.pattern{color:#95600b;background:#fff3d6}.flag.unverified{color:#a72d45;background:#fff0f3}.paging{display:flex;align-items:center;justify-content:center;gap:13px;margin:17px 0}.paging button:disabled{opacity:.3;cursor:default}.paging span{font-size:12px;color:#5b6d7e;font-weight:650}.notice{border-left:3px solid #d99a47;background:#fff9ef;padding:15px 18px;font-size:12px;line-height:1.65;color:#74552e;border-radius:5px;margin-top:26px} @media(max-width:600px){main{padding:17px 10px 55px}.top{padding:12px}.numbers{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.numbers>div{padding:11px}.numbers strong{font-size:22px}.tools{padding:11px}.tools label{flex:1;min-width:128px}.tools label:first-child{flex-basis:100%}.scroll{max-height:68vh}}
+@media(prefers-color-scheme:dark){html{background:#111d2b;color:#edf5fa}.top,.numbers>div,.tools,.scroll{background:#1c2e40;border-color:#3e5266}.back,.tools input,.tools select{background:#152637;color:#f0f6fa;border-color:#41536a}.intro p,.result,.numbers span,.paging span{color:#b0c0d1}th{background:#283f54;color:#dcecf7}td{border-color:#384e63}tr:nth-child(even){background:#213449}.flag.pattern{background:#5a4220;color:#ffe4a4}.flag.reviewed{background:#1e5947;color:#b0f4d5}.flag.derived{background:#224a70;color:#c7e6fb}.flag.unverified{background:#67303d;color:#ffd9e0}.notice{background:#3b3021;color:#f6dbaa}}
+
+</style>
+
+
+</head>
+<body>
+<div class="shell">
+<header class="top"><a href="./index.html" class="back" aria-label="Back to WortWeg Home">‹ Home</a><span class="brand">WORTWEG <b>370</b></span><a class="back" href="./index.html" aria-label="Close verb table">Close ×</a></header>
+<main>
+<section class="intro"><span class="eyebrow">GERMAN VERB FORMS · A1–C2</span><h1>V1 · V2 · V3</h1><p>Infinitiv · Präteritum · Partizip II — verb entries detected from your WortWeg Word Bank, curated words and downloaded New Lessons. Nouns and adjectives do not have V2/V3.</p></section>
+<section class="numbers" aria-label="Vocabulary status"><div><strong id="total">—</strong><span>Verb headwords found</span></div><div><strong id="reviewed">—</strong><span>Reviewed / derived forms</span></div><div><strong id="pattern">—</strong><span>Pattern-generated forms</span></div><div><strong id="unknown">—</strong><span>Need verification</span></div></section>
+<div class="tools"><label>Find a verb<input type="search" id="query" placeholder="gehen, go, Perfekt…" autocomplete="off"></label><label>Level<select id="level"><option>All</option><option>A1</option><option>A2</option><option>B1</option><option>B2</option><option>C1</option><option>C2</option><option>Topic 1</option></select></label><label>Form status<select id="status"><option value="all">All forms</option><option value="reviewed">Reviewed entries</option><option value="derived">Strong-verb compounds</option><option value="pattern">Generated by regular rules</option><option value="unverified">Need verification</option></select></label><button id="csv" type="button">Export CSV</button></div>
+<p id="result" class="result" role="status" aria-live="polite">Loading the WortWeg vocabulary bank…</p>
+<div class="scroll"><table><thead><tr><th>V1 · Infinitiv</th><th>V2 · Präteritum</th><th>V3 · Partizip II</th><th>English</th><th>Level</th><th>Form status</th></tr></thead><tbody id="rows"></tbody></table></div>
+<div class="paging"><button type="button" id="previous">‹ Previous</button><span id="page"></span><button type="button" id="next">Next ›</button></div>
+<p class="notice"><strong>Study note:</strong> Reviewed forms are curated entries; “Derived” forms follow a known strong verb with a prefix. “Rule-generated” forms follow productive regular-verb rules and should be checked before memorising unfamiliar words. Infinitives with ambiguous prefixes or multiple variants may need manual verification. Word-type detection is based on headword spelling because the existing Word Bank does not supply a reliable part-of-speech tag for every entry; the list is a best-effort inventory, not a certified exhaustive dictionary.</p>
+</main>
+</div>
+<script>
+/* WortWeg verb forms: reviewed principal parts for common strong, mixed, and special verbs.
+ * Other verbs are clearly marked when generated by a productive weak-verb rule.
+ * A form is not asserted as reviewed solely because it was generated. */
+window.WortWegVerbFormsData=(()=>{'use strict';
+const irregular=`sein|war|gewesen
+haben|hatte|gehabt
+werden|wurde|geworden
+tun|tat|getan
+gehen|ging|gegangen
+kommen|kam|gekommen
+sehen|sah|gesehen
+lesen|las|gelesen
+geben|gab|gegeben
+nehmen|nahm|genommen
+sprechen|sprach|gesprochen
+essen|aß|gegessen
+fressen|fraß|gefressen
+trinken|trank|getrunken
+schlafen|schlief|geschlafen
+fahren|fuhr|gefahren
+laufen|lief|gelaufen
+finden|fand|gefunden
+helfen|half|geholfen
+bleiben|blieb|geblieben
+sitzen|saß|gesessen
+liegen|lag|gelegen
+stehen|stand|gestanden
+fallen|fiel|gefallen
+fliegen|flog|geflogen
+ziehen|zog|gezogen
+tragen|trug|getragen
+halten|hielt|gehalten
+lassen|ließ|gelassen
+beginnen|begann|begonnen
+gewinnen|gewann|gewonnen
+verlieren|verlor|verloren
+vergessen|vergaß|vergessen
+schreiben|schrieb|geschrieben
+schreien|schrie|geschrien
+treffen|traf|getroffen
+treten|trat|getreten
+werfen|warf|geworfen
+steigen|stieg|gestiegen
+fangen|fing|gefangen
+singen|sang|gesungen
+springen|sprang|gesprungen
+schwimmen|schwamm|geschwommen
+sinken|sank|gesunken
+stinken|stank|gestunken
+gelingen|gelang|gelungen
+misslingen|misslang|misslungen
+bringen|brachte|gebracht
+denken|dachte|gedacht
+kennen|kannte|gekannt
+nennen|nannte|genannt
+rennen|rannte|gerannt
+brennen|brannte|gebrannt
+wissen|wusste|gewusst
+dürfen|durfte|gedurft
+können|konnte|gekonnt
+mögen|mochte|gemocht
+müssen|musste|gemusst
+sollen|sollte|gesollt
+wollen|wollte|gewollt
+bitten|bat|gebeten
+bieten|bot|geboten
+binden|band|gebunden
+schneiden|schnitt|geschnitten
+scheinen|schien|geschienen
+scheiden|schied|geschieden
+reiten|ritt|geritten
+reiben|rieb|gerieben
+reißen|riss|gerissen
+raten|riet|geraten
+rufen|rief|gerufen
+waschen|wusch|gewaschen
+wachsen|wuchs|gewachsen
+backen|buk|gebacken
+laden|lud|geladen
+graben|grub|gegraben
+heben|hob|gehoben
+schieben|schob|geschoben
+schließen|schloss|geschlossen
+schlagen|schlug|geschlagen
+schießen|schoss|geschossen
+gießen|goss|gegossen
+genießen|genoss|genossen
+fließen|floss|geflossen
+fliehen|floh|geflohen
+frieren|fror|gefroren
+kriechen|kroch|gekrochen
+riechen|roch|gerochen
+brechen|brach|gebrochen
+stechen|stach|gestochen
+sterben|starb|gestorben
+werben|warb|geworben
+gelten|galt|gegolten
+empfehlen|empfahl|empfohlen
+befehlen|befahl|befohlen
+messen|maß|gemessen
+lügen|log|gelogen
+schweigen|schwieg|geschwiegen
+schwören|schwor|geschworen
+saufen|soff|gesoffen
+klingen|klang|geklungen
+dringen|drang|gedrungen
+ringen|rang|gerungen
+zwingen|zwang|gezwungen
+leiden|litt|gelitten
+leihen|lieh|geliehen
+meiden|mied|gemieden
+stehlen|stahl|gestohlen
+gleichen|glich|geglichen
+weichen|wich|gewichen
+streichen|strich|gestrichen
+schleichen|schlich|geschlichen
+beißen|biss|gebissen
+greifen|griff|gegriffen
+pfeifen|pfiff|gepfiffen
+streiten|stritt|gestritten
+gleiten|glitt|geglitten
+treiben|trieb|getrieben
+weisen|wies|gewiesen
+preisen|pries|gepriesen
+trügen|trog|getrogen
+wiegen|wog|gewogen
+schmelzen|schmolz|geschmolzen
+schwellen|schwoll|geschwollen
+senden|sandte|gesandt
+wenden|wandte|gewandt
+erschrecken|erschrak|erschrocken
+erschließen|erschloss|erschlossen
+geschehen|geschah|geschehen
+gefallen|gefiel|gefallen
+hängen|hing|gehangen
+schaffen|schuf|geschaffen
+bewegen|bewegte|bewegt
+beweisen|bewies|bewiesen
+betrügen|betrog|betrogen
+behalten|behielt|behalten
+erhalten|erhielt|erhalten
+unterhalten|unterhielt|unterhalten
+unterrichten|unterrichtete|unterrichtet
+übersetzen|übersetzte|übersetzt
+übernehmen|übernahm|übernommen
+übergeben|übergab|übergeben
+überweisen|überwies|überwiesen
+übertreiben|übertrieb|übertrieben
+untersuchen|untersuchte|untersucht
+unternehmen|unternahm|unternommen
+unterbrechen|unterbrach|unterbrochen
+verlassen|verließ|verlassen
+verbringen|verbrachte|verbracht
+verstehen|verstand|verstanden
+versprechen|versprach|versprochen
+vergleichen|verglich|verglichen
+vermeiden|vermied|vermieden
+verbieten|verbot|verboten
+verzeihen|verzieh|verziehen
+verbergen|verbarg|verborgen
+verhalten|verhielt|verhalten
+verwerfen|verwarf|verworfen
+verleihen|verlieh|verliehen
+verraten|verriet|verraten
+verschreiben|verschrieb|verschrieben
+verschieben|verschob|verschoben
+verbrennen|verbrannte|verbrannt
+verkennen|verkannte|verkannt
+verderben|verdarb|verdorben
+entstehen|entstand|entstanden
+entscheiden|entschied|entschieden
+entnehmen|entnahm|entnommen
+entkommen|entkam|entkommen
+empfinden|empfand|empfunden
+empfangen|empfing|empfangen
+erfahren|erfuhr|erfahren
+erkennen|erkannte|erkannt
+erfinden|erfand|erfunden
+erziehen|erzog|erzogen
+ertragen|ertrug|ertragen
+ergreifen|ergriff|ergriffen
+erscheinen|erschien|erschienen
+erlöschen|erlosch|erloschen
+bekommen|bekam|bekommen
+befinden|befand|befunden
+besprechen|besprach|besprochen
+beschreiben|beschrieb|beschrieben
+bestehen|bestand|bestanden
+betreffen|betraf|betroffen
+beziehen|bezog|bezogen
+betragen|betrug|betragen
+besitzen|besaß|besessen
+bewegen|bewegte|bewegt
+teilnehmen|nahm teil|teilgenommen
+stattfinden|fand statt|stattgefunden
+kennenlernen|lernte kennen|kennengelernt
+wiederholen|wiederholte|wiederholt
+überfahren|überfuhr|überfahren
+umfahren|umfuhr|umfahren`;
+const forms=new Map();for(const row of irregular.trim().split('\n')){const [v1,v2,v3]=row.split('|');forms.set(v1,{v2,v3,confidence:'reviewed'});}
+const ambiguous=new Map([
+ ['hängen',['hing / hängte','gehangen / gehängt','Intransitive vs. transitive']],
+ ['schaffen',['schuf / schaffte','geschaffen / geschafft','Create vs. manage/achieve']],
+ ['bewegen',['bewog / bewegte','bewogen / bewegt','Figurative vs. physical movement']],
+ ['senden',['sandte / sendete','gesandt / gesendet','Both variants used']],
+ ['wenden',['wandte / wendete','gewandt / gewendet','Both variants used']],
+ ['backen',['buk / backte','gebacken','Both past variants used']],
+ ['erschrecken',['erschrak / erschreckte','erschrocken / erschreckt','Be startled vs. frighten']],
+ ['umfahren',['umfuhr / fuhr um','umfahren / umgefahren','Drive around vs. knock down; separability changes meaning']],
+ ['übersetzen',['übersetzte / setzte über','übersetzt / übergesetzt','Translate vs. cross over']],
+ ['wiegen',['wog / wiegte','gewogen / gewiegt','Weigh vs. rock gently']]
+]);
+for(const [v1,[v2,v3,note]] of ambiguous)forms.set(v1,{v2,v3,confidence:'reviewed',note});
+const separable=['auseinander','zusammen','herunter','hinunter','herüber','hinüber','heraus','hinein','herauf','hinauf','zurück','weiter','wieder','entgegen','vorbei','voran','fort','fern','fest','frei','statt','teil','mit','nach','vor','weg','auf','aus','ein','ab','an','bei','hin','her','los','zu','um'];
+const inseparable=['miss','emp','ent','ver','zer','er','be','ge'];
+const uncertainPrefixes=['durch','über','unter','wider','wieder','um'];
+const nonVerbs=new Set('morgen gestern übermorgen vorgestern oben unten drinnen draußen außen innen neben gegen zwischen wegen während binnen sieben zehn elf zwölf dreizehn vierzehn fünfzehn sechzehn siebzehn achtzehn neunzehn jeden diesen seinen ihren meinen deinen keinen anderen einigen vielen wenigen solchen welchen dessen denen allen manchen vielleicht eben ebenen inzwischen zunächst zusammen allein draußen drüben mitten ansonsten selten immer niemals dann wann woher wohin immerhin gern gerne bitte beiden eilen reinen eigenen golden silbern offen trocken zufrieden inzwischen generell dringend wichtig'.split(' '));
+const normalize=v=>String(v||'').trim().normalize('NFC');
+const infinitivePattern=/^[a-zäöüß][a-zäöüß-]{1,65}(?:en|ern|eln)$/u;
+function matchVerb(input){
+ const raw=normalize(input);let reflexive=false,base=raw;
+ if(/^sich\s+/u.test(base)){reflexive=true;base=base.slice(5);}
+ if(!(infinitivePattern.test(base)||base==='tun')||nonVerbs.has(base)||base.includes('-'))return null;
+ if(base.length<3||/^(?:[a-zäöüß]+\s+){2}/u.test(base))return null;
+ return {base,reflexive};
+}
+function weak(v,withGe=true){
+ let stem;
+ if(v.endsWith('eln'))stem=v.slice(0,-3)+'el';
+ else if(v.endsWith('ern'))stem=v.slice(0,-3)+'er';
+ else if(v.endsWith('en'))stem=v.slice(0,-2);
+ else if(v.endsWith('n'))stem=v.slice(0,-1);
+ else return null;
+ const needsE=/(?:d|t|chn|ffn|gn|tm|dn)$/u.test(stem);
+ const suffix=needsE?'ete':'te',part=needsE?'et':'t';
+ const noGe=!withGe||v.endsWith('ieren')||inseparable.some(pre=>v.startsWith(pre)&&v.length>pre.length+2);
+ return {v2:stem+suffix,v3:(noGe?'':'ge')+stem+part,confidence:'pattern'};
+}
+function principal(base){
+ if(forms.has(base))return {...forms.get(base),source:'dictionary'};
+ // Fully lexicalized strong/irregular roots may be combined with an invariable separable particle.
+ for(const prefix of [...separable].sort((a,b)=>b.length-a.length)){
+  if(!base.startsWith(prefix)||base.length-prefix.length<3)continue;
+  const rest=base.slice(prefix.length);
+  if(uncertainPrefixes.includes(prefix))continue;
+  const inf=forms.get(rest);
+  if(inf&&!inf.note){
+   return {v2:inf.v2+' '+prefix,v3:prefix+inf.v3,confidence:'derived',source:'separable'};
+  }
+ }
+ for(const prefix of inseparable){
+  if(!base.startsWith(prefix)||base.length-prefix.length<3)continue;
+  const rest=base.slice(prefix.length),inf=forms.get(rest);
+  if(inf&&!inf.note){return {v2:prefix+inf.v2,v3:prefix+inf.v3.replace(/^ge/u,''),confidence:'derived',source:'inseparable'};}
+ }
+ // For a regular separable verb, construct the past as verb + particle and place ge between.
+ for(const prefix of [...separable].sort((a,b)=>b.length-a.length)){
+  if(!base.startsWith(prefix)||base.length-prefix.length<3||uncertainPrefixes.includes(prefix))continue;
+  const rest=base.slice(prefix.length);
+  const inf=weak(rest);
+  if(inf)return {v2:inf.v2+' '+prefix,v3:prefix+inf.v3,confidence:'pattern',source:'separable'};
+ }
+ // Avoid guessing inherently ambiguous separability.
+ if(uncertainPrefixes.some(pre=>base.startsWith(pre)&&base.length>pre.length+3))return {v2:'—',v3:'—',confidence:'unverified',note:'Potentially separable or inseparable'};
+ return weak(base)||{v2:'—',v3:'—',confidence:'unverified'};
+}
+function getForm(word){const v=matchVerb(word);if(!v)return null;
+ const entry=principal(v.base);
+ return {...entry,v1:v.reflexive?'sich '+v.base:v.base,
+  v2:v.reflexive&&entry.v2!=='—'?entry.v2+' sich':entry.v2,
+  reflexive:v.reflexive};
+}
+return {getForm,matchVerb,principal,forms,nonVerbs};
+})();
+
+</script>
+<script>
+/* WortWeg Word Bank V1/V2/V3 browser. Read-only; never changes learning progress. */
+(()=>{'use strict';
+const $=id=>document.getElementById(id), model=window.WortWegVerbFormsData;
+const inputs={query:$('query'),level:$('level'),status:$('status')};
+if(!model)return;
+let all=[],filtered=[],page=1;const PAGE=75;
+const normalize=s=>String(s||'').trim().toLocaleLowerCase('de');
+const visibleRow=(w)=>{
+ const tr=document.createElement('tr');
+ const parts=[w.v1,w.v2,w.v3,w.en,w.levels.join(', ')];
+ for(const p of parts){const td=document.createElement('td');td.textContent=p;tr.append(td);}
+ const status=document.createElement('td');const mark=document.createElement('span');mark.className='flag '+w.confidence;
+ mark.textContent={reviewed:'Reviewed',derived:'Derived',pattern:'Rule-generated',unverified:'Unverified'}[w.confidence]||'Unverified';
+ if(w.note)mark.title=w.note;
+ status.append(mark);tr.append(status);return tr;
+};
+function render(){
+ const query=normalize(inputs.query.value),level=inputs.level.value,quality=inputs.status.value;
+ filtered=all.filter(w=>(level==='All'||w.levels.includes(level))&&(quality==='all'||w.confidence===quality)&&
+ (!query||[w.v1,w.v2,w.v3,w.en,w.levels.join(' '),w.note||''].some(t=>normalize(t).includes(query))));
+ const pages=Math.max(1,Math.ceil(filtered.length/PAGE));page=Math.min(Math.max(1,page),pages);
+ const body=$('rows');body.replaceChildren();
+ const offset=(page-1)*PAGE;for(const w of filtered.slice(offset,offset+PAGE))body.append(visibleRow(w));
+ $('result').textContent=filtered.length.toLocaleString('en-US')+' verb headwords matching filters';
+ $('page').textContent='Page '+page+' / '+pages;
+ $('previous').disabled=page<=1;$('next').disabled=page>=pages;
+}
+function ingest(sources){
+ const map=new Map();
+ for(const w of sources){
+  if(!w||typeof w.de!=='string')continue;
+  const item=model.getForm(w.de);if(!item)continue;
+  const key=normalize(item.v1),word=map.get(key),en=String(w.en||'').trim(),level=String(w.level||'').trim();
+  if(!word){map.set(key,{...item,en,levels:level?[level]:['—'],note:item.note||''});continue;}
+  if(en&&!word.en)word.en=en;
+  if(level&&!word.levels.includes(level))word.levels.push(level);
+ }
+ all=[...map.values()].sort((a,b)=>a.v1.localeCompare(b.v1,'de'));
+ $('total').textContent=all.length.toLocaleString('en-US');
+ $('reviewed').textContent=all.filter(w=>w.confidence==='reviewed'||w.confidence==='derived').length.toLocaleString('en-US');
+ $('pattern').textContent=all.filter(w=>w.confidence==='pattern').length.toLocaleString('en-US');
+ $('unknown').textContent=all.filter(w=>w.confidence==='unverified').length.toLocaleString('en-US');
+ page=1;render();
+}
+function exportCSV(){
+ const values=[['V1 (Infinitiv)','V2 (Präteritum)','V3 (Partizip II)','English','CEFR level','Status','Notes'],
+ ...filtered.map(w=>[w.v1,w.v2,w.v3,w.en,w.levels.join('; '),w.confidence,w.note||''])];
+ const quote=s=>'"'+String(s??'').replace(/"/g,'""')+'"';
+ const blob=new Blob(['\ufeff',values.map(row=>row.map(quote).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});
+ const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='WortWeg_V1_V2_V3_Verbs.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+function readLivePack(){
+ try{const data=JSON.parse(localStorage.getItem('wortweg370-live-pack-v1')||'null');
+ if(Array.isArray(data?.lessons))return data.lessons.flatMap(l=>(l.words||[]).map(w=>({...w,level:l.level||'—'})));
+ }catch{}return [];
+}
+async function start(){
+ try{
+  const response=await fetch('./index.html',{cache:'default'});if(!response.ok)throw Error('Word Bank HTTP '+response.status);
+  const doc=new DOMParser().parseFromString(await response.text(),'text/html');const node=doc.getElementById('data');
+  if(!node)throw Error('Word Bank data was not found');const raw=JSON.parse(node.textContent);
+  if(!Array.isArray(raw.bank))throw Error('Word Bank entries were not available');
+  const sources=[...raw.bank,...(raw.curated||[]).map(w=>({...w,level:'Topic 1'})),...readLivePack()];
+  ingest(sources);
+ }catch(e){$('result').textContent='Could not load the WortWeg Word Bank. Reopen Home while online, then try again. ('+String(e.message||e)+')';}
+}
+for(const control of Object.values(inputs))control.addEventListener(control.tagName==='INPUT'?'input':'change',()=>{page=1;render();});
+$('previous').addEventListener('click',()=>{page--;render();document.querySelector('.scroll').scrollTop=0;});
+$('next').addEventListener('click',()=>{page++;render();document.querySelector('.scroll').scrollTop=0;});
+$('csv').addEventListener('click',exportCSV);
+start();
+})();
+
+</script>
+</body></html>
