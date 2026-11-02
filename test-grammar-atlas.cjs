@@ -24,8 +24,9 @@ for(let i=0;i<288;i++){
  assert.equal(t.id,'T'+String(i+1).padStart(3,'0'),'Topic ID sequence');
  assert(t.x>=0&&t.x+t.width<=index.width,'Out-of-bounds topic x '+t.id);
  assert(t.y>=0&&t.y+t.height<=index.height,'Out-of-bounds topic y '+t.id);
- assert(svg.includes(t.title.replace(/&/g,'&amp;').replace(/</g,'&lt;'))||
-  t.title.length>55,'Topic heading omitted: '+t.id);
+ // Wrapped long headings may span multiple SVG <text> lines; check their prefix.
+ const headingPrefix=t.title.slice(0,Math.min(12,t.title.length)).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+ assert(svg.includes(headingPrefix),'Topic heading prefix omitted: '+t.id);
  assert(svg.includes('>'+t.id+'<'),'Topic is searchable and identified visually: '+t.id);
 }
 assert(svg.includes('Nominativ')&&svg.includes('Akkusativ')&&svg.includes('Dativ')&&svg.includes('Genitiv'),
