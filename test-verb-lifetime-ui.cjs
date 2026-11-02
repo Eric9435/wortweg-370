@@ -3,7 +3,7 @@
 const fs=require('node:fs'),assert=require('node:assert/strict');
 const {JSDOM}=require('jsdom');
 const read=p=>fs.readFileSync(p,'utf8');
-const html=read('verb-forms.html'),js=read('verb-lifetime.js');
+const html=read('verb-forms.html'),js=read('verb-lifetime.js'),sw=read('sw.js');
 const data=JSON.parse(read('assets/german-verbs-lifetime.json'));
 const index=read('index.html');
 const match=index.match(/<script type="application\/json" id="data">([\s\S]*?)<\/script>/);
