@@ -19,7 +19,7 @@ w.fetch=async url=>{
  throw Error('Unexpected request '+url);
 };
 w.eval(js);
-const ready=()=>new Promise(resolve=>setTimeout(resolve,40));
+const ready=async()=>{for(let i=0;i<60;i++){if(w.WortWegLifetimeVerbs?.total===8000&&w.WortWegLifetimeVerbs?.wortweg===360)return;await new Promise(resolve=>setTimeout(resolve,50));}throw Error('Lifetime dictionary did not finish loading');};
 const input=(id,value)=>{const n=d.getElementById(id);n.value=value;n.dispatchEvent(new w.Event(n.tagName==='INPUT'?'input':'change',{bubbles:true}));};
 const total=()=>Number(d.getElementById('result').textContent.match(/[\d,]+/)[0].replaceAll(',',''));
 const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAll('td')].map(c=>c.textContent));
