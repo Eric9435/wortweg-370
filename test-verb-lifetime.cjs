@@ -62,4 +62,25 @@ for(const [lemma,meaning] of gloss.rows){
 }
 assert.equal(seen.size,expected.size,'Myanmar translations should cover every verb lemma');
 assert.equal(markedForReview,6,'Six unattested rare meanings must be flagged, not fabricated');
+const exampleLemmas=new Set();let exampleCount=0,reviewExamples=0;
+for(let part=1;part<=16;part++){
+ const id=String(part).padStart(2,'0');
+ const data=JSON.parse(fs.readFileSync('assets/verb-sentences/part-'+id+'.json','utf8'));
+ assert.equal(data.version,1);assert.equal(data.part,part);
+ for(const row of data.rows){
+  assert.equal(row.length,11,'One lemma, 3 German, 3 English, 3 Myanmar, review status');
+  const [lemma,...rest]=row;
+  assert(expected.has(lemma),'Unknown example lemma '+lemma);
+  assert(!exampleLemmas.has(lemma),'Duplicate example lemma '+lemma);
+  assert.equal([...lemma].reduce((n,ch)=>n+ch.codePointAt(0),0)%16+1,part,'Incorrect example bucket');
+  for(const field of rest.slice(0,9))assert(typeof field==='string'&&field.trim(),'Blank example for '+lemma);
+  assert([0,1].includes(row[10]),'Bad review flag');
+  exampleLemmas.add(lemma);exampleCount++;reviewExamples+=row[10];
+ }
+}
+assert.equal(exampleCount,8000,'All 8000 verbs must have 3 trilingual sentences');
+assert.equal(reviewExamples,44,'Keep automated translation and reconstruction review flags');
+assert(page.includes('id="verb-example-dialog"'),'Trilingual modal must be in verb dictionary');
+assert(script.includes('showVerbExamples(item)'),'Example action must be wired');
+
 console.log('PASS lifetime V1/V2/V3:',data.rows.length,'dictionary lemmas,',lemmas.length,'WortWeg explicit verb headwords');
