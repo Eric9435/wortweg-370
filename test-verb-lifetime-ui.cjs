@@ -103,8 +103,15 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  assert.equal(total(),8000,'Reset must recover entire dictionary');
  assert(!d.getElementById('level').disabled,'Reset must restore CEFR filter');
  assert.equal(Number(d.getElementById('pattern').textContent.replaceAll(',','')),7642);
- assert(html.includes('@media(max-width:1280px)')&&html.includes('grid-template-columns'),'Tablet/mobile card layout is required');
- assert(html.includes('UPDATED 2026-11-03'),'Version marker must be visible to diagnose stale cache');
+ assert(!html.includes('.scroll tbody{display:grid'),'Mobile must retain native table rows');
+ const style=read('verb-studio.css');
+ assert(style.includes('.scroll table{display:table'),'Semantic table display must remain active at all widths');
+ assert(style.includes('overflow:auto')&&style.includes('position:sticky;left:0'),'Mobile table must scroll and keep V1 column visible');
+ assert(!style.includes('grid-column:1/-1'),'Legacy card row layout must be removed');
+ assert(html.includes('aria-label="Verb dictionary data table"')&&html.includes('tabindex="0"'),'Horizontal table must be focusable and accessible');
+ assert(html.includes('id="verb-table-hint"'),'Mobile table must have a swipe hint');
+ assert(html.includes('verb-studio.css?v=2'),'New layout must bust cached stylesheet');
+ assert(html.includes('UPDATED 2026-11-04'),'Version marker must be visible to diagnose stale cache');
  assert(js.includes("cache:'no-cache'"),'Refresh must request updated data');
  assert(html.includes('CC BY-SA 4.0'),'Data attribution is required');
  assert(html.includes('id="sort"')&&html.includes('Update app &amp; data'),'Sort and update affordances must exist');
@@ -115,8 +122,8 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  assert(sw.includes("'./assets/german-verbs-myanmar.json'"),'Expanded Myanmar glossary must work offline');
  assert(sw.includes("'./assets/verb-sentences/part-01.json'"),'Three-sentence packs must be offline');
  assert(read('mobile/scripts/prepare.mjs').includes("'assets/verb-sentences'"),'Native package needs all example packs');
- assert(html.includes('verb-studio.css?v=1')&&html.includes('id="practice"'),'Pro controls and CSS must load');
+ assert(html.includes('verb-studio.css?v=2')&&html.includes('id="practice"'),'Pro controls and CSS must load');
  assert(read('mobile/scripts/prepare.mjs').includes("'verb-studio.css'"),'Native package includes style sheet');
- console.log('PASS: lifetime verb page loads 8000 total / 360 WortWeg source entries, search, filtering and mobile layout');
+ console.log('PASS: lifetime verb page loads 8000 total / 360 WortWeg source entries, search, filtering and responsive semantic table layout');
  dom.window.close();
 })().catch(err=>{console.error(err);process.exitCode=1});
