@@ -18,6 +18,8 @@ w.sessionStorage.setItem('wortweg:verb-forms:source:v3',JSON.stringify(typed));
 w.fetch=async url=>{
  if(url.endsWith('german-verbs-lifetime.json'))return {ok:true,json:async()=>data};
  if(url.endsWith('german-verbs-myanmar.json'))return {ok:true,json:async()=>gloss};
+ const part=url.match(/assets\/verb-sentences\/part-(\d{2})\.json$/);
+ if(part)return {ok:true,json:async()=>JSON.parse(read('assets/verb-sentences/part-'+part[1]+'.json'))};
  throw Error('Unexpected request '+url);
 };
 w.eval(js);
@@ -70,6 +72,19 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  input('query','ad absurdum führen');assert.equal(total(),1,'A tagged verb phrase must be shown');
  input('query','angemessen');assert.equal(total(),0,'Adjective must not count as a verb');
  input('query','');input('collection','all');
+ input('query','gehen');assert.equal(total(),1);
+ const examplesButton=[...d.querySelectorAll('#rows tr button')].find(x=>x.textContent==='3 Sentences');
+ assert(examplesButton,'Every verb must have a three-sentence action');
+ examplesButton.click();
+ for(let i=0;i<40&&!d.getElementById('example-content').textContent.includes('Ich möchte nach Hause gehen.');i++)await new Promise(resolve=>setTimeout(resolve,20));
+ assert(d.getElementById('example-content').textContent.includes('Ich möchte nach Hause gehen.'),'V1 German appears');
+ assert(d.getElementById('example-content').textContent.includes('Gestern ging ich nach Hause.'),'V2 German appears');
+ assert(d.getElementById('example-content').textContent.includes('Ich bin gestern nach Hause gegangen.'),'V3 German appears');
+ assert(d.getElementById('example-content').textContent.includes('I want to go home.'),'English example appears');
+ assert(d.getElementById('example-content').textContent.includes('အိမ်ပြန်ချင်တယ်'),'Myanmar example appears');
+ assert.match(d.getElementById('example-status').textContent,/not independently verified/);
+ assert.equal(d.getElementById('example-content').querySelectorAll('section').length,3,'Exactly 3 form cards');
+ d.getElementById('example-close').click();
  input('query','abwiegen');assert.equal(total(),1);assert.deepEqual(shown()[0].slice(0,3),['abwiegen','wog ab','abgewogen']);
  input('query','abstrahieren');assert.equal(total(),1);assert.deepEqual(shown()[0].slice(0,3),['abstrahieren','abstrahierte','abstrahiert']);
  input('query','');input('level','A1');assert(total()>40&&total()<100,'CEFR A1 should show tagged WortWeg entries, not falsely inferred levels');
@@ -91,6 +106,8 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  assert(Number(sw.match(/wortweg370-v(\d+)/)?.[1])>=113,'PWA cache version must advance');
  assert(sw.includes("'./verb-studio.css'"),'Pro stylesheet must be cached offline');
  assert(sw.includes("'./assets/german-verbs-myanmar.json'"),'Expanded Myanmar glossary must work offline');
+ assert(sw.includes("'./assets/verb-sentences/part-01.json'"),'Three-sentence packs must be offline');
+ assert(read('mobile/scripts/prepare.mjs').includes("'assets/verb-sentences'"),'Native package needs all example packs');
  assert(html.includes('verb-studio.css?v=1')&&html.includes('id="practice"'),'Pro controls and CSS must load');
  assert(read('mobile/scripts/prepare.mjs').includes("'verb-studio.css'"),'Native package includes style sheet');
  console.log('PASS: lifetime verb page loads 8000 total / 360 WortWeg source entries, search, filtering and mobile layout');
