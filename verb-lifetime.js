@@ -86,6 +86,81 @@ function copyForms(item){
  if(!navigator.clipboard?.writeText){setFeedback('Clipboard access is not supported on this device.');return;}
  navigator.clipboard.writeText(content).then(()=>setFeedback('Copied verb forms: '+item.v1)).catch(()=>setFeedback('Could not copy. Please select the text manually.'));
 }
+// Sentence packs are split into 16 deterministic buckets to keep the app responsive.
+const EXAMPLE_PARTS=16;
+const exampleChunks=new Map();
+let exampleRequest=0;
+function examplePartition(lemma){
+ let sum=0;
+ for(const ch of lemma)sum+=ch.codePointAt(0);
+ return sum%EXAMPLE_PARTS+1;
+}
+async function exampleFor(lemma){
+ const part=examplePartition(lemma);
+ if(!exampleChunks.has(part)){
+  const file='./assets/verb-sentences/part-'+String(part).padStart(2,'0')+'.json';
+  const promise=fetch(file,{cache:'no-cache'}).then(response=>{
+   if(!response.ok)throw Error('HTTP '+response.status);
+   return response.json();
+  }).then(data=>{
+   if(data.version!==1||data.part!==part||!Array.isArray(data.rows))throw Error('Invalid sentence pack');
+   const map=new Map();
+   for(const row of data.rows)if(Array.isArray(row)&&row.length===11)map.set(key(row[0]),row);
+   return map;
+  });
+  exampleChunks.set(part,promise);
+  promise.catch(()=>exampleChunks.delete(part));
+ }
+ return (await exampleChunks.get(part)).get(lemma);
+}
+function renderVerbExamples(row,requestedLemma,sourceItem){
+ const content=$('example-content');content.replaceChildren();
+ const groups=[
+  {form:'V1 · Infinitiv',de:row[1],en:row[4],my:row[7]},
+  {form:'V2 · Präteritum',de:row[2],en:row[5],my:row[8]},
+  {form:'V3 · Perfekt (Partizip II)',de:row[3],en:row[6],my:row[9]}
+ ];
+ for(const group of groups){
+  const section=el('section','sentence-example');
+  section.append(el('h3','sentence-example-title',group.form));
+  for(const [label,line,lang] of [['DE',group.de,'de'],['EN',group.en,'en'],['MY',group.my,'my']]){
+   const wrapper=el('div','sentence-translation');
+   wrapper.append(el('span','sentence-lang',label),el('p','sentence-line sentence-'+lang,String(line)));
+   section.append(wrapper);
+  }
+  content.append(section);
+ }
+ const isBase=key(sourceItem.v1)!==requestedLemma;
+ $('example-status').textContent=(isBase?'These examples use the base verb '+requestedLemma+'. Reflexive/prepositional use may differ. ':'')+
+  (row[10]?'Some translations were reconstructed or forms were missing from the source; review required. ':'')+
+  'Automatically generated study sentences and machine translations — not independently verified.';
+}
+async function showVerbExamples(item){
+ const lemma=normHeadword(item.v1);
+ const dialog=$('verb-example-dialog');
+ const request=++exampleRequest;
+ $('example-title').textContent='3 sentences · '+item.v1;
+ $('example-status').textContent='Loading German, English and Myanmar sentences…';
+ $('example-content').replaceChildren();
+ if(typeof dialog.showModal==='function'){if(!dialog.open)dialog.showModal();}
+ else dialog.setAttribute('open','');
+ try{
+  const row=await exampleFor(lemma);
+  if(request!==exampleRequest||!dialog.open)return;
+  if(!row)throw Error('Entry not in sentence reference');
+  renderVerbExamples(row,lemma,item);
+ }catch(err){
+  if(request!==exampleRequest||!dialog.open)return;
+  $('example-status').textContent='Examples could not be loaded. Connect to the internet, then retry. No example has been fabricated.';
+ }
+}
+$('example-close').addEventListener('click',()=>{
+ ++exampleRequest;
+ const dialog=$('verb-example-dialog');
+ if(typeof dialog.close==='function')dialog.close();
+ else dialog.removeAttribute('open');
+});
+$('verb-example-dialog').addEventListener('close',()=>{++exampleRequest;});
 function output(){
  const search=key(filters.query.value),level=filters.level.value,status=filters.status.value,collection=filters.collection.value;
  // Keep source headwords distinct: treffen / sich treffen, abstrahieren / abstrahieren von.
@@ -155,6 +230,7 @@ function output(){
   star.setAttribute('aria-pressed',String(saved));
   button('▶ Listen','Pronounce '+item.v1+' in German',()=>pronounce(item.v1));
   button('Copy','Copy three forms of '+item.v1,()=>copyForms(item));
+  button('3 Sentences','Show three trilingual example sentences for '+item.v1,()=>showVerbExamples(item),'sentence-open');
   if(state.practice)button('Reveal','Reveal V2 and V3 for '+item.v1,()=>{
     [1,2].forEach(index=>{
       const cell=tr.children[index];cell.textContent=values[index];cell.classList.remove('suppress-form');
