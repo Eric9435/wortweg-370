@@ -10,7 +10,7 @@ for (const file of ['settings.css','settings-navigation.css','settings-navigatio
 // Ship both dictionaries with the native app, so verb forms and Myanmar
 // meanings remain available without a network connection.
 await mkdir(new URL('assets/',out),{recursive:true});
-for(const file of ['assets/german-verbs-lifetime.json','assets/german-verbs-myanmar.json','verb-data-attribution.md']){
+for(const file of ['assets/german-verbs-lifetime.json','assets/german-verbs-myanmar.json','assets/verb-sentences','verb-data-attribution.md']){
   await cp(new URL(file,root),new URL(file,out),{recursive:true});
 }
 function replace(source,before,after) {
