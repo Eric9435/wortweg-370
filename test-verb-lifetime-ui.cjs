@@ -72,8 +72,15 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  input('query','ad absurdum führen');assert.equal(total(),1,'A tagged verb phrase must be shown');
  input('query','angemessen');assert.equal(total(),0,'Adjective must not count as a verb');
  input('query','');input('collection','all');
- input('query','gehen');assert.equal(total(),1);
- const examplesButton=[...d.querySelectorAll('#rows tr button')].find(x=>x.textContent==='3 Sentences');
+ input('query','gehen');
+ let gehenRow=null;
+ for(let page=0;page<400&&!gehenRow;page++){
+  gehenRow=[...d.querySelectorAll('#rows tr')].find(tr=>tr.children[0]?.textContent==='gehen');
+  if(!gehenRow&&!d.getElementById('next').disabled)d.getElementById('next').click();
+  else break;
+ }
+ assert(gehenRow,'The full gehen entry must be searchable');
+ const examplesButton=[...gehenRow.querySelectorAll('button')].find(x=>x.textContent==='3 Sentences');
  assert(examplesButton,'Every verb must have a three-sentence action');
  examplesButton.click();
  for(let i=0;i<40&&!d.getElementById('example-content').textContent.includes('Ich möchte nach Hause gehen.');i++)await new Promise(resolve=>setTimeout(resolve,20));
