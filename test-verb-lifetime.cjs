@@ -39,9 +39,27 @@ const page=fs.readFileSync('verb-forms.html','utf8');
 const home=fs.readFileSync('home-refresh.js','utf8');
 const sw=fs.readFileSync('sw.js','utf8');
 const native=fs.readFileSync('mobile/scripts/prepare.mjs','utf8');
-for(const token of ['verb-lifetime.js','id="collection"','id="level"','id="status"','CC BY-SA 4.0','Myanmar (WortWeg)'])assert(page.includes(token),'Missing UI '+token);
+for(const token of ['verb-lifetime.js','id="collection"','id="level"','id="status"','CC BY-SA 4.0','Myanmar · WortWeg / Auto'])assert(page.includes(token),'Missing UI '+token);
 assert(home.includes("['verb','modal verb','verb phrase'].includes(w.type)"),'Home must use explicit POS tagging');
 assert(home.includes("source:v3"),'Home must send only verb rows');
 assert(sw.includes("'./assets/german-verbs-lifetime.json'"),'Offline PWA dictionary missing');
+assert(sw.includes("'./assets/german-verbs-myanmar.json'"),'Offline Myanmar glossary missing');
 assert(native.includes("'verb-lifetime.js'"),'Offline Android/iOS code missing');
+assert(native.includes("'assets/german-verbs-myanmar.json'"),'Native app must package the Myanmar glossary');
+const gloss=JSON.parse(fs.readFileSync('assets/german-verbs-myanmar.json','utf8'));
+assert.equal(gloss.version,1);
+assert.equal(gloss.rows.length,8000,'All 8000 verbs need a Myanmar gloss or an explicit review flag');
+const expected=new Set([...forms.keys(),...manual]);
+const seen=new Set();
+let markedForReview=0;
+for(const [lemma,meaning] of gloss.rows){
+ assert(!seen.has(lemma),'Duplicate Myanmar gloss '+lemma);
+ assert(expected.has(lemma),'Unknown lemma '+lemma);
+ assert.equal(typeof meaning,'string');
+ assert(meaning.trim(),'Missing translation / status for '+lemma);
+ if(meaning.includes('စစ်ဆေးရန်'))markedForReview++;
+ seen.add(lemma);
+}
+assert.equal(seen.size,expected.size,'Myanmar translations should cover every verb lemma');
+assert.equal(markedForReview,6,'Six unattested rare meanings must be flagged, not fabricated');
 console.log('PASS lifetime V1/V2/V3:',data.rows.length,'dictionary lemmas,',lemmas.length,'WortWeg explicit verb headwords');
