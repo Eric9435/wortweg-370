@@ -10,7 +10,7 @@ function readSaved(){
  try{const value=JSON.parse(localStorage.getItem(SAVE_KEY)||'[]');return new Set(Array.isArray(value)?value.filter(x=>typeof x==='string').slice(0,10000):[]);}
  catch{return new Set();}
 }
-const state={verbs:new Map(),bank:new Map(),dictionary:false,wordBank:false,page:1,filtered:[],size:24,saved:readSaved(),practice:false};
+const state={verbs:new Map(),bank:new Map(),myanmarGlosses:new Map(),dictionary:false,wordBank:false,myanmarLoaded:false,page:1,filtered:[],size:24,saved:readSaved(),practice:false};
 const manual=[
 ['sein','war','gewesen','sein'],['ad absurdum führen','führte ad absurdum','ad absurdum geführt','haben'],['zugrunde legen','legte zugrunde','zugrunde gelegt','haben'],['abschätzen','schätzte ab','abgeschätzt','haben'],
 ['extrapolieren','extrapolierte','extrapoliert','haben'],['generalisieren','generalisierte','generalisiert','haben'],
@@ -40,7 +40,7 @@ function enrich(){for(const word of state.bank.values()){
  if(!core){core={v1:word.core,v2:'—',v3:'—',aux:'—',source:'Review needed'};state.verbs.set(word.core,core);}
  core.isWortWeg=true;
  if(!core.english&&word.english)core.english=word.english;
- if(!core.myanmar&&word.myanmar)core.myanmar=word.myanmar;
+ if(word.myanmar){core.myanmar=word.myanmar;core.myanmarSource='WortWeg';}
  core.levels=[...new Set([...(core.levels||[]),...word.levels])].sort();
  if(word.reflexive){
   const f=fixedReflexive[word.core];
@@ -60,7 +60,7 @@ function courseRows(){return [...state.bank.values()].map(w=>{
  const base=state.verbs.get(w.core)||{v1:w.core,v2:'—',v3:'—',aux:'—',source:'Review needed'};
  const reflex=w.original.startsWith('sich ')?fixedReflexive[w.core]:null;
  return {...base,v1:w.original,v2:reflex?reflex[0]:base.v2,v3:reflex?reflex[1]:base.v3,
-   english:w.english,myanmar:w.myanmar,levels:[...w.levels].sort(),isWortWeg:true};
+   english:w.english||base.english||'',myanmar:w.myanmar||base.myanmar||'',myanmarSource:w.myanmar?'WortWeg':base.myanmarSource||'',levels:[...w.levels].sort(),isWortWeg:true};
 });}
 function setFeedback(message){$('wordbank-status').textContent=message;}
 function toggleSave(item){
@@ -132,6 +132,13 @@ function output(){
       a.title='Look up the missing principal part in Wiktionary';
       td.append(a);
     }
+    if(i===4&&item.myanmarSource==='Auto'){
+      td.classList.add('auto-translation');
+      const review=String(item.myanmar||'').includes('စစ်ဆေးရန်');
+      const note=el('span','gloss-origin',review?'Meaning needs review':'Auto translation · unverified');
+      note.title='Machine-assisted Myanmar gloss. Check the intended German sense before relying on it.';
+      td.append(note);
+    }
     tr.append(td);
   });
   const td=el('td');const incomplete=item.source==='Review needed'||!item.v2||!item.v3||item.v2==='—'||item.v3==='—';
@@ -182,10 +189,45 @@ function ingestWortWeg(raw){if(!Array.isArray(raw.bank))throw Error('Word Bank f
  }
  enrich();state.wordBank=true;output();
 }
+function applyAutoGlosses(){
+ for(const [lemma,meaning] of state.myanmarGlosses){
+  const core=state.verbs.get(lemma);
+  if(!core||!meaning)continue;
+  // Preserve all separately authored WortWeg translations over automated glosses.
+  if(!core.myanmar||core.myanmarSource==='Auto'){
+   core.myanmar=meaning;core.myanmarSource='Auto';
+  }
+ }
+}
+async function loadAutoGlosses(){
+ try{
+  const res=await fetch('./assets/german-verbs-myanmar.json',{cache:'no-cache'});
+  if(!res.ok)throw Error('HTTP '+res.status);
+  const data=await res.json();
+  if(data.version!==1||!Array.isArray(data.rows)||data.rows.length!==8000)throw Error('Glossary invalid');
+  const glosses=new Map();
+  for(const row of data.rows){
+   if(!Array.isArray(row)||row.length<2||!clean(row[1]))throw Error('Blank meaning');
+   const lemma=key(row[0]);
+   if(glosses.has(lemma))throw Error('Duplicate lemma');
+   glosses.set(lemma,clean(row[1]));
+  }
+  state.myanmarGlosses=glosses;
+  state.myanmarLoaded=true;
+  applyAutoGlosses();
+  enrich();
+  const review=[...glosses.values()].filter(x=>x.includes('စစ်ဆေးရန်')).length;
+  $('gloss-status').textContent='Myanmar glossary: '+glosses.size.toLocaleString('en-US')+' entries loaded. '+review+' rare meanings flagged for review. Existing WortWeg translations take priority.';
+  output();
+ }catch(e){
+  $('gloss-status').textContent='Expanded Myanmar meanings unavailable. Reconnect and tap Update app & data.';
+  output();
+ }
+}
 async function loadDict(){try{const res=await fetch('./assets/german-verbs-lifetime.json',{cache:'no-cache'});if(!res.ok)throw Error('HTTP '+res.status);const data=await res.json();
  if(data.version!==1||!Array.isArray(data.rows)||data.rows.length<7500)throw Error('Dictionary invalid');
  for(const [v1,v2,v3,aux] of data.rows)if(v1&&v2&&v3)put({v1,v2,v3,aux:aux||'—',source:'Wiktionary'});
- state.dictionary=true;$('source-status').textContent='';enrich();output();
+ state.dictionary=true;$('source-status').textContent='';applyAutoGlosses();enrich();output();
  }catch(e){$('source-status').textContent='Expanded dictionary unavailable offline. Please reconnect to download the verb data.';output();}}
 async function loadBank(){try{
  // Storage may be blocked in private browsing or Android WebView.
@@ -202,7 +244,7 @@ async function loadBank(){try{
  if(!node)throw Error('Word Bank missing');const data=JSON.parse(node.textContent);
  ingestWortWeg(data);$('wordbank-status').textContent='';
  }catch(e){$('wordbank-status').textContent='WortWeg matching unavailable; the standalone dictionary is still usable.';output();}}
-function csv(){const rows=[['V1','V2','V3','English (WortWeg)','Myanmar (WortWeg)','CEFR (WortWeg)','Auxiliary','Source'],...state.filtered.map(v=>[v.v1,v.v2,v.v3,v.english||'',v.myanmar||'',(v.levels||[]).join(';'),v.aux||'',v.source])];
+function csv(){const rows=[['V1','V2','V3','English (WortWeg)','Myanmar (WortWeg / automated)','CEFR (WortWeg)','Auxiliary','Form source','Myanmar source'],...state.filtered.map(v=>[v.v1,v.v2,v.v3,v.english||'',v.myanmar||'',(v.levels||[]).join(';'),v.aux||'',v.source,v.myanmarSource||''])];
  const esc=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
  const blob=new Blob(['\ufeff',rows.map(row=>row.map(esc).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});
  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='WortWeg_Lifetime_V1_V2_V3.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500);
@@ -239,5 +281,5 @@ $('retry').addEventListener('click',async()=>{
   window.location.replace(url.href);
 });
 window.WortWegLifetimeVerbs={get total(){return state.verbs.size},get wortweg(){return state.bank.size}};
-output();loadDict();loadBank();
+output();loadDict();loadBank();loadAutoGlosses();
 })();
