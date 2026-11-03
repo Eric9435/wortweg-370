@@ -107,7 +107,7 @@ const shown=()=>[...d.querySelectorAll('#rows tr')].map(r=>[...r.querySelectorAl
  const style=read('verb-studio.css');
  assert(style.includes('.scroll table{display:table'),'Semantic table display must remain active at all widths');
  assert(style.includes('overflow:auto')&&style.includes('position:sticky;left:0'),'Mobile table must scroll and keep V1 column visible');
- assert(!style.includes('grid-column:1/-1'),'Legacy card row layout must be removed');
+ assert(!style.includes('.scroll td:nth-child(9){grid-column:1/-1')&&!style.includes('.scroll tbody{display:grid'),'Legacy verb cards must be removed');
  assert(html.includes('aria-label="Verb dictionary data table"')&&html.includes('tabindex="0"'),'Horizontal table must be focusable and accessible');
  assert(html.includes('id="verb-table-hint"'),'Mobile table must have a swipe hint');
  assert(html.includes('verb-studio.css?v=2'),'New layout must bust cached stylesheet');
